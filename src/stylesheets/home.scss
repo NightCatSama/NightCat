@@ -1,0 +1,14 @@
+@import './common/util';
+
+.home-view {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	.canvas {
+		flex: 1;
+		background-color: $black;
+		color: $white;
+		font-family: 'Montserrat';
+	}
+}

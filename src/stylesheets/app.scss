@@ -1,7 +1,7 @@
 @import './common/util';
 
-body {
-	background-color: $black;
-	color: $white;
+.container {
+	display: flex;
+	flex-direction: column;
 	min-height: 100vh;
 }

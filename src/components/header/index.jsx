@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import { Link, IndexLink } from 'react-router';
 import './header'
 
@@ -17,7 +17,7 @@ export default class Header extends Component {
 				<div className="header-btn-wrap">
 					<div className="header-btn">
 						<div className="btn-outer">
-							<button className="btn"></button>
+							<button className="btn" onClick={this.props.clickFn}></button>
 						</div>
 					</div>
 				</div>
@@ -32,4 +32,5 @@ export default class Header extends Component {
 }
 
 Header.propTypes = {
+	clickFn: PropTypes.func.isRequired
 }

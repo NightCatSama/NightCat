@@ -9,6 +9,8 @@ import Components from '../views/component';
 import Product from '../views/product';
 import Login from '../views/login';
 
+import DevTools from '../asset/DevTools';
+
 export default class Root extends Component {
   render() {
     return (
@@ -23,6 +25,7 @@ export default class Root extends Component {
 					<Route path="login" component={Login} />
 				</Route>
 			</Router>
+			<DevTools />
 		</div>
     );
   }
