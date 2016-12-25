@@ -12,22 +12,22 @@ import Login from '../views/login';
 import DevTools from '../asset/DevTools';
 
 export default class Root extends Component {
-  render() {
-    return (
-		<div>
-			<Router history={browserHistory}>
-				<Route path="/" component={App}>
-					<IndexRoute component={Home} />
-					<Route path="About" component={About} />
-					<Route path="code" component={Code} />
-					<Route path="component" component={Components} />
-					<Route path="product" component={Product} />
-					<Route path="login" component={Login} />
-				</Route>
-			</Router>
-			<DevTools />
-		</div>
-    );
-  }
+	render() {
+		return (
+			<div>
+				<Router history={browserHistory}>
+					<Route path="/" component={App}>
+						<IndexRoute component={Home} />
+						<Route path="About" component={About} />
+						<Route path="code" component={Code} />
+						<Route path="component" component={Components} />
+						<Route path="product" component={Product} />
+						<Route path="login" component={Login} />
+					</Route>
+				</Router>
+				<DevTools />
+			</div>
+		)
+	}
 }
 

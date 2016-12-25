@@ -17,9 +17,8 @@ class Home extends Component {
 			this.canvas = new MyCanvas('canvas')
 		}, 0)
 
-		console.log(this.props.actions)
 		this.props.actions.register(() => {
-			alert(123)
+			this.canvas.toggle()
 		})
 	}
 	render() {

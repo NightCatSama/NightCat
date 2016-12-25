@@ -6,6 +6,9 @@ export default class Rhythm {
         this.audio.loop = true
         this.cxt = this.getAudioContext()
         this.analyser = this.cxt.createAnalyser()
+        // this.analyser.minDecibels = -90;
+        // this.analyser.maxDecibels = -10;
+        this.analyser.fftSize = 256
         this.cxt.createMediaElementSource(this.audio).connect(this.analyser)
         this.analyser.connect(this.cxt.destination)
 

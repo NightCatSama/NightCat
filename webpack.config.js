@@ -22,6 +22,9 @@ var config = {
       test: /\.(png|jpg)$/,
       loader: 'url-loader?limit=8192'
     },{
+      test: /\.(wav|mp3)$/,
+      loader: 'url-loader'
+    },{
       test: /\.jsx?$/,
       loader: 'babel',
       include: SRC_PATH
