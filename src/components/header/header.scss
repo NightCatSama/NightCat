@@ -1,10 +1,18 @@
 @import '../../stylesheets/common/util';
 
+$height: 60px;
+$btn-size: 90px;
+$shadow_offset: 1px;
+$shadow_blur: 5px;
+$shadow_color: rgba(0, 0, 0, 0.36);
+
 .header {
-	height: 60px;
+	height: $height;
 	width: 100%;
 	display: flex;
 	background-color: rgba(255, 255, 255, 1);
+	box-shadow: 0 $shadow_offset $shadow_blur 0 $shadow_color;
+	z-index: 9;
 
 	.left-nav, .right-nav {
 		flex: 1;
@@ -57,7 +65,6 @@
 	}
 }
 
-$btn-size: 90px;
 .header-btn-wrap {
 	width: $btn-size;
 	flex-shrink: 0;
@@ -72,6 +79,18 @@ $btn-size: 90px;
 		height: $btn-size;
 		border-radius: 50%;
 		background-color: $white;
+		box-shadow: 0 0 $shadow_blur $shadow_offset $shadow_color;
+
+		&::after {
+			content: '';
+			position: absolute;
+			left: -10%;
+			top: 0;
+			width: 120%;
+			height: $height;
+			background-color: #fff;
+			z-index: 1;
+		}
 
 		.btn-outer {
 			width: 100%;
@@ -80,6 +99,8 @@ $btn-size: 90px;
 			padding: 10px;
 			background-color: #333;
 			cursor: pointer;
+			position: relative;
+			z-index: 2;
 			box-shadow: 1px 1px 0 #5d5d5d;
 
 			.btn {

@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import MyCanvas from '../asset/MyCanvas/'
+import React, { Component, PropTypes } from 'react'
 
 import '../stylesheets/home'
 
@@ -13,18 +12,15 @@ class Home extends Component {
 	    this.canvas = null
 	}
 	componentDidMount() {
-		setTimeout(() => {
-			this.canvas = new MyCanvas('canvas')
-		}, 0)
-
 		this.props.actions.register(() => {
-			this.canvas.toggle()
+			console.log('click')
 		})
 	}
 	render() {
 		return (
 			<div className="home-view">
-				<canvas id="canvas" className="canvas"></canvas>
+				<h1 style={{ textAlign: 'center', marginTop: '100px', fontSize: '50px' }}>NightCat</h1>
+				<canvas id="cat" className="canvas"></canvas>
 			</div>
 		);
 	}
@@ -41,4 +37,5 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Home)
 
 Home.propTypes = {
+	actions: PropTypes.any
 }
