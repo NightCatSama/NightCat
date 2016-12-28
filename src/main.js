@@ -7,7 +7,7 @@ import configureStore from './store/configureStore'
 const store = configureStore()
 
 render(
-	<Provider store={store}>
-		<Root />
-	</Provider>, document.getElementById('app')
- )
+<Provider store={store}>
+	<Root />
+</Provider>, document.getElementById('app')
+)

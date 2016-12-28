@@ -7,7 +7,8 @@ export default class component extends Component {
 	}
 	render() {
 		return (
-			<div className="component-view">
+			<div ref="view" className="component-view">
+				<h1 style={{ textAlign: 'center', marginTop: '100px' }}>I'm Component!</h1>
 			</div>
 		);
 	}

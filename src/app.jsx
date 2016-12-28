@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Menu from './components/Menu/'
 // import Header from './components/Header/'
 
 import { connect } from 'react-redux'
@@ -11,17 +12,17 @@ import './stylesheets/app'
 class App extends Component {
 	constructor(props) {
 	    super(props)
+	    this.offsetView = this.offsetView.bind(this)
 	}
-	clickFn() {
-		this.props.actions.execute()
+	offsetView() {
+		// this.props.actions.execute('toggleView')
+		this.refs.container.classList.toggle('offset')
 	}
 	render() {
 		return (
-			<div className="container">
-			{/*
-				<Header clickFn={this.clickFn.bind(this)} />
-			*/}
+			<div ref="container" className="container">
 				{ this.props.children }
+				<Menu ref="menu" callback={this.offsetView} />
 			</div>
 		)
 	}

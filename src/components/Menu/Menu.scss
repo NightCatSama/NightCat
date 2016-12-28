@@ -4,8 +4,10 @@ $btn-offsetTop: 50px;
 $btn-offsetRight: 50px;
 $btn-offsetLeft: 20px;
 $btn-width: 80px;
-$menu-bg: $gray;
-$menu-color: $font-color;
+$link-paddingTop: 80px;
+$menu-bg: $white;
+$menu-color: $blue;
+$gap: 20px;
 
 .menu {
 	.menu-btn {
@@ -25,7 +27,7 @@ $menu-color: $font-color;
 	.menu-btn-outside {
 		right: $btn-offsetRight;
 		text-shadow: $font-light;
-		color: $white;
+		color: $gray;
 	}
 
 	&.open .menu-btn-outside {
@@ -45,16 +47,21 @@ $menu-color: $font-color;
 		position: fixed;
 		right: 0;
 		top: 0;
-		height: 100%;
+		height: 100vh;
 		width: $side-width;
 		overflow: hidden;
-		transform: translate3d($side-width, 0, 0);
 		background-color: $menu-bg;
+		transform: translate3d($side-width, 0, 0);
+		transition: transform $slider-time;
 	}
+
+	// &.open .side-menu {
+	// 	transform: translate3d(0, 0, 0);
+	// }
 }
 
 .link-group {
-	padding: $btn-offsetTop + 100px 20px 0 20px;
+	padding: $btn-offsetTop + $link-paddingTop + 18px $gap 0 $gap;
 	display: flex;
 	flex-direction: column;
 
@@ -81,7 +88,7 @@ $menu-color: $font-color;
 			background-color: $menu-color;
 			position: absolute;
 			bottom: -2px;
-			left: 50%;
+			left: 0;
 			transition: all .3s;
 		}
 
@@ -99,5 +106,21 @@ $menu-color: $font-color;
 			bottom: -2px;
 			left: 0;
 		}
+	}
+}
+
+.personal-information {
+	position: absolute;
+	left: 0;
+	bottom: 80px;
+	width: 100%;
+	text-align: center;
+	color: $menu-color;
+	padding: 0 $gap;
+
+	.avatar {
+		width: 100px;
+		height: 100px;
+		border-radius: 50%;
 	}
 }

@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux'
-import headerBtn from './header-btn'
+import eventBus from './event-bus'
 
 const rootReducer = combineReducers({
-	headerBtn
+	eventBus
 })
 
 export default rootReducer

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
-import { Link, IndexLink } from 'react-router';
+import { Link, IndexLink } from 'react-router'
+import config from '../../config'
 import './Menu'
 
 export default class Menu extends Component {
@@ -44,22 +45,26 @@ export default class Menu extends Component {
 					<div className="link-group">
 						<IndexLink to="/" activeClassName="active" className="link">
 							<i className="iconfont icon-home"></i>
-							<span>HOME</span>
+							<span>Home</span>
 						</IndexLink>
 						<Link to="/component" activeClassName="active" className="link">
 							<i className="iconfont icon-component"></i>
-							<span>COMPONENT</span>
+							<span>Component</span>
 						</Link>
 						<Link to="/code" activeClassName="active" className="link">
 							<i className="iconfont icon-code"></i>
-							<span>CODE</span>
+							<span>Code</span>
 						</Link>
 						<Link to="/product" activeClassName="active" className="link">
 							<i className="iconfont icon-product"></i>
-							<span>PRODUCT</span>
+							<span>Product</span>
 						</Link>
 					</div>
-					<div className="personal-information"></div>
+					<div className="personal-information">
+						<img className="avatar" src={config.avatar} />
+						<h2 className="user-name">{ config.user_name }</h2>
+						<small className="user-intro">{ config.intro }</small>
+					</div>
 				</div>
 			</div>
 		);

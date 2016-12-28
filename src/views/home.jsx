@@ -1,27 +1,23 @@
 import React, { Component, PropTypes } from 'react'
-import Menu from '../components/Menu/'
-import Canvas from '../asset/Canvas/'
+// import Canvas from '../asset/Canvas/'
 
 import '../stylesheets/home'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import HeaderBtnAction from '../actions/HeaderBtnAction'
+import EventBusAction from '../actions/EventBusAction'
 
 class Home extends Component {
 	constructor (props) {
 	    super(props)
-	    this.canvas = null
-	    this.offsetView = this.offsetView.bind(this)
 	}
 	componentDidMount() {
-		new Canvas('canvas')
-		this.props.actions.register(() => {
-			console.log('click')
+		this.props.actions.register('toggleView', () => {
+			this.refs.view.classList.toggle('offset')
 		})
-	}
-	offsetView() {
-		this.refs.view.classList.toggle('offset')
+		this.props.actions.register('isOpenView', () => {
+			this.refs.view.classList.contains('offset')
+		})
 	}
 	render() {
 		return (
@@ -30,7 +26,6 @@ class Home extends Component {
 					<h1>NightCat</h1>
 					<small>- This is a nothing's website -</small>
 				</section>
-				<Menu callback={this.offsetView} />
 			</div>
 		);
 	}
@@ -41,7 +36,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(HeaderBtnAction, dispatch)
+	actions: bindActionCreators(EventBusAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home)

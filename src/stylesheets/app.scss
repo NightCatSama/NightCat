@@ -9,7 +9,18 @@
 	url('//at.alicdn.com/t/font_a5hnyvn7wtvjkyb9.svg#iconfont') format('svg');
 }
 
+body {
+	overflow-x: hidden; 
+}
+
 .container {
 	display: flex;
 	flex-direction: column;
+	width: 100%;
+	min-height: 100vh;
+	transition: transform $slider-time;
+
+	&.offset {
+		transform: translate3d(-$side-width, 0, 0);
+	}
 }
