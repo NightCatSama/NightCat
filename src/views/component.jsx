@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import '../stylesheets/component'
 
 export default class component extends Component {
 	constructor (props) {
@@ -6,8 +7,7 @@ export default class component extends Component {
 	}
 	render() {
 		return (
-			<div>
-				<h1 style={{ textAlign: 'center', marginTop: '100px' }}>I'm component!</h1>
+			<div className="component-view">
 			</div>
 		);
 	}

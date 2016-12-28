@@ -1,0 +1,103 @@
+@import '../../stylesheets/common/util';
+
+$btn-offsetTop: 50px;
+$btn-offsetRight: 50px;
+$btn-offsetLeft: 20px;
+$btn-width: 80px;
+$menu-bg: $gray;
+$menu-color: $font-color;
+
+.menu {
+	.menu-btn {
+		position: absolute;
+		top: $btn-offsetTop;
+		font-size: 18px;
+		width: $btn-width;
+		text-align: center;
+		cursor: pointer;
+		transition: transform $slider-time;
+
+		.icon-star {
+			margin-right: 5px;
+			font-size: 22px;
+		}
+	}
+	.menu-btn-outside {
+		right: $btn-offsetRight;
+		text-shadow: $font-light;
+		color: $white;
+	}
+
+	&.open .menu-btn-outside {
+		transform: translate3d($btn-offsetRight + $btn-offsetLeft + $btn-width, 0, 0);
+	}
+
+	.menu-btn-inside {
+		left: -($btn-offsetRight + $btn-width);
+		color: $menu-color;
+	}
+
+	&.open .menu-btn-inside {
+		transform: translate3d($btn-offsetRight + $btn-offsetLeft + $btn-width, 0, 0);
+	}
+
+	.side-menu {
+		position: fixed;
+		right: 0;
+		top: 0;
+		height: 100%;
+		width: $side-width;
+		overflow: hidden;
+		transform: translate3d($side-width, 0, 0);
+		background-color: $menu-bg;
+	}
+}
+
+.link-group {
+	padding: $btn-offsetTop + 100px 20px 0 20px;
+	display: flex;
+	flex-direction: column;
+
+	.link {
+		margin-bottom: 20px;
+		font-size: 15px;
+		cursor: pointer;
+		font-weight: bold;
+		color: $menu-color;
+		text-decoration: none;
+
+		.iconfont {
+			margin-right: 5px;
+		}
+
+		span {
+			position: relative;
+		}
+
+		span::after {
+			content: '';
+			height: 2px;
+			width: 0;
+			background-color: $menu-color;
+			position: absolute;
+			bottom: -2px;
+			left: 50%;
+			transition: all .3s;
+		}
+
+		&:hover span::after {
+			width: 100%;
+			left: 0;
+		}
+
+		&.active span::after {
+			content: '';
+			height: 2px;
+			width: 100%;
+			background-color: $menu-color;
+			position: absolute;
+			bottom: -2px;
+			left: 0;
+		}
+	}
+}

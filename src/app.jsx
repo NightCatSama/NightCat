@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import Header from './components/Header/'
+// import Header from './components/Header/'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -18,7 +18,9 @@ class App extends Component {
 	render() {
 		return (
 			<div className="container">
+			{/*
 				<Header clickFn={this.clickFn.bind(this)} />
+			*/}
 				{ this.props.children }
 			</div>
 		)

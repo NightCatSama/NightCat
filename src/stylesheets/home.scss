@@ -1,20 +1,34 @@
 @import './common/util';
 
 .home-view {
-	flex: 1;
-	display: flex;
-	flex-direction: column;
+	// flex: 1;
+	// display: flex;
+	// flex-direction: column;
 	position: relative;
+	width: 100%;
+	min-height: 100vh;
+	background-image: url('../images/bg.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	cursor: default;
+	user-select: none;
+	transition: transform $slider-time;
+
+	.info {
+		color: $white;
+		position: relative;
+		font-size: 20px;
+		margin: 120px 0 0 60px;
+		width: 300px;
+		text-shadow: $font-light;
+		text-align: center;
+	}
 
 	.canvas {
-		flex: 1;
 		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: rgba(0, 0, 0, .1);
-		color: $white;
-		font-family: 'Montserrat';
+	}
+
+	&.offset {
+		transform: translateX(-240px);
 	}
 }

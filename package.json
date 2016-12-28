@@ -23,6 +23,7 @@
     "autoprefixer": "^6.5.4",
     "babel-core": "^6.7.7",
     "babel-loader": "^6.2.4",
+    "classnames": "^2.2.5",
     "css-loader": "^0.23.1",
     "fetch": "^1.1.0",
     "file-loader": "^0.8.5",

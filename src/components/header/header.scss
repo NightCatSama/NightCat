@@ -10,7 +10,7 @@ $shadow_color: rgba(0, 0, 0, 0.36);
 	height: $height;
 	width: 100%;
 	display: flex;
-	background-color: rgba(255, 255, 255, 1);
+	background-color: rgba(255, 255, 255, .11);
 	box-shadow: 0 $shadow_offset $shadow_blur 0 $shadow_color;
 	z-index: 9;
 
@@ -114,7 +114,7 @@ $shadow_color: rgba(0, 0, 0, 0.36);
 				transition: all .2s;
 
 				&::after {
-					content: 'C';
+					content: attr(data-word);
 					position: absolute;
 					top: 50%;
 					left: 50%;

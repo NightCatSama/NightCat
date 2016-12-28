@@ -17,7 +17,7 @@ export default class Header extends Component {
 				<div className="header-btn-wrap">
 					<div className="header-btn">
 						<div className="btn-outer">
-							<button className="btn" onClick={this.props.clickFn}></button>
+							<button className="btn" data-word="" onClick={this.props.clickFn}></button>
 						</div>
 					</div>
 				</div>
