@@ -1,13 +1,13 @@
 @import '../../stylesheets/common/util';
 
+$gap: 20px;
 $btn-offsetTop: 50px;
 $btn-offsetRight: 50px;
-$btn-offsetLeft: 20px;
+$btn-offsetLeft: $gap;
 $btn-width: 80px;
 $link-paddingTop: 80px;
-$menu-bg: $white;
-$menu-color: $blue;
-$gap: 20px;
+$menu-bg: $light-black;
+$menu-color: $white;
 
 .menu {
 	.menu-btn {
@@ -15,8 +15,9 @@ $gap: 20px;
 		top: $btn-offsetTop;
 		font-size: 18px;
 		width: $btn-width;
-		text-align: center;
+		text-align: right;
 		cursor: pointer;
+		padding: 5px 0;
 		transition: transform $slider-time;
 
 		.icon-star {
@@ -26,8 +27,6 @@ $gap: 20px;
 	}
 	.menu-btn-outside {
 		right: $btn-offsetRight;
-		text-shadow: $font-light;
-		color: $gray;
 	}
 
 	&.open .menu-btn-outside {
@@ -54,19 +53,16 @@ $gap: 20px;
 		transform: translate3d($side-width, 0, 0);
 		transition: transform $slider-time;
 	}
-
-	// &.open .side-menu {
-	// 	transform: translate3d(0, 0, 0);
-	// }
 }
 
 .link-group {
-	padding: $btn-offsetTop + $link-paddingTop + 18px $gap 0 $gap;
 	display: flex;
 	flex-direction: column;
+	padding: $btn-offsetTop + $link-paddingTop 0 0 0;
 
 	.link {
-		margin-bottom: 20px;
+		// margin-bottom: 20px;
+		padding: 10px $gap;
 		font-size: 15px;
 		cursor: pointer;
 		font-weight: bold;
@@ -77,34 +73,39 @@ $gap: 20px;
 			margin-right: 5px;
 		}
 
-		span {
-			position: relative;
-		}
+		// span {
+		// 	position: relative;
+		// }
 
-		span::after {
-			content: '';
-			height: 2px;
-			width: 0;
-			background-color: $menu-color;
-			position: absolute;
-			bottom: -2px;
-			left: 0;
-			transition: all .3s;
-		}
+		// span::after {
+		// 	content: '';
+		// 	height: 2px;
+		// 	width: 0;
+		// 	background-color: $menu-color;
+		// 	position: absolute;
+		// 	bottom: -2px;
+		// 	left: 0;
+		// 	transition: all .3s;
+		// }
 
-		&:hover span::after {
-			width: 100%;
-			left: 0;
-		}
+		// &:hover span::after {
+		// 	width: 100%;
+		// 	left: 0;
+		// }
 
-		&.active span::after {
-			content: '';
-			height: 2px;
-			width: 100%;
-			background-color: $menu-color;
-			position: absolute;
-			bottom: -2px;
-			left: 0;
+		// &.active span::after {
+		// 	content: '';
+		// 	height: 2px;
+		// 	width: 100%;
+		// 	background-color: $menu-color;
+		// 	position: absolute;
+		// 	bottom: -2px;
+		// 	left: 0;
+		// }
+
+		&.active {
+			background-color: $blue;
+			color: $white;
 		}
 	}
 }

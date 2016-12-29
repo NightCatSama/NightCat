@@ -2,18 +2,21 @@ var path = require('path')
 var webpack = require('webpack')
 var autoprefixer = require('autoprefixer')
 var SRC_PATH = path.resolve(__dirname, 'src')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var config = {
 	devtool: 'inline-source-map',
-	context: SRC_PATH,
+	// context: SRC_PATH,
 	entry: {
-		main: './main.js',
-		html: './index.html'
+		app: './src/main.js'
+		// html: './index.html'
 	},
 	output: {
-		path: path.resolve(__dirname, 'build'),
-		publicPath: 'http://localhost:8080/',
-		filename: 'bundle.js'
+		path: './dist',
+		publicPath: '/',
+		// filename: 'bundle.js'
+		filename: '[name].bundle.js',
+   		chunkFilename: '[name].[chunkhash].js'
 	},
 	module: {
 		loaders: [{
@@ -51,6 +54,15 @@ var config = {
 			'process.env': {
 				NODE_ENV: '"development"'
 			}
+		}),
+		new webpack.optimize.OccurenceOrderPlugin(),
+		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NoErrorsPlugin(),
+		// https://github.com/ampedandwired/html-webpack-plugin
+		new HtmlWebpackPlugin({
+			filename: './index.html',
+			template: './index.html',
+			inject: true
 		})
 	],
 	resolve: {

@@ -18,6 +18,7 @@
     "eslint": "^2.9.0",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.1.1",
+    "html-webpack-plugin": "^2.24.1",
     "webpack": "^1.13.0"
   },
   "dependencies": {

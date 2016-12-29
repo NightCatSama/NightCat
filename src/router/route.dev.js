@@ -1,15 +1,17 @@
-import React, { Component } from 'react';
-import { Router, Route, IndexRoute, browserHistory } from 'react-router';
+import React, { Component } from 'react'
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
-import App from '../app';
-import Home from '../views/home';
-import About from '../views/about';
-import Code from '../views/code';
-import Components from '../views/component';
-import Product from '../views/product';
-import Login from '../views/login';
+import {
+	App,
+	Home,
+	About,
+	Code,
+	Components,
+	Product,
+	Login
+} from '../views/'
 
-import DevTools from '../asset/DevTools';
+import DevTools from '../asset/DevTools'
 
 export default class Root extends Component {
 	render() {
