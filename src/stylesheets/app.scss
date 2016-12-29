@@ -18,7 +18,7 @@ body {
 	flex-direction: column;
 	width: 100%;
 	min-height: 100vh;
-	transition: transform $slider-time;
+	transition: transform $slider-time - 0.05s;
 
 	&.offset {
 		transform: translate3d(-$side-width, 0, 0);

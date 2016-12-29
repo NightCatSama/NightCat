@@ -1,25 +1,24 @@
-var webpack = require('webpack');
-var path = require('path');
-var autoprefixer = require('autoprefixer');
-var SRC_PATH = path.resolve(__dirname, 'src');
-var node_modules_dir = path.resolve(__dirname, 'node_modules');
+var webpack = require('webpack')
+var HtmlWebpackPlugin = require('html-webpack-plugin')
+var path = require('path')
+var autoprefixer = require('autoprefixer')
+var SRC_PATH = path.resolve(__dirname, 'src')
+var node_modules_dir = path.resolve(__dirname, 'node_modules')
 
 var config = {
 	devtool: false,
 	context: SRC_PATH,
 	entry: {
 		main: './main.js',
-		html: './index.html'
 	},
 	output: {
-		path: path.resolve(__dirname, 'dist'),
-		filename: 'bundle.js'
+		path: './dist',
+		publicPath: './',
+		filename: 'js/[name].bundle.js',
+   		chunkFilename: 'js/[name].[chunkhash].js'
 	},
 	module: {
 		loaders: [{
-			test: /\.html$/,
-			loader: 'file?name=[name].[ext]'
-		}, {
 			test: /\.(png|jpg)$/,
 			loader: 'url-loader?limit=8192'
 		}, {
@@ -57,6 +56,12 @@ var config = {
 			'process.env': {
 				NODE_ENV: JSON.stringify('production')
 			}
+		}),
+		new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
+		new webpack.optimize.OccurenceOrderPlugin(),
+		new HtmlWebpackPlugin({
+			template: path.resolve(__dirname, 'index.html'),
+			inject: true
 		})
 	],
 	postcss: [
@@ -64,6 +69,6 @@ var config = {
 			browsers: ['>0%']
 		})
 	]
-};
+}
 
-module.exports = config;
+module.exports = config

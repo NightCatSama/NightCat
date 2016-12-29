@@ -6,23 +6,17 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 var config = {
 	devtool: 'inline-source-map',
-	// context: SRC_PATH,
 	entry: {
 		app: './src/main.js'
-		// html: './index.html'
 	},
 	output: {
 		path: './dist',
-		publicPath: '/',
-		// filename: 'bundle.js'
-		filename: '[name].bundle.js',
-   		chunkFilename: '[name].[chunkhash].js'
+		publicPath: 'http://localhost:8080/',
+		filename: 'js/[name].bundle.js',
+   		chunkFilename: 'js/[name].[chunkhash].js'
 	},
 	module: {
 		loaders: [{
-			test: /\.html$/,
-			loader: 'file?name=[name].[ext]'
-		}, {
 			test: /\.(png|jpg)$/,
 			loader: 'url-loader?limit=8192'
 		}, {
@@ -55,13 +49,13 @@ var config = {
 				NODE_ENV: '"development"'
 			}
 		}),
+		new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoErrorsPlugin(),
 		// https://github.com/ampedandwired/html-webpack-plugin
 		new HtmlWebpackPlugin({
-			filename: './index.html',
-			template: './index.html',
+			template: 'index.html',
 			inject: true
 		})
 	],

@@ -6,8 +6,6 @@ import configureStore from './store/configureStore'
 
 const store = configureStore()
 
-
-console.log(document.getElementById('app'))
 render(
 <Provider store={store}>
 	<Root />

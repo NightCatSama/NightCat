@@ -64,6 +64,17 @@ export default class Menu extends Component {
 						<img className="avatar" src={config.avatar} />
 						<h2 className="user-name">{ config.user_name }</h2>
 						<small className="user-intro">{ config.intro }</small>
+						<div className="follow">
+							<a href="https://github.com/NightCatSama" target="_blank">
+								<i className="iconfont icon-github"></i>
+							</a>
+							<a href="https://twitter.com/NightCatSama" target="_blank">
+								<i className="iconfont icon-twitter"></i>
+							</a>
+							<a href="http://weibo.com/p/1005053909739860" target="_blank">
+								<i className="iconfont icon-sina"></i>
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

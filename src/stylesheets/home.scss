@@ -17,9 +17,9 @@
 		text-shadow: $font-light;
 		text-align: center;
 	}
-}
 
-.menu-btn-outside {
-	text-shadow: $font-light;
-	color: $white;
+	&+.menu .menu-btn-outside {
+		text-shadow: $font-light;
+		color: $white;
+	}
 }

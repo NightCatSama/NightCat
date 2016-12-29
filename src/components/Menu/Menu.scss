@@ -6,8 +6,9 @@ $btn-offsetRight: 50px;
 $btn-offsetLeft: $gap;
 $btn-width: 80px;
 $link-paddingTop: 80px;
-$menu-bg: $light-black;
-$menu-color: $white;
+$menu-bg: #123;
+$menu-color: $blue;
+$icon-size: 18px;
 
 .menu {
 	.menu-btn {
@@ -18,7 +19,7 @@ $menu-color: $white;
 		text-align: right;
 		cursor: pointer;
 		padding: 5px 0;
-		transition: transform $slider-time;
+		transition: all $slider-time;
 
 		.icon-star {
 			margin-right: 5px;
@@ -26,19 +27,24 @@ $menu-color: $white;
 		}
 	}
 	.menu-btn-outside {
+		opacity: 1;
 		right: $btn-offsetRight;
+		color: $font-color;
 	}
 
 	&.open .menu-btn-outside {
+		opacity: 0;
 		transform: translate3d($btn-offsetRight + $btn-offsetLeft + $btn-width, 0, 0);
 	}
 
 	.menu-btn-inside {
+		opacity: 0;
 		left: -($btn-offsetRight + $btn-width);
 		color: $menu-color;
 	}
 
 	&.open .menu-btn-inside {
+		opacity: 1;
 		transform: translate3d($btn-offsetRight + $btn-offsetLeft + $btn-width, 0, 0);
 	}
 
@@ -48,10 +54,15 @@ $menu-color: $white;
 		top: 0;
 		height: 100vh;
 		width: $side-width;
-		overflow: hidden;
-		background-color: $menu-bg;
+		// overflow: hidden;
+		// background-color: $menu-bg;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, .86);
+		background: #de6161; /* fallback for old browsers */
+		background: -webkit-linear-gradient(20deg, #141E30, #243B55); /* Chrome 10-25, Safari 5.1-6 */
+		background: linear-gradient(20deg, #141E30, #243B55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 		transform: translate3d($side-width, 0, 0);
 		transition: transform $slider-time;
+		z-index: 100;
 	}
 }
 
@@ -61,16 +72,18 @@ $menu-color: $white;
 	padding: $btn-offsetTop + $link-paddingTop 0 0 0;
 
 	.link {
-		// margin-bottom: 20px;
 		padding: 10px $gap;
 		font-size: 15px;
 		cursor: pointer;
 		font-weight: bold;
+		position: relative;
 		color: $menu-color;
 		text-decoration: none;
+		transition: all .3s;
 
 		.iconfont {
-			margin-right: 5px;
+			margin-right: 8px;
+			font-size: $icon-size;
 		}
 
 		// span {
@@ -104,8 +117,16 @@ $menu-color: $white;
 		// }
 
 		&.active {
-			background-color: $blue;
+			background-color: $menu-color;
 			color: $white;
+			// padding: 10px $gap / 2;
+			// transform: translate3d(-($icon-size + $btn-offsetLeft + 100px), 0, 0);
+
+			@at-root .menu.open & {
+				padding: 10px $gap;
+				transform: scale(1.05);
+				box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.56);
+			}
 		}
 	}
 }
@@ -113,7 +134,7 @@ $menu-color: $white;
 .personal-information {
 	position: absolute;
 	left: 0;
-	bottom: 80px;
+	bottom: 20px;
 	width: 100%;
 	text-align: center;
 	color: $menu-color;
@@ -123,5 +144,22 @@ $menu-color: $white;
 		width: 100px;
 		height: 100px;
 		border-radius: 50%;
+	}
+
+	.follow {
+		padding: 20px 0;
+		a {
+			display: inline-block;
+			margin: 0 8px;
+			text-decoration: none;
+
+			&:hover {
+				opacity: .6;
+			}
+		}
+
+		.iconfont {
+			font-size: 40px;
+		}
 	}
 }
