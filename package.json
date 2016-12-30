@@ -4,8 +4,8 @@
   "description": "my blog",
   "main": "index.js",
   "scripts": {
-    "build": "set NODE_ENV=production && webpack --progress --colors --config webpack.production.config.js",
-    "dev": "webpack-dev-server --devtool eval --progress --colors --hot --content-base"
+    "build": "webpack --progress --colors --config build/webpack.production.config.js",
+    "dev": "webpack-dev-server --colors --devtool eval --progress --config build/webpack.config.js"
   },
   "author": "NightCatSama (642163903@qq.com)",
   "license": "ISC",
@@ -16,8 +16,11 @@
     "babel-preset-react-hmre": "^1.1.1",
     "babel-preset-stage-0": "^6.16.0",
     "eslint": "^2.9.0",
+    "eslint-friendly-formatter": "^2.0.6",
+    "eslint-loader": "^1.6.1",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-react": "^5.1.1",
+    "extract-text-webpack-plugin": "^1.0.1",
     "html-webpack-plugin": "^2.24.1",
     "webpack": "^1.13.0"
   },

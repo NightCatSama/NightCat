@@ -12,36 +12,51 @@ var config = {
 	output: {
 		path: './dist',
 		publicPath: 'http://localhost:8080/',
-		filename: 'js/[name].bundle.js',
-   		chunkFilename: 'js/[name].[chunkhash].js'
+		filename: 'static/js/[name].bundle.js',
+   		chunkFilename: 'static/js/[name].[chunkhash].js'
 	},
 	module: {
+		preLoaders: [{
+			test: /\.jsx?$/,
+			loader: 'eslint',
+			exclude: /node_modules/
+		}],
 		loaders: [{
 			test: /\.(png|jpg)$/,
-			loader: 'url-loader?limit=8192'
+			loader: 'url-loader?limit=8192',
+			exclude: /node_modules/
 		}, {
 			test: /\.(wav|mp3)$/,
-			loader: 'url-loader'
+			loader: 'url-loader',
+			exclude: /node_modules/
 		}, {
 			test: /\.jsx?$/,
 			loader: 'babel',
-			include: SRC_PATH
+			exclude: /node_modules/
 		}, {
 			test: /\.(scss|css)$/,
 			loaders: ['style', 'css?sourceMap', 'postcss', 'sass'],
+			exclude: /node_modules/
 		}, {
 			test: /\.eot/,
-			loader: 'file?prefix=font/'
+			loader: 'file?prefix=font/',
+			exclude: /node_modules/
 		}, {
 			test: /\.woff/,
-			loader: 'file?prefix=font/&limit=10000&mimetype=application/font-woff'
+			loader: 'file?prefix=font/&limit=10000&mimetype=application/font-woff',
+			exclude: /node_modules/
 		}, {
 			test: /\.ttf/,
-			loader: 'file?prefix=font/'
+			loader: 'file?prefix=font/',
+			exclude: /node_modules/
 		}, {
 			test: /\.svg/,
-			loader: 'file?prefix=font/'
+			loader: 'file?prefix=font/',
+			exclude: /node_modules/
 		}]
+	},
+	eslint: {
+		formatter: require('eslint-friendly-formatter')
 	},
 	plugins: [
 		new webpack.DefinePlugin({
@@ -52,7 +67,7 @@ var config = {
 		new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
-		new webpack.NoErrorsPlugin(),
+		// new webpack.NoErrorsPlugin(),
 		// https://github.com/ampedandwired/html-webpack-plugin
 		new HtmlWebpackPlugin({
 			template: 'index.html',
@@ -60,11 +75,13 @@ var config = {
 		})
 	],
 	resolve: {
-		extensions: ['', '.js', '.jsx', '.css', '.scss']
+		extensions: ['', '.js', '.jsx', '.css', '.scss'],
+		fallback: [path.join(__dirname, '../node_modules')]
 	},
 	devServer: {
 		historyApiFallback: true,
 		hot: true,
+		colors: true,
 		inline: true,
 		progress: true
 	},
