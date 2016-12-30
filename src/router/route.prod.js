@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { Router, Route, IndexRoute, hashHistory } from 'react-router'
 
 import App from '../app'
 import Home from '../views/home'
@@ -13,7 +13,7 @@ export default class Root extends Component {
   render() {
     return (
 		<div>
-			<Router history={browserHistory}>
+			<Router history={hashHistory}>
 				<Route path="/" component={App}>
 					<IndexRoute component={Home} />
 					<Route path="About" component={About} />
@@ -27,4 +27,3 @@ export default class Root extends Component {
     )
   }
 }
-
