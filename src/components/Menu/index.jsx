@@ -47,7 +47,7 @@ export default class Menu extends Component {
 							<i className="iconfont icon-home"></i>
 							<span>Home</span>
 						</IndexLink>
-						<Link to="/component" activeClassName="active" className="link">
+						<Link to="/components" activeClassName="active" className="link">
 							<i className="iconfont icon-component"></i>
 							<span>Component</span>
 						</Link>

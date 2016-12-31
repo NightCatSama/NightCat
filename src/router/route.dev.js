@@ -1,32 +1,33 @@
 import React, { Component } from 'react'
-import { Router, Route, IndexRoute, browserHistory } from 'react-router'
+import { Router, browserHistory } from 'react-router'
+import DevTools from 'asset/DevTools'
 
 import {
-	App,
 	Home,
-	About,
 	Code,
 	Components,
-	Product,
-	Login
-} from '../views/'
+	Product
+} from 'routes'
 
-import DevTools from '../asset/DevTools'
+const rootRoute = {
+	path: '/',
+	component: require('../app').default,
+	indexRoute: Home,
+	childRoutes: [
+		Code,
+		Components,
+		Product
+	]
+}
 
 export default class Root extends Component {
 	render() {
 		return (
 			<div>
-				<Router history={browserHistory}>
-					<Route path="/" component={App}>
-						<IndexRoute component={Home} />
-						<Route path="About" component={About} />
-						<Route path="code" component={Code} />
-						<Route path="component" component={Components} />
-						<Route path="product" component={Product} />
-						<Route path="login" component={Login} />
-					</Route>
-				</Router>
+				<Router 
+					history={browserHistory} 
+					routes={rootRoute} 
+				/>
 				<DevTools />
 			</div>
 		)

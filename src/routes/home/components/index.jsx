@@ -1,23 +1,23 @@
 import React, { Component, PropTypes } from 'react'
 // import Canvas from '../asset/Canvas/'
 
-import '../stylesheets/home'
+import 'stylesheets/home'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import EventBusAction from '../actions/EventBusAction'
+import EventBusAction from 'actions/EventBusAction'
 
 class Home extends Component {
 	constructor (props) {
 	    super(props)
 	}
 	componentDidMount() {
-		this.props.actions.register('toggleView', () => {
-			this.refs.view.classList.toggle('offset')
-		})
-		this.props.actions.register('isOpenView', () => {
-			this.refs.view.classList.contains('offset')
-		})
+		// this.props.actions.register('toggleView', () => {
+		// 	this.refs.view.classList.toggle('offset')
+		// })
+		// this.props.actions.register('isOpenView', () => {
+		// 	this.refs.view.classList.contains('offset')
+		// })
 	}
 	render() {
 		return (

@@ -1,4 +1,6 @@
+var path = require('path')
 var webpack = require('webpack')
+var SRC_PATH = path.resolve(__dirname, '../src')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
@@ -42,7 +44,20 @@ var config = {
 		}]
 	},
 	resolve: {
-		extensions: ['', '.js', '.jsx', '.css', '.scss']
+		extensions: ['', '.js', '.jsx', '.css', '.scss'],
+		alias: {
+			'actions': path.join(SRC_PATH, './actions'),
+			'asset': path.join(SRC_PATH, './asset'),
+			'components': path.join(SRC_PATH, './components'),
+			'constants': path.join(SRC_PATH, './constants'),
+			'images': path.join(SRC_PATH, './images'),
+			'reducers': path.join(SRC_PATH, './reducers'),
+			'router': path.join(SRC_PATH, './router'),
+			'routes': path.join(SRC_PATH, './routes'),
+			'store': path.join(SRC_PATH, './store'),
+			'stylesheets': path.join(SRC_PATH, './stylesheets')
+		},
+		fallback: [path.join(__dirname, '../node_modules')]
 	},
 	plugins: [
 		new webpack.optimize.UglifyJsPlugin({

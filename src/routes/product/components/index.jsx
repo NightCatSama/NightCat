@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import '../stylesheets/component'
+// import 'stylesheets/component'
 
 export default class component extends Component {
 	constructor (props) {
@@ -8,9 +8,9 @@ export default class component extends Component {
 	render() {
 		return (
 			<div ref="view" className="component-view">
-				<h1 style={{ textAlign: 'center', marginTop: '100px' }}>I'm Component!</h1>
+				<h1 style={{ textAlign: 'center', marginTop: '100px' }}>I'm Product!</h1>
 			</div>
-		);
+		)
 	}
 }
 
