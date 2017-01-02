@@ -1,21 +1,14 @@
 import React, { Component } from 'react'
-import { Router, hashserHistory } from 'react-router'
+import { Router, hashHistory } from 'react-router'
 
-import {
-	Home,
-	Code,
-	Components,
-	Product
-} from 'routes'
+import createRoute from 'routes'
 
 const rootRoute = {
 	path: '/',
 	component: require('../app').default,
-	indexRoute: Home,
+	indexRoute: createRoute(false, 'home'),
 	childRoutes: [
-		Code,
-		Components,
-		Product
+		createRoute('/factory', 'factory')
 	]
 }
 
@@ -24,7 +17,7 @@ export default class Root extends Component {
 		return (
 			<div>
 				<Router 
-					history={hashserHistory} 
+					history={hashHistory} 
 					routes={rootRoute} 
 				/>
 			</div>
