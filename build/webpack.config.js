@@ -4,6 +4,8 @@ var autoprefixer = require('autoprefixer')
 var SRC_PATH = path.resolve(__dirname, '../src')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
+var utils = require('./utils')
+
 var config = {
 	devtool: 'inline-source-map',
 	entry: {
@@ -12,8 +14,8 @@ var config = {
 	output: {
 		path: './dist',
 		publicPath: 'http://localhost:8080/',
-		filename: 'static/js/[name].bundle.js',
-   		chunkFilename: 'static/js/[name].[chunkhash].js'
+		filename: 'static/js/[name].js',
+   		chunkFilename: 'static/js/[id].[chunkhash:5].js'
 	},
 	module: {
 		preLoaders: [{
@@ -22,10 +24,6 @@ var config = {
 			exclude: /node_modules/
 		}],
 		loaders: [{
-			test: /\.(png|jpg)$/,
-			loader: 'url-loader?limit=8192',
-			exclude: /node_modules/
-		}, {
 			test: /\.(wav|mp3)$/,
 			loader: 'url-loader',
 			exclude: /node_modules/
@@ -38,21 +36,19 @@ var config = {
 			loaders: ['style', 'css?sourceMap', 'postcss', 'sass'],
 			exclude: /node_modules/
 		}, {
-			test: /\.eot/,
-			loader: 'file?prefix=font/',
-			exclude: /node_modules/
+			test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+			loader: 'url',
+			query: {
+				limit: 10000,
+				name: utils.assetsPath('img/[name].[hash:7].[ext]')
+			}
 		}, {
-			test: /\.woff/,
-			loader: 'file?prefix=font/&limit=10000&mimetype=application/font-woff',
-			exclude: /node_modules/
-		}, {
-			test: /\.ttf/,
-			loader: 'file?prefix=font/',
-			exclude: /node_modules/
-		}, {
-			test: /\.svg/,
-			loader: 'file?prefix=font/',
-			exclude: /node_modules/
+			test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+			loader: 'url',
+			query: {
+				limit: 10000,
+				name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+			}
 		}]
 	},
 	eslint: {
@@ -64,11 +60,9 @@ var config = {
 				NODE_ENV: '"development"'
 			}
 		}),
-		new webpack.optimize.CommonsChunkPlugin('vendors', 'vendors.js'),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
 		// new webpack.NoErrorsPlugin(),
-		// https://github.com/ampedandwired/html-webpack-plugin
 		new HtmlWebpackPlugin({
 			template: 'index.html',
 			inject: true

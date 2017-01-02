@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions';
-import * as ActionTypes from '../constants/HeaderBtnType';
+import * as ActionTypes from 'constants/HeaderBtnType';
 
 const initialState = {
     callback: null

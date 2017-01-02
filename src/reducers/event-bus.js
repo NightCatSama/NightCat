@@ -1,5 +1,5 @@
 import { handleActions } from 'redux-actions'
-import * as ActionTypes from '../constants/EventBusType'
+import * as ActionTypes from 'constants/EventBusType'
 
 const initialState = {
     bus: {}

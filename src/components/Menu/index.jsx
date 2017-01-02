@@ -11,10 +11,14 @@ export default class Menu extends Component {
 	    	sideShow: false
 	    }
 	    this.toggleMenu = this.toggleMenu.bind(this)
+	    this.linkClick = this.linkClick.bind(this)
 	    this.windowClick = this.windowClick.bind(this)
 	}
 	componentDidMount() {
 		document.body.addEventListener('click', this.windowClick, false)
+	}
+	componentWillUnmount() {
+		document.body.removeEventListener('click', this.windowClick, false)
 	}
 	windowClick(e) {
 		if (this.state.sideShow && !this.refs.sideMenu.contains(e.target)) {
@@ -26,6 +30,11 @@ export default class Menu extends Component {
 		this.setState({
 			sideShow: !this.state.sideShow
 		})
+	}
+	linkClick(e) {
+		if (!e.currentTarget.classList.contains('active')) {
+			this.toggleMenu()
+		}
 	}
 	render() {
 		let menuClass = classNames('menu', {
@@ -43,21 +52,13 @@ export default class Menu extends Component {
 						<span>Menu</span>
 					</div>
 					<div className="link-group">
-						<IndexLink to="/" activeClassName="active" className="link">
+						<IndexLink to="/" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-home"></i>
 							<span>Home</span>
 						</IndexLink>
-						<Link to="/components" activeClassName="active" className="link">
+						<Link to="/factory" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-component"></i>
-							<span>Component</span>
-						</Link>
-						<Link to="/code" activeClassName="active" className="link">
-							<i className="iconfont icon-code"></i>
-							<span>Code</span>
-						</Link>
-						<Link to="/product" activeClassName="active" className="link">
-							<i className="iconfont icon-product"></i>
-							<span>Product</span>
+							<span>Factory</span>
 						</Link>
 					</div>
 					<div className="personal-information">

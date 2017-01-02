@@ -1,0 +1,213 @@
+@import './common/util';
+
+$process_width: 300px;
+$process_height: 200px;
+$code_width: 220px;
+
+.factory-view {
+	flex: 1;
+	background-color: $black;
+	color: $white;
+	position: relative;
+	@include flex-center;
+	flex-direction: column;
+
+	.game-prev-group {
+		display: flex;
+		flex-direction: column;
+
+		&.hide {
+			display: none;
+		}
+	}
+
+	.game-title {
+		margin-top: 150px;
+	}
+	
+	.game-btn {
+		margin-top: 100px;
+		border: none;
+		font-size: 30px;
+		background-color: $tr;
+		color: $white;
+		cursor: pointer;
+
+		&:hover {
+			text-shadow: 0 0 5px rgba(255, 255, 255, .6);
+		}
+	}
+
+	&+.menu .menu-btn-outside {
+		color: $white;
+	}
+}
+
+.factory {
+	position: relative;
+	display: flex;
+	width: 1400px;
+	height: 800px;
+	padding: 10px;
+	border: 1px solid $white;
+	background-color: $black;
+	visibility: hidden;
+
+	&.show {
+		visibility: visible;
+	}
+}
+
+.factory-container {
+	position: relative;
+	flex: 1;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	margin: 30px 20px;
+
+	&::before {
+		content: 'INPUT ↓';
+		position: absolute;
+		left: 10px;
+		top: -25px;
+	}
+
+	&::after {
+		content: 'OUTPUT ↓';
+		position: absolute;
+		right: 10px;
+		bottom: -25px;
+	}
+	
+	.factory-process {
+		position: relative;
+		width: $process_width;
+		height: $process_height;
+		border: 1px solid $white;
+
+		.code-group {
+			position: relative;
+			height: 100%;
+			width: $code_width;
+		}
+
+		.code-index {
+			position: absolute;
+			width: 100%;
+			height: 100%;
+			opacity: 0.1;
+			@include flex-center;
+			z-index: 1;
+		}
+
+		.code {
+			position: absolute;
+			height: 100%;
+			width: 100%;
+			resize: none;
+			background-color: $tr;
+			color: $white;
+			font-size: 14px;
+			border-right: 1px solid $white;
+			padding: 5px;
+    		font-family: 'Montserrat', 'Segoe UI', 'Microsoft Yahei', Helvetica, Arial;
+			z-index: 2;
+		}
+
+		.display-area {
+			position: absolute;
+			display: flex;
+			flex-direction: column;
+			top: 0;
+			right: 0;
+			width: $process_width - $code_width - 1px;
+			height: 100%;
+			z-index: 2;
+
+			.display-item {
+				flex: 1;
+				display: flex;
+				flex-direction: column;
+				margin: 2px 2px 0 2px;
+				padding: 3px 0;
+				text-align: center;
+				border: 1px solid $white;
+
+				>div {
+					flex: 1;
+					@include flex-center;
+				}
+			}
+
+			.item-title {
+				border-bottom: 1px solid $gray;
+			}
+		}
+
+		&.factory-error::after {
+			content: attr(data-error);
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			padding: 20px;
+			background-color: $red;
+			opacity: 0.9;
+			font-size: 40px;
+			@include flex-center;
+			z-index: 5;
+		}
+
+		&.factory-code-error::after {
+			content: attr(data-error);
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			padding: 20px;
+			background-color: $red;
+			opacity: .85;
+			font-size: 18px;
+			z-index: 5;
+		}
+	}
+}
+
+.factory-detector {
+	display: flex;
+	width: 350px;
+	height: 100%;
+	justify-content: flex-end;
+
+	.factory-group {
+		flex: 1;
+		border: 1px solid $white;
+		margin: 0 10px;
+		color: $white;
+
+		>div {
+			padding: 2px 5px;
+			font-size: 14px;
+			letter-spacing: 1px;
+		}
+
+		.active {
+			background-color: $white;
+			color: $black;
+		}
+
+		.group-title {
+		}
+	}
+}
+
+.btn  {
+	border: none;
+	margin-top: 10px;
+	color: $white;
+	background-color: $tr;
+}

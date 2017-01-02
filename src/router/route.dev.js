@@ -2,21 +2,14 @@ import React, { Component } from 'react'
 import { Router, browserHistory } from 'react-router'
 import DevTools from 'asset/DevTools'
 
-import {
-	Home,
-	Code,
-	Components,
-	Product
-} from 'routes'
+import createRoute from 'routes'
 
 const rootRoute = {
 	path: '/',
 	component: require('../app').default,
-	indexRoute: Home,
+	indexRoute: createRoute(false, 'home'),
 	childRoutes: [
-		Code,
-		Components,
-		Product
+		createRoute('/factory', 'factory')
 	]
 }
 

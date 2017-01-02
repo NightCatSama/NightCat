@@ -18,7 +18,7 @@
         "quotes": [2, "single"],
         "no-undef": [2],
         "semi": 0,
-        "no-unused-vars": [2, {vars: local}],
+        "no-unused-vars": [2, { "args": "none" }],
         "babel/generator-star-spacing": 1,
         "babel/arrow-parens": 1,
         "babel/no-await-in-loop": 1,

@@ -6,7 +6,7 @@
 // (=ˋωˊ=)
 //
 
-* {
+*, *::before, *::after {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -125,59 +125,4 @@ code {
     color: $white;
     font-family: Consolas, Monaco, Droid, Sans, Mono, Source, Code, Pro, Menlo, Lucida, Sans, Type, Writer, Ubuntu, Mono;
     border-radius: 5px;
-}
-
-button,
-[role='button'] {
-    padding: 9px 15px;
-    display: inline-block;
-    border: none;
-    background-color: $dark-default;
-    border-radius: 5px;
-    color: $white;
-    transition: background-color .2s;
-    &[disabled] {
-        opacity: .35;
-        cursor: not-allowed;
-    }
-    &:hover {
-        background-color: $default;
-    }
-    &:active {
-        box-shadow: inset 0 1px 2px 0 rgba(0, 0, 0, .56);
-    }
-}
-
-label {
-    font-weight: bold;
-    display: inline-block;
-    padding: 0 5px;
-}
-
-input,
-select,
-textarea {
-    padding: 8px;
-    border-radius: 5px;
-    border: 1px solid $default;
-    background-color: $white;
-    width: 220px;
-    @include placeholder($default);
-    font-family: "Segoe UI", 'Microsoft Yahei', Helvetica, Arial;
-    &:-webkit-autofill {
-        -webkit-box-shadow: 0 0 0px 1000px $white inset;
-    }
-    &:focus {
-        border-color: $blue;
-    }
-}
-
-textarea {
-    width: 300px;
-    resize: none;
-}
-
-input[type="radio"],
-input[type="checkbox"] {
-    width: 20px;
 }

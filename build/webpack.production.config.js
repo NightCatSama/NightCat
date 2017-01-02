@@ -1,10 +1,10 @@
 var path = require('path')
 var webpack = require('webpack')
 var SRC_PATH = path.resolve(__dirname, '../src')
+var autoprefixer = require('autoprefixer')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-var autoprefixer = require('autoprefixer')
 var utils = require('./utils')
 
 var config = {
@@ -15,14 +15,18 @@ var config = {
 	output: {
 		path: './dist',
 		publicPath: './',
-		filename: utils.assetsPath('js/[name].bundle.js'),
-		chunkFilename: utils.assetsPath('js/[name].[chunkhash].js')
+		filename: 'static/js/[name].[chunkhash:5].js',
+   		chunkFilename: 'static/js/[id].[chunkhash:5].js'
 	},
 	module: {
 		loaders: [{
 			test: /\.jsx?$/,
-			exclude: /node_modules/,
 			loader: 'babel',
+			exclude: /node_modules/
+		}, {
+			test: /\.(wav|mp3)$/,
+			loader: 'url-loader',
+			exclude: /node_modules/
 		}, {
 			test: /\.(scss|css)$/,
 			loaders: ['style', 'css', 'postcss', 'sass'],
@@ -70,7 +74,6 @@ var config = {
 				NODE_ENV: JSON.stringify('production')
 			}
 		}),
-		new webpack.optimize.CommonsChunkPlugin('vendors', utils.assetsPath('js/vendors.js')),
 		new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new HtmlWebpackPlugin({
@@ -81,7 +84,24 @@ var config = {
 				collapseWhitespace: true,
 				removeAttributeQuotes: true,
 				minifyCSS: true
+			},
+			chunksSortMode: 'dependency'
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'vendor',
+			minChunks: function(module) {
+				return (
+					module.resource &&
+					/\.js$/.test(module.resource) &&
+					module.resource.indexOf(
+						path.join(__dirname, '../node_modules')
+					) === 0
+				)
 			}
+		}),
+		new webpack.optimize.CommonsChunkPlugin({
+			name: 'manifest',
+			chunks: ['vendor']
 		})
 	],
 	postcss: [

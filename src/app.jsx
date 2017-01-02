@@ -1,13 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-import Menu from './components/Menu/'
-// import Header from './components/Header/'
+import Menu from 'components/Menu/'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import HeaderBtnAction from './actions/HeaderBtnAction'
+import HeaderBtnAction from 'actions/HeaderBtnAction'
 
-import './stylesheets/common/reset'
-import './stylesheets/app'
+import 'stylesheets/common/reset'
+import 'stylesheets/app'
 
 class App extends Component {
 	constructor(props) {

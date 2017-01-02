@@ -24,7 +24,7 @@ class Home extends Component {
 			<div ref="view" className="home-view">
 				<section className="info">
 					<h1>NightCat</h1>
-					<small>- This is a nothing's website -</small>
+					<small>- Welcome to NightCat game city -</small>
 				</section>
 			</div>
 		);
