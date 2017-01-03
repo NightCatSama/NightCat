@@ -58,7 +58,8 @@ var config = {
 		new webpack.DefinePlugin({
 			'process.env': {
 				NODE_ENV: '"development"'
-			}
+			},
+			sourceMap: true
 		}),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),

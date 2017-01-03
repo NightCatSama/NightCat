@@ -41,7 +41,6 @@ export default class component extends Component {
 					<button className="game-btn" onClick={this.gameStart}>Start</button>
 				</div>
 				<div ref="factory" className={FactoryClass}></div>
-				<button className="btn" onClick={this.clickFn}>start</button>
 			</div>
 		)
 	}

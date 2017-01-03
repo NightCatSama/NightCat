@@ -1,8 +1,7 @@
 @import './common/util';
 
-$process_width: 300px;
-$process_height: 200px;
-$code_width: 220px;
+$diaplay_width: 80px;
+$detector-width: 380px;
 
 .factory-view {
 	flex: 1;
@@ -24,7 +23,7 @@ $code_width: 220px;
 	.game-title {
 		margin-top: 150px;
 	}
-	
+
 	.game-btn {
 		margin-top: 100px;
 		border: none;
@@ -40,15 +39,17 @@ $code_width: 220px;
 
 	&+.menu .menu-btn-outside {
 		color: $white;
+		display: none;
 	}
 }
 
 .factory {
 	position: relative;
 	display: flex;
-	width: 1400px;
-	height: 800px;
+	flex: 1;
+	align-self: stretch;
 	padding: 10px;
+	margin: 20px;
 	border: 1px solid $white;
 	background-color: $black;
 	visibility: hidden;
@@ -61,36 +62,39 @@ $code_width: 220px;
 .factory-container {
 	position: relative;
 	flex: 1;
+	margin: 10px;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
 	margin: 30px 20px;
 
-	&::before {
-		content: 'INPUT ↓';
-		position: absolute;
-		left: 10px;
-		top: -25px;
-	}
-
-	&::after {
-		content: 'OUTPUT ↓';
-		position: absolute;
-		right: 10px;
-		bottom: -25px;
-	}
-	
 	.factory-process {
 		position: relative;
-		width: $process_width;
-		height: $process_height;
+		width: 30%;
+		height: 30%;
+		display: flex;
 		border: 1px solid $white;
+
+		&.entry::before {
+			content: attr(data-port);
+			position: absolute;
+			left: 10px;
+			top: -25px;
+		}
+
+		&.export::after {
+			content: attr(data-port);
+			position: absolute;
+			right: 10px;
+			bottom: -25px;
+		}
 
 		.code-group {
 			position: relative;
 			height: 100%;
-			width: $code_width;
+			margin-right: $diaplay_width;
+			flex: 1;
 		}
 
 		.code-index {
@@ -122,7 +126,7 @@ $code_width: 220px;
 			flex-direction: column;
 			top: 0;
 			right: 0;
-			width: $process_width - $code_width - 1px;
+			width: $diaplay_width;
 			height: 100%;
 			z-index: 2;
 
@@ -177,22 +181,60 @@ $code_width: 220px;
 	}
 }
 
+.factory-console {
+	display: flex;
+	flex-direction: column;
+}
+
 .factory-detector {
 	display: flex;
-	width: 350px;
-	height: 100%;
+	flex: 1;
+	width: $detector-width;
 	justify-content: flex-end;
 
 	.factory-group {
 		flex: 1;
+		display: flex;
+		flex-direction: column;
 		border: 1px solid $white;
 		margin: 0 10px;
 		color: $white;
 
-		>div {
+		.factory-group-child-wrap {
+			display: flex;
+			flex: 1;
+		}
+
+		.factory-group-child {
+			display: flex;
+			flex-direction: column;
+			flex: 1;
+		}
+
+		.factory-item {
+			height: 25px;
+			line-height: 25px;
 			padding: 2px 5px;
 			font-size: 14px;
-			letter-spacing: 1px;
+			display: flex;
+
+			>div {
+				flex: 1;
+				white-space: nowrap;
+				letter-spacing: -0.8px;
+
+				span:last-child {
+					opacity: .6;
+				}
+			}
+		}
+
+		.error {
+			color: $red;
+		}
+
+		.success {
+			color: $green;
 		}
 
 		.active {
@@ -201,7 +243,22 @@ $code_width: 220px;
 		}
 
 		.group-title {
+			font-size: 13px;
 		}
+	}
+}
+
+.factory-panel {
+	height: 100px;
+	margin: 20px 0 0 0;
+	@include flex-center;
+
+	.factory-panel-btn {
+		border: none;
+		font-size: 18px;
+		color: $white;
+		background-color: $tr;
+		padding: 5px 8px;
 	}
 }
 

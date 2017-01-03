@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "webpack --progress --colors --config build/webpack.production.config.js",
-    "dev": "webpack-dev-server --colors --devtool eval --progress --config build/webpack.config.js"
+    "dev": "webpack-dev-server --colors --devtool eval-source-map --progress --config build/webpack.config.js"
   },
   "author": "NightCatSama (642163903@qq.com)",
   "license": "ISC",

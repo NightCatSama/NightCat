@@ -17,9 +17,9 @@ export default class Root extends Component {
 	render() {
 		return (
 			<div>
-				<Router 
-					history={browserHistory} 
-					routes={rootRoute} 
+				<Router
+					history={browserHistory}
+					routes={rootRoute}
 				/>
 				<DevTools />
 			</div>
