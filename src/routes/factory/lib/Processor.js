@@ -1,6 +1,6 @@
 const _default = {
-	width: 150,
-	height: 150,
+	width: '30%',
+	height: '30%',
 	_NEXT: null, // 上个过程将覆盖ACC的值
 	_ACC: null, // 存储空间
 	_context: {}, // 代码执行上下文
@@ -40,6 +40,10 @@ export default class Processor {
 	createProcessor() {
 		this.elem = document.createElement('DIV')
 		this.elem.className = 'factory-process'
+		this.elem.style.cssText = `
+		width: ${this.width};
+		height: ${this.height};
+		`
 		this.status === 'error' && this.setError()
 		this.code = this.createCode()
 		this.displayArea = this.createDisplayArea()
@@ -160,22 +164,28 @@ export default class Processor {
 	/*  执行用户的代码  */
 	executeCode() {
 		let code = this.code.value
-		const fn = function({ NEXT, ACC, TOLEFT, TORIGHT, TOTOP, TOBOTTOM, ERROR }) {
-			try {
+		const fn = function({ NEXT, ACC, L, R, T, B, ERROR }) {
+			if(process.env.NODE_ENV === 'development'){
 				eval(code)
 			}
-			catch (err) {
-				ERROR(err)
+			else {
+				try {
+					eval(code)
+				}
+				catch (err) {
+					console.error(err)
+					ERROR(err)
+				}
 			}
 		}
 		this._context = {}
 		fn.call(this._context, {
 			NEXT: this._NEXT,
 			ACC: this._ACC,
-			TOLEFT: (val) => this.leftProcessor && this.transmitACC(val, 'leftProcessor'),
-			TORIGHT: (val) => this.rightProcessor && this.transmitACC(val, 'rightProcessor'),
-			TOTOP: (val) => this.topProcessor && this.transmitACC(val, 'topProcessor'),
-			TOBOTTOM: (val) => this.bottomProcessor && this.transmitACC(val, 'bottomProcessor'),
+			L: (val = this._ACC) => this.leftProcessor && this.transmitACC(val, 'leftProcessor'),
+			R: (val = this._ACC) => this.rightProcessor && this.transmitACC(val, 'rightProcessor'),
+			T: (val = this._ACC) => this.topProcessor && this.transmitACC(val, 'topProcessor'),
+			B: (val = this._ACC) => this.bottomProcessor && this.transmitACC(val, 'bottomProcessor'),
 			ERROR: (err) => this.setCodeError(err)
 		})
 	}

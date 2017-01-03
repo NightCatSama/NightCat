@@ -19,9 +19,30 @@ export default class Detector {
 	}
 	/*  重置  */
 	reset() {
-		this.last_output = 0
-		this.setActive()
-		this.setOutPutActive()
+		this.success_count = 0
+		this.setActive(null, this.input_group)
+		if (this.isMultigroup) {
+			this.last_output = {}
+			for (let key in this.output_group) {
+				this.last_output[key] = 0
+				this.setActive(null, this.output_group[key].output_cgroup)
+			}
+			Array.from(this.items, (obj) => {
+				obj.output = {}
+				for (let i in obj.output_el) {
+					obj.output_el[i].textContent = ''
+					obj.output_el[i].className = 'factory-item'
+				}
+			})
+		}
+		else {
+			this.last_output = 0
+			this.setActive(null, this.output_group)
+			Array.from(this.items, (obj) => {
+				obj.output_el.textContent = ''
+				obj.output_el.className = 'factory-item'
+			})
+		}
 	}
 	/*  创建右侧检测器  */
 	createDetector() {
@@ -29,21 +50,25 @@ export default class Detector {
 		this.elem.className = 'factory-detector'
 		if (this.isMultigroup) {
 			this.output_group = {}
-			this.input_group = this.createGroup('INPUT')
+			this.last_output = {}
+			this.input_group = this.createGroup('IN')
 			for (let key in this.data[0].expectant_output) {
 				this.output_group[key] = {}
-				this.output_group[key].el = this.createGroup(`OUTPUT ${key}`)
+				this.last_output[key] = 0
+				this.output_group[key].el = this.createGroup(`OUT.${key}`)
 				let el = document.createElement('DIV')
 				el.className = 'factory-group-child-wrap'
-				this.output_group[key].output_cgroup = this.createChildGroup(el)
-				this.output_group[key].expect_cgroup = this.createChildGroup(el)
+				this.output_group[key].expect_cgroup = this.createChildGroup(el, 'factory-expect-group-wrap')
+				this.output_group[key].output_cgroup = this.createChildGroup(el, 'factory-output-group-wrap')
+				this.output_group[key].exports = []
+				this.output_group[key].output = []
 				this.output_group[key].el.appendChild(el)
 			}
 		}
 		else {
-			this.input_group = this.createGroup('INPUT')
-			this.output_group = this.createGroup('OUTPUT')
-			this.expect_group = this.createGroup('EXPECT')
+			this.input_group = this.createGroup('IN')
+			this.output_group = this.createGroup('OUT')
+			this.expect_group = this.createGroup('EXP')
 		}
 		this.wrap.appendChild(this.elem)
 	}
@@ -55,9 +80,10 @@ export default class Detector {
 		this.elem.appendChild(elem)
 		return elem
 	}
-	createChildGroup(wrap) {
+	/*  生成子组  */
+	createChildGroup(wrap, className) {
 		let elem = document.createElement('DIV')
-		elem.className = 'factory-group-child'
+		elem.className = `factory-group-child ${className}`
 		wrap.appendChild(elem)
 		return elem
 	}
@@ -74,26 +100,10 @@ export default class Detector {
 	createItem(value, index, wrap) {
 		let elem = document.createElement('DIV')
 		elem.className = 'factory-item'
-		elem.innerHTML = value !== null ? this.fromat(value) : ''
+		elem.innerHTML = value !== null ? JSON.stringify(value) : ''
 		elem.setAttribute('data-index', index)
 		wrap.appendChild(elem)
 		return elem
-	}
-	/*  格式化展示  */
-	fromat(v) {
-		if (Object.prototype.toString.call(v) === '[object Object]') {
-			let str = ''
-			for (let key in v) {
-				str += `<div>
-					<span>${key}</span>
-					<span>${v[key]}</span>
-				</div>`
-			}
-			return str
-		}
-		else {
-			return JSON.stringify(v)
-		}
 	}
 	/*  初始化各项  */
 	initIems() {
@@ -107,64 +117,87 @@ export default class Detector {
 	render() {
 		Array.from(this.items, (obj, i) => {
 			if (this.isMultigroup) {
-				/*  还没做好!  */
-				obj.input_el = this.createItem(obj.input, i, this.input_group)
-				// for (let key in this.data[0].expectant_output) {
-				// 	console.log(key)
-				// }
+				this.createItem(obj.input, i, this.input_group)
+				obj.output_el = {}
+				obj.output = {}
+				for (let key in obj.expectant_output) {
+					let val = obj.expectant_output[key]
+					obj.output_el[key] = this.createItem(null, i, this.output_group[key].output_cgroup)
+					this.createItem(val, i, this.output_group[key].expect_cgroup)
+					this.output_group[key].exports.push(val)
+				}
 			}
 			else {
-				obj.input_el = this.createItem(obj.input, i, this.input_group)
+				this.createItem(obj.input, i, this.input_group)
 				obj.output_el = this.createItem(obj.output, i, this.output_group)
-				obj.expect_el = this.createItem(obj.expectant_output, i, this.expect_group)
+				this.createItem(obj.expectant_output, i, this.expect_group)
 			}
-			// obj.input_el = this.createItem(obj.input, i, this.input_group)
-			// obj.output_el = this.createItem(obj.output, i, this.output_group)
-			// obj.expect_el = this.createItem(obj.expectant_output, i, this.expect_group)
 		})
 	}
-	/*  设置当前input  */
-	setActive(index) {
-		this.active && this.active.classList.remove('active')
-		if (typeof index === 'number') {
-			this.active = this.input_group.querySelector(`[data-index="${index}"]`)
-		}
-		else {
-			this.active = null
-		}
-		this.active && this.active.classList.add('active')
+	/*  设置input的位置  */
+	setInputActive(index) {
+		this.setActive(index, this.input_group)
 	}
-	/*  设置当前output  */
-	setOutPutActive(index) {
-		this.output_active && this.output_active.classList.remove('active')
+	/*  设置当前位置  */
+	setActive(index, wrap) {
+		let active = wrap.querySelector('.active')
+		active && active.classList.remove('active')
 		if (typeof index === 'number') {
-			this.output_active = this.output_group.querySelector(`[data-index="${index}"]`)
+			let elem = wrap.querySelector(`[data-index="${index}"]`)
+			elem && elem.classList.add('active')
 		}
-		else {
-			this.output_active = null
-		}
-		this.output_active && this.output_active.classList.add('active')
 	}
 	/*  输出值  */
-	output(val, name) {
-		if (this.last_output < this.data.length) {
-			this.items[this.last_output].output = val
-			this.items[this.last_output].output_el.textContent = val !== null ? this.fromat(val) : ''
-			this.examine(this.last_output)
-			this.setOutPutActive(this.last_output++)
-			if (this.last_output === this.data.length) {
-				this.setOutPutActive()
+	output(val, key) {
+		let index = this.isMultigroup ? this.last_output[key] : this.last_output
+		if (this.isMultigroup) {
+			let obj = this.output_group[key]
+			if (index < this.data.length) {
+				let exp = obj.exports[index]
+				let output_el = this.items[index].output_el[key]
+				let mObj = {
+					output: val,
+					expectant_output: exp,
+					output_el: output_el
+				}
+				this.items[index].output[key] = obj.output[index] = val
+				output_el.textContent = val !== null ? JSON.stringify(val) : ''
+				this.examine(index, mObj)
+				this.setActive(index++, obj.output_cgroup)
+				this.last_output[key] = index
+				if (index === this.data.length) {
+					this.setActive(null, obj.output_cgroup)
+				}
+			}
+		}
+		else {
+			if (index < this.data.length) {
+				this.items[index].output = val
+				this.items[index].output_el.textContent = val !== null ? JSON.stringify(val) : ''
+				this.examine(index)
+				this.setActive(index++, this.output_group)
+				this.last_output = index
+				if (index === this.data.length) {
+					this.setActive(null, this.output_group)
+				}
 			}
 		}
 	}
 	/*  检查是否正确  */
-	examine(index) {
-		let obj = this.items[index]
+	examine(index, mObj) {
+		let obj = mObj || this.items[index]
 		if (this.isDiff(obj.output, obj.expectant_output)) {
 			obj.output_el.classList.add('error')
 		}
 		else {
-			this.success_count++
+			if (this.isMultigroup) {
+				if (!this.isDiff(this.items[index].output, this.items[index].expectant_output)) {
+					this.success_count++
+				}
+			}
+			else {
+				this.success_count++
+			}
 			obj.output_el.classList.add('success')
 		}
 	}
@@ -173,8 +206,17 @@ export default class Detector {
 		if (Object.prototype.toString.call(a) !== Object.prototype.toString.call(b)) {
 			return true
 		}
-		else if (Array.isArray(a) && a.length === b.length) {
-			return a.some((v, i) => v !== b[i])
+		else if (Array.isArray(a)) {
+			return a.length !== b.length || a.some((v, i) => v !== b[i])
+		}
+		else if (typeof a === 'object') {
+			if (Object.keys(a).length !== Object.keys(b).length) 
+				return true
+			for (let i in a) {
+				if (a[i] !== b[i])
+					return true
+			}
+			return false
 		}
 		return a !== b
 	}

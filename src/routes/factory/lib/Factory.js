@@ -6,9 +6,11 @@ const _default = {
 	size: null,
 	inService: false,
 	missions: missions,
-	mission: 1,
+	mission: 3,
 	data_count: 20,
-	processor_count: 9
+	cols: 4,
+	rows: 3,
+	processor_count: 12
 }
 
 /*  Factory游戏对象  */
@@ -39,6 +41,7 @@ export default class Factory {
 		this.data = []
 		this.events = []
 		this.active = 0
+		this.inService = false
 		this.detector = null
 		while(this.events.length) {
 			(this.events.shift())()
@@ -71,11 +74,17 @@ export default class Factory {
 	createPanel() {
 		this.panel = document.createElement('DIV')
 		this.panel.className = 'factory-panel'
-		this.nextBtn = this.createBtn('Next', this.next, this.panel)
-		this.nextBtn = this.createBtn('Auto', this.start, this.panel)
-		this.nextBtn = this.createBtn('Pause', this.pause, this.panel)
-		this.nextBtn = this.createBtn('Restart', this.restart, this.panel)
-		this.nextBtn = this.createBtn('Reset', this.reset, this.panel)
+		this.btnGroup = document.createElement('DIV')
+		this.btnGroup.className = 'factory-btn-group'
+		this.msgGroup = document.createElement('DIV')
+		this.msgGroup.className = 'factory-msg-group'
+		this.msgGroup.textContent = 'Code Mode'
+		this.nextBtn = this.createBtn('Next', this.next, this.btnGroup)
+		this.autoBtn = this.createBtn('Auto', this.auto, this.btnGroup)
+		this.resetBtn = this.createBtn('Reset', this.reset, this.btnGroup)
+		this.restartBtn = this.createBtn('Restart', this.restart, this.btnGroup)
+		this.panel.appendChild(this.btnGroup)
+		this.panel.appendChild(this.msgGroup)
 		this.console.appendChild(this.panel)
 	}
 	/*  生成控制按钮  */
@@ -105,7 +114,7 @@ export default class Factory {
 	getMissions() {
 		let fn = this.missions[this.mission]
 		if (typeof fn !== 'function') {
-			Object.assign(this, this.missions[this.mission]())
+			alert('你已全部通关:>')
 		}
 		else {
 			Object.assign(this, this.missions[this.mission]())
@@ -128,6 +137,8 @@ export default class Factory {
 		this.processors = []
 		for (let i = 0; i < this.processor_count; i++) {
 			this.processors.push(new Processor({
+				width: `${100 / this.cols - 3}%`,
+				height: `${100 / this.rows - 3}%`,
 				status: this.err && this.err.indexOf(i) > -1 ? 'error' : 'idle',
 				size: this.size,
 				wrap: this.container,
@@ -137,12 +148,12 @@ export default class Factory {
 		}
 		Array.from(this.processors, (processor, i) => {
 			let leftIndex = i - 1
-			processor.leftProcessor = this.processors[leftIndex] || null
+			processor.leftProcessor =  i % this.cols ? (this.processors[leftIndex] || null) : null
 			let rightIndex = i + 1
-			processor.rightProcessor = this.processors[rightIndex] || null
-			let TopIndex = i - 3
+			processor.rightProcessor = rightIndex % this.cols ? (this.processors[rightIndex] || null) : null
+			let TopIndex = i - this.cols
 			processor.topProcessor = this.processors[TopIndex] || null
-			let BottomIndex = i + 3
+			let BottomIndex = i + this.cols
 			processor.bottomProcessor = this.processors[BottomIndex] || null
 
 			if (this.entry[i]) {
@@ -161,31 +172,43 @@ export default class Factory {
 		})
 	}
 	/*  游戏开始  */
-	start() {
+	auto() {
+		if (this.timer)
+			return this.pause()
+		
+		this.autoBtn.textContent = 'pause'
+		this.autoBtn.classList.add('active')
 		this.timer = setInterval(() => {
 			this.next()
 		}, 200)
 	}
 	/*  游戏暂停  */
 	pause() {
+		this.autoBtn.textContent = 'Auto'
+		this.autoBtn.classList.remove('active')
 		clearInterval(this.timer)
 		this.timer = null
 	}
 	/*  关卡结束  */
 	end() {
 		this.pause()
-		this.unableCodeInput(false)
 		if (this.detector.success_count === this.data.length) {
-			alert('你通关了:)')
-			this.mission = this.mission + 1
-			this.restart()
+			this.msgGroup.textContent = '你通关了, 点GO进入下一关:)'
+			this.nextMissionBtn = this.createBtn('Go', this.nextMission, this.btnGroup)
 		}
 		else {
-			console.log(`错了${this.data.length - this.detector.success_count}个`)
+			this.msgGroup.textContent = `出错了${this.data.length - this.detector.success_count}个, 点击Reset再改改`
+			// this.reset()
 		}
+	}
+	/*  下一关  */
+	nextMission() {
+		this.mission = this.mission + 1
+		this.restart()
 	}
 	/*  关卡重置  */
 	restart() {
+		this.msgGroup.textContent = 'Code Mode'
 		this.pause()
 		this.destory()
 		this.init()
@@ -193,22 +216,29 @@ export default class Factory {
 	/*  运行重置  */
 	reset() {
 		this.active = 0
+		this.inService = false
 		this.unableCodeInput(false)
 		this.detector.reset()
+		this.msgGroup.textContent = 'Code Mode'
+		Array.from(this.processors, (processor) => {
+			processor._NEXT = null
+			processor.resetACC()
+		})
 	}
 	/*  执行下一步  */
 	next() {
 		if (this.active < this.data.length) {
-			this.detector.setActive(this.active)
+			this.detector.setInputActive(this.active)
 			this.entryGetNext()
 			if (!this.inService) {
 				this.inService = true
+				this.msgGroup.textContent = 'Running Mode'
 				this.unableCodeInput(true)
 			}
 			this.active++
 		}
 		else {
-			this.detector.setActive()
+			this.detector.setInputActive()
 		}
 
 		/*  全部重置值  */
