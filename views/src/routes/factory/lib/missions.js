@@ -11,10 +11,10 @@ export default {
 			}
 		}
 		return {
-			err: [4, 5, 6],
-			cols: 4,
+			intro: 'Mission 1：简单的乘法',
+			err: [3, 4],
+			cols: 3,
 			rows: 3,
-			processor_count: 12,
 			size: 64,
 			entry: {
 				'0': {
@@ -22,7 +22,7 @@ export default {
 				}
 			},
 			export: {
-				'8': {
+				'6': {
 					pos: 'bottomProcessor'
 				}
 			},
@@ -33,18 +33,18 @@ export default {
 		const missionCreater = () => {
 			const createMandom = () => ~~(Math.random() * 10)
 			let input = [createMandom(), createMandom(), createMandom()]
-			let output = input.slice().sort((a, b) => a - b)
+			let output = Array.from(input.slice().sort((a, b) => a - b), (num, i) => num - i)
 			return {
 				input: input,
-				output: output
+				output: output.reduce((a, b) => a * b)
 			}
 		}
 		return {
+			intro: 'Mission 2：排序后减去索引，最后再相乘',
 			err: [],
 			size: 64,
 			cols: 4,
 			rows: 3,
-			processor_count: 12,
 			entry: {
 				'0': {
 					pos: 'topProcessor'
@@ -69,11 +69,11 @@ export default {
 			}
 		}
 		return {
+			intro: 'Mission 3：分类',
 			err: [],
 			size: 32,
 			cols: 3,
 			rows: 3,
-			processor_count: 9,
 			isMultigroup: true,
 			entry: {
 				'1': {
@@ -91,6 +91,47 @@ export default {
 				},
 				'8': {
 					name: 'C',
+					pos: 'bottomProcessor'
+				}
+			},
+			missionCreater
+		}
+	},
+	'4': function() {
+		let NextA = 0
+		let NextB = 0
+		const missionCreater = () => {
+			const createMandom = () => ~~(Math.random() * 10)
+			let input = createMandom()
+			NextA += input
+			NextB = Math.abs(input - NextB)
+			return {
+				input: input,
+				output: {
+					A: NextA,
+					B: NextB
+				}
+			}
+		}
+		return {
+			intro: 'Mission 4：累加 and 差值的绝对值',
+			err: [],
+			size: 64,
+			cols: 2,
+			rows: 2,
+			isMultigroup: true,
+			entry: {
+				'0': {
+					pos: 'topProcessor'
+				}
+			},
+			export: {
+				'2': {
+					name: 'A',
+					pos: 'bottomProcessor'
+				},
+				'3': {
+					name: 'B',
 					pos: 'bottomProcessor'
 				}
 			},

@@ -1,6 +1,7 @@
 @import './util';
 
-$diaplay_width: 80px;
+$diaplay_width: 10%;
+$diaplay_minWidth: 80px;
 $detector-width: 380px;
 
 .factory {
@@ -12,6 +13,15 @@ $detector-width: 380px;
 	margin: 14px;
 	border: 1px solid $white;
 	background-color: $black;
+
+	&::after {
+		content: attr(data-intro);
+		position: absolute;
+		top: 5px;
+		left: 50%;
+		color: $green;
+		transform: translateX(-50%);
+	}
 }
 
 .factory-container {
@@ -48,7 +58,6 @@ $detector-width: 380px;
 		.code-group {
 			position: relative;
 			height: 100%;
-			margin-right: $diaplay_width;
 			flex: 1;
 		}
 
@@ -76,12 +85,12 @@ $detector-width: 380px;
 		}
 
 		.display-area {
-			position: absolute;
 			display: flex;
 			flex-direction: column;
 			top: 0;
 			right: 0;
 			width: $diaplay_width;
+			min-width: $diaplay_minWidth;
 			height: 100%;
 			z-index: 2;
 
@@ -221,11 +230,16 @@ $detector-width: 380px;
 }
 
 .factory-panel {
-	height: 100px;
 	margin: 10px 0 0 0;
 	padding: 10px;
 	display: flex;
 	flex-direction: column;
+
+	.factory-btn-group, .factory-speed-group {
+		@include flex-v-center;
+		margin-bottom: 10px;
+		justify-content: space-between;
+	}
 
 	.factory-panel-btn {
 		border: none;
@@ -234,6 +248,7 @@ $detector-width: 380px;
 		background-color: $tr;
 		border: 1px solid $white;
 		padding: 8px 0;
+		width: 20%;
 		flex: 1;
 		cursor: pointer;
 
@@ -241,23 +256,27 @@ $detector-width: 380px;
 			margin-right: 8px;
 		}
 
-		&:hover, &.active {
+		&:not(.disabled):hover, &.active {
 			background-color: $white;
 			color: $black;
 		}
+
+		&.disabled {
+			opacity: .5;
+			cursor: not-allowed
+		}
 	}
 
-	.factory-btn-group {
-		@include flex-v-center;
-		justify-content: space-between;
+	.factory-speed {
+		flex: 1;
+		text-align: center;
 	}
 
 	.factory-msg-group {
 		@include flex-v-center;
 		flex: 1;
-		margin-top: 10px;
 		background-color: $white;
 		color: $black;
-		padding: 0 10px;
+		padding: 5px 10px;
 	}
 }
