@@ -20,7 +20,7 @@ export default class component extends Component {
 		this.clickFn = this.clickFn.bind(this)
 	}
 	componentDidMount() {
-		this.switchState()
+		// this.switchState()
 	}
 	switchState() {
 		let obj = {

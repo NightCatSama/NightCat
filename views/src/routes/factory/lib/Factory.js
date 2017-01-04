@@ -8,7 +8,7 @@ const _default = {
 	size: null,
 	inService: false,
 	missions: missions,
-	mission: 4,
+	mission: 1,
 	test_count: 2,
 	data_count: 20,
 	cols: 3,
@@ -169,6 +169,7 @@ export default class Factory {
 	/*  设置关卡  */
 	initMission() {
 		this.intro && this.elem.setAttribute('data-intro', this.intro)
+		this.elem.offsetWidth
 		for (let i = 0; i < this.data_count; i++) {
 			let d = this.missionCreater()
 			this.data.push({
