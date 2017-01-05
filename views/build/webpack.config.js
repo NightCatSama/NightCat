@@ -7,7 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var utils = require('./utils')
 
 var config = {
-	devtool: 'inline-source-map',
+	devtool:'source-map',
 	entry: {
 		app: './src/main.js'
 	},
@@ -15,12 +15,13 @@ var config = {
 		path: './dist',
 		publicPath: 'http://localhost:8080/',
 		filename: 'static/js/[name].js',
-   		chunkFilename: 'static/js/[id].[chunkhash:5].js'
+		chunkFilename: 'static/js/[id].[chunkhash:5].js'
 	},
 	module: {
 		preLoaders: [{
 			test: /\.jsx?$/,
 			loader: 'eslint',
+			include: SRC_PATH,
 			exclude: /node_modules/
 		}],
 		loaders: [{
@@ -30,10 +31,11 @@ var config = {
 		}, {
 			test: /\.jsx?$/,
 			loader: 'babel',
+			include: SRC_PATH,
 			exclude: /node_modules/
 		}, {
 			test: /\.(scss|css)$/,
-			loaders: ['style', 'css?sourceMap', 'postcss', 'sass'],
+			loaders: ['style', 'css?sourceMap', 'postcss', 'sass?sourceMap'],
 			exclude: /node_modules/
 		}, {
 			test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
@@ -58,8 +60,7 @@ var config = {
 		new webpack.DefinePlugin({
 			'process.env': {
 				NODE_ENV: '"development"'
-			},
-			sourceMap: true
+			}
 		}),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new webpack.HotModuleReplacementPlugin(),
@@ -88,9 +89,9 @@ var config = {
 	devServer: {
 		historyApiFallback: true,
 		hot: true,
-		colors: true,
 		inline: true,
 		progress: true,
+		contentBase: './src/',
 		'/get': {
 			targer: 'localhost:3000',
 			secure: false

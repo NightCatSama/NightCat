@@ -37,22 +37,67 @@ $detector-width: 380px;
 	.factory-process {
 		position: relative;
 		display: flex;
+		margin: 14px;
 		border: 1px solid $white;
 
-		&.entry::before {
-			content: attr(data-port);
-			color: $blue;
+		.factory-port {
 			position: absolute;
-			left: 10px;
-			top: -25px;
-		}
 
-		&.export::after {
-			content: attr(data-port);
-			position: absolute;
-			color: $yellow;
-			right: 10px;
-			bottom: -25px;
+			.iconfont {
+				font-size: 13px;
+			}
+
+			&.entry {
+				color: $blue;
+			}
+
+			&.export {
+				color: $yellow;
+			}
+
+			&.entry.factory-pos-top {
+				left: 10px;
+				top: -25px;
+			}
+			&.export.factory-pos-top {
+				right: 10px;
+				top: -25px;
+			}
+
+			&.entry.factory-pos-bottom {
+				left: 10px;
+				bottom: -25px;
+			}
+			&.export.factory-pos-bottom {
+				right: 10px;
+				bottom: -25px;
+			}
+
+			&.entry.factory-pos-left {
+				top: 0;
+				left: -25px;
+				width: 0;
+				word-break: break-all;
+			}
+			&.export.factory-pos-left {
+				bottom: 0;
+				left: -25px;
+				width: 0;
+				word-break: break-all;
+			}
+
+			&.entry.factory-pos-right {
+				top: 0;
+				right: -10px;
+				width: 0;
+				word-break: break-all;
+			}
+			&.export.factory-pos-right {
+				bottom: 0;
+				right: -10px;
+				width: 0;
+				word-break: break-all;
+			}
 		}
 
 		.code-group {
@@ -188,8 +233,8 @@ $detector-width: 380px;
 		}
 
 		.factory-item {
-			height: 25px;
-			line-height: 25px;
+			max-height: 25px;
+			flex: 1;
 			padding: 2px 5px;
 			font-size: 14px;
 

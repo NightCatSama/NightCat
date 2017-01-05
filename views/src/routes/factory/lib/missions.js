@@ -18,12 +18,12 @@ export default {
 			size: 64,
 			entry: {
 				'0': {
-					pos: 'topProcessor'
+					pos: 'top'
 				}
 			},
 			export: {
 				'6': {
-					pos: 'bottomProcessor'
+					pos: 'bottom'
 				}
 			},
 			missionCreater
@@ -47,12 +47,12 @@ export default {
 			rows: 3,
 			entry: {
 				'0': {
-					pos: 'topProcessor'
+					pos: 'top'
 				}
 			},
 			export: {
 				'11': {
-					pos: 'bottomProcessor'
+					pos: 'bottom'
 				}
 			},
 			missionCreater
@@ -77,21 +77,21 @@ export default {
 			isMultigroup: true,
 			entry: {
 				'1': {
-					pos: 'topProcessor'
+					pos: 'top'
 				}
 			},
 			export: {
 				'6': {
 					name: 'A',
-					pos: 'bottomProcessor'
+					pos: 'bottom'
 				},
 				'7': {
 					name: 'B',
-					pos: 'bottomProcessor'
+					pos: 'bottom'
 				},
 				'8': {
 					name: 'C',
-					pos: 'bottomProcessor'
+					pos: 'bottom'
 				}
 			},
 			missionCreater
@@ -122,17 +122,17 @@ export default {
 			isMultigroup: true,
 			entry: {
 				'0': {
-					pos: 'topProcessor'
+					pos: 'top'
 				}
 			},
 			export: {
 				'2': {
 					name: 'A',
-					pos: 'bottomProcessor'
+					pos: 'bottom'
 				},
 				'3': {
 					name: 'B',
-					pos: 'bottomProcessor'
+					pos: 'bottom'
 				}
 			},
 			missionCreater

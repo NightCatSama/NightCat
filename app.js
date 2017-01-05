@@ -25,6 +25,6 @@ app.post('/aa', function(req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'views/dist')))
 
-app.listen(3000, function(){
-    console.log('App (dev) is now running on port 3000!')
+app.listen(80, function(){
+    console.log('Listen on port 80!')
 })

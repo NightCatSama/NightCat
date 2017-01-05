@@ -70,7 +70,9 @@ export default class component extends Component {
 						<button onClick={this.switchState}>
 							<i className="iconfont icon-left"></i>
 						</button>
-						<button onClick={this.toggleHelp}>Help</button>
+						<button onClick={this.toggleHelp}>
+							<i className="iconfont icon-help"></i>
+						</button>
 					</div>
 					<div ref="factory" className="factory"></div>
 				</div>

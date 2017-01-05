@@ -30,11 +30,12 @@ export default class Processor {
 	}
 	/*  初始化  */
 	init() {
+		this.ports = []
 		this.createProcessor()
 		this.bindEvent()
 	}
 	/*  销毁对象  */
-	destory() {
+	destroy() {
 		this.unbindEvent()
 	}
 	/*  创建一个处理器  */
@@ -199,11 +200,27 @@ export default class Processor {
 	}
 	/*  设置进出口  */
 	setPort(obj, type) {
-		this[obj.pos] = {
+		this[`${obj.pos}Processor`] = {
 			type: type,
 			name: obj.name
 		}
-		this.elem.setAttribute('data-port', `${type === 'entry' ? 'INPUT' : 'OUTPUT'} ${obj.name || ''} ↓`)
-		this.elem.classList.add(type)
+		this.ports.push(this.createPortElem(obj, type))
+	}
+	/*  生产端口元素  */
+	createPortElem(obj, type) {
+		let elem = document.createElement('DIV')
+		elem.className = `factory-port ${type} factory-pos-${obj.pos}`
+		elem.innerHTML = `${type === 'entry' ? 'IN' : 'OUT'} ${obj.name || ''} <i class="iconfont icon-${type === 'entry' ? this.reversePos(obj.pos) : obj.pos}-arrow"></i>`
+		this.elem.appendChild(elem)
+		return elem
+	}
+	reversePos(pos) {
+		const direction = {
+			left: 'right',
+			right: 'left',
+			top: 'bottom',
+			bottom: 'top'
+		}
+		return direction[pos]
 	}
 }

@@ -4,6 +4,7 @@
 	flex: 1;
 	background-color: $black;
 	color: $white;
+	height: 100vh;
 	position: relative;
 	@include flex-center;
 	flex-direction: column;

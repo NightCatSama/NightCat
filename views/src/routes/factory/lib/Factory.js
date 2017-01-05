@@ -41,7 +41,7 @@ export default class Factory {
 		this.createPanel()
 	}
 	/*  销毁对象  */
-	destory() {
+	destroy() {
 		this.elem.innerHTML = ''
 		this.data = []
 		this.events = []
@@ -103,7 +103,7 @@ export default class Factory {
 		this.setSpeed(this.speed)
 		this.speedGroup.appendChild(this.speedDisplay)
 		this.fastBtn = this.createBtn('Fast', this.fast, this.speedGroup)
-	
+
 		this.panel.appendChild(this.speedGroup)
 		this.panel.appendChild(this.btnGroup)
 		this.panel.appendChild(this.msgGroup)
@@ -169,7 +169,7 @@ export default class Factory {
 	/*  设置关卡  */
 	initMission() {
 		this.intro && this.elem.setAttribute('data-intro', this.intro)
-		this.elem.offsetWidth
+		// this.elem.offsetWidth
 		for (let i = 0; i < this.data_count; i++) {
 			let d = this.missionCreater()
 			this.data.push({
@@ -182,6 +182,7 @@ export default class Factory {
 	}
 	/*  初始化处理器  */
 	initProcessor() {
+		this.processors && Array.from(this.processors, (processor) => processor.destroy())
 		this.processors = []
 		for (let i = 0; i < this.processor_count; i++) {
 			this.processors.push(new Processor({
@@ -284,7 +285,7 @@ export default class Factory {
 	restart() {
 		this.msgGroup.textContent = 'Code Mode'
 		this.pause()
-		this.destory()
+		this.destroy()
 		this.init()
 	}
 	/*  运行重置  */
