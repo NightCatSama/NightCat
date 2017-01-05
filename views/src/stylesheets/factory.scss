@@ -7,6 +7,7 @@
 	height: 100vh;
 	position: relative;
 	@include flex-center;
+	overflow: hidden;
 	flex-direction: column;
 
 	.game-prev-group {

@@ -17,6 +17,9 @@ export default class Detector {
 		this.initIems()
 		this.render()
 	}
+	destroy() {
+		this.wrap.removeChild(this.elem)
+	}
 	/*  重置  */
 	reset() {
 		this.success_count = 0

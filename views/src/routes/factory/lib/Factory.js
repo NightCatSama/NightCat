@@ -8,7 +8,7 @@ const _default = {
 	size: null,
 	inService: false,
 	missions: missions,
-	mission: 1,
+	mission: 0,
 	test_count: 2,
 	data_count: 20,
 	cols: 3,
@@ -40,11 +40,25 @@ export default class Factory {
 		this.createDetector()
 		this.createPanel()
 	}
+	/*  切换关卡  */
+	refresh() {
+		this.pause()
+		this.msgGroup.textContent = 'Code Mode'
+		this.data = []
+		this.active = 0
+		this.test_active = 0
+		this.inService = false
+		// Array.from(this.processors, (processor) => processor.destroy())
+
+		this.getMissions()
+		this.initMission()
+		this.initProcessor()
+		this.createDetector()
+	}
 	/*  销毁对象  */
 	destroy() {
 		this.elem.innerHTML = ''
 		this.data = []
-		this.events = []
 		this.active = 0
 		this.test_active = 0
 		this.inService = false
@@ -69,6 +83,7 @@ export default class Factory {
 	}
 	/*  生成检测器对象  */
 	createDetector() {
+		this.detector && this.detector.destroy()
 		this.detector = new Detector({
 			wrap: this.console,
 			isMultigroup: this.isMultigroup || false,
@@ -162,7 +177,9 @@ export default class Factory {
 			alert('你已全部通关（撒花') 
 		}
 		else {
-			Object.assign(this, this.missions[this.mission]())
+			this.default = null
+			this.isMultigroup = false
+			Object.assign(this, this.initialState, this.missions[this.mission]())
 			this.processor_count = this.cols * this.rows
 		}
 	}
@@ -186,11 +203,12 @@ export default class Factory {
 		this.processors = []
 		for (let i = 0; i < this.processor_count; i++) {
 			this.processors.push(new Processor({
-				width: `${100 / this.cols - 3}%`,
-				height: `${100 / this.rows - 3}%`,
+				width: `${~~(100 / this.cols)}%`,
+				height: `${~~(100 / this.rows)}%`,
 				status: this.err && this.err.indexOf(i) > -1 ? 'error' : 'idle',
 				size: this.size,
 				wrap: this.container,
+				default: this.default && this.default[i],
 				factory: this,
 				index: i
 			}))
@@ -260,8 +278,6 @@ export default class Factory {
 				}
 			}
 			else {
-				this.console.removeChild(this.detector.elem)
-				this.detector = null
 				this.createDetector()
 				this.test_active++
 				this.active = 0
@@ -278,11 +294,16 @@ export default class Factory {
 	/*  下一关  */
 	nextMission() {
 		this.mission = this.mission + 1
-		this.restart()
+		this.refresh()
+
+		let unbindFn = this.events.pop()
+		unbindFn.apply(this)
+		this.btnGroup.removeChild(this.nextMissionBtn)
 		this.nextMissionBtn = null
 	}
 	/*  关卡重置  */
 	restart() {
+		return this.refresh()
 		this.msgGroup.textContent = 'Code Mode'
 		this.pause()
 		this.destroy()

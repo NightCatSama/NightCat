@@ -105,19 +105,19 @@ export default class component extends Component {
 					<h3>内置方法</h3>
 						<p className="help-item">
 							<span>T：</span>
-							参数缺省时为传递ACC, 传向上方的处理器(Processor), 当该方向是OUTPUT时为输出结果
+							参数缺省时为传递初始ACC, 传向上方的处理器(Processor), 当该方向是OUTPUT时为输出结果
 						</p>
 						<p className="help-item">
 							<span>B：</span>
-							参数缺省时为传递ACC, 传向下方的处理器(Processor), 当该方向是OUTPUT时为输出结果
+							参数缺省时为传递初始ACC, 传向下方的处理器(Processor), 当该方向是OUTPUT时为输出结果
 						</p>
 						<p className="help-item">
 							<span>L：</span>
-							参数缺省时为传递ACC, 传向左方的处理器(Processor), 当该方向是OUTPUT时为输出结果
+							参数缺省时为传递初始ACC, 传向左方的处理器(Processor), 当该方向是OUTPUT时为输出结果
 						</p>
 						<p className="help-item">
 							<span>R：</span>
-							参数缺省时为传递ACC, 传向右方的处理器(Processor), 当该方向是OUTPUT时为输出结果
+							参数缺省时为传递初始ACC, 传向右方的处理器(Processor), 当该方向是OUTPUT时为输出结果
 						</p>
 						<p className="help-item">
 							<span>C：</span>

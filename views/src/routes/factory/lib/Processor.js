@@ -7,6 +7,7 @@ const _default = {
 	_context: {}, // 代码执行上下文
 	cur_size: 0, // 当前大小
 	size: 128, // 限制大小
+	default: undefined, //初始化时默认文本
 	status: 'idle', // ['unavail', 'idle', 'error']
 }
 
@@ -36,20 +37,26 @@ export default class Processor {
 	}
 	/*  销毁对象  */
 	destroy() {
+		this.wrap.removeChild(this.processWrap)
 		this.unbindEvent()
 	}
 	/*  创建一个处理器  */
 	createProcessor() {
-		this.elem = document.createElement('DIV')
-		this.elem.className = 'factory-process'
-		this.elem.style.cssText = `
+		this.processWrap = document.createElement('DIV')
+		this.processWrap.className = 'factory-process-wrap'
+		this.processWrap.style.cssText = `
 		width: ${this.width};
 		height: ${this.height};
+		padding: 14px;
 		`
+
+		this.elem = document.createElement('DIV')
+		this.elem.className = 'factory-process'
 		this.status === 'error' && this.setError()
 		this.code = this.createCode()
 		this.displayArea = this.createDisplayArea()
-		this.wrap.appendChild(this.elem)
+		this.processWrap.appendChild(this.elem)
+		this.wrap.appendChild(this.processWrap)
 	}
 	/*  错误模式  */
 	setError() {
@@ -76,6 +83,10 @@ export default class Processor {
 
 		let textarea = document.createElement('TEXTAREA')
 		textarea.className = 'code'
+		if (this.default) {
+			textarea.value = this.default || ''
+			this.asyncSize(this.default, textarea)
+		}
 		textarea.setAttribute('spellcheck', false)
 		elem.appendChild(textarea)
 		this.elem.appendChild(elem)
@@ -107,14 +118,39 @@ export default class Processor {
 		return value_elem
 	}
 	/*  同步用户输入长度  */
-	asyncSize(e) {
-		let formatted_val = e.target.value.match(/\S/g)
-		this.cur_size = formatted_val ? formatted_val.length : 0
+	asyncSize(e, el) {
+		let value = typeof e === 'string' ? e : e.target.value
+		let formatted_val = value.match(/\S/g)
+		this.cur_size = formatted_val ? this.getByteLen(formatted_val) : 0
 		if (this.cur_size > this.size) {
 			this.cur_size = this.size
-			e.target.value = e.target.value.substr(0, this.size)
+			let str = '', n = 0
+			for (let ch of value) {
+				str += ch
+				if (/\S/.test(ch)) {
+					n += ch.match(/[\u4E00-\u9FA5]/g) != null ? 2 : 1
+				}
+				if (n >= this.size)
+					break
+			}
+			el = el || this.code
+			el.value = str
 		}
-		this.displaySize.innerHTML = `${this.cur_size}/${this.size}`
+		if (typeof e === 'object')
+			this.displaySize.innerHTML = `${this.cur_size}/${this.size}`
+	}
+	/*  得到代码长度  */
+	getByteLen(str) {
+		var len = 0;
+		for (let ch of str) {
+			if (ch.match(/[\u4E00-\u9FA5]/g) != null) {
+				len += 2
+			}
+			else {
+				len += 1
+			}
+		}
+		return len
 	}
 	/*  处理器传递前判断  */
 	transmitACC(val, key) {
@@ -214,6 +250,7 @@ export default class Processor {
 		this.elem.appendChild(elem)
 		return elem
 	}
+	/*  获得相反方向  */
 	reversePos(pos) {
 		const direction = {
 			left: 'right',

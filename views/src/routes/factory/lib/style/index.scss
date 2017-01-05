@@ -1,8 +1,9 @@
 @import './util';
 
 $diaplay_width: 10%;
-$diaplay_minWidth: 80px;
+$diaplay_minWidth: 64px;
 $detector-width: 380px;
+$code-color: #ffcd80;
 
 .factory {
 	position: relative;
@@ -27,17 +28,20 @@ $detector-width: 380px;
 .factory-container {
 	position: relative;
 	flex: 1;
-	margin: 10px;
 	display: flex;
 	flex-wrap: wrap;
 	align-items: center;
 	justify-content: space-between;
-	margin: 30px 20px;
+	margin: 25px 10px;
+
+	.factory-process-wrap {
+		display: flex;
+	}
 
 	.factory-process {
 		position: relative;
 		display: flex;
-		margin: 14px;
+		flex: 1;
 		border: 1px solid $white;
 
 		.factory-port {
@@ -121,8 +125,8 @@ $detector-width: 380px;
 			width: 100%;
 			resize: none;
 			background-color: $tr;
-			color: $white;
-			font-size: 14px;
+			color: $code-color;
+			font-size: 12px;
 			border-right: 1px solid $white;
 			padding: 5px;
     		font-family: 'Montserrat', 'Segoe UI', 'Microsoft Yahei', Helvetica, Arial;
@@ -135,6 +139,7 @@ $detector-width: 380px;
 			top: 0;
 			right: 0;
 			width: $diaplay_width;
+			font-size: 12px;
 			min-width: $diaplay_minWidth;
 			height: 100%;
 			z-index: 2;
@@ -144,9 +149,13 @@ $detector-width: 380px;
 				display: flex;
 				flex-direction: column;
 				margin: 2px 2px 0 2px;
-				padding: 3px 0;
 				text-align: center;
 				border: 1px solid $white;
+				color: $pink;
+
+				&:last-child {
+					margin-bottom: 2px;
+				}
 
 				>div {
 					flex: 1;
@@ -155,6 +164,8 @@ $detector-width: 380px;
 			}
 
 			.item-title {
+				// background-color: rgba(255, 255, 255, .16);
+				color: $white;
 				border-bottom: 1px solid $gray;
 			}
 		}
