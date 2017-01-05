@@ -87,11 +87,15 @@ export default class component extends Component {
 						<h3>内置变量</h3>
 						<p className="help-item">
 							<span>NEXT：</span>
-							由INPUT或者上个处理器(Processor)传过来的值, 下次执行时覆盖ACC值
+							由入口INPUT或者上个处理器(Processor)传过来的值, 下次执行时覆盖ACC值
 						</p>
 						<p className="help-item">
 							<span>ACC：</span>
-							从入口输入(Input), 经过处理最终输出(Output)对应的结果
+							一个从入口输入(INPUT), 经过处理到最终输出(OUTPUT)对应的结果的值
+						</p>
+						<p className="help-item">
+							<span>COM：</span>
+							处理器(Processor)的存储值, 只能通过方法C去获取或设置
 						</p>
 					</section>
 
@@ -99,32 +103,43 @@ export default class component extends Component {
 					<h3>内置方法</h3>
 						<p className="help-item">
 							<span>T：</span>
-							参数缺省时为传递ACC, 传向上方的处理器(Processor), 当该方向是Output时为输出(Output)结果
+							参数缺省时为传递ACC, 传向上方的处理器(Processor), 当该方向是OUTPUT时为输出结果
 						</p>
 						<p className="help-item">
 							<span>B：</span>
-							参数缺省时为传递ACC, 传向下方的处理器(Processor), 当该方向是Output时为输出(Output)结果
+							参数缺省时为传递ACC, 传向下方的处理器(Processor), 当该方向是OUTPUT时为输出结果
 						</p>
 						<p className="help-item">
 							<span>L：</span>
-							参数缺省时为传递ACC, 传向左方的处理器(Processor), 当该方向是Output时为输出(Output)结果
+							参数缺省时为传递ACC, 传向左方的处理器(Processor), 当该方向是OUTPUT时为输出结果
 						</p>
 						<p className="help-item">
 							<span>R：</span>
-							参数缺省时为传递ACC, 传向右方的处理器(Processor), 当该方向是Output时为输出(Output)结果
+							参数缺省时为传递ACC, 传向右方的处理器(Processor), 当该方向是OUTPUT时为输出结果
+						</p>
+						<p className="help-item">
+							<span>C：</span>
+							设置存储值(COM), 参数缺省时为清空存储值(ACC)
 						</p>
 					</section>
 
 					<section>
-						<h3>须知</h3>
+					<h3>提示</h3>
 						<p className="help-item">
-							请遵守游戏规则, 不要使用window或者WebStorage等黑科技!
+							使用ES6能让代码更加精简(前提你的浏览器支持)
 						</p>
+						<p className="help-item">
+							请遵守游戏规则, 不要使用window或者WebStorage等黑科技！
+						</p>
+					</section>
+
+					<section>
+						<h3>感言</h3>
 						<p className="help-item">
 							当前为测试版本, 如果有BUG希望能反馈给我<a href="https://nightcatsama.github.io/NightCat/dist/" target="_blank">ISSUE</a>
 						</p>
 						<p className="help-item">
-							如果你想参与关卡设计, 也可以告诉我:>。我的GITHUB地址为：<a href="https://github.com/NightCatSama/NightCat" target="_blank">https://github.com/NightCatSama/NightCat</a>
+							如果你想参与关卡设计, 也可以告诉我。我的GITHUB地址为：<a href="https://github.com/NightCatSama/NightCat" target="_blank">https://github.com/NightCatSama/NightCat</a>
 						</p>
 					</section>
 				</div>

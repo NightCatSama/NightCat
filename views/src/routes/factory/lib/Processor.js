@@ -2,7 +2,8 @@ const _default = {
 	width: '30%',
 	height: '30%',
 	_NEXT: null, // 上个过程将覆盖ACC的值
-	_ACC: null, // 存储空间
+	_ACC: null, // 处理空间
+	_COM: null, // 存储空间
 	_context: {}, // 代码执行上下文
 	cur_size: 0, // 当前大小
 	size: 128, // 限制大小
@@ -83,8 +84,9 @@ export default class Processor {
 	createDisplayArea() {
 		let elem = document.createElement('DIV')
 		elem.className = 'display-area'
-		this.displayNext = this.createItem('NEXT', this._NEXT, elem)
+		this.displayNEXT = this.createItem('NEXT', this._NEXT, elem)
 		this.displayACC = this.createItem('ACC', this._ACC, elem)
+		this.displayCOM = this.createItem('COM', this._COM, elem)
 		this.displayStatus = this.createItem('STATUS', this.status, elem)
 		this.displaySize = this.createItem('BYTE', `${this.cur_size}/${this.size}`, elem)
 		this.elem.appendChild(elem)
@@ -125,6 +127,10 @@ export default class Processor {
 			this[key].setNext(val)
 		}
 	}
+	setCom(val) {
+		this._COM = val
+		this.displayCOM.innerHTML = this._COM !== null ? JSON.stringify(this._COM) : ''
+	}
 	/*  设置Status  */
 	setStatus(val) {
 		this.status = val
@@ -136,7 +142,7 @@ export default class Processor {
 			return
 
 		this._NEXT = val
-		this.displayNext.innerHTML = this._NEXT !== null ? JSON.stringify(this._NEXT) : ''
+		this.displayNEXT.innerHTML = this._NEXT !== null ? JSON.stringify(this._NEXT) : ''
 	}
 	/*  运行  */
 	next() {
@@ -164,29 +170,31 @@ export default class Processor {
 	/*  执行用户的代码  */
 	executeCode() {
 		let code = this.code.value
-		const fn = function({ NEXT, ACC, L, R, T, B, ERROR }) {
-			if(process.env.NODE_ENV === 'development'){
-				eval(code)
-			}
-			else {
+		const fn = function({ NEXT, ACC, COM, L, R, T, B, C, __ERROR__ }) {
+			if(process.env.NODE_ENV === 'production'){
 				try {
 					eval(code)
 				}
 				catch (err) {
 					console.error(err)
-					ERROR(err)
+					__ERROR__(err)
 				}
+			}
+			else {
+				eval(code)
 			}
 		}
 		this._context = {}
 		fn.call(this._context, {
 			NEXT: this._NEXT,
 			ACC: this._ACC,
+			COM: this._COM,
 			L: (val = this._ACC) => this.leftProcessor && this.transmitACC(val, 'leftProcessor'),
 			R: (val = this._ACC) => this.rightProcessor && this.transmitACC(val, 'rightProcessor'),
 			T: (val = this._ACC) => this.topProcessor && this.transmitACC(val, 'topProcessor'),
 			B: (val = this._ACC) => this.bottomProcessor && this.transmitACC(val, 'bottomProcessor'),
-			ERROR: (err) => this.setCodeError(err)
+			C: (val = null) => this.setCom(val),
+			__ERROR__: (err) => this.setCodeError(err)
 		})
 	}
 	/*  设置进出口  */
