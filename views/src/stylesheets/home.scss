@@ -3,10 +3,16 @@
 .home-view {
 	flex: 1;
 	position: relative;
-	background-image: url('../images/bg.jpg');
-	background-repeat: no-repeat;
-	background-size: cover;
-	cursor: default;
+
+	.first-screen {
+		width: 100vw;
+		height: 100vh;
+		overflow: hidden;
+		cursor: default;
+		background-image: url('../images/bg.jpg');
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 
 	.info {
 		color: $white;
@@ -21,5 +27,13 @@
 	&+.menu .menu-btn-outside {
 		text-shadow: $font-light;
 		color: $white;
+	}
+
+	.main {
+		section {
+			width: 100%;
+			height: 500px;
+			@include flex-center;
+		}
 	}
 }

@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 
-// import $ from 'jquery'
+import $ from 'jquery'
+
 // import Canvas from '../asset/Canvas/'
 
 import 'stylesheets/home'
@@ -15,25 +16,34 @@ class Home extends Component {
 	}
 	componentDidMount() {
 		// webpack proxy test
-
-		// $.ajax({
-		// 	url: `${process.env.NODE_ENV === 'development' ? 'http://localhost:3000': ''}/aa`,
-		// 	method: 'POST',
-		// 	success: function(data) {
-		// 		console.log(data)
-		// 	},
-		// 	error: function(err) {
-		// 		console.log(err)
-		// 	}
-		// })
+		$.ajax({
+			url: `${process.env.NODE_ENV === 'development' ? 'http://localhost:80': ''}/miao`,
+			method: 'POST',
+			data: {
+				name: 'nightcat'
+			},
+			success: function(data) {
+				console.log(data)
+			},
+			error: function(err) {
+				console.log(err)
+			}
+		})
 	}
 	render() {
 		return (
 			<div ref="view" className="home-view">
-				<section className="info">
-					<h1>NightCat</h1>
-					<small>- Welcome to NightCat game city -</small>
-				</section>
+				<div className="first-screen">
+					<section className="info">
+						<h1>NightCat</h1>
+						<small>- Welcome to NightCat game city -</small>
+					</section>
+				</div>
+				<div className="main">
+					<section>
+						Factory
+					</section>
+				</div>
 			</div>
 		);
 	}

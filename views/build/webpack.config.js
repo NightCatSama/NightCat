@@ -93,7 +93,7 @@ var config = {
 		progress: true,
 		contentBase: './src/',
 		'/get': {
-			targer: 'localhost:3000',
+			targer: 'localhost:80',
 			secure: false
 		}
 	},

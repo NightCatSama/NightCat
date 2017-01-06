@@ -3,19 +3,9 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 import DevTools from 'asset/DevTools'
 
 import App from '../app'
-import Home from 'routes/home'
-import Factory from 'routes/factory'
-
-// import createRoute from 'routes'
-
-// const rootRoute = {
-// 	path: '/',
-// 	component: require('../app').default,
-// 	indexRoute: createRoute(false, 'home'),
-// 	childRoutes: [
-// 		createRoute('/factory', 'factory')
-// 	]
-// }
+import Home from 'routes/Home'
+import Factory from 'routes/Factory'
+import Login from 'routes/Login'
 
 export default class Root extends Component {
 	render() {
@@ -25,6 +15,7 @@ export default class Root extends Component {
 					<Route path="/" component={App}>
 						<IndexRoute component={Home} />
 						<Route path="factory" component={Factory} />
+						<Route path="login" component={Login} />
 					</Route>
 				</Router>
 				<DevTools />

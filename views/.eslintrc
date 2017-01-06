@@ -6,6 +6,7 @@
     },
     "globals": {
         "$": true,
+        "axios": true
     },
     "parser": "babel-eslint",
     "ecmaFeatures": {

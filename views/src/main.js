@@ -4,6 +4,12 @@ import Root from 'router/route'
 import { Provider } from 'react-redux'
 import configureStore from 'store/configureStore'
 
+import axios from 'axios'
+
+window.axios = axios.create({
+	baseURL: `${process.env.NODE_ENV === 'development' ? 'http://localhost:80' : ''}`
+})
+
 const store = configureStore()
 
 render(

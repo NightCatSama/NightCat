@@ -48,7 +48,6 @@ export default class Factory {
 		this.active = 0
 		this.test_active = 0
 		this.inService = false
-		// Array.from(this.processors, (processor) => processor.destroy())
 
 		this.getMissions()
 		this.initMission()
@@ -186,7 +185,7 @@ export default class Factory {
 	/*  设置关卡  */
 	initMission() {
 		this.intro && this.elem.setAttribute('data-intro', this.intro)
-		// this.elem.offsetWidth
+		this.elem.offsetWidth
 		for (let i = 0; i < this.data_count; i++) {
 			let d = this.missionCreater()
 			this.data.push({
