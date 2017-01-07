@@ -1,7 +1,7 @@
 @import '../../stylesheets/common/util';
 
 $gap: 20px;
-$btn-offsetTop: 20px;
+$btn-offsetTop: 30px;
 $btn-offsetRight: 50px;
 $btn-offsetLeft: $gap;
 $btn-width: 80px;
@@ -10,65 +10,79 @@ $menu-bg: #123;
 $menu-color: $blue;
 $icon-size: 18px;
 
-.menu {
+:local(.menu) {
+	position: fixed;
+	right: 0;
+	top: 0;
+	height: 100vh;
+	width: $side-width;
+	background: #243B55; /* fallback for old browsers */
+	background: -webkit-linear-gradient(20deg, #141E30, #243B55); /* Chrome 10-25, Safari 5.1-6 */
+	background: linear-gradient(20deg, #141E30, #243B55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+	will-change: transform;
+	transform: translate3d($side-width, 0, 0);
+	transition: transform $slider-time;
+	z-index: 100;
+
+	.side-menu {
+		height: 100%;
+	}
+
+	&.open {
+		transform: translate3d(0, 0, 0);
+	}
+
 	.menu-btn {
 		position: absolute;
 		top: $btn-offsetTop;
-		font-size: 18px;
-		width: $btn-width;
-		text-align: right;
+		left: 0;
+		background-color: rgba(10, 22, 51, 0.63);
+		text-align: center;
+		border-radius: 4px;
 		cursor: pointer;
-		padding: 5px 0;
+		transform: translate3d(-120px, 0, 0);
 		transition: all $slider-time;
 
-		.icon-star {
+		.iconfont {
 			margin-right: 5px;
-			font-size: 22px;
+			font-size: 15px;
+			position: relative;
+			top: -1px;
 		}
 	}
+
 	.menu-btn-outside {
 		opacity: 1;
-		right: $btn-offsetRight;
-		color: $font-color;
+		padding: 8px 12px;
+		font-size: 15px;
+		color: $white;
 	}
 
 	&.open .menu-btn-outside {
 		opacity: 0;
-		transform: translate3d($btn-offsetRight + $btn-offsetLeft + $btn-width, 0, 0);
+		transform: translate3d(10px, 0, 0);
 	}
 
 	.menu-btn-inside {
 		opacity: 0;
-		left: -($btn-offsetRight + $btn-width);
+		padding: 5px 12px;
+		font-size: 18px;
 		color: $menu-color;
+		text-shadow: 1px 1px 2px rgba(0, 0, 0, .86);
 	}
 
 	&.open .menu-btn-inside {
 		opacity: 1;
-		transform: translate3d($btn-offsetRight + $btn-offsetLeft + $btn-width, 0, 0);
-	}
-
-	.side-menu {
-		position: fixed;
-		right: 0;
-		top: 0;
-		height: 100vh;
-		width: $side-width;
-		// overflow: hidden;
-		// background-color: $menu-bg;
-		text-shadow: 1px 1px 2px rgba(0, 0, 0, .86);
-		background: #de6161; /* fallback for old browsers */
-		background: -webkit-linear-gradient(20deg, #141E30, #243B55); /* Chrome 10-25, Safari 5.1-6 */
-		background: linear-gradient(20deg, #141E30, #243B55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-		transform: translate3d($side-width, 0, 0);
-		transition: transform $slider-time;
-		z-index: 100;
+		background-color: $tr;
+		font-size: 18px;
+		transform: translate3d(10px, 0, 0);
 	}
 }
 
-.link-group {
+:local(.link-group) {
 	display: flex;
 	flex-direction: column;
+	text-shadow: 1px 1px 2px rgba(0, 0, 0, .86);
 	padding: $btn-offsetTop + $link-paddingTop 0 0 0;
 
 	.link {
@@ -86,36 +100,6 @@ $icon-size: 18px;
 			font-size: $icon-size;
 		}
 
-		// span {
-		// 	position: relative;
-		// }
-
-		// span::after {
-		// 	content: '';
-		// 	height: 2px;
-		// 	width: 0;
-		// 	background-color: $menu-color;
-		// 	position: absolute;
-		// 	bottom: -2px;
-		// 	left: 0;
-		// 	transition: all .3s;
-		// }
-
-		// &:hover span::after {
-		// 	width: 100%;
-		// 	left: 0;
-		// }
-
-		// &.active span::after {
-		// 	content: '';
-		// 	height: 2px;
-		// 	width: 100%;
-		// 	background-color: $menu-color;
-		// 	position: absolute;
-		// 	bottom: -2px;
-		// 	left: 0;
-		// }
-
 		&.active {
 			background-color: $menu-color;
 			color: $white;
@@ -131,7 +115,7 @@ $icon-size: 18px;
 	}
 }
 
-.personal-information {
+:local(.personal-information) {
 	position: absolute;
 	left: 0;
 	bottom: 20px;
@@ -159,6 +143,7 @@ $icon-size: 18px;
 		}
 
 		.iconfont {
+			color: $menu-color;
 			font-size: 40px;
 		}
 	}

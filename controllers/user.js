@@ -1,43 +1,41 @@
 import { user } from '../models'
 import md5 from 'md5'
 import validator from 'validator'
+import eventproxy from 'eventproxy'
 import jwt from 'jsonwebtoken'
 
+
 export default {
-	miao: async(req, res) => {
-		console.log(req.body)
-		return res.json({
-			msg: 'miao~'
-		})
-	},
-	signup: async(req, res) => {
+	signup: async(req, res, next) => {
 		let name = req.body.name
 		let password = req.body.password
+		let repassword = req.body.repassword
 		let email = req.body.email
 
-		if (!name || name === '') {
-			res.status(500)
-			return res.json({
+		var ep = new eventproxy();
+		ep.fail(next)
+		ep.on('signup_err', (msg, status = 403) => {
+			res.status(status)
+			res.json({
 				success: false,
-				message: '没有填写名字',
+				message: msg
 			})
+		})
+
+		if ([name, password, repassword, email].some((v) => v === '')) {
+			return ep.emit('signup_err', '信息不完整')
 		}
-		if (!password || password === '') {
-			return res.json({
-				success: false,
-				message: '没有填写密码',
-			})
+		if (!validator.isLength, { min: 6 }) {
+			return ep.emit('signup_err', '用户名至少需要6个字符')
 		}
-		if (!email || email === '') {
-			return res.json({
-				success: false,
-				message: '没有填写email',
-			})
-		} else if (!validator.isEmail(email)) {
-			return res.json({
-				success: false,
-				message: 'email格式不正确',
-			})
+		if (!validator.isAlphanumeric(name)) {
+			return ep.emit('signup_err', '用户名只能包含字母和数字')
+		}
+		if (!validator.isEmail(email)) {
+			return ep.emit('signup_err', '邮箱不合法')
+		}
+		if (password !== repassword) {
+			return ep.emit('signup_err', '两次密码输入不一致')
 		}
 
 		let userInfo = {
@@ -51,10 +49,7 @@ export default {
 			})
 			.then(data => {
 				if (data) {
-					return res.json({
-						success: true,
-						message: '用户名已存在',
-					})
+					return ep.emit('signup_err', '用户名已存在')
 				}
 			})
 
@@ -63,10 +58,7 @@ export default {
 			})
 			.then(data => {
 				if (data) {
-					return res.json({
-						success: true,
-						message: '邮箱已注册',
-					})
+					return ep.emit('signup_err', '邮箱已被注册')
 				}
 			})
 
@@ -78,10 +70,7 @@ export default {
 				})
 			})
 			.catch(() => {
-				return res.json({
-					success: false,
-					message: '注册失败',
-				})
+				return ep.emit('signup_err', '注册失败', 500)
 			})
 	},
 	login: async(req, res) => {

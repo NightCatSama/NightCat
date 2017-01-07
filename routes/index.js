@@ -1,6 +1,6 @@
 import ctr from '../controllers'
-import express from 'express'
 const user = ctr.user
+const site = ctr.site
 
 const allowCrossDomain = async function(req, res, next) {
 	res.header('Access-Control-Allow-Origin', '*')
@@ -21,16 +21,7 @@ export default (app) => {
 	})
 
 	app
-		.get('/user', async(req, res, next) => {
-			res.send('miaohaha')
-		})
-		.get('/', async(req, res, next) => {
-			next()
-		}, async(req, res) => {
-			app.use(express.static(app.get('views')))
-			res.sendfile('views/dist/')
-		})
+		.get('/', site.index)
 		.use(allowCrossDomain)
-		.post('/miao', user.miao)
-		.post('/signup', user.signup)
+		.post('/signup', user.signup)  //  注册
 }

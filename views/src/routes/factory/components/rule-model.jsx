@@ -1,8 +1,5 @@
-import React, {
-	Component,
-	PropTypes
-} from 'react'
-import Mask from 'components/Mask/'
+import React, { Component, PropTypes } from 'react'
+import Mask from 'components/Mask'
 import cs from 'classnames'
 
 export default class RuleModel extends Component {

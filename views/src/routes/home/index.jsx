@@ -1,10 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-
-import $ from 'jquery'
-
 // import Canvas from '../asset/Canvas/'
 
-import 'stylesheets/home'
+import Menu from 'components/Menu/'
+import style from 'stylesheets/home.scss'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -13,38 +11,33 @@ import EventBusAction from 'actions/EventBusAction'
 class Home extends Component {
 	constructor (props) {
 	    super(props)
+	    this.offsetView = this.offsetView.bind(this)
 	}
 	componentDidMount() {
-		// webpack proxy test
-		$.ajax({
-			url: `${process.env.NODE_ENV === 'development' ? 'http://localhost:80': ''}/miao`,
-			method: 'POST',
-			data: {
-				name: 'nightcat'
-			},
-			success: function(data) {
-				console.log(data)
-			},
-			error: function(err) {
-				console.log(err)
-			}
-		})
+	}
+	componentWillUnmount() {
+	}
+	offsetView() {
+		this.refs.view.classList.toggle('offset')
 	}
 	render() {
 		return (
-			<div ref="view" className="home-view">
-				<div className="first-screen">
-					<section className="info">
-						<h1>NightCat</h1>
-						<small>- Welcome to NightCat game city -</small>
-					</section>
+			<span>
+				<div ref="view" className={style['home-view']}>
+					<div className="first-screen">
+						<section className="info">
+							<h1>NightCat</h1>
+							<small>- Welcome to NightCat game city -</small>
+						</section>
+					</div>
+					<div className="main">
+						<section>
+							Factory
+						</section>
+					</div>
 				</div>
-				<div className="main">
-					<section>
-						Factory
-					</section>
-				</div>
-			</div>
+				<Menu ref="menu" callback={this.offsetView} />
+			</span>
 		);
 	}
 }

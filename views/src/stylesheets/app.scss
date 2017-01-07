@@ -14,13 +14,10 @@ body {
 }
 
 .container {
+	position: relative;
 	display: flex;
 	flex-direction: column;
 	width: 100%;
 	min-height: 100vh;
-	transition: transform $slider-time - 0.05s;
-
-	&.offset {
-		transform: translate3d(-$side-width, 0, 0);
-	}
+	right: 0;
 }

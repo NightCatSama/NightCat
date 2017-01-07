@@ -1,0 +1,12 @@
+@import '../../stylesheets/common/util';
+
+:local(.login-view) {
+	position: relative;
+	flex: 1;
+	@include flex-center;
+
+	form {
+		display: flex;
+		flex-direction: column;
+	}
+}

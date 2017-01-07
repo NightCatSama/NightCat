@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { Link, IndexLink } from 'react-router'
 import config from '../../config'
-import './Menu'
+import style from './Menu'
 
 export default class Menu extends Component {
 	constructor (props) {
@@ -37,7 +37,7 @@ export default class Menu extends Component {
 		}
 	}
 	render() {
-		let menuClass = classNames('menu', {
+		let menuClass = classNames(style['menu'], {
 			open: this.state.sideShow
 		})
 		return (
@@ -48,10 +48,10 @@ export default class Menu extends Component {
 				</div>
 				<div ref="sideMenu" className="side-menu">
 					<div className="menu-btn menu-btn-inside" onClick={this.toggleMenu}>
-						<i className="iconfont icon-star"></i>
+						<i className="iconfont icon-menu"></i>
 						<span>Menu</span>
 					</div>
-					<div className="link-group">
+					<div className={style['link-group']}>
 						<IndexLink to="/" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-home"></i>
 							<span>Home</span>
@@ -61,7 +61,7 @@ export default class Menu extends Component {
 							<span>Factory</span>
 						</Link>
 					</div>
-					<div className="personal-information">
+					<div className={style['personal-information']}>
 						<img className="avatar" src={config.avatar} />
 						<h2 className="user-name">{ config.user_name }</h2>
 						<small className="user-intro">{ config.intro }</small>

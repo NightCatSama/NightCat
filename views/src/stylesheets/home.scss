@@ -1,38 +1,50 @@
 @import './common/util';
 
-.home-view {
+:local(.home-view) {
 	flex: 1;
 	position: relative;
+	will-change: transform;
+	transition: transform $slider-time;
+
+	&.offset {
+		transform: translate3d(-$side-width, 0, 0);
+	}
 
 	.first-screen {
 		width: 100vw;
 		height: 100vh;
+		position: relative;
 		overflow: hidden;
 		cursor: default;
 		background-image: url('../images/bg.jpg');
 		background-repeat: no-repeat;
 		background-size: cover;
+		background-position: center;
 	}
 
 	.info {
 		color: $white;
-		position: relative;
 		font-size: 20px;
 		margin: 120px 0 0 60px;
 		width: 300px;
 		text-shadow: $font-light;
 		text-align: center;
-	}
 
-	&+.menu .menu-btn-outside {
-		text-shadow: $font-light;
-		color: $white;
+		@include max-screen(768px) {
+			position: absolute;
+			margin: 0;
+			left: 50%;
+			bottom: 50px;
+			color: #333;
+			font-size: 16px;
+			transform: translateX(-50%);
+		}
 	}
 
 	.main {
 		section {
 			width: 100%;
-			height: 500px;
+			height: 2500px;
 			@include flex-center;
 		}
 	}

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import cs from 'classnames'
 import RuleModel from './components/rule-model'
 
-import 'stylesheets/factory'
+import style from 'stylesheets/factory'
 import Factory from './lib/Factory'
 
 export default class component extends Component {
@@ -48,7 +48,7 @@ export default class component extends Component {
 			hide: this.state.gameSign
 		})
 		return (
-			<div ref="view" className="factory-view">
+			<div ref="view" className={style['factory-view']}>
 				<div className={GroupClass}>
 					<section className="title-group">
 						<h1 className="game-title">

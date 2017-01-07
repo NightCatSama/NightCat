@@ -1,0 +1,24 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "globals": {
+        "$": true,
+        "axios": true
+    },
+    "parser": "babel-eslint",
+    "ecmaFeatures": {
+        "ecmascript": 6,
+        "modules": true
+    },
+    "rules": {
+        "quotes": [2, "single"],
+        "no-undef": [2],
+        "semi": 0,
+        "no-unused-vars": [2, { "args": "none" }],
+    },
+    "plugins": [
+        "babel",
+    ]
+}
