@@ -1,0 +1,7 @@
+@import '~stylesheets/common/util';
+
+.active_account-view {
+	width: 100vw;
+	height: 100vh;
+	@include flex-center;
+}

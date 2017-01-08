@@ -1,0 +1,26 @@
+@import '~stylesheets/common/util';
+
+.sign-view {
+	position: relative;
+	flex: 1;
+	background-color: #999;
+	@include flex-center;
+
+	.sign-form {
+		display: flex;
+		flex-direction: column;
+
+		label {
+			display: none;
+		}
+	}
+
+	.form-item input {
+		width: 200px;
+		padding: 8px 20px;
+		border-radius: 8px;
+		background-color: rgba(255, 255, 255, .36);
+		margin: 5px 0;
+		border: none;
+	}
+}

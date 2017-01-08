@@ -1,45 +1,58 @@
 import React, { Component, PropTypes } from 'react'
 
-// import Canvas from '../asset/Canvas/'
-
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
 
-import style from './style'
+import './styles'
 
-class Home extends Component {
+class Sign extends Component {
 	constructor (props) {
 		super(props)
+		// this.state = {
+		// 	name: '',
+		// 	password: '',
+		// 	repassword: '',
+		// 	email: ''
+		// }
 		this.state = {
-			name: 'nightcat',
+			isLogin: this.props.location.query.signup ? false : true,
+			account: 'nightcat',
 			password: '123456',
 			repassword: '123456',
 			email: '642163903@qq.com'
 		}
 		this.singUp = this.singUp.bind(this)
-		this.setName = this.setName.bind(this)
+		this.login = this.login.bind(this)
+		this.setAccount = this.setAccount.bind(this)
 		this.setPassword = this.setPassword.bind(this)
 		this.setRepassword = this.setRepassword.bind(this)
 		this.setEmail = this.setEmail.bind(this)
 	}
 	componentDidMount() {
+		// this.singUp()
 	}
-	singUp(e) {
-		e.preventDefault()
-
+	singUp() {
 		axios.post('/signup', {
-			name: this.state.name,
+			account: this.state.account,
 			password: this.state.password,
 			repassword: this.state.repassword,
 			email: this.state.email,
 		})
-		.then((res) => console.log(res))
-		.catch((err) => console.log(err))
+		.then((res) => console.log(res.data.message))
+		.catch((err) => console.log(err.response.data.message))
 	}
-	setName(e) {
+	login() {
+		axios.post('/login', {
+			account: this.state.account,
+			password: this.state.password
+		})
+		.then((res) => console.log(res.data.message))
+		.catch((err) => console.log(err.response.data.message))
+	}
+	setAccount(e) {
 		this.setState({
-			name: e.target.value
+			account: e.target.value
 		})
 	}
 	setPassword(e) {
@@ -59,11 +72,12 @@ class Home extends Component {
 	}
 	render() {
 		return (
-			<div ref="view" className={style['login-view']}>
-				<form id="login-form" onSubmit={this.singUp}>
+			<div ref="view" className="sign-view">
+				<h3>{ this.state.isLogin ? 'Login' : 'Sign up' }</h3>
+				<div className="sign-form">
 					<div className="form-item">
-						<label htmlFor="name">用户名</label>
-						<input id="name" type="text" value={this.state.name} onChange={this.setName} />
+						<label htmlFor="account">用户名</label>
+						<input id="account" type="text" value={this.state.account} onChange={this.setAccount} />
 					</div>
 					<div className="form-item">
 						<label htmlFor="password">密码</label>
@@ -77,7 +91,9 @@ class Home extends Component {
 						<label htmlFor="email">邮箱</label>
 						<input id="email" type="email" value={this.state.email} onChange={this.setEmail} />
 					</div>
-				</form>
+					<button onClick={this.singUp}>singUp</button>
+					<button onClick={this.login}>login</button>
+				</div>
 			</div>
 		);
 	}
@@ -91,8 +107,9 @@ const mapDispatchToProps = (dispatch) => ({
 	actions: bindActionCreators(EventBusAction, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Sign)
 
-Home.propTypes = {
-	actions: PropTypes.any
+Sign.propTypes = {
+	actions: PropTypes.any,
+	location: PropTypes.any
 }

@@ -2,7 +2,7 @@ import React, { Component, PropTypes } from 'react'
 // import Canvas from '../asset/Canvas/'
 
 import Menu from 'components/Menu/'
-import style from 'stylesheets/home.scss'
+import './styles/'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -14,6 +14,9 @@ class Home extends Component {
 	    this.offsetView = this.offsetView.bind(this)
 	}
 	componentDidMount() {
+		axios.get('/test?message=aaaaaaaaaa')
+		.then((res) => console.log(res.data.message))
+		.catch((err) => console.log(err.response.data.message))
 	}
 	componentWillUnmount() {
 	}
@@ -23,7 +26,7 @@ class Home extends Component {
 	render() {
 		return (
 			<span>
-				<div ref="view" className={style['home-view']}>
+				<div ref="view" className="home-view">
 					<div className="first-screen">
 						<section className="info">
 							<h1>NightCat</h1>

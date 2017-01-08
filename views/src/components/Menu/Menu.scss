@@ -1,4 +1,4 @@
-@import '../../stylesheets/common/util';
+@import '~stylesheets/common/util';
 
 $gap: 20px;
 $btn-offsetTop: 30px;
@@ -9,142 +9,208 @@ $link-paddingTop: 80px;
 $menu-bg: #123;
 $menu-color: $blue;
 $icon-size: 18px;
+$shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 
-:local(.menu) {
+.menu {
 	position: fixed;
 	right: 0;
 	top: 0;
 	height: 100vh;
 	width: $side-width;
-	background: #243B55; /* fallback for old browsers */
-	background: -webkit-linear-gradient(20deg, #141E30, #243B55); /* Chrome 10-25, Safari 5.1-6 */
-	background: linear-gradient(20deg, #141E30, #243B55); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-	will-change: transform;
+	visibility: hidden;
 	transform: translate3d($side-width, 0, 0);
-	transition: transform $slider-time;
+	transition: all $slider-time;
 	z-index: 100;
 
 	.side-menu {
 		height: 100%;
+		width: 100%;
+		position: relative;
+		overflow: hidden;
+		z-index: 101;
+		background: #243B55;
+		background: linear-gradient(290deg, #141E30, #243B55);
 	}
 
 	&.open {
+		visibility: visible;
 		transform: translate3d(0, 0, 0);
+		transition: transform $slider-time;
 	}
 
 	.menu-btn {
+		visibility: visible;
 		position: absolute;
 		top: $btn-offsetTop;
 		left: 0;
-		background-color: rgba(10, 22, 51, 0.63);
-		text-align: center;
 		border-radius: 4px;
 		cursor: pointer;
+		padding: 0 12px;
+		height: 34px;
+		line-height: 34px;
 		transform: translate3d(-120px, 0, 0);
 		transition: all $slider-time;
+		z-index: 99;
 
 		.iconfont {
 			margin-right: 5px;
 			font-size: 15px;
 			position: relative;
+		    vertical-align: middle;
 			top: -1px;
 		}
 	}
 
 	.menu-btn-outside {
-		opacity: 1;
-		padding: 8px 12px;
+		visibility: visible;
+		background-color: rgba(10, 22, 51, 0.63);
 		font-size: 15px;
 		color: $white;
+		border: 1px solid $tr;
+
+		&:hover {
+			border-color: #fff;
+		}
 	}
 
 	&.open .menu-btn-outside {
-		opacity: 0;
+		visibility: hidden;
 		transform: translate3d(10px, 0, 0);
 	}
 
 	.menu-btn-inside {
-		opacity: 0;
-		padding: 5px 12px;
+		visibility: hidden;
 		font-size: 18px;
 		color: $menu-color;
-		text-shadow: 1px 1px 2px rgba(0, 0, 0, .86);
+		text-shadow: $shadow;
 	}
 
 	&.open .menu-btn-inside {
-		opacity: 1;
+		visibility: visible;
 		background-color: $tr;
 		font-size: 18px;
 		transform: translate3d(10px, 0, 0);
 	}
-}
 
-:local(.link-group) {
-	display: flex;
-	flex-direction: column;
-	text-shadow: 1px 1px 2px rgba(0, 0, 0, .86);
-	padding: $btn-offsetTop + $link-paddingTop 0 0 0;
+	@include max-screen(768px) {
+		.menu-btn {
+			top: 10px;
+			transform: translate3d(-100px, 0, 0);
+		}
+		.menu-btn-inside {
+			color: #999;
+		}
+	}
 
-	.link {
-		padding: 10px $gap;
-		font-size: 15px;
-		cursor: pointer;
-		font-weight: bold;
-		position: relative;
-		color: $menu-color;
-		text-decoration: none;
-		transition: all .3s;
+	.link-group {
+		display: flex;
+		flex-direction: column;
+		text-shadow: $shadow;
+		padding: $btn-offsetTop + $link-paddingTop 0 0 0;
 
-		.iconfont {
-			margin-right: 8px;
-			font-size: $icon-size;
+		.link {
+			padding: 10px $gap;
+			font-size: 15px;
+			cursor: pointer;
+			font-weight: bold;
+			position: relative;
+			color: $menu-color;
+			text-decoration: none;
+			transition: all .3s;
+
+			.iconfont {
+				margin-right: 8px;
+				font-size: $icon-size;
+			}
+
+			&.active {
+				background-color: $menu-color;
+				color: $white;
+			}
+
+			&:not(.active):hover {
+				background-color: rgba(0, 0, 0, .16);
+			}
 		}
 
-		&.active {
-			background-color: $menu-color;
-			color: $white;
-			// padding: 10px $gap / 2;
-			// transform: translate3d(-($icon-size + $btn-offsetLeft + 100px), 0, 0);
+		@include max-screen(768px) {
+			padding-top: 50px;
+		}
+	}
 
-			@at-root .menu.open & {
-				padding: 10px $gap;
-				transform: scale(1.05);
-				box-shadow: 0 3px 3px 0 rgba(0, 0, 0, 0.56);
+	.personal-information {
+		position: absolute;
+		left: 0;
+		bottom: 20px;
+		width: 100%;
+		text-align: center;
+		color: $menu-color;
+		padding: 0 $gap;
+
+		.avatar {
+			width: 100px;
+			height: 100px;
+			border-radius: 50%;
+		}
+
+		.follow {
+			padding: 20px 0;
+			a {
+				display: inline-block;
+				margin: 0 8px;
+				text-decoration: none;
+
+				&:hover {
+					opacity: .6;
+				}
+			}
+
+			.iconfont {
+				color: $menu-color;
+				font-size: 40px;
 			}
 		}
 	}
-}
 
-:local(.personal-information) {
-	position: absolute;
-	left: 0;
-	bottom: 20px;
-	width: 100%;
-	text-align: center;
-	color: $menu-color;
-	padding: 0 $gap;
+	.user-group {
+		position: absolute;
+		left: 0;
+		bottom: 30px;
+		width: 100%;
+		padding: 0 40px;
+		@include flex-h-center;
+		flex-direction: column;
 
-	.avatar {
-		width: 100px;
-		height: 100px;
-		border-radius: 50%;
-	}
-
-	.follow {
-		padding: 20px 0;
 		a {
-			display: inline-block;
-			margin: 0 8px;
+			color: $white;
 			text-decoration: none;
+			padding: 5px 12px;
+			background-color: $blue;
+			border-radius: 20px;
+			margin-top: 15px;
+			text-align: center;
+			box-shadow: $shadow;
+			transition: background-color .2s;
 
 			&:hover {
-				opacity: .6;
+			    background-color: lighten($blue, 5%);
 			}
-		}
+			
+			&:active {
+			    background-color: darken($blue, 5%);
+			    box-shadow: inset 2px 2px 2px rgba(0, 0, 0, .36);
+			}
 
-		.iconfont {
-			color: $menu-color;
-			font-size: 40px;
+			&:last-child {
+				background-color: $green;
+				&:hover {
+				    background-color: lighten($green, 5%);
+				}
+				
+				&:active {
+				    background-color: darken($green, 5%);
+				}
+			}
 		}
 	}
 }

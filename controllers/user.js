@@ -1,18 +1,28 @@
-import { user } from '../models'
+// import { user } from '../models'
+import { User } from '../proxy'
 import md5 from 'md5'
 import validator from 'validator'
 import eventproxy from 'eventproxy'
 import jwt from 'jsonwebtoken'
-
+import mail from '../common/mail'
+import config from '../config'
 
 export default {
+	/*  Test  */
+	test: async(req, res, next) => {
+		res.json({
+			success: true,
+			message: 'test'
+		})
+	},
+	/*  注册账号  */
 	signup: async(req, res, next) => {
-		let name = req.body.name
+		let account = req.body.account
 		let password = req.body.password
 		let repassword = req.body.repassword
 		let email = req.body.email
 
-		var ep = new eventproxy();
+		let ep = new eventproxy()
 		ep.fail(next)
 		ep.on('signup_err', (msg, status = 403) => {
 			res.status(status)
@@ -22,13 +32,13 @@ export default {
 			})
 		})
 
-		if ([name, password, repassword, email].some((v) => v === '')) {
+		if ([account, password, repassword, email].some((v) => v === '')) {
 			return ep.emit('signup_err', '信息不完整')
 		}
-		if (!validator.isLength, { min: 6 }) {
+		if (!validator.isLength(account, { min: 6 })) {
 			return ep.emit('signup_err', '用户名至少需要6个字符')
 		}
-		if (!validator.isAlphanumeric(name)) {
+		if (!validator.isAlphanumeric(account)) {
 			return ep.emit('signup_err', '用户名只能包含字母和数字')
 		}
 		if (!validator.isEmail(email)) {
@@ -38,72 +48,84 @@ export default {
 			return ep.emit('signup_err', '两次密码输入不一致')
 		}
 
-		let userInfo = {
-			name: name,
-			password: md5(md5(password)),
-			email: email
-		}
-
-		await user.findOne({
-				name: userInfo.name
-			})
+		await User.getUserByAccount(account)
 			.then(data => {
 				if (data) {
 					return ep.emit('signup_err', '用户名已存在')
 				}
 			})
 
-		await user.findOne({
-				email: userInfo.email
-			})
+		await User.getUserByEmail(email)
 			.then(data => {
 				if (data) {
 					return ep.emit('signup_err', '邮箱已被注册')
 				}
 			})
 
-		await user.create(userInfo)
+		let md5pass = md5(md5(password))
+		let userInfo = {
+			account: account,
+			password: md5pass,
+			email: email
+		}
+
+		await User.newAndSave(userInfo)
 			.then(() => {
+				mail.sendActiveMail(email, md5(email + md5pass + config.session_secret), account)
 				return res.json({
 					success: true,
-					message: '注册成功',
+					message: '欢迎加入 ' + config.name + '！我们已给您的注册邮箱发送了一封邮件，请点击里面的链接来激活您的帐号。',
 				})
 			})
 			.catch(() => {
-				return ep.emit('signup_err', '注册失败', 500)
+				return ep.emit('signup_err', '查询数据库失败', 500)
 			})
 	},
-	login: async(req, res) => {
-		let name = req.body.name
+	/*  登录账号  */
+	login: async(req, res, next) => {
+		console.log(req.body);
+		let account = req.body.account
 		let password = req.body.password
-		if (!name || name === '') {
-			return res.json({
+
+		var ep = new eventproxy()
+		ep.fail(next)
+		ep.on('login_err', (msg, status = 403) => {
+			res.status(status)
+			res.json({
 				success: false,
-				message: '没有填写名字',
+				message: msg
 			})
+		})
+
+		if (!account || account === '') {
+			return ep.emit('login_err', '账号不能为空')
 		}
 		if (!password || password === '') {
-			return res.json({
-				success: false,
-				message: '没有填写密码',
-			})
+			return ep.emit('login_err', '密码不能为空')
 		}
+
 		let userInfo = {
-			name: name,
+			account: account,
 			password: md5(md5(password))
 		}
-		await user.findOne({
-				name: userInfo.name
-			})
-			.then(response => {
-				if (response !== null) {
-					if (response.password !== userInfo.password) {
-						return res.json({
-							success: false,
-							message: '密码错误',
-						})
-					} else {
-						let token = jwt.sign(response.name, 'wanan')
+
+		await User.getUserByAccount(account)
+			.then(data => {
+				if (!data) {
+					return ep.emit('login_err', '账号不存在')
+				}
+				else {
+					if (data.password !== userInfo.password) {
+						return ep.emit('login_err', '密码错误')
+					} 
+					else if (!data.active) {
+						// 重新发送激活邮件
+						mail.sendActiveMail(data.email, md5(data.email + data.password + config.session_secret), account)
+						res.status(403);
+						return ep.emit('login_err', `此帐号还没有被激活，激活链接已发送到 ${data.email} 邮箱，请查收。`)
+					}
+					else {
+						let token = jwt.sign(data.account, config.session_secret)
 						req.session.token = token
 						return res.json({
 							success: true,
@@ -111,12 +133,45 @@ export default {
 							token: token
 						})
 					}
-				} else {
-					return res.json({
-						success: false,
-						message: '没有此账号',
-					})
 				}
+			})
+	},
+	/*  激活账号  */
+	activeAccount: async(req, res, next) => {
+		let key = req.query.key
+		let account = req.query.account
+
+		var ep = new eventproxy()
+		ep.fail(next)
+		ep.on('active_account_result', (msg, status = 200) => {
+			res.status(status)
+			res.json({
+				success: true,
+				message: msg
+			})
+		})
+		
+		User.getUserByAccount(account)
+			.then(data => {
+				if (!data) {
+					return ep.emit('active_account_result', '无效的账号')
+				}
+				if (md5(data.email + data.password + config.session_secret) !== key) {
+					return ep.emit('active_account_result', '信息有误，账号无法激活')
+				}
+				if (data.active) {
+					return ep.emit('active_account_result', '账号已被激活')
+				}
+				data.active = true
+				data.save(err => {
+					if (err) {
+						return ep.emit('active_account_result', '激活失败！')
+					}
+					return ep.emit('active_account_result', '激活成功!')
+				})
+			})
+			.catch((err) => {
+				ep.emit('active_account_result', '激活失败！')
 			})
 	}
 }

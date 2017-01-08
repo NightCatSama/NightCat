@@ -2,13 +2,14 @@ import React, { Component, PropTypes } from 'react'
 import classNames from 'classnames'
 import { Link, IndexLink } from 'react-router'
 import config from '../../config'
-import style from './Menu'
+import './Menu'
 
 export default class Menu extends Component {
 	constructor (props) {
 	    super(props)
 	    this.state = {
-	    	sideShow: false
+	    	sideShow: false,
+	    	isLogin: false
 	    }
 	    this.toggleMenu = this.toggleMenu.bind(this)
 	    this.linkClick = this.linkClick.bind(this)
@@ -37,13 +38,13 @@ export default class Menu extends Component {
 		}
 	}
 	render() {
-		let menuClass = classNames(style['menu'], {
+		let menuClass = classNames('menu', {
 			open: this.state.sideShow
 		})
 		return (
 			<div className={menuClass}>
 				<div className="menu-btn menu-btn-outside" onClick={this.toggleMenu}>
-					<i className="iconfont icon-star"></i>
+					<i className="iconfont icon-menu"></i>
 					<span>Menu</span>
 				</div>
 				<div ref="sideMenu" className="side-menu">
@@ -51,7 +52,7 @@ export default class Menu extends Component {
 						<i className="iconfont icon-menu"></i>
 						<span>Menu</span>
 					</div>
-					<div className={style['link-group']}>
+					<div className="link-group">
 						<IndexLink to="/" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-home"></i>
 							<span>Home</span>
@@ -61,22 +62,33 @@ export default class Menu extends Component {
 							<span>Factory</span>
 						</Link>
 					</div>
-					<div className={style['personal-information']}>
-						<img className="avatar" src={config.avatar} />
-						<h2 className="user-name">{ config.user_name }</h2>
-						<small className="user-intro">{ config.intro }</small>
-						<div className="follow">
-							<a href="https://github.com/NightCatSama" target="_blank">
-								<i className="iconfont icon-github"></i>
-							</a>
-							<a href="https://twitter.com/NightCatSama" target="_blank">
-								<i className="iconfont icon-twitter"></i>
-							</a>
-							<a href="http://weibo.com/p/1005053909739860" target="_blank">
-								<i className="iconfont icon-sina"></i>
-							</a>
+					{ this.state.isLogin ? (
+						<div className="personal-information">
+							<img className="avatar" src={config.avatar} />
+							<h2 className="user-name">{ config.user_name }</h2>
+							<small className="user-intro">{ config.intro }</small>
+							<div className="follow">
+								<a href="https://github.com/NightCatSama" target="_blank">
+									<i className="iconfont icon-github"></i>
+								</a>
+								<a href="https://twitter.com/NightCatSama" target="_blank">
+									<i className="iconfont icon-twitter"></i>
+								</a>
+								<a href="http://weibo.com/p/1005053909739860" target="_blank">
+									<i className="iconfont icon-sina"></i>
+								</a>
+							</div>
 						</div>
-					</div>
+					) : (
+						<div className="user-group">
+							<Link to="/Sign" className="link" onClick={this.linkClick}>
+								Login
+							</Link>
+							<Link to="/Sign?signup=1" className="link" onClick={this.linkClick}>
+								Sign up
+							</Link>
+						</div>	
+					)}
 				</div>
 			</div>
 		);

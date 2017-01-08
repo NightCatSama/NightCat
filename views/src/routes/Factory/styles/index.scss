@@ -1,6 +1,6 @@
-@import './common/util';
+@import '~stylesheets/common/util';
 
-:local(.factory-view) {
+.factory-view {
 	flex: 1;
 	background-color: $black;
 	color: $white;

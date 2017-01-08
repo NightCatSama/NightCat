@@ -1,4 +1,5 @@
 node_modules/
 public/
+config.js
 npm-debug.log
 selenium-debug.log

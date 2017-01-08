@@ -1,6 +1,6 @@
-@import './common/util';
+@import '~stylesheets/common/util';
 
-:local(.home-view) {
+.home-view {
 	flex: 1;
 	position: relative;
 	will-change: transform;
@@ -16,7 +16,7 @@
 		position: relative;
 		overflow: hidden;
 		cursor: default;
-		background-image: url('../images/bg.jpg');
+		background-image: url('../../../images/bg.jpg');
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;
@@ -44,7 +44,7 @@
 	.main {
 		section {
 			width: 100%;
-			height: 2500px;
+			height: 500px;
 			@include flex-center;
 		}
 	}

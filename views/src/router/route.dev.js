@@ -5,7 +5,8 @@ import DevTools from 'asset/DevTools'
 import App from '../app'
 import Home from 'routes/Home'
 import Factory from 'routes/Factory'
-import Login from 'routes/Login'
+import Sign from 'routes/Sign'
+import ActiveAccount from 'routes/ActiveAccount'
 
 export default class Root extends Component {
 	render() {
@@ -15,7 +16,8 @@ export default class Root extends Component {
 					<Route path="/" component={App}>
 						<IndexRoute component={Home} />
 						<Route path="factory" component={Factory} />
-						<Route path="login" component={Login} />
+						<Route path="Sign" component={Sign} />
+						<Route path="active_account" component={ActiveAccount} />
 					</Route>
 				</Router>
 				<DevTools />

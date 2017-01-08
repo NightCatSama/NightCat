@@ -14,11 +14,11 @@ const app = express()
 const MongoStore = connect(session)
 
 app.use(session({
-	secret: 'nightcat',
+	secret: config.session_secret,
 	resave: false,
 	saveUninitialized: false,
 	store: new MongoStore({
-		url: `mongodb://${config.host}:${config.port}/${config.db}`,
+		url: `mongodb://${config.db_host}:${config.db_port}/${config.db}`,
 	}),
 	cookie: {
 		maxAge: 180 * 60 * 1000
@@ -30,14 +30,12 @@ app.set('views', path.join(__dirname, 'views/dist'))
 
 app.use(logger('dev'))
 app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({
-	extended: true
-}))
-app.use(cookieParser())
+app.use(bodyParser.urlencoded({ extended: true }))
+app.use(cookieParser(config.session_secret))
 
 // app.use('/', routes)
 router(app)
 
-app.listen(80, function() {
-	console.log('Listen on port 80!')
+app.listen(config.port, function() {
+	console.log(`Listen on port ${config.port}!`)
 })
