@@ -1,26 +1,161 @@
 @import '~stylesheets/common/util';
 
+$signin: $blue;
+$signup: $green;
 .sign-view {
 	position: relative;
 	flex: 1;
-	background-color: #999;
+	background-image: url('../../../images/bg.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
 	@include flex-center;
 
-	.sign-form {
+	.sign-wrap {
+		width: 90%;
+		max-width: 350px;
+		padding: 30px 40px;
 		display: flex;
+		position: relative;
 		flex-direction: column;
+		background-color: rgba(33, 33, 33, .9);
+		border-radius: 8px;
 
-		label {
-			display: none;
+		h3 {
+			color: $signup;
+			font-size: 20px;
+			transition: color .3s;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 0;
+				width: 5px;
+				height: 30px;
+				background-color: $signup;
+				transition: background-color .3s;
+			}
+		}
+
+		&.signin {
+			h3 {
+				color: $signin;
+
+				&::before {
+					background-color: $signin;
+				}
+			}
+
+			.sign-form button {
+				background-color: $signin;
+				&:hover {
+				    background-color: lighten($signin, 5%);
+				}
+
+				&:active {
+				    background-color: darken($signin, 5%);
+				}
+			}
 		}
 	}
 
-	.form-item input {
-		width: 200px;
-		padding: 8px 20px;
-		border-radius: 8px;
-		background-color: rgba(255, 255, 255, .36);
-		margin: 5px 0;
-		border: none;
+	.sign-form {
+		margin-top: 10px;
+
+		button {
+			color: $white;
+			width: 100%;
+			padding: 8px 0;
+			border: none;
+			background-color: $signup;
+			border-radius: 20px;
+			margin-top: 15px;
+			text-align: center;
+			box-shadow: $shadow;
+			font-size: 16px;
+			transition: background-color .2s;
+
+			&:hover {
+			    background-color: lighten($signup, 5%);
+			}
+
+			&:active {
+			    background-color: darken($signup, 5%);
+			    box-shadow: inset 2px 2px 2px rgba(0, 0, 0, .36);
+			}
+		}
+	}
+
+	.form-item {
+		margin: 24px 0;
+		position: relative;
+
+		label {
+			position: absolute;
+			top: 50%;
+			left: 0px;
+			font-size: 14px;
+			transform: translate3d(0, -50%, 0);
+			color: #868686;
+			transition: all .3s;
+
+			&.shrink {
+				font-size: 12px;
+				top: -15px;
+				transform: translate3d(0, 0, 0);
+			}
+		}
+
+		input {
+			width: 100%;
+			position: relative;
+			padding: 8px 0;
+			color: $white;
+			background-color: $tr;
+			border: none;
+
+			&::after {
+				content: ''
+			}
+		}
+
+		&::after {
+			content: '';
+			height: 2px;
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			background-color: rgba(255, 255, 255, .16);
+		}
+
+		.input-progress {
+			height: 2px;
+			width: 0;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			transition: width .3s;
+
+			&.error {
+				background-color: $red;
+			}
+
+			&.success {
+				background-color: $green;
+			}
+		}
+	}
+
+	.switch-type-btn {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 0;
+		height: 0;
+		border: 14px solid $blue;
+		border-left-color: $tr;
+		border-bottom-color: $tr;
+		cursor: pointer;
 	}
 }

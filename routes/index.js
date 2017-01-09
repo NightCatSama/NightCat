@@ -16,6 +16,6 @@ export default (app) => {
 		.use(allowCrossDomain)  // 设置响应头，防跨域
 		.get('/test', user.test)  //  接口测试
 		.get('/activeAccount', user.activeAccount) // 账号激活
-		.post('/login', user.login)  //  登录
+		.post('/signin', user.signin)  //  登录
 		.post('/signup', user.signup)  //  注册
 }

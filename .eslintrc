@@ -19,6 +19,6 @@
         "no-unused-vars": [2, { "args": "none" }],
     },
     "plugins": [
-        "babel",
+        "babel"
     ]
 }

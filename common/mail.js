@@ -12,9 +12,10 @@ let SITE_ROOT_URL = `http://${config.host}`
  * @param {Object} data 邮件对象
  */
 const sendMail = (data) => {
-	// if (config.debug) {
-	// 	return
-	// }
+	if (config.debug) {
+		require('opn')(`${SITE_ROOT_URL}/active_account?key=${token}&account=${account}`)
+		return
+	}
 
 	async.retry({
 		times: 5

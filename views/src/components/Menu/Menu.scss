@@ -195,7 +195,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 			&:hover {
 			    background-color: lighten($blue, 5%);
 			}
-			
+
 			&:active {
 			    background-color: darken($blue, 5%);
 			    box-shadow: inset 2px 2px 2px rgba(0, 0, 0, .36);
@@ -206,7 +206,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 				&:hover {
 				    background-color: lighten($green, 5%);
 				}
-				
+
 				&:active {
 				    background-color: darken($green, 5%);
 				}

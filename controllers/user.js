@@ -35,11 +35,14 @@ export default {
 		if ([account, password, repassword, email].some((v) => v === '')) {
 			return ep.emit('signup_err', '信息不完整')
 		}
-		if (!validator.isLength(account, { min: 6 })) {
-			return ep.emit('signup_err', '用户名至少需要6个字符')
+		if (!validator.isByteLength(account, { min: 6, max: 20 })) {
+			return ep.emit('signup_err', '账号至少需要6个字符')
+		}
+		if (!validator.isByteLength(password, { min: 6 })) {
+			return ep.emit('signup_err', '密码至少需要6个字符')
 		}
 		if (!validator.isAlphanumeric(account)) {
-			return ep.emit('signup_err', '用户名只能包含字母和数字')
+			return ep.emit('signup_err', '账号只能包含字母和数字')
 		}
 		if (!validator.isEmail(email)) {
 			return ep.emit('signup_err', '邮箱不合法')
@@ -51,8 +54,11 @@ export default {
 		await User.getUserByAccount(account)
 			.then(data => {
 				if (data) {
-					return ep.emit('signup_err', '用户名已存在')
+					return ep.emit('signup_err', '账号已存在')
 				}
+			})
+			.catch(() => {
+				return ep.emit('signup_err', '查询数据库失败', 500)
 			})
 
 		await User.getUserByEmail(email)
@@ -60,6 +66,9 @@ export default {
 				if (data) {
 					return ep.emit('signup_err', '邮箱已被注册')
 				}
+			})
+			.catch(() => {
+				return ep.emit('signup_err', '查询数据库失败', 500)
 			})
 
 		let md5pass = md5(md5(password))
@@ -82,7 +91,7 @@ export default {
 			})
 	},
 	/*  登录账号  */
-	login: async(req, res, next) => {
+	signin: async(req, res, next) => {
 		console.log(req.body);
 		let account = req.body.account
 		let password = req.body.password
@@ -134,6 +143,9 @@ export default {
 						})
 					}
 				}
+			})
+			.catch(() => {
+				return ep.emit('signup_err', '查询数据库失败', 500)
 			})
 	},
 	/*  激活账号  */
