@@ -24,10 +24,14 @@ const getUserByEmail = async(email) => {
 
  /*  生成新用户  */
 const newAndSave = async(data) => {
-	data.name = data.account
-	data.active = data.active || false
-	user.accessToken = uuid.v4();
-	return await user.create(data)
+	let u = new user()
+	u.name = data.account
+	u.account = data.account
+	u.password = data.password
+	u.email = data.email
+	u.active = data.active || false
+	u.accessToken = uuid.v4()
+	return await u.save()
 }
 
 export default {

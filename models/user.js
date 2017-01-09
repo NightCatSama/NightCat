@@ -3,20 +3,18 @@ import mongoose from 'mongoose'
 let Schema = mongoose.Schema
 
 let userSchema = new Schema({
-	name: {
-		type: String,
-		unique: true,
-	},
+    name: {
+        type: String,
+        index: true
+    },
 	account: {
 		type: String,
-		unique: true,
 	},
 	password: {
 		type: String
 	},
 	email: {
 		type: String,
-		unique: true,
 	},
 	profile: {
 		type: String,
@@ -30,22 +28,35 @@ let userSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
-	updated_at: {
+	update_at: {
 		type: String,
 		default: Date.now
 	},
 	website: {
-		type: Date,
-		default: null
+		type: String,
+		default: ''
 	},
 	location: {
 		type: String,
-		default: null
+		default: ''
 	},
 	active: {
 		type: Boolean,
 		default: false
 	},
+  	accessToken: {
+  		type: String
+  	},
+})
+
+userSchema.index({account: 1}, {unique: true, sparse: true})
+userSchema.index({email: 1}, {unique: true, sparse: true})
+userSchema.index({accessToken: 1})
+
+userSchema.pre('save', (next) => {
+	var now = new Date();
+	userSchema.update_at = now;
+	next();
 })
 
 let user = mongoose.model('user', userSchema)

@@ -82,7 +82,7 @@ export default class Menu extends Component {
 					) : (
 						<div className="user-group">
 							<Link to="/Sign" className="link" onClick={this.linkClick}>
-								Login
+								Sign in
 							</Link>
 							<Link to="/Sign?signup=1" className="link" onClick={this.linkClick}>
 								Sign up

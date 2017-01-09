@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react'
-// import cs from 'classnames'
+import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
+import cs from 'classnames'
 import isEmail from 'validator/lib/isEmail'
+
+import Message from 'components/Message'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -13,23 +16,38 @@ class Sign extends Component {
 		super(props)
 		this.state = {
 			isSignin: this.props.location.query.signup ? false : true,
-			name: '',
+			shrinks: {},
+			account: '',
 			password: '',
 			repassword: '',
-			email: ''
+			email: '',
+			success: '',
+			notice: {}
 		}
 		this.progress = []
-		this.shrinkBabel = this.shrinkBabel.bind(this)
-		this.setBabel = this.setBabel.bind(this)
+		this.form = null
+		this.timer = null
 		this.signup = this.signup.bind(this)
 		this.signin = this.signin.bind(this)
 		this.switchType = this.switchType.bind(this)
 	}
-	componentDidMount() {
+	noticeMsg(msg, status) {
+		this.setState({
+			notice: {
+				message: msg,
+				status: status
+			}
+		})
+		this.timer && clearTimeout(this.timer)
+		this.timer = setTimeout(() => {
+			this.setState({
+				notice: {}
+			})
+		}, 2000)
 	}
 	signup() {
-		if (!this.progress.every((progress) => progress.classList.contains('success')))
-			return console.log('error')
+		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
+			return this.noticeMsg('Please enter correct information', 'error')
 
 		axios.post('/signup', {
 			account: this.state.account,
@@ -37,16 +55,33 @@ class Sign extends Component {
 			repassword: this.state.repassword,
 			email: this.state.email,
 		})
-		.then((res) => console.log(res.data.message))
-		.catch((err) => console.log(err.response.data.message))
+		.then((res) => {
+			// this.refs.switchTypeBtn.classList.add('cover')
+			// this.setState({
+			// 	success: '注册成功，已给您的注册邮箱发送了一封邮件，请点击里面的链接激活账号'
+			// })
+		})
+		.catch((err) => {
+			this.noticeMsg(err.response.data.message, 'error')
+		})
 	}
 	signin() {
+		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
+			return this.noticeMsg('Please enter correct information', 'error')
+
 		axios.post('/signin', {
 			account: this.state.account,
 			password: this.state.password
 		})
-		.then((res) => console.log(res.data.message))
-		.catch((err) => console.log(err.response.data.message))
+		.then((res) => {
+			this.refs.switchTypeBtn.classList.add('cover')
+			this.setState({
+				success: '登录成功'
+			})
+		})
+		.catch((err) => {
+			this.noticeMsg(err.response.data.message, 'error')
+		})
 	}
 	handleChange(e, name, fn) {
 		let val = e.target.value
@@ -62,14 +97,6 @@ class Sign extends Component {
 			email: e.target.value
 		})
 	}
-	shrinkBabel(e) {
-		e.target.previousSibling.classList.add('shrink')
-	}
-	setBabel(e) {
-		if (e.target.value === '') {
-			e.target.previousSibling.classList.remove('shrink')
-		}
-	}
 	setProgress(progress, status, percentage = 100) {
 		if (status === 'success') {
 			progress.style.width = '100%'
@@ -82,107 +109,158 @@ class Sign extends Component {
 			progress.classList.add('error')
 		}
 	}
+	/*  切换类型  */
 	switchType() {
+		let el = this.refs.switchTypeBtn
+		if (el.classList.contains('cover'))
+			return
+
+		el.classList.add('cover')
+		setTimeout(() => {
+			this.setState({
+				account: '',
+				password: '',
+				repassword: '',
+				email: '',
+				shrinks: {},
+				isSignin: !this.state.isSignin
+			})
+			setTimeout(() => {
+				el.classList.remove('cover')
+			}, 300)
+		}, 400)
+	}
+	isShrink(name) {
+		let bool = (document.activeElement.id === name || this.state[name])
+		Object.assign(this.state.shrinks, { [name]: bool })
 		this.setState({
-			isSignin: !this.state.isSignin
+			shrinks: this.state.shrinks
 		})
 	}
-	render() {
-		let inputProps = {
+	/*  验证账号 */
+	accountIsRight(val, progress, el) {
+		val = val.replace(/[^\w\.\/]/ig,'')
+		this.setState({
+			account: val
+		})
+		val.length < 6 ? this.setProgress(progress, 'error', val.length / 6 * 100) : this.setProgress(progress, 'success')
+	}
+	/*  验证密码  */
+	passwordIsRight(val, progress) {
+		let len = val.length
+		len < 6 ? this.setProgress(progress, 'error', len / 6 * 100) : this.setProgress(progress, 'success')
+		let repass_el = this.refs.repassword
+		if (!repass_el)
+			return false
+
+		let repass = repass_el.value
+		repass && (repass !== val ? this.setProgress(repass_el.nextSibling, 'error') : this.setProgress(repass_el.nextSibling, 'success'))
+	}
+	/*  验证再次密码  */
+	repasswordIsRight(val, progress) {
+		if (val.length === 0) {
+			progress.classList.remove('success')
+			progress.classList.remove('error')
+			return
+		}
+		val === this.refs.password.value ? this.setProgress(progress, 'success') : this.setProgress(progress, 'error')
+	}
+	/*  验证邮箱  */
+	emailIsRight(val, progress) {
+		return isEmail(val) ? this.setProgress(progress, 'success') : this.setProgress(progress, 'error')
+	}
+	/*  生成input的props  */
+	createProps(name, type, valid) {
+		return {
 			spellCheck: false,
 			autoComplete: false,
-			onBlur: this.setBabel,
-			onFocus: this.shrinkBabel
+			id: name, 
+			ref: name, 
+			type: type, 
+			value: this.state[name],
+			onFocus: () => this.isShrink(name),
+			onBlur: () => this.isShrink(name),
+			onChange: (e) => this.handleChange(e, name, valid)
 		}
-
-		/*  验证账号 */
-		const accountIsRight = (val, progress, el) => {
-			val = val.replace(/[^\w\.\/]/ig,'')
-			this.setState({
-				account: val
-			})
-			val.length < 6 ? this.setProgress(progress, 'error', val.length / 6 * 100) : this.setProgress(progress, 'success')
-		}
-
-		/*  验证密码  */
-		const passwordIsRight = (val, progress) => {
-			let len = val.length
-			len < 6 ? this.setProgress(progress, 'error', len / 6 * 100) : this.setProgress(progress, 'success')
-			let repass_el = this.refs.repassword
-			if (!repass_el)
-				return false
-
-			let repass = repass_el.value
-			repass && (repass !== val ? this.setProgress(repass_el.nextSibling, 'error') : this.setProgress(repass_el.nextSibling, 'success'))
-		}
-
-		/*  验证再次密码  */
-		const repasswordIsRight = (val, progress) => {
-			if (val.length === 0) {
-				progress.classList.remove('success')
-				progress.classList.remove('error')
-				return
-			}
-			val === this.refs.password.value ? this.setProgress(progress, 'success') : this.setProgress(progress, 'error')
-		}
-
-		/*  验证邮箱  */
-		const emailIsRight = (val, progress) => isEmail(val) ? this.setProgress(progress, 'success') : this.setProgress(progress, 'error')
-
-		// let classNames = cs('sign-wrap', {
-		// 	'signin': this.state.isSignin
-		// })
+	}
+	/*  生成input的progress  */
+	createProgress() {
+		return (<span ref={(progress) => progress && this.progress.push(progress)} className="input-progress"></span>)
+	}
+	/*  得到表单  */
+	getForm() {
+		return this.state.isSignin ? (
+		<div className="form-wrap" key="signin">
+			<h3>Sign in</h3>
+			<div className="sign-form">
+				<div className="form-item">
+					<label htmlFor="account" className={this.state.shrinks['account'] ? 'shrink' : ''}>Account</label>
+					<input {...this.createProps('account', 'text', this.accountIsRight.bind(this))} />
+					{ this.createProgress() }
+				</div>
+				<div className="form-item">
+					<label htmlFor="password" className={this.state.shrinks['password'] ? 'shrink' : ''}>Password</label>
+					<input {...this.createProps('password', 'password', this.passwordIsRight.bind(this))} />
+					{ this.createProgress() }
+				</div>
+				<button onClick={this.signin}>Sign in</button>
+			</div>
+		</div>
+		) : (
+		<div className="form-wrap" key="signup">
+			<h3>Sign up</h3>
+			<div className="sign-form">
+				<div className="form-item">
+					<label htmlFor="account" className={this.state.shrinks['account'] ? 'shrink' : ''}>Account</label>
+					<input {...this.createProps('account', 'text', this.accountIsRight.bind(this))} />
+					{ this.createProgress() }
+				</div>
+				<div className="form-item">
+					<label htmlFor="password" className={this.state.shrinks['password'] ? 'shrink' : ''}>Password</label>
+					<input {...this.createProps('password', 'password', this.passwordIsRight.bind(this))} />
+					{ this.createProgress() }
+				</div>
+				<div className="form-item">
+					<label htmlFor="repassword" className={this.state.shrinks['repassword'] ? 'shrink' : ''}>Password Again</label>
+					<input {...this.createProps('repassword', 'password', this.repasswordIsRight.bind(this))} />
+					{ this.createProgress() }
+				</div>
+				<div className="form-item">
+					<label htmlFor="email" className={this.state.shrinks['email'] ? 'shrink' : ''}>Email</label>
+					<input {...this.createProps('email', 'text', this.emailIsRight.bind(this))} />
+					{ this.createProgress() }
+				</div>
+				<button onClick={this.signup}>sign up</button>
+			</div>
+		</div>
+		)
+	}
+	render() {
 		this.progress.length = 0
+		let classNames = cs('sign-wrap', {
+			signin: this.state.isSignin
+		})
+		this.form = this.getForm()
 		return (
 			<div ref="view" className="sign-view">
-				<div className="sign-wrap signin">
-					<div className="switch-type-btn" onClick={this.switchType}></div>
-					{ this.state.isSignin ? (
-					<span>
-						<h3>Sign in</h3>
-						<div className="sign-form">
-							<div className="form-item">
-								<label htmlFor="account">Account</label>
-								<input {...inputProps} id="account" type="text" value={this.state.account || ''} onChange={(e) => this.handleChange(e, 'account', accountIsRight)} />
-								<span ref={(progress) => this.progress[0] = progress} className="input-progress"></span>
-							</div>
-							<div className="form-item">
-								<label htmlFor="password">Password</label>
-								<input {...inputProps} id="password" ref="password" type="password" value={this.state.password || ''} onChange={(e) => this.handleChange(e, 'password', passwordIsRight)} />
-								<span ref={(progress) => this.progress[1] = progress} className="input-progress"></span>
-							</div>
-							<button onClick={this.signin}>Sign in</button>
+				<div className={classNames}>
+					<div ref="switchTypeBtn" className="switch-type-btn" onClick={this.switchType}></div>
+					{ this.form }
+					{ this.state.success && (
+						<div className="success-cover">
+							<i className="iconfont icon-checked"></i>
+							<span className="success-word">{ this.state.success }</span>
 						</div>
-					</span>
-					) : (
-					<span>
-						<h3>Sign up</h3>
-						<div className="sign-form">
-							<div className="form-item">
-								<label htmlFor="account">Account</label>
-								<input {...inputProps} id="account" type="text" value={this.state.account || ''} onChange={(e) => this.handleChange(e, 'account', accountIsRight)} />
-								<span ref={(progress) => this.progress[0] = progress} className="input-progress"></span>
-							</div>
-							<div className="form-item">
-								<label htmlFor="password">Password</label>
-								<input {...inputProps} id="password" ref="password" type="password" value={this.state.password || ''} onChange={(e) => this.handleChange(e, 'password', passwordIsRight)} />
-								<span ref={(progress) => this.progress[1] = progress} className="input-progress"></span>
-							</div>
-							<div className="form-item">
-								<label htmlFor="repassword">Password Again</label>
-								<input {...inputProps} id="repassword" ref="repassword" type="password" value={this.state.repassword || ''} onChange={(e) => this.handleChange(e, 'repassword', repasswordIsRight)} />
-								<span ref={(progress) => this.progress[2] = progress} className="input-progress"></span>
-							</div>
-							<div className="form-item">
-								<label htmlFor="email">Email</label>
-								<input {...inputProps} id="email" type="email" value={this.state.email || ''} onChange={(e) => this.handleChange(e, 'email', emailIsRight)} />
-								<span ref={(progress) => this.progress[3] = progress} className="input-progress"></span>
-							</div>
-							<button onClick={this.signup}>sign up</button>
-						</div>
-					</span>
 					)}
 				</div>
+				<ReactCSSTransitionGroup
+					transitionName="example"
+					transitionEnterTimeout={0}
+					transitionLeaveTimeout={0}>
+					{
+						this.state.notice.message && <Message key="message" status={this.state.notice.status} message={this.state.notice.message} />
+					}
+				</ReactCSSTransitionGroup>
 			</div>
 		);
 	}

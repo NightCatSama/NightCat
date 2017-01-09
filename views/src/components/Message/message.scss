@@ -1,0 +1,33 @@
+@import '~stylesheets/common/util';
+
+// :local(.message) {
+.message {
+	position: fixed;
+	bottom: 30px;
+	left: 50%;
+	color: $white;
+	padding: 5px 12px;
+	text-align: center;
+	font-size: 13px;
+	background-color: $black;
+	border-radius: 20px;
+	transform: translate3d(-50%, 0, 0);
+	max-width: 80%;
+
+	&.error {
+		background-color: $red;
+	}
+
+	&.success {
+		background-color: $dark-green;
+	}
+
+	&.warning {
+		background-color: $yellow;
+	}
+
+	.iconfont {
+		vertical-align: middle;
+		margin-right: 5px;
+	}
+}

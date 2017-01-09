@@ -79,20 +79,20 @@ export default {
 		}
 
 		await User.newAndSave(userInfo)
-			.then(() => {
+			.then((data) => {
 				mail.sendActiveMail(email, md5(email + md5pass + config.session_secret), account)
 				return res.json({
 					success: true,
 					message: '欢迎加入 ' + config.name + '！我们已给您的注册邮箱发送了一封邮件，请点击里面的链接来激活您的帐号。',
 				})
 			})
-			.catch(() => {
-				return ep.emit('signup_err', '查询数据库失败', 500)
+			.catch((err) => {
+				next(err)
+				return ep.emit('signup_err', '【newAndSave】查询数据库失败', 500)
 			})
 	},
 	/*  登录账号  */
 	signin: async(req, res, next) => {
-		console.log(req.body);
 		let account = req.body.account
 		let password = req.body.password
 
@@ -144,7 +144,8 @@ export default {
 					}
 				}
 			})
-			.catch(() => {
+			.catch((err) => {
+				next(err)
 				return ep.emit('signup_err', '查询数据库失败', 500)
 			})
 	},

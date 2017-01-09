@@ -130,8 +130,3 @@ code {
 input, textarea, button {
     font-family: 'Montserrat', 'Segoe UI', 'Microsoft Yahei', Helvetica, Arial;
 }
-
-input:-webkit-autofill {
-    -webkit-text-fill-color: $white;
-     -webkit-box-shadow: 0 0 0px 1000px $black inset;
-}
