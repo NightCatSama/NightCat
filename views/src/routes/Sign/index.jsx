@@ -9,6 +9,8 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
 
+import Velocity from 'velocity-animate'
+
 import './styles'
 
 class Sign extends Component {
@@ -22,6 +24,7 @@ class Sign extends Component {
 			repassword: '',
 			email: '',
 			success: '',
+			success_type: '',
 			notice: {}
 		}
 		this.progress = []
@@ -29,8 +32,12 @@ class Sign extends Component {
 		this.timer = null
 		this.signup = this.signup.bind(this)
 		this.signin = this.signin.bind(this)
+		this.coverHandle = this.coverHandle.bind(this)
 		this.switchType = this.switchType.bind(this)
 	}
+	componentDidMount() {
+	}
+	/*  弹出消息  */
 	noticeMsg(msg, status) {
 		this.setState({
 			notice: {
@@ -45,6 +52,7 @@ class Sign extends Component {
 			})
 		}, 2000)
 	}
+	/*  调用注册接口  */
 	signup() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
 			return this.noticeMsg('Please enter correct information', 'error')
@@ -56,15 +64,17 @@ class Sign extends Component {
 			email: this.state.email,
 		})
 		.then((res) => {
-			// this.refs.switchTypeBtn.classList.add('cover')
-			// this.setState({
-			// 	success: '注册成功，已给您的注册邮箱发送了一封邮件，请点击里面的链接激活账号'
-			// })
+			this.refs.switchTypeBtn.classList.add('cover')
+			this.setState({
+				success: (<small>注册成功，已给您的注册邮箱发送了一封邮件，请点击里面的链接激活账号</small>),
+				success_type: 'signup'
+			})
 		})
 		.catch((err) => {
 			this.noticeMsg(err.response.data.message, 'error')
 		})
 	}
+	/*  调用登录接口  */
 	signin() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
 			return this.noticeMsg('Please enter correct information', 'error')
@@ -74,15 +84,42 @@ class Sign extends Component {
 			password: this.state.password
 		})
 		.then((res) => {
-			this.refs.switchTypeBtn.classList.add('cover')
-			this.setState({
-				success: '登录成功'
-			})
+			this.setWebStorage(res.data ? res.data : '')
+			return
+			this.successTrantionToHome()
 		})
-		.catch((err) => {
-			this.noticeMsg(err.response.data.message, 'error')
-		})
+		.catch((err) => this.noticeMsg(err.response.data.message, 'error'))
 	}
+	/*  登录成功动画  */
+	successTrantionToHome() {
+		this.refs.switchTypeBtn.classList.add('full-cover')
+		setTimeout(() => {
+			this.setState({
+				success: '登录成功',
+				success_type: 'signin'
+			})
+			let el = this.refs.signWrap
+			el.classList.add('reset-wrap')
+			Velocity(el, { scale: 1.1 }, { duration: 200 })
+			Velocity(el, { scale: 0 }, { duration: 500 })
+			Velocity(el, { scale: 1, width: '100vw', height: '100vh' }, { duration: 1000, easing: 'easeOutQuart' })
+			Velocity(el, { opacity: 0 }, { duration: 1000, complete: () => this.context.router.push('/') })
+		}, 300)
+	}
+	/*  设置 webstorage  */
+	setWebStorage(data) {
+		window.localStorage.token = data.token
+		window.sessionStorage.login_status = JSON.stringify({
+			isLogin: true,
+			avatar: data.avatar,
+			name: data.name
+		})
+
+		axios.post('/verify', {})
+		.then((res) => console.log(res))
+		.catch((err) => console.log(err))
+	}
+	/*  input 输入同步  */
 	handleChange(e, name, fn) {
 		let val = e.target.value
 		let progress = e.target.nextSibling
@@ -92,11 +129,7 @@ class Sign extends Component {
 		})
 		fn(val, progress, e.target)
 	}
-	setEmail(e) {
-		this.setState({
-			email: e.target.value
-		})
-	}
+	/*  设置input下方的进度条  */
 	setProgress(progress, status, percentage = 100) {
 		if (status === 'success') {
 			progress.style.width = '100%'
@@ -109,10 +142,20 @@ class Sign extends Component {
 			progress.classList.add('error')
 		}
 	}
+	/*  处理注册成功后能直接登录  */
+	coverHandle() {
+		if (this.state.success_type === 'signup') {
+			this.setState({
+				success: '',
+				success_type: ''
+			})
+			this.switchType()
+		}
+	}
 	/*  切换类型  */
 	switchType() {
 		let el = this.refs.switchTypeBtn
-		if (el.classList.contains('cover'))
+		if (el.classList.contains('full-cover'))
 			return
 
 		el.classList.add('cover')
@@ -130,6 +173,7 @@ class Sign extends Component {
 			}, 300)
 		}, 400)
 	}
+	/*  babel缩小控制  */
 	isShrink(name) {
 		let bool = (document.activeElement.id === name || this.state[name])
 		Object.assign(this.state.shrinks, { [name]: bool })
@@ -174,9 +218,9 @@ class Sign extends Component {
 		return {
 			spellCheck: false,
 			autoComplete: false,
-			id: name, 
-			ref: name, 
-			type: type, 
+			id: name,
+			ref: name,
+			type: type,
 			value: this.state[name],
 			onFocus: () => this.isShrink(name),
 			onBlur: () => this.isShrink(name),
@@ -243,11 +287,11 @@ class Sign extends Component {
 		this.form = this.getForm()
 		return (
 			<div ref="view" className="sign-view">
-				<div className={classNames}>
+				<div className={classNames} ref="signWrap">
 					<div ref="switchTypeBtn" className="switch-type-btn" onClick={this.switchType}></div>
 					{ this.form }
 					{ this.state.success && (
-						<div className="success-cover">
+						<div className="success-cover" onClick={this.coverHandle}>
 							<i className="iconfont icon-checked"></i>
 							<span className="success-word">{ this.state.success }</span>
 						</div>
@@ -278,5 +322,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(Sign)
 
 Sign.propTypes = {
 	actions: PropTypes.any,
+	history: PropTypes.any,
 	location: PropTypes.any
+}
+
+Sign.contextTypes = {
+	router: React.PropTypes.any.isRequired
 }

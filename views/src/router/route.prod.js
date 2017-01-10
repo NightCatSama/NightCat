@@ -8,7 +8,9 @@ const rootRoute = {
 	component: require('../app').default,
 	indexRoute: createRoute(false, 'home'),
 	childRoutes: [
-		createRoute('/factory', 'factory')
+		createRoute('/factory', 'Factory'),
+		createRoute('/sign', 'Sign'),
+		createRoute('/active_account', 'ActiveAccount')
 	]
 }
 

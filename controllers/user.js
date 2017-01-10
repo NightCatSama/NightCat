@@ -126,7 +126,7 @@ export default {
 				else {
 					if (data.password !== userInfo.password) {
 						return ep.emit('login_err', '密码错误')
-					} 
+					}
 					else if (!data.active) {
 						// 重新发送激活邮件
 						mail.sendActiveMail(data.email, md5(data.email + data.password + config.session_secret), account)
@@ -139,6 +139,8 @@ export default {
 						return res.json({
 							success: true,
 							message: '登录成功',
+							name: data.name,
+							avatar: data.avatar,
 							token: token
 						})
 					}
@@ -146,8 +148,35 @@ export default {
 			})
 			.catch((err) => {
 				next(err)
-				return ep.emit('signup_err', '查询数据库失败', 500)
+				// return ep.emit('signup_err', '查询数据库失败', 500)
 			})
+	},
+	verify: async(req, res, next) => {
+		let token = req.session.token
+		new Promise((resolve, reject) => {
+			jwt.verify(token, config.session_secret, (err, decoded) => {
+				if (err) {
+					reject(err)
+				}
+				else {
+					resolve(decoded)
+				}
+			})
+		})
+		.then(name => {
+			res.json({
+				success: true,
+				name: name
+			})
+		})
+		.catch(err => {
+			next(err)
+			// res.status(500)
+			// res.json({
+			// 	success: false,
+			// 	message: err
+			// })
+		})
 	},
 	/*  激活账号  */
 	activeAccount: async(req, res, next) => {
@@ -163,7 +192,6 @@ export default {
 				message: msg
 			})
 		})
-		
 		User.getUserByAccount(account)
 			.then(data => {
 				if (!data) {

@@ -15,6 +15,16 @@ import router from './routes'
 const app = express()
 const MongoStore = connect(session)
 
+app.set('views', path.join(__dirname, 'views/dist'))
+//app.use(favicon(path.join(__dirname, 'favicon.ico')))
+
+app.use(morgan('dev'))
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({
+	extended: true
+}))
+app.use(cookieParser(config.session_secret))
+
 app.use(session({
 	secret: config.session_secret,
 	resave: false,
@@ -26,14 +36,6 @@ app.use(session({
 		maxAge: 180 * 60 * 1000
 	}
 }))
-
-app.set('views', path.join(__dirname, 'views/dist'))
-//app.use(favicon(path.join(__dirname, 'favicon.ico')))
-
-app.use(morgan('dev'))
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(cookieParser(config.session_secret))
 
 // app.use('/', routes)
 router(app)

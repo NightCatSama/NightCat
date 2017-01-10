@@ -5,7 +5,6 @@ let Schema = mongoose.Schema
 let userSchema = new Schema({
     name: {
         type: String,
-        index: true
     },
 	account: {
 		type: String,
@@ -28,6 +27,9 @@ let userSchema = new Schema({
 		type: Date,
 		default: Date.now
 	},
+    avatar: {
+        type: String
+    },
 	update_at: {
 		type: String,
 		default: Date.now

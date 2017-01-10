@@ -11,6 +11,19 @@ class App extends Component {
 	constructor(props) {
 	    super(props)
 	}
+	componentDidMount() {
+		// debugger;
+		// let isLogin = window.sessionStorage['isLogin']
+		// if (isLogin)
+		// 	return false
+
+		// let token = window.localStorage.token
+		// if (token) {
+		// 	axios.post('/verify', {})
+		// 	.then((res) => console.log(res))
+		// 	.catch((err) => console.log(err))
+		// }
+	}
 	render() {
 		return (
 			<span>

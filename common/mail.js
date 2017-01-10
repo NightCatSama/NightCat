@@ -14,7 +14,7 @@ let SITE_ROOT_URL = `http://${config.host}`
  */
 const sendMail = (data, link) => {
 	if (config.debug) {
-		opn(link + '1')
+		// opn(link)
 		return
 	}
 

@@ -1,4 +1,5 @@
 import { user } from '../models'
+import { getGravatar } from '../common/user'
 import uuid from 'uuid'
 
  /*  根据用户名查找用户  */
@@ -29,10 +30,12 @@ const newAndSave = async(data) => {
 	u.account = data.account
 	u.password = data.password
 	u.email = data.email
+	u.avatar = getGravatar(data.email)
 	u.active = data.active || false
 	u.accessToken = uuid.v4()
 	return await u.save()
 }
+
 
 export default {
 	getUserByNames,

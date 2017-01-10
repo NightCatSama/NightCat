@@ -91,11 +91,7 @@ var config = {
 		hot: true,
 		inline: true,
 		progress: true,
-		contentBase: './src/',
-		'/get': {
-			targer: 'localhost:80',
-			secure: false
-		}
+		contentBase: './src/'
 	},
 	postcss: [
 		autoprefixer({
