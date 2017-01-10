@@ -1,6 +1,6 @@
 export default {
-	debug: false,
-	host: 'nightcat.win',
+	debug: process.env.NODE_ENV || true,
+	host: process.env.NODE_ENV ? 'nightcat.win' : 'localhost:8080',
 
 	/*  端口信息  */
 	port: 80,
@@ -16,7 +16,7 @@ export default {
 	description: 'A site',
 
 	/*  加密用字段  */
-	session_secret: 'yemiaomiao',
+	session_secret: '******',
 
 	/*  发送邮箱设置  */
 	mail_opts: {
@@ -24,7 +24,7 @@ export default {
 		port: 25,
 		auth: {
 			user: 'nightcatsama@126.com',
-			pass: 'qq642163903'
+			pass: '******'
 		},
 		ignoreTLS: true,
 	}

@@ -13,6 +13,7 @@ router
 	.post('/signout', user.signout)  //  退出登录
 	.post('/signup', user.signup)  //  注册
 	.post('/verify', user.verify)  //  验证登录信息是否有效
+	.get('/', site.index) // 跳转页面
 	.get('/:name', site.index) // 跳转页面
 
 export default router

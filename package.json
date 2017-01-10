@@ -5,7 +5,7 @@
   "description": "A personal website",
   "scripts": {
     "start": "nodemon es/",
-    "deploy": "set NODE_ENV=production && pm2 es/"
+    "deploy": "set NODE_ENV=production && pm2 start es/"
   },
   "author": "NightCatSama (642163903@qq.com)",
   "dependencies": {

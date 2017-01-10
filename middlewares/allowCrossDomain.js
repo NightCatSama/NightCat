@@ -2,8 +2,9 @@ import config from '../config'
 
 /*  处理开发环境下跨域问题  */
 const allowCrossDomain = async(req, res, next) => {
-	if (!config.debug)
-		next()
+	if (!config.debug) {
+		return next()
+	}
 
 	res.header('Access-Control-Allow-Origin', 'http://localhost:8080')
 	res.header('Access-Control-Allow-Credentials', true)
