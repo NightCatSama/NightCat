@@ -7,8 +7,14 @@ export default class Message extends Component {
 	    super(props)
 	}
 	render() {
+		const status_map = {
+			'': 'warning',
+			'success': 'success',
+			'error': 'error',
+			'warning': 'warning'
+		}
 		let classNames = cs(style['message'] || 'message', this.props.status)
-		let iconClass = cs('iconfont', `icon-${this.props.status}`)
+		let iconClass = cs('iconfont', `icon-${status_map[this.props.status]}`)
 		return (
 			<div className={classNames}>
 				<i className={iconClass}></i>
@@ -24,5 +30,6 @@ Message.propTypes = {
 }
 
 Message.defaultProps = {
+	message: '',
 	status: ''
 }

@@ -2,7 +2,6 @@ import { handleActions } from 'redux-actions'
 import * as ActionTypes from 'constants/EventBusType'
 
 const initialState = {
-    bus: {}
 }
 
 const headerBtn = handleActions({
@@ -12,8 +11,9 @@ const headerBtn = handleActions({
         return Object.assign({}, state, obj)
     },
     [ActionTypes.EXECUTE](state, { payload }) {
-    	if (typeof state[payload] === 'function') {
-    		state[payload]()
+        let { type, msg, status } = payload
+    	if (typeof state[type] === 'function') {
+    		state[type](msg, status)
     	}
         return Object.assign({}, state)
     }

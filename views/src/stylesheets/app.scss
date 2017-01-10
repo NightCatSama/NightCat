@@ -21,3 +21,25 @@ body {
 	min-height: 100vh;
 	right: 0;
 }
+
+.example-enter {
+	opacity: 0;
+	transform: translate3d(-50%, 0, 0) scale(.6);
+}
+
+.example-enter.example-enter-active {
+	opacity: 1;
+	transform: translate3d(-50%, 0, 0) scale(1);
+	transition: all .3s;
+}
+
+.example-leave {
+	opacity: 1;
+	transform: translate3d(-50%, 0, 0) scale(1);
+}
+
+.example-leave.example-leave-active {
+	opacity: 0;
+	transform: translate3d(-50%, 0, 0) scale(.6);
+	transition: all .3s;
+}

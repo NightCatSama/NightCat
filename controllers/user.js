@@ -3,18 +3,12 @@ import { User } from '../proxy'
 import md5 from 'md5'
 import validator from 'validator'
 import eventproxy from 'eventproxy'
-import jwt from 'jsonwebtoken'
+// import jwt from 'jsonwebtoken'
 import mail from '../common/mail'
+import { signToken, verifyToken } from '../common/user'
 import config from '../config'
 
 export default {
-	/*  Test  */
-	test: async(req, res, next) => {
-		res.json({
-			success: true,
-			message: 'test'
-		})
-	},
 	/*  注册账号  */
 	signup: async(req, res, next) => {
 		let account = req.body.account
@@ -134,12 +128,14 @@ export default {
 						return ep.emit('login_err', `此帐号还没有被激活，激活链接已发送到 ${data.email} 邮箱，请查收。`)
 					}
 					else {
-						let token = jwt.sign(data.account, config.session_secret)
+						let token = signToken(data.account)
 						req.session.token = token
 						return res.json({
 							success: true,
 							message: '登录成功',
 							name: data.name,
+							access_token: data.accessToken,
+							profile: data.profile,
 							avatar: data.avatar,
 							token: token
 						})
@@ -151,31 +147,36 @@ export default {
 				// return ep.emit('signup_err', '查询数据库失败', 500)
 			})
 	},
+	/*  退出登录  */
+	signout: async(req, res, next) => {
+		req.session.destroy()
+		res.json({
+			success: true,
+			message: '退出登录成功'
+		})
+	},
+	/*  认证是否登录  */
 	verify: async(req, res, next) => {
 		let token = req.session.token
-		new Promise((resolve, reject) => {
-			jwt.verify(token, config.session_secret, (err, decoded) => {
-				if (err) {
-					reject(err)
-				}
-				else {
-					resolve(decoded)
-				}
-			})
-		})
-		.then(name => {
+		await verifyToken(token)
+		.then(account => User.getUserByAccount(account))
+		.then(data => {
 			res.json({
 				success: true,
-				name: name
+				message: '登录成功',
+				name: data.name,
+				accessToken: data.accessToken,
+				profile: data.profile,
+				avatar: data.avatar,
+				token: token
 			})
 		})
 		.catch(err => {
-			next(err)
-			// res.status(500)
-			// res.json({
-			// 	success: false,
-			// 	message: err
-			// })
+			res.status(403)
+			res.json({
+				success: false,
+				message: '认证失败'
+			})
 		})
 	},
 	/*  激活账号  */
@@ -185,10 +186,10 @@ export default {
 
 		var ep = new eventproxy()
 		ep.fail(next)
-		ep.on('active_account_result', (msg, status = 200) => {
-			res.status(status)
+		ep.on('active_account_result', (msg, bool) => {
+			res.status(200)
 			res.json({
-				success: true,
+				success: !!bool,
 				message: msg
 			})
 		})
@@ -206,13 +207,13 @@ export default {
 				data.active = true
 				data.save(err => {
 					if (err) {
-						return ep.emit('active_account_result', '激活失败！')
+						return ep.emit('active_account_result', '激活失败，请刷新重试')
 					}
-					return ep.emit('active_account_result', '激活成功!')
+					return ep.emit('active_account_result', '激活成功!', true)
 				})
 			})
 			.catch((err) => {
-				ep.emit('active_account_result', '激活失败！')
+				ep.emit('active_account_result', '激活失败，请刷新重试')
 			})
 	}
 }

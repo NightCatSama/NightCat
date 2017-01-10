@@ -13,13 +13,6 @@ class Home extends Component {
 	    super(props)
 	    this.offsetView = this.offsetView.bind(this)
 	}
-	componentDidMount() {
-		// axios.get('/test?message=aaaaaaaaaa')
-		// .then((res) => console.log(res.data.message))
-		// .catch((err) => console.log(err.response.data.message))
-	}
-	componentWillUnmount() {
-	}
 	offsetView() {
 		this.refs.view.classList.toggle('offset')
 	}

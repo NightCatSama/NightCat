@@ -232,26 +232,4 @@ $switch-time: 0.4s;
 			margin-bottom: 20px;
 		}
 	}
-
-	.example-enter {
-		opacity: 0;
-		transform: translate3d(-50%, 10px, 0);
-	}
-
-	.example-enter.example-enter-active {
-		opacity: 1;
-		transform: translate3d(-50%, 0, 0);
-		transition: all 0.3s;
-	}
-
-	.example-leave {
-		opacity: 1;
-		transform: translate3d(-50%, 0, 0);
-	}
-
-	.example-leave.example-leave-active {
-		opacity: 0;
-		transform: translate3d(-50%, 10px, 0);
-		transition: all 0.3s;
-	}
 }

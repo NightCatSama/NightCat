@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-import ReactCSSTransitionGroup from 'react-addons-css-transition-group'
 import cs from 'classnames'
 import isEmail from 'validator/lib/isEmail'
-
-import Message from 'components/Message'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -24,8 +21,7 @@ class Sign extends Component {
 			repassword: '',
 			email: '',
 			success: '',
-			success_type: '',
-			notice: {}
+			success_type: ''
 		}
 		this.progress = []
 		this.form = null
@@ -34,28 +30,12 @@ class Sign extends Component {
 		this.signin = this.signin.bind(this)
 		this.coverHandle = this.coverHandle.bind(this)
 		this.switchType = this.switchType.bind(this)
-	}
-	componentDidMount() {
-	}
-	/*  弹出消息  */
-	noticeMsg(msg, status) {
-		this.setState({
-			notice: {
-				message: msg,
-				status: status
-			}
-		})
-		this.timer && clearTimeout(this.timer)
-		this.timer = setTimeout(() => {
-			this.setState({
-				notice: {}
-			})
-		}, 2000)
+		this.notice = (msg, status) => this.props.actions.execute('notice', msg, status)
 	}
 	/*  调用注册接口  */
 	signup() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
-			return this.noticeMsg('Please enter correct information', 'error')
+			return this.notice('请正确输入注册信息', 'error')
 
 		axios.post('/signup', {
 			account: this.state.account,
@@ -71,13 +51,13 @@ class Sign extends Component {
 			})
 		})
 		.catch((err) => {
-			this.noticeMsg(err.response.data.message, 'error')
+			this.notice(err.response.data.message, 'error')
 		})
 	}
 	/*  调用登录接口  */
 	signin() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
-			return this.noticeMsg('Please enter correct information', 'error')
+			return this.notice('请正确输入登录信息', 'error')
 
 		axios.post('/signin', {
 			account: this.state.account,
@@ -85,10 +65,9 @@ class Sign extends Component {
 		})
 		.then((res) => {
 			this.setWebStorage(res.data ? res.data : '')
-			return
 			this.successTrantionToHome()
 		})
-		.catch((err) => this.noticeMsg(err.response.data.message, 'error'))
+		.catch((err) => this.notice(err.response.data.message, 'error'))
 	}
 	/*  登录成功动画  */
 	successTrantionToHome() {
@@ -112,12 +91,10 @@ class Sign extends Component {
 		window.sessionStorage.login_status = JSON.stringify({
 			isLogin: true,
 			avatar: data.avatar,
+			profile: data.profile,
+			accessToken: data.accessToken,
 			name: data.name
 		})
-
-		axios.post('/verify', {})
-		.then((res) => console.log(res))
-		.catch((err) => console.log(err))
 	}
 	/*  input 输入同步  */
 	handleChange(e, name, fn) {
@@ -297,14 +274,6 @@ class Sign extends Component {
 						</div>
 					)}
 				</div>
-				<ReactCSSTransitionGroup
-					transitionName="example"
-					transitionEnterTimeout={0}
-					transitionLeaveTimeout={0}>
-					{
-						this.state.notice.message && <Message key="message" status={this.state.notice.status} message={this.state.notice.message} />
-					}
-				</ReactCSSTransitionGroup>
 			</div>
 		);
 	}

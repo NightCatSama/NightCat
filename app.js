@@ -37,8 +37,7 @@ app.use(session({
 	}
 }))
 
-// app.use('/', routes)
-router(app)
+app.use('/', router)
 
 // error handler
 if (config.debug) {

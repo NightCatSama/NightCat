@@ -2,8 +2,8 @@ import mailer from 'nodemailer'
 import smtpTransport from 'nodemailer-smtp-transport'
 import async from 'async'
 import config from '../config'
-import opn from 'opn'
-// import logger from './logger'
+import logger from './logger'
+// import opn from 'opn'
 
 let transporter = mailer.createTransport(smtpTransport(config.mail_opts))
 let SITE_ROOT_URL = `http://${config.host}`
@@ -12,7 +12,7 @@ let SITE_ROOT_URL = `http://${config.host}`
  * Send an email
  * @param {Object} data 邮件对象
  */
-const sendMail = (data, link) => {
+export const sendMail = (data, link) => {
 	if (config.debug) {
 		// opn(link)
 		return
@@ -24,21 +24,21 @@ const sendMail = (data, link) => {
 		transporter.sendMail(data, function(err, res) {
 			if (err) {
 				// 写为日志
-				// logger.error('send mail error', err, data)
-				console.log('send mail error!', err)
+				logger.error('send mail error', err, data)
 				return done(err)
 			}
 			return done()
 		})
-	}, function(err) {
+	},	function(err) {
 		if (err) {
-			return console.log('finally send mail error!', err)
+			return logger.error('send mail finally error', err, data);
 		}
+		logger.info('send mail success', data)
 	})
 }
 
 /*  发送激活通知邮件  */
-const sendActiveMail = (who, token, account) => {
+export const sendActiveMail = (who, token, account) => {
 	let from = config.mail_opts.auth.user
 	let to = who
 	let subject = config.name + '账号激活'
