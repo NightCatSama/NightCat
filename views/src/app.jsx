@@ -20,6 +20,7 @@ class App extends Component {
 	/*  redux注册消息弹窗  */
 	componentDidMount() {
 		this.props.actions.register('notice', this.openNotice.bind(this))
+		// this.props.actions.execute('notice', 'miaomiaomiao~', 'error')
 	}
 	openNotice(msg, status) {
 		this.setState({
@@ -41,7 +42,6 @@ class App extends Component {
 				<div ref="container" className="container">
 					{ this.props.children }
 				</div>
-				<button onClick={() => this.props.actions.execute('notice', 'miaomiaomiao~', 'error')}>123</button>
 				<ReactCSSTransitionGroup
 				transitionName="example"
 				transitionAppear={true}

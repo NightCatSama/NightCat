@@ -1,6 +1,6 @@
 export default {
-	debug: process.env.NODE_ENV || true,
-	host: process.env.NODE_ENV ? 'nightcat.win' : 'localhost:8080',
+	debug: false,
+	host: 'nightcat.win',
 
 	/*  端口信息  */
 	port: 80,

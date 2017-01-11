@@ -26,7 +26,7 @@ class Home extends Component {
 							<small>- Welcome to NightCat game city -</small>
 						</section>
 					</div>
-					<div className="main">
+					<div className="main hide">
 						<section>
 							Factory
 						</section>
