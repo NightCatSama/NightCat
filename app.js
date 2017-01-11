@@ -42,10 +42,11 @@ app.use('/', router)
 // error handler
 if (config.debug) {
 	app.use(errorhandler())
-} else {
+}
+else {
 	app.use(function(err, req, res, next) {
 		logger.error(err)
-		return res.status(500).send('500 status')
+		return res.status(500).send(err)
 	})
 }
 

@@ -23,7 +23,7 @@ export const verifyToken = (token) => {
 			rej(err)
 		}
 	})
-} 
+}
 
 export default {
 	getGravatar,

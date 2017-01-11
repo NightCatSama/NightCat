@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "A personal website",
   "scripts": {
-    "build": "webpack --progress --colors --config build/webpack.production.config.js",
+    "build": "rm -rf ./dist && webpack --progress --colors --config build/webpack.production.config.js",
     "dev": "webpack-dev-server --colors --devtool eval-source-map --progress --config build/webpack.config.js"
   },
   "author": "NightCatSama (642163903@qq.com)",

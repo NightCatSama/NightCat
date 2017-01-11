@@ -1,11 +1,10 @@
-// import { user } from '../models'
 import { User } from '../proxy'
 import md5 from 'md5'
 import validator from 'validator'
 import eventproxy from 'eventproxy'
-// import jwt from 'jsonwebtoken'
 import mail from '../common/mail'
 import { signToken, verifyToken } from '../common/user'
+import logger from '../common/logger'
 import config from '../config'
 
 export default {
@@ -46,24 +45,12 @@ export default {
 		}
 
 		await User.getUserByAccount(account)
-			.then(data => {
-				if (data) {
-					return ep.emit('signup_err', '账号已存在')
-				}
-			})
-			.catch(() => {
-				return ep.emit('signup_err', '查询数据库失败', 500)
-			})
+			.then(data => data && ep.emit('signup_err', '账号已存在'))
+			.catch(err => next(err))
 
 		await User.getUserByEmail(email)
-			.then(data => {
-				if (data) {
-					return ep.emit('signup_err', '邮箱已被注册')
-				}
-			})
-			.catch(() => {
-				return ep.emit('signup_err', '查询数据库失败', 500)
-			})
+			.then(data => data && ep.emit('signup_err', '邮箱已被注册'))
+			.catch(err => next(err))
 
 		let md5pass = md5(md5(password))
 		let userInfo = {
@@ -82,7 +69,6 @@ export default {
 			})
 			.catch((err) => {
 				next(err)
-				return ep.emit('signup_err', '【newAndSave】查询数据库失败', 500)
 			})
 	},
 	/*  登录账号  */
@@ -117,35 +103,31 @@ export default {
 				if (!data) {
 					return ep.emit('login_err', '账号不存在')
 				}
+
+				if (data.password !== userInfo.password) {
+					return ep.emit('login_err', '密码错误')
+				}
+				else if (!data.active) {
+					// 重新发送激活邮件
+					mail.sendActiveMail(data.email, md5(data.email + data.password + config.session_secret), account)
+					res.status(403);
+					return ep.emit('login_err', `此帐号还没有被激活，激活链接已发送到 ${data.email} 邮箱，请查收。`)
+				}
 				else {
-					if (data.password !== userInfo.password) {
-						return ep.emit('login_err', '密码错误')
-					}
-					else if (!data.active) {
-						// 重新发送激活邮件
-						mail.sendActiveMail(data.email, md5(data.email + data.password + config.session_secret), account)
-						res.status(403);
-						return ep.emit('login_err', `此帐号还没有被激活，激活链接已发送到 ${data.email} 邮箱，请查收。`)
-					}
-					else {
-						let token = signToken(data.account)
-						req.session.token = token
-						return res.json({
-							success: true,
-							message: '登录成功',
-							name: data.name,
-							access_token: data.accessToken,
-							profile: data.profile,
-							avatar: data.avatar,
-							token: token
-						})
-					}
+					let token = signToken(data.account)
+					req.session.token = token
+					return res.json({
+						success: true,
+						message: '登录成功',
+						name: data.name,
+						access_token: data.accessToken,
+						profile: data.profile,
+						avatar: data.avatar,
+						token: token
+					})
 				}
 			})
-			.catch((err) => {
-				next(err)
-				// return ep.emit('signup_err', '查询数据库失败', 500)
-			})
+			.catch((err) => next(err))
 	},
 	/*  退出登录  */
 	signout: async(req, res, next) => {
@@ -207,13 +189,11 @@ export default {
 				data.active = true
 				data.save(err => {
 					if (err) {
-						return ep.emit('active_account_result', '激活失败，请刷新重试')
+						return next(err)
 					}
 					return ep.emit('active_account_result', '激活成功!', true)
 				})
 			})
-			.catch((err) => {
-				ep.emit('active_account_result', '激活失败，请刷新重试')
-			})
+			.catch((err) => next(err))
 	}
 }

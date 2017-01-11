@@ -1,6 +1,6 @@
 export default {
-	debug: false,
-	host: 'nightcat.win',
+	debug: true,
+	host: 'localhost:8080',
 
 	/*  端口信息  */
 	port: 80,
