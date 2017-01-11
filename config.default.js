@@ -23,9 +23,15 @@ export default {
 		host: 'smtp.126.com',
 		port: 25,
 		auth: {
-			user: 'nightcatsama@126.com',
+			user: 'nightcat@126.com',
 			pass: '******'
 		},
 		ignoreTLS: true,
+	},
+
+	/*  数据库账号密码  */
+	database: {
+		username: 'username',
+		password: 'password'
 	}
 }
