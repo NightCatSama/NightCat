@@ -143,19 +143,16 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 		left: 0;
 		bottom: 30px;
 		width: 100%;
-		padding: 0 40px;
+		padding: 0 $gap;
 		@include flex-h-center;
 		flex-direction: column;
 	}
 
 	.personal-information {
-		position: absolute;
-		left: 0;
-		bottom: 30px;
 		width: 100%;
 		text-align: center;
 		color: $menu-color;
-		padding: 0 $gap;
+		padding: 5px;
 
 		.avatar {
 			width: 100px;
@@ -181,6 +178,18 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 				font-size: 40px;
 			}
 		}
+
+		.user-profile {
+			padding: 0 10px;
+			color: rgba($menu-color, 0.8);
+			@include line-ellipsis(2);
+		}
+	}
+
+	.sign-btn-group {
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
 	}
 
 	.sign-btn {
@@ -227,6 +236,33 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 			&:active {
 			    background-color: darken($green, 5%);
 			}
+		}
+	}
+
+
+	@include max-screen(768px) {
+		.user-group {
+			bottom: 15px;
+		}
+
+		.personal-information {
+			font-size: 16px;
+
+			.avatar {
+				width: 80px;
+				height: 80px;
+			}
+		}
+
+		.sign-btn-group {
+			flex-direction: row;
+		}
+
+		.sign-btn {
+			margin-top: 5px;
+			width: 45%;
+			font-size: 13px;
+			display: inline-block;
 		}
 	}
 }

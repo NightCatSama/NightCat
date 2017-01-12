@@ -1,5 +1,6 @@
 // import { userIsLogin } from '../middlewares/auth'
-import { allowCrossDomain } from '../middlewares/allowCrossDomain'
+import { allowCrossDomain } from '../middlewares/response'
+import { setStaticOnFront } from '../middlewares/request'
 import ctr from '../controllers'
 import express from 'express'
 let router = express.Router();
@@ -13,6 +14,7 @@ router
 	.post('/signout', user.signout)  //  退出登录
 	.post('/signup', user.signup)  //  注册
 	.post('/verify', user.verify)  //  验证登录信息是否有效
+	.use(setStaticOnFront)  //  设置文件静态目录
 	.get('/', site.index) // 跳转页面
 	.get('/:name', site.index) // 跳转页面
 

@@ -2,6 +2,11 @@ import { user } from '../models'
 import { getGravatar } from '../common/user'
 import uuid from 'uuid'
 
+ /*  获取完整的用户列表  */
+const getUsers = async() => {
+	return await user.find({})
+}
+
  /*  根据用户名查找用户  */
 const getUserByNames = async(name) => {
 	return await user.findOne({
@@ -23,6 +28,13 @@ const getUserByEmail = async(email) => {
 	})
 }
 
+ /*  根据access_token查找用户  */
+const getUserByAccessToken = async(accessToken) => {
+	return await user.findOne({
+		accessToken: accessToken
+	})
+}
+
  /*  生成新用户  */
 const newAndSave = async(data) => {
 	let u = new user()
@@ -38,6 +50,7 @@ const newAndSave = async(data) => {
 
 
 export default {
+	getUsers,
 	getUserByNames,
 	getUserByAccount,
 	getUserByEmail,

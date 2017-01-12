@@ -3,7 +3,7 @@ import smtpTransport from 'nodemailer-smtp-transport'
 import async from 'async'
 import config from '../config'
 import logger from './logger'
-// import opn from 'opn'
+import opn from 'opn'
 
 let transporter = mailer.createTransport(smtpTransport(config.mail_opts))
 let SITE_ROOT_URL = `http://${config.host}`
@@ -14,7 +14,7 @@ let SITE_ROOT_URL = `http://${config.host}`
  */
 export const sendMail = (data, link) => {
 	if (config.debug) {
-		// opn(link)
+		opn(link)
 		return
 	}
 
