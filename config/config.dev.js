@@ -16,17 +16,16 @@ export default {
 	description: 'A site',
 
 	/*  加密用字段  */
-	session_secret: '******',
+	session_secret: 'modify-it',
 
 	/*  发送邮箱设置  */
 	mail_opts: {
 		host: 'smtp.126.com',
 		port: 25,
 		auth: {
-			user: 'nightcat@126.com',
-			pass: '******'
-		},
-		ignoreTLS: true,
+			user: 'nightcatsama@126.com',
+			pass: 'qq642163903'
+		}
 	},
 
 	/*  数据库账号密码  */

@@ -110,22 +110,29 @@ class Menu extends Component {
 						</Link>
 					</div>
 					{ this.state.isLogin ? (
-						<div className="personal-information">
-							<img className="avatar" src={ this.state.userInfo.avatar } />
-							<h2 className="user-name">{ this.state.userInfo.name }</h2>
-							<small className="user-profile">{ this.state.userInfo.profile }</small>
-							<div className="follow">
-								<a href="https://github.com/NightCatSama" target="_blank">
-									<i className="iconfont icon-github"></i>
-								</a>
-								<a href="https://twitter.com/NightCatSama" target="_blank">
-									<i className="iconfont icon-twitter"></i>
-								</a>
-								<a href="http://weibo.com/p/1005053909739860" target="_blank">
-									<i className="iconfont icon-sina"></i>
-								</a>
+						<div className="user-group">
+							<div className="personal-information">
+								<img className="avatar" src={ this.state.userInfo.avatar } />
+								<h2 className="user-name">{ this.state.userInfo.name }</h2>
+								<small className="user-profile">{ this.state.userInfo.profile }</small>
+								<div className="follow">
+									<a href="https://github.com/NightCatSama" target="_blank">
+										<i className="iconfont icon-github"></i>
+									</a>
+									<a href="https://twitter.com/NightCatSama" target="_blank">
+										<i className="iconfont icon-twitter"></i>
+									</a>
+									<a href="http://weibo.com/p/1005053909739860" target="_blank">
+										<i className="iconfont icon-sina"></i>
+									</a>
+								</div>
 							</div>
-							<a href="javascript:;" className="sign-btn" onClick={this.signout}>Sign out</a>
+							<div className="sign-btn-group">
+								<Link to="/Sign" className="sign-btn blue-btn" onClick={this.linkClick}>
+									Edit info
+								</Link>
+								<a href="javascript:;" className="sign-btn" onClick={this.signout}>Sign out</a>
+							</div>
 						</div>
 					) : (
 						<div className="user-group">

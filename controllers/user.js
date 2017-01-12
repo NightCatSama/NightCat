@@ -3,7 +3,7 @@ import md5 from 'md5'
 import validator from 'validator'
 import eventproxy from 'eventproxy'
 import mail from '../common/mail'
-import { signToken, verifyToken } from '../common/user'
+import utils from '../common/user'
 import logger from '../common/logger'
 import config from '../config'
 
@@ -43,14 +43,12 @@ export default {
 		if (password !== repassword) {
 			return ep.emit('signup_err', '两次密码输入不一致')
 		}
-
-		await User.getUserByAccount(account)
-			.then(data => data && ep.emit('signup_err', '账号已存在'))
-			.catch(err => next(err))
-
-		await User.getUserByEmail(email)
-			.then(data => data && ep.emit('signup_err', '邮箱已被注册'))
-			.catch(err => next(err))
+		if (await User.getUserByAccount(account)) {
+			return ep.emit('signup_err', '账号已存在')
+		}
+		if (await User.getUserByEmail(account)) {
+			return ep.emit('signup_err', '邮箱已被注册')
+		}
 
 		let md5pass = md5(md5(password))
 		let userInfo = {
@@ -114,7 +112,7 @@ export default {
 					return ep.emit('login_err', `此帐号还没有被激活，激活链接已发送到 ${data.email} 邮箱，请查收。`)
 				}
 				else {
-					let token = signToken(data.account)
+					let token = utils.signToken(data.account)
 					req.session.token = token
 					return res.json({
 						success: true,
@@ -140,7 +138,7 @@ export default {
 	/*  认证是否登录  */
 	verify: async(req, res, next) => {
 		let token = req.session.token
-		await verifyToken(token)
+		await utils.verifyToken(token)
 		.then(account => User.getUserByAccount(account))
 		.then(data => {
 			res.json({

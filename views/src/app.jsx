@@ -21,6 +21,12 @@ class App extends Component {
 	componentDidMount() {
 		this.props.actions.register('notice', this.openNotice.bind(this))
 		// this.props.actions.execute('notice', 'miaomiaomiao~', 'error')
+
+		axios.post('/admin/list', {})
+		.then((res) => {
+			console.log(res)
+		})
+		.catch((err) => console.log(err))
 	}
 	openNotice(msg, status) {
 		this.setState({

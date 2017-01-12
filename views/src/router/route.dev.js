@@ -12,7 +12,7 @@ const autoLogin = (nextState, replaceState, callback) => {
 	let status = window.sessionStorage.login_status
 	if (!status || status.isLogin) {
 		callback()
-		return 
+		return
 	}
 
 	let token = window.localStorage.token

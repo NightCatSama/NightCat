@@ -8,7 +8,7 @@ import axios from 'axios'
 
 window.axios = axios.create({
 	baseURL: `${process.env.NODE_ENV === 'development' ? 'http://localhost:80' : ''}`,
-	withCredentials: !!process.env.NODE_ENV === 'development'
+	withCredentials: process.env.NODE_ENV === 'development'
 })
 
 const store = configureStore()

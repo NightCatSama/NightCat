@@ -4,7 +4,7 @@
   "private": true,
   "description": "A personal website",
   "scripts": {
-    "start": "nodemon es/",
+    "start": "set NODE_ENV=development && nodemon es/",
     "deploy": "set NODE_ENV=production && pm2 start es/"
   },
   "author": "NightCatSama (642163903@qq.com)",
@@ -17,6 +17,7 @@
     "ejs": "~2.3.3",
     "eventproxy": "^0.3.5",
     "express": "~4.13.1",
+    "express-hbs": "^1.0.4",
     "express-session": "^1.14.2",
     "jsonwebtoken": "^7.2.1",
     "log4js": "^1.1.0",
