@@ -4,7 +4,7 @@ import express from 'express'
 const setStaticOnBack = async(req, res, next) => {
 	let app = req.app
 	app.set('views', app.get('back_views'))
-	app.use(express.static(app.get('back_views')))
+	app.use(express.static(app.get('back_static_views')))
 	next()
 }
 
@@ -12,7 +12,7 @@ const setStaticOnBack = async(req, res, next) => {
 const setStaticOnFront = async(req, res, next) => {
 	let app = req.app
 	app.set('views', app.get('frone_views'))
-	app.use(express.static(app.get('back_static_views')))
+	app.use(express.static(app.get('frone_views')))
 	next()
 }
 export {
