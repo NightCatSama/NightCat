@@ -1,0 +1,21 @@
+{{#contentFor 'pageStyles'}}
+	<link rel="stylesheet" href="/css/login.min.css">
+{{/contentFor}}
+
+{{#contentFor 'pageScripts'}}
+<script>
+	$(function() {
+
+	})
+</script>
+{{/contentFor}}
+
+<div class="login-group flex-column">
+	<label for="account" class="mb-sm">
+		username:<input id="account" type="text" />
+	</label>
+	<label for="password" class="mb-sm">
+		password:<input id="password" type="password" />
+	</label>
+	<button>Login</button>
+</div>

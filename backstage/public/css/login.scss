@@ -1,0 +1,7 @@
+@import 'common/core';
+
+body {
+	background-color: $bg-color;
+	height: 100vh;
+	@include flex-center;
+}
