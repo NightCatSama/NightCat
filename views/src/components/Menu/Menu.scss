@@ -4,7 +4,6 @@ $gap: 20px;
 $btn-offsetTop: 30px;
 $btn-offsetRight: 50px;
 $btn-offsetLeft: $gap;
-$btn-width: 80px;
 $link-paddingTop: 80px;
 $menu-bg: #123;
 $menu-color: $blue;
@@ -95,7 +94,10 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 	@include max-screen(768px) {
 		.menu-btn {
 			top: 10px;
-			transform: translate3d(-100px, 0, 0);
+			padding: 0 6px;
+			height: 28px;
+			line-height: 28px;
+			transform: translate3d(-90px, 0, 0);
 		}
 		.menu-btn-inside {
 			color: #999;
@@ -114,7 +116,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 			cursor: pointer;
 			font-weight: bold;
 			position: relative;
-			color: $menu-color;
+			color: lighten($menu-color, 10%);
 			text-decoration: none;
 			transition: all .3s;
 
@@ -124,8 +126,12 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 			}
 
 			&.active {
-				background-color: $menu-color;
+				background-color: rgba($menu-color, 0.8);
 				color: $white;
+			}
+
+			&:nth-child(2n) {
+				// background-color: rgba(0, 0, 0, .16);
 			}
 
 			&:not(.active):hover {

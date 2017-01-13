@@ -7,25 +7,21 @@
 export const userRequired = (req, res, next) => {
 	if (!req.session || !req.session.token) {
 		return res.status(403)
-			.redirect(`/Sign?message=Login&link=${req.path}`);
+			.redirect(`/Sign?message=${encodeURIComponent('请先登录')}&link=${req.path}`);
 	}
 	next()
 }
 
-// /*  是否已登录  */
-// export const userIsLogin = async(req, res, next) => {
-// 	let token = req.session.token
-// 	await verifyToken(token)
-// 	.then(account => User.getUserByAccount(account))
-// 	.then(data => {
-// 		return next()
-// 	})
-// 	.catch(err => {
-// 		throw '认证失败'
-// 	})
-// }
+/*  需要管理员权限  */
+export const userAdminRequired = (req, res, next) => {
+	if (!req.session ||　!req.session.is_admin || !req.session.token) {
+		return res.status(403)
+			.redirect(`/admin/?message=${encodeURIComponent('请先登录')}&link=${req.path}`);
+	}
+	next()
+}
 
 export default {
 	userRequired,
-	// userIsLogin
+	userAdminRequired
 }

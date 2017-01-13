@@ -105,11 +105,23 @@ class Menu extends Component {
 							<span>Home</span>
 						</IndexLink>
 						<Link to="/factory" activeClassName="active" className="link" onClick={this.linkClick}>
-							<i className="iconfont icon-component"></i>
-							<span>Factory</span>
+							<i className="iconfont icon-singleGames"></i>
+							<span>Single Games</span>
+						</Link>
+						<Link to="/singleGames" activeClassName="active" className="link" onClick={this.linkClick}>
+							<i className="iconfont icon-onlineGames"></i>
+							<span>Online Games</span>
+						</Link>
+						<Link to="/onlineGames" activeClassName="active" className="link" onClick={this.linkClick}>
+							<i className="iconfont icon-myFriends"></i>
+							<span>My Friends</span>
+						</Link>
+						<Link to="/about" activeClassName="active" className="link" onClick={this.linkClick}>
+							<i className="iconfont icon-about"></i>
+							<span>About Me</span>
 						</Link>
 					</div>
-					{ this.state.isLogin ? (
+					{ this.props.showUserGroup && (this.state.isLogin ? (
 						<div className="user-group">
 							<div className="personal-information">
 								<img className="avatar" src={ this.state.userInfo.avatar } />
@@ -128,22 +140,24 @@ class Menu extends Component {
 								</div>
 							</div>
 							<div className="sign-btn-group">
-								<Link to="/Sign" className="sign-btn blue-btn" onClick={this.linkClick}>
-									Edit info
+								<Link to="/User" className="sign-btn blue-btn" onClick={this.linkClick}>
+									My info
 								</Link>
 								<a href="javascript:;" className="sign-btn" onClick={this.signout}>Sign out</a>
 							</div>
 						</div>
 					) : (
 						<div className="user-group">
-							<Link to="/Sign" className="sign-btn blue-btn" onClick={this.linkClick}>
-								Sign in
-							</Link>
-							<Link to="/Sign?signup=1" className="sign-btn green-btn" onClick={this.linkClick}>
-								Sign up
-							</Link>
+							<div className="sign-btn-group">
+								<Link to="/Sign" className="sign-btn blue-btn" onClick={this.linkClick}>
+									Sign in
+								</Link>
+								<Link to="/Sign?signup=1" className="sign-btn green-btn" onClick={this.linkClick}>
+									Sign up
+								</Link>
+							</div>
 						</div>
-					)}
+					) )}
 				</div>
 			</div>
 		);
@@ -162,7 +176,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(Menu)
 
 Menu.propTypes = {
 	callback: PropTypes.func,
+	showUserGroup: PropTypes.bool,
 	actions: PropTypes.object
+}
+
+Menu.defaultProps = {
+	showUserGroup: true
 }
 
 Menu.contextTypes = {

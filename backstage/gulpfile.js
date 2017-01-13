@@ -3,7 +3,6 @@ var gulp = require('gulp'),
     gulpif = require('gulp-if'),
     autoprefixer = require('gulp-autoprefixer'),
     cleanCSS = require('gulp-clean-css'),
-    csscomb = require('gulp-csscomb'),
     notify = require('gulp-notify'),
     rename = require('gulp-rename'),
     sourcemaps = require('gulp-sourcemaps'),
@@ -32,16 +31,34 @@ gulp.task('browser-sync', ['sass', 'scripts'], function() {
 // 样式处理
 gulp.task('sass', function() {
     return gulp.src('public/css/**/*.scss')
+        .pipe(plumber({
+            errorHandler: function(error) {
+                this.emit('end');
+                console.log(
+`-------------------- 错误信息 --------------------
+错误行数： 第 ${error.line} 行
+错误文件： ${error.file}
+错误类型： ${error.messageOriginal}
+
+错误信息： ${error.messageFormatted}
+--------------------------------------------------`
+                );
+            }
+        }))
+        .pipe(plumber({
+            errorHandler: notify.onError({
+                title: 'SASS编译失败！',
+                message: `<%= error.messageOriginal %>（<%= error.line %>行）`
+            })
+        }))
         .pipe(gulpif(!isDeploy, sourcemaps.init()))
         .pipe(sass())
-        .pipe(gulpif(!isDeploy, sourcemaps.write()))
         .pipe(autoprefixer(['>5%']))
-        .pipe(csscomb())
-        .pipe(gulp.dest('dist/css'))
         .pipe(rename({
             suffix: '.min'
         }))
         .pipe(cleanCSS())
+        .pipe(gulpif(!isDeploy, sourcemaps.write()))
         .pipe(gulp.dest('dist/css'))
         .pipe(gulpif(!isDeploy, reload({
             stream: true
@@ -51,6 +68,26 @@ gulp.task('sass', function() {
 // Scripts任务
 gulp.task('scripts', function() {
     return gulp.src('public/js/**/*.js')
+        .pipe(plumber({
+            errorHandler: function(error) {
+                this.emit('end');
+                console.log(
+`-------------------- 错误信息 --------------------
+错误行数： 第 ${error.loc.line} 行
+错误文件： ${error.fileName}
+错误类型： ${error.name}
+
+错误信息： ${error.message}
+--------------------------------------------------`
+                );
+            }
+        }))
+        .pipe(plumber({
+            errorHandler: notify.onError({
+                title: 'Javascript编译失败！',
+                message: `<%= error.message %>`
+            })
+        }))
         .pipe(sourcemaps.init())
         .pipe(gulpif(!isDeploy, sourcemaps.init()))
         .pipe(babel())

@@ -6,6 +6,8 @@
 // (=ˋωˊ=)
 //
 
+$font-family:  'Montserrat', 'Segoe UI', 'Microsoft Yahei', Helvetica, Arial;
+
 * {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -13,7 +15,6 @@
 }
 
 body,
-div,
 dl,
 dt,
 dd,
@@ -29,8 +30,6 @@ h6,
 pre,
 code,
 form,
-fieldset,
-legend,
 input,
 button,
 textarea,
@@ -99,8 +98,8 @@ ol {
     list-style: none;
 }
 
-body {
-    font-family: "Segoe UI", 'Microsoft Yahei', Helvetica, Arial;
+html {
+    font-family: $font-family;
     color: $font-color;
 }
 
@@ -167,8 +166,8 @@ textarea {
     border: 1px solid $default;
     background-color: $white;
     width: 220px;
+    font-family: $font-family;
     @include placeholder($default);
-    font-family: Helvetica;
     &:-webkit-autofill {
         -webkit-box-shadow: 0 0 0px 1000px $white inset;
     }
@@ -190,7 +189,6 @@ input[type="checkbox"] {
 table {
     background-color: $white;
     border-collapse: collapse;
-    font-family: 'Microsoft Yahei';
     box-shadow: 0 0 5px 1px rgba(0, 0, 0, .26);
     overflow: hidden;
     tr {

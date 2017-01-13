@@ -1,4 +1,4 @@
-const createRoute = (path, name) => {
+const createRoute = (path, name, options) => {
 	const route = {
 		getComponent(nextState, cb) {
 			require.ensure([], (require) => {
@@ -8,6 +8,11 @@ const createRoute = (path, name) => {
 	}
 	if (path) {
 		route.path = path
+	}
+	if (options) {
+		for (let key in options) {
+			route[key] = options[key]
+		}
 	}
 	return route
 }

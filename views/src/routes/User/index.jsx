@@ -1,17 +1,22 @@
 import React, { Component, PropTypes } from 'react'
-// import Canvas from '../asset/Canvas/'
-
 import Menu from 'components/Menu/'
-import './styles/'
+// import cs from 'classnames'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
 
-class Home extends Component {
+import './styles'
+
+class Sign extends Component {
 	constructor (props) {
 		super(props)
+		this.state = {
+		}
 		this.offsetView = this.offsetView.bind(this)
+	}
+	componentDidMount() {
+		/*  根据AccessToken获取用户基础信息  */
 	}
 	offsetView() {
 		this.refs.view.classList.toggle('offset')
@@ -19,20 +24,10 @@ class Home extends Component {
 	render() {
 		return (
 			<span>
-				<div ref="view" className="home-view">
-					<div className="first-screen">
-						<section className="info">
-							<h1>NightCat</h1>
-							<small>- Welcome to NightCat game city -</small>
-						</section>
-					</div>
-					<div className="main hide">
-						<section>
-							Factory
-						</section>
-					</div>
+				<div ref="view" className="user-view">
+					{ this.props.children }
 				</div>
-				<Menu ref="menu" callback={this.offsetView} />
+				<Menu ref="menu" showUserGroup={false} callback={this.offsetView} />
 			</span>
 		);
 	}
@@ -46,8 +41,15 @@ const mapDispatchToProps = (dispatch) => ({
 	actions: bindActionCreators(EventBusAction, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default connect(mapStateToProps, mapDispatchToProps)(Sign)
 
-Home.propTypes = {
-	actions: PropTypes.any
+Sign.propTypes = {
+	children: PropTypes.any,
+	actions: PropTypes.any,
+	history: PropTypes.any,
+	location: PropTypes.any
+}
+
+Sign.contextTypes = {
+	router: React.PropTypes.any.isRequired
 }

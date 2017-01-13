@@ -7,11 +7,18 @@ $switch-time: 0.4s;
 .sign-view {
 	position: relative;
 	flex: 1;
+	min-height: 100vh;
 	background-image: url('../../../images/bg.jpg');
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center;
 	@include flex-center;
+	will-change: transform;
+	transition: transform $slider-time;
+
+	&.offset {
+		transform: translate3d(-$side-width, 0, 0);
+	}
 
 	.sign-wrap {
 		width: 315px;

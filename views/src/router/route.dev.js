@@ -6,11 +6,15 @@ import App from '../app'
 import Home from 'routes/Home'
 import Factory from 'routes/Factory'
 import Sign from 'routes/Sign'
+import User from 'routes/User'
+import { Info } from 'routes/User/components'
 import ActiveAccount from 'routes/ActiveAccount'
 
+/*  是否自动登陆  */
 const autoLogin = (nextState, replaceState, callback) => {
 	let status = window.sessionStorage.login_status
-	if (!status || status.isLogin) {
+	status = status && JSON.parse(status)
+	if (status && status.isLogin) {
 		callback()
 		return
 	}
@@ -36,6 +40,19 @@ const autoLogin = (nextState, replaceState, callback) => {
 			callback()
 		})
 	}
+	else {
+		callback()
+	}
+}
+
+/*  需要登陆  */
+const userRequired = (nextState, replaceState) => {
+	let status = window.sessionStorage.login_status
+	status = status && JSON.parse(status)
+	if (!status || !status.isLogin) {
+		replaceState('/')
+		return
+	}
 }
 
 export default class Root extends Component {
@@ -48,6 +65,9 @@ export default class Root extends Component {
 						<Route path="factory" component={Factory} />
 						<Route path="Sign" component={Sign} />
 						<Route path="active_account" component={ActiveAccount} />
+						<Route path="user" component={User} onEnter={userRequired}>
+							<IndexRoute component={Info} />
+						</Route>
 					</Route>
 				</Router>
 				<DevTools />

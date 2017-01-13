@@ -1,7 +1,27 @@
 {{#contentFor 'pageStyles'}}
-<style>
-</style>
+	<link rel="stylesheet" href="/css/index.min.css">
 {{/contentFor}}
+
+<table class="my-table">
+	<tr>
+		<th>账号</th>
+		<th>邮箱</th>
+		<th>昵称</th>
+		<th>是否激活</th>
+		<th>是否管理员</th>
+		<th>注册时间</th>
+	</tr>
+	{{#data}}
+		<tr>
+			<td>{{this.account}}</td>
+			<td>{{this.email}}</td>
+			<td>{{this.name}}</td>
+			<td>{{this.active}}</td>
+			<td>{{this.admin}}</td>
+			<td>{{{format this.created_at}}}</td>
+		</tr>
+	{{/data}}
+</table>
 
 {{#contentFor 'pageScripts'}}
 <script>
@@ -10,8 +30,3 @@
 	})
 </script>
 {{/contentFor}}
-
-{{#data}}
-    <h1>{{this.name}}</h1>
-    <button class="clicker">123456</button>
-{{/data}}

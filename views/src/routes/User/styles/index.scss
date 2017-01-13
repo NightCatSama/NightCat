@@ -1,0 +1,14 @@
+@import '~stylesheets/common/util';
+
+.user-view {
+	position: relative;
+	flex: 1;
+	min-height: 100vh;
+	@include flex-center;
+	will-change: transform;
+	transition: transform $slider-time;
+
+	&.offset {
+		transform: translate3d(-$side-width, 0, 0);
+	}
+}

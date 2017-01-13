@@ -3,7 +3,7 @@ import md5 from 'md5'
 import validator from 'validator'
 import eventproxy from 'eventproxy'
 import mail from '../common/mail'
-import utils from '../common/user'
+import utils from '../common/sign'
 import logger from '../common/logger'
 import config from '../config'
 
@@ -114,10 +114,12 @@ export default {
 				else {
 					let token = utils.signToken(data.account)
 					req.session.token = token
+					req.session.is_admin = data.admin
 					return res.json({
 						success: true,
 						message: '登录成功',
 						name: data.name,
+						is_admin: data.admin,
 						access_token: data.accessToken,
 						profile: data.profile,
 						avatar: data.avatar,

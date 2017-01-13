@@ -1,5 +1,5 @@
 import { user } from '../models'
-import { getGravatar } from '../common/user'
+import { getGravatar } from '../common/sign'
 import uuid from 'uuid'
 
  /*  获取完整的用户列表  */

@@ -3,5 +3,114 @@
 body {
 	background-color: $bg-color;
 	height: 100vh;
+	width: 100%;
+	overflow: hidden;
 	@include flex-center;
+	background-color: #333;
+	background-image: linear-gradient(134deg, #4b6cb7 , #182848);
+}
+
+.login-group {
+	padding: 30px 40px;
+	background-color: $white;
+	width: 400px;
+	border-radius: 8px;
+	box-shadow: 0 0 50px 10px rgba(0, 0, 0, .36);
+	font-size: 14px;
+
+	h2 {
+		font-size: 22px;
+		text-align: center;
+		margin-bottom: 40px;
+	}
+
+	button {
+		width: 100%;
+		margin-top: 20px;
+	}
+
+	.cat {
+		display: none;
+	}
+
+	@include max-screen(768px) {
+		width: 100%;
+		height: 100%;
+		@include flex-center;
+		padding: 20px 30px;
+		border-radius: 0px;
+
+		$cat-height: 15vh;
+
+		.cat {
+			content: '';
+			display: block;
+			position: absolute;
+			bottom: -$cat-height / 2;
+			left: -5%;
+			width: 110%;
+			height: $cat-height;
+			border-radius: 50%;
+			background-color: $black;
+
+			&::before {
+				content: '';
+				position: absolute;
+				bottom: 12vh;
+				left: 10%;
+				@include triangle(100px, $black, top);
+				transform: rotate(-10deg);
+			}
+
+			&::after {
+				content: '';
+				position: absolute;
+				bottom: 12vh;
+				right: 10%;
+				@include triangle(100px, $black, top);
+				transform: rotate(10deg);
+			}
+		}
+
+		button {
+			width: 200px;
+			margin-top: 40px;
+			text-align: center;
+		}
+	}
+}
+
+.input-group {
+	width: 100%;
+	margin-bottom: 5px;
+
+	label {
+		margin-right: 5px;
+		margin-bottom: 2px;
+	}
+
+	input {
+		width: 100%;
+		border: none;
+		border-radius: 0;
+		border-bottom: 2px solid #999;
+		background-color: $tr;
+
+		&:-webkit-autofill {
+		    -webkit-box-shadow: 0 0 0px 1000px $white inset;
+		}
+	}
+}
+
+.message-modal {
+	position: absolute;
+	top: 30px;
+	left: 50%;
+	transform: translateX(-50%);
+	background-color: $red;
+	padding: 5px 12px;
+	color: $white;
+	font-size: 15px;
+	border-radius: 8px;
+	z-index: 9;
 }

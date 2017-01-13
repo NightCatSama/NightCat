@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Menu from 'components/Menu/'
 import cs from 'classnames'
 import isEmail from 'validator/lib/isEmail'
 
@@ -31,6 +32,10 @@ class Sign extends Component {
 		this.coverHandle = this.coverHandle.bind(this)
 		this.switchType = this.switchType.bind(this)
 		this.notice = (msg, status) => this.props.actions.execute('notice', msg, status)
+		this.offsetView = this.offsetView.bind(this)
+	}
+	offsetView() {
+		this.refs.view.classList.toggle('offset')
 	}
 	/*  调用注册接口  */
 	signup() {
@@ -263,18 +268,21 @@ class Sign extends Component {
 		})
 		this.form = this.getForm()
 		return (
-			<div ref="view" className="sign-view">
-				<div className={classNames} ref="signWrap">
-					<div ref="switchTypeBtn" className="switch-type-btn" onClick={this.switchType}></div>
-					{ this.form }
-					{ this.state.success && (
-						<div className="success-cover" onClick={this.coverHandle}>
-							<i className="iconfont icon-checked"></i>
-							<span className="success-word">{ this.state.success }</span>
-						</div>
-					)}
+			<span>
+				<div ref="view" className="sign-view">
+					<div className={classNames} ref="signWrap">
+						<div ref="switchTypeBtn" className="switch-type-btn" onClick={this.switchType}></div>
+						{ this.form }
+						{ this.state.success && (
+							<div className="success-cover" onClick={this.coverHandle}>
+								<i className="iconfont icon-checked"></i>
+								<span className="success-word">{ this.state.success }</span>
+							</div>
+						)}
+					</div>
 				</div>
-			</div>
+				<Menu ref="menu" showUserGroup={false} callback={this.offsetView} />
+			</span>
 		);
 	}
 }

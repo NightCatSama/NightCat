@@ -1,9 +1,9 @@
-import user from './user'
+import sign from './sign'
 import site from './site'
 import admin from './admin'
 
 export default {
-	user,
+	sign,
 	site,
 	admin
 }

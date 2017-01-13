@@ -57,6 +57,11 @@ let userSchema = new Schema({
   	accessToken: {
   		type: String
   	},
+  	/*  是否管理员  */
+	admin: {
+		type: Boolean,
+		default: false
+	}
 })
 
 userSchema.index({account: 1}, {unique: true, sparse: true})

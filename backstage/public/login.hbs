@@ -2,20 +2,86 @@
 	<link rel="stylesheet" href="/css/login.min.css">
 {{/contentFor}}
 
+<div class="login-group flex-column">
+	<h2>NightCat 后台管理系统</h2>
+	<div class="input-group">
+		<label for="account">username:</label>
+		<input id="account" type="text" />
+	</div>
+	<div class="input-group">
+		<label for="password">password:</label>
+		<input id="password" type="password" />
+	</div>
+	<button class="btn-blue login-btn">Sign in</button>
+	<div class="cat"></div>
+</div>
+
 {{#contentFor 'pageScripts'}}
 <script>
-	$(function() {
+	/*  点击登陆  */
+	$('.login-btn').on('click', () => {
+		$.ajax({
+			type: 'POST',
+			url: '../signin',
+			data: {
+				account: $('#account').val(),
+				password: $('#password').val()
+			},
+			dataType: 'json',
+			success: (data) => {
+				if (data.is_admin) {
+					window.localStorage.token = data.token
+					window.sessionStorage.login_status = JSON.stringify({
+						isLogin: true,
+						avatar: data.avatar,
+						profile: data.profile,
+						accessToken: data.accessToken,
+						name: data.name
+					})
+					window.location = `/admin${getQuery().link || '/index'}`
+				}
+				else {
+					message('需要管理员权限')
+				}
+			},
+			error: (err) => {
+				message(err.responseJSON.message)
+			}
+		})
+	})
 
+	/*  弹出错误消息  */
+	const message = (function() {
+		let $wrap = $(document.body)
+		let timer = null
+		let $msg = $(`<div class="message-modal" style="display: none;"></div>`)
+		$wrap.append($msg)
+		return function(msg, time = 2000) {
+			$msg.text(msg)
+			$msg.fadeIn(200)
+
+			timer && clearTimeout(timer)
+			timer = setTimeout(() => {
+				$msg.fadeOut(200)
+			}, time)
+		}
+	})()
+
+	/*  得到Query  */
+	const getQuery = () => {
+		var arr = location.search.slice(1).split('&')
+		var obj = {}
+		Array.from(arr, v => {
+			let a = v.split('=')
+			obj[a[0]] = decodeURIComponent(a[1])
+		})
+		return obj
+	}
+
+	/*  根据URL的message弹出消息  */
+	$(function() {
+		let msg = getQuery().message
+		msg && message(msg, 3000)
 	})
 </script>
 {{/contentFor}}
-
-<div class="login-group flex-column">
-	<label for="account" class="mb-sm">
-		username:<input id="account" type="text" />
-	</label>
-	<label for="password" class="mb-sm">
-		password:<input id="password" type="password" />
-	</label>
-	<button>Login</button>
-</div>
