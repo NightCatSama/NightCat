@@ -154,10 +154,6 @@ $switch-time: 0.4s;
 			background-color: $tr;
 			border: none;
 
-			&::after {
-				content: ''
-			}
-
 			&:-webkit-autofill {
 				-webkit-text-fill-color: $white;
 				-webkit-box-shadow: 0 0 0px 1000px $sign-bg-color inset;
@@ -218,6 +214,7 @@ $switch-time: 0.4s;
 			background-color: $blue;
 			border-radius: 0;
 		}
+
 	}
 
 	.success-cover {
@@ -238,5 +235,7 @@ $switch-time: 0.4s;
 			font-size: 80px;
 			margin-bottom: 20px;
 		}
+
 	}
+
 }

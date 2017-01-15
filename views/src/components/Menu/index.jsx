@@ -28,12 +28,13 @@ class Menu extends Component {
 
 		status = JSON.parse(status)
 		if (status.isLogin) {
+			let userInfo = JSON.parse(window.sessionStorage.userInfo)
 			this.setState({
 				isLogin: true,
 				userInfo: {
-					name: status.name,
-					profile: status.profile,
-					avatar: status.avatar
+					name: userInfo.name,
+					profile: userInfo.profile,
+					avatar: userInfo.avatar
 				}
 			})
 		}
@@ -124,9 +125,9 @@ class Menu extends Component {
 					{ this.props.showUserGroup && (this.state.isLogin ? (
 						<div className="user-group">
 							<div className="personal-information">
-								<img className="avatar" src={ this.state.userInfo.avatar } />
-								<h2 className="user-name">{ this.state.userInfo.name }</h2>
-								<small className="user-profile">{ this.state.userInfo.profile }</small>
+								<img className="avatar" src={this.state.userInfo.avatar} />
+								<h2 className="user-name">{this.state.userInfo.name}</h2>
+								<small className="user-profile">{this.state.userInfo.profile}</small>
 								<div className="follow">
 									<a href="https://github.com/NightCatSama" target="_blank">
 										<i className="iconfont icon-github"></i>
@@ -140,7 +141,7 @@ class Menu extends Component {
 								</div>
 							</div>
 							<div className="sign-btn-group">
-								<Link to="/User" className="sign-btn blue-btn" onClick={this.linkClick}>
+								<Link to="/user" className="sign-btn blue-btn" onClick={this.linkClick}>
 									My info
 								</Link>
 								<a href="javascript:;" className="sign-btn" onClick={this.signout}>Sign out</a>
@@ -149,10 +150,10 @@ class Menu extends Component {
 					) : (
 						<div className="user-group">
 							<div className="sign-btn-group">
-								<Link to="/Sign" className="sign-btn blue-btn" onClick={this.linkClick}>
+								<Link to="/sign" className="sign-btn blue-btn" onClick={this.linkClick}>
 									Sign in
 								</Link>
-								<Link to="/Sign?signup=1" className="sign-btn green-btn" onClick={this.linkClick}>
+								<Link to="/sign?signup=1" className="sign-btn green-btn" onClick={this.linkClick}>
 									Sign up
 								</Link>
 							</div>

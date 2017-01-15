@@ -11,9 +11,9 @@ const headerBtn = handleActions({
         return Object.assign({}, state, obj)
     },
     [ActionTypes.EXECUTE](state, { payload }) {
-        let { type, msg, status } = payload
+        let { type, msg, status, options } = payload
     	if (typeof state[type] === 'function') {
-    		state[type](msg, status)
+    		state[type](msg, status, options)
     	}
         return Object.assign({}, state)
     }

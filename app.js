@@ -48,7 +48,7 @@ app.use(session({
 		url: `mongodb://${config.db_host}:${config.db_port}/${config.db}`,
 	}),
 	cookie: {
-		maxAge: 180 * 60 * 1000
+		maxAge: 30 * 60 * 60 * 1000
 	}
 }))
 

@@ -23,7 +23,7 @@ gulp.task('browser-sync', ['sass', 'scripts'], function() {
 
     gulp.watch('public/**/*.scss', ['sass']);
     gulp.watch('public/**/*.js', ['scripts']);
-    gulp.watch('**/*.hbs').on('change', reload)
+    gulp.watch(['public/**/*.hbs', 'partials/**/*.hbs', 'layout/**/*.hbs']).on('change', reload)
     gulp.watch('dist/css/**/*.css').on('change', reload)
     gulp.watch('dist/js/**/*.js').on('change', reload)
 });

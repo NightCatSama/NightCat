@@ -34,6 +34,10 @@ class Sign extends Component {
 		this.notice = (msg, status) => this.props.actions.execute('notice', msg, status)
 		this.offsetView = this.offsetView.bind(this)
 	}
+	componentDidMount() {
+		let msg = this.props.location.query.message
+		msg && this.notice(msg, 'error')
+	}
 	offsetView() {
 		this.refs.view.classList.toggle('offset')
 	}
@@ -87,19 +91,17 @@ class Sign extends Component {
 			Velocity(el, { scale: 1.1 }, { duration: 200 })
 			Velocity(el, { scale: 0 }, { duration: 500 })
 			Velocity(el, { scale: 1, width: '100vw', height: '100vh' }, { duration: 1000, easing: 'easeOutQuart' })
-			Velocity(el, { opacity: 0 }, { duration: 1000, complete: () => this.context.router.push('/') })
+			Velocity(el, { opacity: 0 }, { duration: 1000, complete: () => this.context.router.replace(this.props.location.query.link || '/') })
 		}, 300)
 	}
 	/*  设置 webstorage  */
 	setWebStorage(data) {
 		window.localStorage.token = data.token
+		window.sessionStorage.accessToken = data.accessToken
 		window.sessionStorage.login_status = JSON.stringify({
-			isLogin: true,
-			avatar: data.avatar,
-			profile: data.profile,
-			accessToken: data.accessToken,
-			name: data.name
+			isLogin: true
 		})
+		window.sessionStorage.userInfo = JSON.stringify(data.userInfo)
 	}
 	/*  input 输入同步  */
 	handleChange(e, name, fn) {

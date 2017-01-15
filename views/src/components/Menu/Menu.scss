@@ -62,7 +62,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 
 	.menu-btn-outside {
 		visibility: visible;
-		background-color: rgba(10, 22, 51, 0.63);
+		background-color: rgba(10, 22, 51, 0.36);
 		font-size: 15px;
 		color: $white;
 		border: 1px solid $tr;
@@ -161,8 +161,8 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 		padding: 5px;
 
 		.avatar {
-			width: 100px;
-			height: 100px;
+			width: 80px;
+			height: 80px;
 			border-radius: 50%;
 		}
 

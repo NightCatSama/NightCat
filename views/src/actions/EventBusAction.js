@@ -9,11 +9,12 @@ const HeaderBtnActions = {
 			data
 		}
 	}),
-	execute: createAction(ActionTypes.EXECUTE, (type, msg, status) => {
+	execute: createAction(ActionTypes.EXECUTE, (type, msg, status = 'default', options = null) => {
 		return {
 			type,
 			msg, 
-			status
+			status,
+			options
 		}
 	})
 };

@@ -18,23 +18,25 @@ class App extends Component {
 	    this.timer = null
 	}
 	/*  redux注册消息弹窗  */
-	componentDidMount() {
+	componentWillMount() {
 		this.props.actions.register('notice', this.openNotice.bind(this))
-		// this.props.actions.execute('notice', 'miaomiaomiao~', 'error')
 	}
-	openNotice(msg, status) {
+	openNotice(msg, status = 'default', interval = 2000, options) {
 		this.setState({
 			notice: {
 				message: msg,
-				status: status
+				status: status,
+				options: options
 			}
 		})
-		this.timer && clearTimeout(this.timer)
-		this.timer = setTimeout(() => {
-			this.setState({
-				notice: {}
-			})
-		}, 2000)
+		if (interval) {
+			this.timer && clearTimeout(this.timer)
+			this.timer = setTimeout(() => {
+				this.setState({
+					notice: {}
+				})
+			}, interval)
+		}
 	}
 	render() {
 		return (
@@ -49,7 +51,7 @@ class App extends Component {
 				transitionEnterTimeout={0}
 				transitionLeaveTimeout={0}>
 				{
-				this.state.notice.message && <Message key="Message" status={this.state.notice.status} message={this.state.notice.message} />
+				this.state.notice.message && <Message key="Message" status={this.state.notice.status} options={this.state.notice.options} message={this.state.notice.message} />
 				}
 				</ReactCSSTransitionGroup>
 			</span>

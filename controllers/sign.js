@@ -118,11 +118,16 @@ export default {
 					return res.json({
 						success: true,
 						message: '登录成功',
-						name: data.name,
-						is_admin: data.admin,
-						access_token: data.accessToken,
-						profile: data.profile,
-						avatar: data.avatar,
+						userInfo: {
+							account: data.account,
+							email: data.email,
+							name: data.name,
+							location: data.location,
+							website: data.website,
+							profile: data.profile,
+							avatar: data.avatar
+						},
+						accessToken: data.accessToken,
 						token: token
 					})
 				}
@@ -143,13 +148,20 @@ export default {
 		await utils.verifyToken(token)
 		.then(account => User.getUserByAccount(account))
 		.then(data => {
+			req.session.token = token
 			res.json({
 				success: true,
 				message: '登录成功',
-				name: data.name,
+				userInfo: {
+					account: data.account,
+					email: data.email,
+					name: data.name,
+					location: data.location,
+					website: data.website,
+					profile: data.profile,
+					avatar: data.avatar
+				},
 				accessToken: data.accessToken,
-				profile: data.profile,
-				avatar: data.avatar,
 				token: token
 			})
 		})

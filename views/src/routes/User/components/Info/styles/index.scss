@@ -1,0 +1,79 @@
+@import '~stylesheets/common/util';
+
+.info-view {
+	overflow: hidden;
+
+	.form-group {
+		width: 500px;
+		margin: 0 auto;
+		padding: 20px 0;
+	}
+
+	.form-item {
+		margin: 30px 0 0 0;
+		width: 100%;
+		position: relative;
+
+		label {
+			position: absolute;
+			top: -20px;
+			left: 0px;
+			font-size: 14px;
+			color: #868686;
+		}
+
+		input {
+			width: 100%;
+			height: 34px;
+			padding: 6px 8px;
+			font-size: 14px;
+			color: #333;
+			line-height: 20px;
+			vertical-align: middle;
+			background-color: #fafafa;
+			border: 1px solid #ddd;
+			border-radius: 4px;
+			box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+
+			&:focus {
+				border-color: #51a7e8;
+				outline: none;
+				box-shadow: inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5);
+			}
+		}
+	}
+
+	.update-btn {
+		margin-top: 20px;
+		padding: 6px 12px;
+		font-size: 14px;
+		color: #333;
+		border: none;
+		cursor: pointer;
+		user-select: none;
+		background-color: #eee;
+		background-image: linear-gradient(#fcfcfc, #eee);
+		border: 1px solid #d5d5d5;
+		border-radius: 3px;
+		-webkit-appearance: none;
+
+		&:hover {
+			background-image: linear-gradient(#eee, #ddd);
+			border-color: #ccc;
+		}
+
+		&:active {
+			background-color: #dcdcdc;
+			background-image: none;
+			border-color: #b5b5b5;
+			box-shadow: inset 0 2px 4px rgba(0,0,0,0.15);
+		}
+	}
+
+	@include max-screen(768px) {
+		.form-group {
+			width: 100%;
+			padding: 5px 14px;
+		}
+	}
+}

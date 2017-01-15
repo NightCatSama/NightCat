@@ -3,40 +3,41 @@ import { getGravatar } from '../common/sign'
 import uuid from 'uuid'
 
  /*  获取完整的用户列表  */
-const getUsers = async() => {
+export const getUsers = async() => {
 	return await user.find({})
 }
 
  /*  根据用户名查找用户  */
-const getUserByNames = async(name) => {
+export const getUserByNames = async(name) => {
 	return await user.findOne({
 		name: name
 	})
 }
 
  /*  根据账号查找用户  */
-const getUserByAccount = async(account) => {
+export const getUserByAccount = async(account) => {
 	return await user.findOne({
 		account: account
 	})
 }
 
  /*  根据邮箱查找用户  */
-const getUserByEmail = async(email) => {
+export const getUserByEmail = async(email) => {
 	return await user.findOne({
 		email: email
 	})
 }
 
  /*  根据access_token查找用户  */
-const getUserByAccessToken = async(accessToken) => {
+export const getUserByAccessToken = async(accessToken) => {
+	console.log(accessToken)
 	return await user.findOne({
 		accessToken: accessToken
 	})
 }
 
  /*  生成新用户  */
-const newAndSave = async(data) => {
+export const newAndSave = async(data) => {
 	let u = new user()
 	u.name = data.account
 	u.account = data.account
@@ -54,5 +55,6 @@ export default {
 	getUserByNames,
 	getUserByAccount,
 	getUserByEmail,
+	getUserByAccessToken,
 	newAndSave
 }
