@@ -1,5 +1,7 @@
-// import Info from './info'
+import Factory from './Factory'
+import List from './List'
 
 export {
-	// Info,
+	Factory,
+	List
 }

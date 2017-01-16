@@ -1,11 +1,15 @@
-import React, { Component } from 'react'
+import React, { Component, PropTypes } from 'react'
 import cs from 'classnames'
 import RuleModel from './components/rule-model'
 
-import './styles/'
-import Factory from './lib/Factory'
+import './styles'
+import Game from './lib/Factory'
 
-export default class component extends Component {
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import EventBusAction from 'actions/EventBusAction'
+
+class Factory extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -17,17 +21,22 @@ export default class component extends Component {
 		}
 		this.switchState = this.switchState.bind(this)
 		this.toggleHelp = this.toggleHelp.bind(this)
+		this.toggleMenu = (bool) => this.props.actions.execute('menu', bool)
 		this.clickFn = this.clickFn.bind(this)
 	}
 	componentDidMount() {
 		// this.switchState()
 	}
+	componentWillUnmount() {
+		this.toggleMenu(true)
+	}
 	switchState() {
 		let obj = {
 			gameSign: !this.state.gameSign
 		}
+		this.toggleMenu(this.state.gameSign)
 		if (!this.state.game) {
-			obj.game = new Factory(this.refs.factory)
+			obj.game = new Game(this.refs.factory)
 		}
 		else {
 			obj.word = 'Continue'
@@ -76,4 +85,17 @@ export default class component extends Component {
 	}
 }
 
-component.propTypes = {}
+
+const mapStateToProps = (state) => {
+	return {store: state}
+}
+
+const mapDispatchToProps = (dispatch) => ({
+	actions: bindActionCreators(EventBusAction, dispatch)
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(Factory)
+
+Factory.propTypes = {
+	actions: PropTypes.object
+}

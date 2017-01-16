@@ -1,0 +1,15 @@
+@import '~stylesheets/common/util';
+
+.single-games-list-view {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+
+	.title {
+		height: 140px;
+		line-height: 140px;
+		padding-left: 50px;
+		background: linear-gradient(105deg, #E55D87, #5FC3E4);
+		color: $white;
+	}
+}

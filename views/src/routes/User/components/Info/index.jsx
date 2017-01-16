@@ -15,13 +15,14 @@ class Info extends Component {
 			info: {
 				name: '',
 				location: '',
-				profile: '',
 				avatar: '',
+				profile: '',
 				website: ''
 			}
 		}
 		this.update = this.update.bind(this)
-		this.notice = (msg, status) => this.props.actions.execute('notice', msg, status)
+		this.uploadImg = this.uploadImg.bind(this)
+		this.notice = (msg, interval, options) => this.props.actions.execute('notice', msg, interval, options)
 	}
 	componentWillMount() {
 		let accessToken = window.sessionStorage['accessToken']
@@ -43,9 +44,38 @@ class Info extends Component {
 	}
 	/*  update data  */
 	update() {
-		this.notice('Uploading data...', 'loading', 0)
+		this.notice('Uploading data...', 0, { status: 'loading', styles: { top: 'auto', bottom: '30px' } })
 
 		/*  此处axios保存数据，接口未写  */
+		axios.post('/saveUserInfo', {
+			accessToken: window.sessionStorage['accessToken'],
+			info: this.state.info
+		})
+		.then((res) => {
+			this.notice(res.data.message, 2000, { status: 'success', styles: { top: 'auto', bottom: '30px' } })
+			window.sessionStorage.removeItem('login_status')
+			setTimeout(() =>　window.location.reload(), 1000)
+		})
+		.catch((err) => {
+			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+		})
+	}
+	/*  上传图片  */
+	uploadImg(e) {
+		let file = e.target.files[0]
+		if (!file) {
+			return false
+		}
+		if (file.size > 102400) {
+			return this.notice('Avatar can not be greater than 100kb', 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+		}
+		var reader = new FileReader();
+		reader.onload = (e) => {
+			this.setState({
+				info: Object.assign({}, this.state.info, { avatar: e.target.result })
+			})
+		}
+		reader.readAsDataURL(file)
 	}
 	/*  input 输入同步  */
 	handleChange(e, name) {
@@ -72,6 +102,14 @@ class Info extends Component {
 			<div ref="view" className="info-view">
 				<div className="form-group">
 					<div className="form-item">
+						<label htmlFor="name">Avatar</label>
+						<div className="user-avatar">
+							<img src={this.state.info.avatar} />
+							<input type="file" className="updateHeadImg" onChange={this.uploadImg} />
+						</div>
+						<small> Click the picture to upload avatar </small>
+					</div>
+					<div className="form-item">
 						<label htmlFor="name">Name</label>
 						<input {...this.createProps('name', 'text')} />
 					</div>
@@ -89,6 +127,7 @@ class Info extends Component {
 					</div>
 					<button className="update-btn" onClick={this.update}>Update Info</button>
 				</div>
+				<div className="modal"></div>
 			</div>
 		)
 	}

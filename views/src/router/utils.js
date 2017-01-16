@@ -36,7 +36,6 @@ const userRequired = (nextState, replaceState) => {
 	let status = window.sessionStorage.login_status
 	status = status && JSON.parse(status)
 	if (!status || !status.isLogin) {
-		console.log(nextState)
 		replaceState(`/Sign?message=${encodeURIComponent('请先登录')}&link=${nextState.location.pathname}`)
 		return
 	}

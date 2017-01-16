@@ -46,7 +46,7 @@ export default {
 		if (await User.getUserByAccount(account)) {
 			return ep.emit('signup_err', '账号已存在')
 		}
-		if (await User.getUserByEmail(account)) {
+		if (await User.getUserByEmail(email)) {
 			return ep.emit('signup_err', '邮箱已被注册')
 		}
 
@@ -58,7 +58,7 @@ export default {
 		}
 
 		await User.newAndSave(userInfo)
-			.then((data) => {
+			.then(() => {
 				mail.sendActiveMail(email, md5(email + md5pass + config.session_secret), account)
 				return res.json({
 					success: true,
@@ -97,37 +97,38 @@ export default {
 		}
 
 		await User.getUserByAccount(account)
-			.then(data => {
-				if (!data) {
+			.then((user) => {
+				if (!user) {
 					return ep.emit('login_err', '账号不存在')
 				}
 
-				if (data.password !== userInfo.password) {
+				if (user.password !== userInfo.password) {
 					return ep.emit('login_err', '密码错误')
 				}
-				else if (!data.active) {
+				else if (!user.active) {
 					// 重新发送激活邮件
-					mail.sendActiveMail(data.email, md5(data.email + data.password + config.session_secret), account)
+					mail.sendActiveMail(user.email, md5(user.email + user.password + config.session_secret), account)
 					res.status(403);
-					return ep.emit('login_err', `此帐号还没有被激活，激活链接已发送到 ${data.email} 邮箱，请查收。`)
+					return ep.emit('login_err', `此帐号还没有被激活，激活链接已发送到 ${user.email} 邮箱，请查收。`)
 				}
 				else {
-					let token = utils.signToken(data.account)
+					let token = utils.signToken(user.account)
 					req.session.token = token
-					req.session.is_admin = data.admin
+					req.session.is_admin = user.admin
 					return res.json({
 						success: true,
 						message: '登录成功',
+						is_admin: user.admin,
 						userInfo: {
-							account: data.account,
-							email: data.email,
-							name: data.name,
-							location: data.location,
-							website: data.website,
-							profile: data.profile,
-							avatar: data.avatar
+							account: user.account,
+							email: user.email,
+							name: user.name,
+							location: user.location,
+							website: user.website,
+							profile: user.profile,
+							avatar: user.avatar
 						},
-						accessToken: data.accessToken,
+						accessToken: user.accessToken,
 						token: token
 					})
 				}
@@ -146,22 +147,22 @@ export default {
 	verify: async(req, res, next) => {
 		let token = req.session.token
 		await utils.verifyToken(token)
-		.then(account => User.getUserByAccount(account))
-		.then(data => {
+		.then((account) => User.getUserByAccount(account))
+		.then((user) => {
 			req.session.token = token
 			res.json({
 				success: true,
 				message: '登录成功',
 				userInfo: {
-					account: data.account,
-					email: data.email,
-					name: data.name,
-					location: data.location,
-					website: data.website,
-					profile: data.profile,
-					avatar: data.avatar
+					account: user.account,
+					email: user.email,
+					name: user.name,
+					location: user.location,
+					website: user.website,
+					profile: user.profile,
+					avatar: user.avatar
 				},
-				accessToken: data.accessToken,
+				accessToken: user.accessToken,
 				token: token
 			})
 		})
@@ -188,18 +189,18 @@ export default {
 			})
 		})
 		User.getUserByAccount(account)
-			.then(data => {
-				if (!data) {
+			.then((user) => {
+				if (!user) {
 					return ep.emit('active_account_result', '无效的账号')
 				}
-				if (md5(data.email + data.password + config.session_secret) !== key) {
+				if (md5(user.email + user.password + config.session_secret) !== key) {
 					return ep.emit('active_account_result', '信息有误，账号无法激活')
 				}
-				if (data.active) {
+				if (user.active) {
 					return ep.emit('active_account_result', '账号已被激活')
 				}
-				data.active = true
-				data.save(err => {
+				user.active = true
+				user.save(err => {
 					if (err) {
 						return next(err)
 					}

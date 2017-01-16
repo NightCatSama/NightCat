@@ -20,8 +20,19 @@ class Menu extends Component {
 	    this.linkClick = this.linkClick.bind(this)
 	    this.windowClick = this.windowClick.bind(this)
 	}
-	/*  判断用户是否已登录  */
 	componentWillMount() {
+		this.isSignin()
+	}
+	/*  绑定全局事件  */
+	componentDidMount() {
+		document.body.addEventListener('click', this.windowClick, false)
+		this.props.actions.register('refreshMenu', this.isSignin.bind(this))
+	}
+	componentWillUnmount() {
+		document.body.removeEventListener('click', this.windowClick, false)
+	}
+	/*  判断用户是否已登录  */
+	isSignin() {
 		let status = window.sessionStorage.login_status
 		if (!status)
 			return false
@@ -39,19 +50,12 @@ class Menu extends Component {
 			})
 		}
 	}
-	/*  绑定全局事件  */
-	componentDidMount() {
-		document.body.addEventListener('click', this.windowClick, false)
-	}
-	componentWillUnmount() {
-		document.body.removeEventListener('click', this.windowClick, false)
-	}
 	/*  退出登录  */
 	signout() {
 		axios.post('/signout', {})
 		.then((res) => {
 			if (res.data.success) {
-				this.props.actions.execute('notice', '退出成功', 'success')
+				this.props.actions.execute('notice', '退出成功！', 2000, { status: 'success' })
 				this.clearWebStorage()
 				this.setState({
 					isLogin: false,
@@ -59,7 +63,7 @@ class Menu extends Component {
 				})
 			}
 		})
-		.catch((err) => console.log(err))
+		.catch((err) => this.props.actions.execute('notice', err.response.data.message, 2000, { status: 'error' }))
 	}
 	/*  清除 webstorage  */
 	clearWebStorage(data) {
@@ -87,6 +91,7 @@ class Menu extends Component {
 	}
 	render() {
 		let menuClass = classNames('menu', {
+			show: this.props.show,
 			open: this.state.sideShow
 		})
 		return (
@@ -105,21 +110,21 @@ class Menu extends Component {
 							<i className="iconfont icon-home"></i>
 							<span>Home</span>
 						</IndexLink>
-						<Link to="/factory" activeClassName="active" className="link" onClick={this.linkClick}>
+						<Link to="/single-games" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-singleGames"></i>
 							<span>Single Games</span>
 						</Link>
-						<Link to="/singleGames" activeClassName="active" className="link" onClick={this.linkClick}>
+						<Link to="/online-games" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-onlineGames"></i>
 							<span>Online Games</span>
 						</Link>
-						<Link to="/onlineGames" activeClassName="active" className="link" onClick={this.linkClick}>
+						<Link to="/my-friends" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-myFriends"></i>
 							<span>My Friends</span>
 						</Link>
 						<Link to="/about" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-about"></i>
-							<span>About Me</span>
+							<span>About</span>
 						</Link>
 					</div>
 					{ this.props.showUserGroup && (this.state.isLogin ? (
@@ -176,12 +181,14 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Menu)
 
 Menu.propTypes = {
+	show: PropTypes.bool,
 	callback: PropTypes.func,
 	showUserGroup: PropTypes.bool,
 	actions: PropTypes.object
 }
 
 Menu.defaultProps = {
+	show: true,
 	showUserGroup: true
 }
 

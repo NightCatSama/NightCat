@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react'
 // import Canvas from '../asset/Canvas/'
 
-import Menu from 'components/Menu/'
-import './styles/'
+import './styles'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -11,10 +10,6 @@ import EventBusAction from 'actions/EventBusAction'
 class Home extends Component {
 	constructor (props) {
 		super(props)
-		this.offsetView = this.offsetView.bind(this)
-	}
-	offsetView() {
-		this.refs.view.classList.toggle('offset')
 	}
 	render() {
 		return (
@@ -32,7 +27,6 @@ class Home extends Component {
 						</section>
 					</div>
 				</div>
-				<Menu ref="menu" callback={this.offsetView} />
 			</span>
 		);
 	}

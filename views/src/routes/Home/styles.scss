@@ -3,12 +3,6 @@
 .home-view {
 	flex: 1;
 	position: relative;
-	will-change: transform;
-	transition: transform $slider-time;
-
-	&.offset {
-		transform: translate3d(-$side-width, 0, 0);
-	}
 
 	.first-screen {
 		width: 100vw;
@@ -16,7 +10,7 @@
 		position: relative;
 		overflow: hidden;
 		cursor: default;
-		background-image: url('../../../images/bg.jpg');
+		background-image: url('../../images/bg.jpg');
 		background-repeat: no-repeat;
 		background-size: cover;
 		background-position: center;

@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-import Menu from 'components/Menu/'
 import cs from 'classnames'
 import isEmail from 'validator/lib/isEmail'
 
@@ -31,20 +30,16 @@ class Sign extends Component {
 		this.signin = this.signin.bind(this)
 		this.coverHandle = this.coverHandle.bind(this)
 		this.switchType = this.switchType.bind(this)
-		this.notice = (msg, status) => this.props.actions.execute('notice', msg, status)
-		this.offsetView = this.offsetView.bind(this)
+		this.notice = (msg, interval = 2000, options) => this.props.actions.execute('notice', msg, interval, options)
 	}
 	componentDidMount() {
 		let msg = this.props.location.query.message
-		msg && this.notice(msg, 'error')
-	}
-	offsetView() {
-		this.refs.view.classList.toggle('offset')
+		msg && this.notice(msg, 2000, { status: 'error' })
 	}
 	/*  调用注册接口  */
 	signup() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
-			return this.notice('请正确输入注册信息', 'error')
+			return this.notice('请正确输入注册信息', 2000, { status: 'error' })
 
 		axios.post('/signup', {
 			account: this.state.account,
@@ -60,13 +55,13 @@ class Sign extends Component {
 			})
 		})
 		.catch((err) => {
-			this.notice(err.response.data.message, 'error')
+			this.notice(err.response.data.message, 2000, { status: 'error' })
 		})
 	}
 	/*  调用登录接口  */
 	signin() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
-			return this.notice('请正确输入登录信息', 'error')
+			return this.notice('请正确输入登录信息', 2000, { status: 'error' })
 
 		axios.post('/signin', {
 			account: this.state.account,
@@ -74,9 +69,10 @@ class Sign extends Component {
 		})
 		.then((res) => {
 			this.setWebStorage(res.data ? res.data : '')
+			this.props.actions.execute('refreshMenu')
 			this.successTrantionToHome()
 		})
-		.catch((err) => this.notice(err.response.data.message, 'error'))
+		.catch((err) => this.notice(err.response.data.message, 2000, { status: 'error' }))
 	}
 	/*  登录成功动画  */
 	successTrantionToHome() {
@@ -270,21 +266,18 @@ class Sign extends Component {
 		})
 		this.form = this.getForm()
 		return (
-			<span>
-				<div ref="view" className="sign-view">
-					<div className={classNames} ref="signWrap">
-						<div ref="switchTypeBtn" className="switch-type-btn" onClick={this.switchType}></div>
-						{ this.form }
-						{ this.state.success && (
-							<div className="success-cover" onClick={this.coverHandle}>
-								<i className="iconfont icon-checked"></i>
-								<span className="success-word">{ this.state.success }</span>
-							</div>
-						)}
-					</div>
+			<div className="sign-view">
+				<div className={classNames} ref="signWrap">
+					<div ref="switchTypeBtn" className="switch-type-btn" onClick={this.switchType}></div>
+					{ this.form }
+					{ this.state.success && (
+						<div className="success-cover" onClick={this.coverHandle}>
+							<i className="iconfont icon-checked"></i>
+							<span className="success-word">{ this.state.success }</span>
+						</div>
+					)}
 				</div>
-				<Menu ref="menu" showUserGroup={false} callback={this.offsetView} />
-			</span>
+			</div>
 		);
 	}
 }

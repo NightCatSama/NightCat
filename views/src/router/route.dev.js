@@ -5,11 +5,14 @@ import { autoLogin, userRequired } from './utils'
 
 import App from '../app'
 import Home from 'routes/Home'
-import Factory from 'routes/Factory'
 import Sign from 'routes/Sign'
 import ActiveAccount from 'routes/ActiveAccount'
+
 import User from 'routes/User'
 import { Info, GameData } from 'routes/User/components'
+
+import SingleGames from 'routes/SingleGames'
+import { List, Factory } from 'routes/SingleGames/components'
 
 const rootRoute = {
 	path: '/',
@@ -18,9 +21,6 @@ const rootRoute = {
 		component: Home
 	},
 	childRoutes: [{
-		path: '/factory',
-		component: Factory
-	}, {
 		path: '/sign',
 		component: Sign
 	}, {
@@ -36,6 +36,16 @@ const rootRoute = {
 		childRoutes: [{
 			path: '/user/game-data',
 			component: GameData
+		}]
+	}, {
+		path: '/single-games',
+		component: SingleGames,
+		indexRoute: {
+			component: List
+		},
+		childRoutes: [{
+			path: '/single-games/factory',
+			component: Factory
 		}]
 	}],
 	onEnter: autoLogin

@@ -30,7 +30,6 @@ export const getUserByEmail = async(email) => {
 
  /*  根据access_token查找用户  */
 export const getUserByAccessToken = async(accessToken) => {
-	console.log(accessToken)
 	return await user.findOne({
 		accessToken: accessToken
 	})

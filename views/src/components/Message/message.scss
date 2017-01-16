@@ -1,6 +1,5 @@
 @import '~stylesheets/common/util';
 
-// :local(.message) {
 .message {
 	position: fixed;
 	top: 30px;
@@ -11,9 +10,18 @@
 	font-size: 13px;
 	background-color: #eee;
 	border-radius: 20px;
-	transform: translateX(-50%);
 	max-width: 80%;
 	z-index: 9999;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateX(-50%) scale(0.8);
+	transition: all .3s;
+
+	&.show {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-50%) scale(1);
+	}
 
 	.iconfont {
 		width: 16px;

@@ -35,7 +35,7 @@ let userSchema = new Schema({
 	},
     /*  更新时间  */
 	update_at: {
-		type: String,
+		type: Date,
 		default: Date.now
 	},
 	/*  个人网站地址  */

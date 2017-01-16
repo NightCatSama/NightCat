@@ -23,7 +23,7 @@ export default class GameData extends Component {
 	render() {
 		return (
 			<div ref="view" className="game-data-view">
-				<h1>There is no game data.</h1>
+				<p>There is no game data.</p>
 			</div>
 		)
 	}

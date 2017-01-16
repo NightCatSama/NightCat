@@ -1,6 +1,8 @@
 @import '~stylesheets/common/util';
 
 .info-view {
+	flex: 1;
+	background-color: #eee;
 	overflow: hidden;
 
 	.form-group {
@@ -41,6 +43,38 @@
 				box-shadow: inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5);
 			}
 		}
+
+		small {
+			color: #a3a3a3;
+			font-size: 12px;
+		}
+	}
+
+	.user-avatar {
+		border-radius: 8px;
+		width: 80px;
+		height: 80px;
+		position: relative;
+		overflow: hidden;
+		display: inline-block;
+		vertical-align: bottom;
+		box-shadow: 0 0 0 4px rgba($white, 0.45);
+
+		img {
+			width: 100%;
+			height: 100%;
+		}
+
+		input {
+			position: absolute;
+			cursor: pointer;
+			left: 0;
+			top: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 1;
+			opacity: 0;
+		}
 	}
 
 	.update-btn {
@@ -73,7 +107,7 @@
 	@include max-screen(768px) {
 		.form-group {
 			width: 100%;
-			padding: 5px 14px;
+			padding: 5px 15px 15px 15px;
 		}
 	}
 }

@@ -19,27 +19,10 @@ body {
 	flex-direction: column;
 	width: 100%;
 	min-height: 100vh;
-	right: 0;
-}
+	will-change: transform;
+	transition: transform $slider-time;
 
-.example-enter {
-	opacity: 0;
-	transform: translate3d(-50%, 0, 0) scale(.6);
-}
-
-.example-enter.example-enter-active {
-	opacity: 1;
-	transform: translate3d(-50%, 0, 0) scale(1);
-	transition: all .3s;
-}
-
-.example-leave {
-	opacity: 1;
-	transform: translate3d(-50%, 0, 0) scale(1);
-}
-
-.example-leave.example-leave-active {
-	opacity: 0;
-	transform: translate3d(-50%, 0, 0) scale(.6);
-	transition: all .3s;
+	&.offset {
+		transform: translate3d(-$side-width, 0, 0);
+	}
 }

@@ -1,10 +1,10 @@
 @import '~stylesheets/common/util';
 
 $gap: 20px;
-$btn-offsetTop: 30px;
+$btn-offsetTop: 15px;
 $btn-offsetRight: 50px;
 $btn-offsetLeft: $gap;
-$link-paddingTop: 80px;
+$link-paddingTop: 50px;
 $menu-bg: #123;
 $menu-color: $blue;
 $icon-size: 18px;
@@ -17,9 +17,21 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 	height: 100vh;
 	width: $side-width;
 	visibility: hidden;
+	display: none;
 	transform: translate3d($side-width, 0, 0);
 	transition: all $slider-time;
 	z-index: 100;
+
+	&.show {
+		display: block;
+	}
+
+	&.open {
+		visibility: visible;
+		transform: translate3d(0, 0, 0);
+		transition: transform $slider-time;
+	}
+
 
 	.side-menu {
 		height: 100%;
@@ -30,13 +42,6 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 		background: #243B55;
 		background: linear-gradient(290deg, #141E30, #243B55);
 	}
-
-	&.open {
-		visibility: visible;
-		transform: translate3d(0, 0, 0);
-		transition: transform $slider-time;
-	}
-
 	.menu-btn {
 		visibility: visible;
 		position: absolute;
@@ -47,7 +52,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 		padding: 0 12px;
 		height: 34px;
 		line-height: 34px;
-		transform: translate3d(-120px, 0, 0);
+		transform: translate3d(-100px, 0, 0);
 		transition: all $slider-time;
 		z-index: 99;
 
@@ -158,7 +163,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 		width: 100%;
 		text-align: center;
 		color: $menu-color;
-		padding: 5px;
+		padding: 15px 5px;
 
 		.avatar {
 			width: 80px;
@@ -185,9 +190,14 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 			}
 		}
 
+		.user-name {
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
 		.user-profile {
 			padding: 0 10px;
-			color: rgba($menu-color, 0.8);
+			color: rgba($menu-color, 0.6);
 			@include line-ellipsis(2);
 		}
 	}
