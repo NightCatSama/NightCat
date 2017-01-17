@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import { Link } from 'react-router'
 // import cs from 'classnames'
 
 import './styles'
@@ -9,19 +10,23 @@ import EventBusAction from 'actions/EventBusAction'
 
 const games = [{
 	name: 'Factory',
-	type: 'PC',
-	description: '通过编写各个处理器来加工'
+	isPC: true,
+	path: 'single-games/factory',
+	img: require('images/factory.png'),
+	description: '将输入变量加工成对应的输出变量的游戏\n（编译环境取决你的浏览器）'
 }]
+
+const isPC = !/(iPhone|iPad|iPod|iOS|Android|SymbianOS|Windows Phone)/i.test(navigator.userAgent)
 
 class List extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 		}
+		this.games = games.filter((game) => game.isPC === isPC)
 	}
-	componentDidMount() {
-	}
-	componentWillUnmount() {
+	jumpGame(path) {
+		this.context.router.push(path)
 	}
 	render() {
 		return (
@@ -31,12 +36,25 @@ class List extends Component {
 				</h2>
 				<ul className="games-list">
 					{
-						games.map((game, i) => (
-							<li key={i}>
-								<h3>{game.name}</h3>
-								<small>{game.description}</small>
+						this.games.length ?
+						this.games.map((game, i) => (
+							<li key={i} className="game-item">
+								<div className="left-content">
+									<img src={game.img} alt="game img" />
+								</div>
+								<div className="right-content">
+									<h1>{game.name}</h1>
+									<small>{game.description}</small>
+									<Link to={game.path}>点击进入</Link>
+								</div>
 							</li>
 						))
+						:
+						(
+							<li>
+								No Game ：(
+							</li>
+						)
 					}
 				</ul>
 			</div>
@@ -57,4 +75,8 @@ export default connect(mapStateToProps, mapDispatchToProps)(List)
 
 List.propTypes = {
 	actions: PropTypes.object
+}
+
+List.contextTypes = {
+	router: React.PropTypes.any.isRequired
 }
