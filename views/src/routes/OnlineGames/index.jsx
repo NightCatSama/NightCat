@@ -7,7 +7,7 @@ import EventBusAction from 'actions/EventBusAction'
 
 // import './styles'
 
-class SingleGames extends Component {
+class OnlineGames extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
@@ -18,7 +18,7 @@ class SingleGames extends Component {
 	}
 	render() {
 		return (
-			<div className="single-games-view">
+			<div className="online-games-view">
 				{ this.props.children }
 			</div>
 		);
@@ -33,15 +33,15 @@ const mapDispatchToProps = (dispatch) => ({
 	actions: bindActionCreators(EventBusAction, dispatch)
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SingleGames)
+export default connect(mapStateToProps, mapDispatchToProps)(OnlineGames)
 
-SingleGames.propTypes = {
+OnlineGames.propTypes = {
 	children: PropTypes.any,
 	actions: PropTypes.any,
 	history: PropTypes.any,
 	location: PropTypes.any
 }
 
-SingleGames.contextTypes = {
+OnlineGames.contextTypes = {
 	router: React.PropTypes.any.isRequired
 }

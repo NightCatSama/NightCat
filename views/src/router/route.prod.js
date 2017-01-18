@@ -2,45 +2,40 @@ import React, { Component } from 'react'
 import { Router, browserHistory } from 'react-router'
 
 import createRoute from 'routes'
-
-const autoLogin = (nextState, replaceState, callback) => {
-	let status = window.sessionStorage.login_status
-	if (!status || status.isLogin) {
-		callback()
-		return
-	}
-
-	let token = window.localStorage.token
-	if (token) {
-		axios.post('/verify', {})
-		.then((res) => {
-			let data = res.data
-			window.localStorage.token = data.token
-			window.sessionStorage.login_status = JSON.stringify({
-				isLogin: true,
-				avatar: data.avatar,
-				profile: data.profile,
-				accessToken: data.accessToken,
-				name: data.name
-			})
-			callback()
-		})
-		.catch((err) => {
-			window.localStorage.removeItem('token')
-			window.sessionStorage.removeItem('login_status')
-			callback()
-		})
-	}
-}
+import { autoLogin, userRequired } from './utils'
 
 const rootRoute = {
 	path: '/',
 	component: require('../app').default,
 	indexRoute: createRoute(false, 'Home'),
 	childRoutes: [
-		createRoute('/factory', 'Factory'),
 		createRoute('/sign', 'Sign'),
-		createRoute('/active_account', 'ActiveAccount')
+		createRoute('/active_account', 'ActiveAccount'),
+		createRoute('/my-friends', 'MyFriends'),
+		createRoute('/games', 'Games'),
+		createRoute('/about', 'About'),
+		createRoute('/user', 'User', {
+			onEnter: userRequired,
+			indexRoute: createRoute(false, 'User/components/Info'),
+			childRoutes: [
+				createRoute('/user/game-data', 'User/components/GameData')
+			]
+		}),
+		createRoute('/user/:account', 'User', {
+			indexRoute: createRoute(false, 'User/components/Info'),
+			childRoutes: [
+				createRoute('/user/game-data/:account', 'User/components/GameData')
+			]
+		}),
+		createRoute('/single-games', 'SingleGames', {
+			childRoutes: [
+				createRoute('/single-games/factory', 'SingleGames/components/Factory')
+			]
+		}),
+		createRoute('/online-games', 'OnlineGames', {
+			onEnter: userRequired,
+			childRoutes: []
+		})
 	],
 	onEnter: autoLogin
 }

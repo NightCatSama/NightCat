@@ -29,7 +29,7 @@ app.set('view engine', 'hbs')
  /*  前后端的文件public路径  */
 app.set('back_static_views', relative('./backstage/dist'))
 app.set('back_views', relative('./backstage/public'))
-app.set('frone_views', relative('./views/dist'))
+app.set('frone_views', relative('./views/dist/'))
 
 app.use(favicon(relative('favicon.ico')))
 

@@ -83,6 +83,11 @@ class Menu extends Component {
 			sideShow: !this.state.sideShow
 		})
 	}
+	/*  跳转到登陆注册页  */
+	gotoSign(e, isSignin, bool) {
+		this.linkClick(e)
+		this.context.router.push(isSignin + `?link=${this.context.router.location.pathname + (bool ? '&signup=1' : '')}`)
+	}
 	/*  点击 跳转后自动收回  */
 	linkClick(e) {
 		if (!e.currentTarget.classList.contains('active')) {
@@ -110,13 +115,19 @@ class Menu extends Component {
 							<i className="iconfont icon-home"></i>
 							<span>Home</span>
 						</IndexLink>
-						<Link to="/single-games" activeClassName="active" className="link" onClick={this.linkClick}>
-							<i className="iconfont icon-singleGames"></i>
-							<span>Single Games</span>
-						</Link>
-						<Link to="/online-games" activeClassName="active" className="link" onClick={this.linkClick}>
-							<i className="iconfont icon-onlineGames"></i>
-							<span>Online Games</span>
+						{/*
+							<Link to="/single-games" activeClassName="active" className="link" onClick={this.linkClick}>
+								<i className="iconfont icon-singleGames"></i>
+								<span>Single Games</span>
+							</Link>
+							<Link to="/online-games" activeClassName="active" className="link" onClick={this.linkClick}>
+								<i className="iconfont icon-onlineGames"></i>
+								<span>Online Games</span>
+							</Link>
+						*/}
+						<Link to="/games" activeClassName="active" className="link" onClick={this.linkClick}>
+							<i className="iconfont icon-game"></i>
+							<span>Games</span>
 						</Link>
 						<Link to="/my-friends" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-myFriends"></i>
@@ -155,6 +166,14 @@ class Menu extends Component {
 					) : (
 						<div className="user-group">
 							<div className="sign-btn-group">
+								{/*
+								<a href="javascript:;" className="sign-btn blue-btn" onClick={(e) => this.gotoSign(e, '/sign')}>
+									Sign in
+								</a>
+								<a href="javascript:;" className="sign-btn green-btn" onClick={(e) => this.gotoSign(e, '/sign', true)}>
+									Sign up
+								</a>
+								*/}
 								<Link to="/sign" className="sign-btn blue-btn" onClick={this.linkClick}>
 									Sign in
 								</Link>

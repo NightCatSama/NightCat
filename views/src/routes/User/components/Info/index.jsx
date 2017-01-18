@@ -12,6 +12,7 @@ class Info extends Component {
 		super(props)
 		this.state = {
 			isChange: false,
+			isSelf: false,
 			info: {
 				name: '',
 				location: '',
@@ -25,6 +26,43 @@ class Info extends Component {
 		this.notice = (msg, interval, options) => this.props.actions.execute('notice', msg, interval, options)
 	}
 	componentWillMount() {
+		let account = this.context.router.params.account
+		if (account) {
+			this.loadData(account)
+		}
+		else {
+			this.loadSelfData()
+		}
+	}
+	/*  查看用户的信息  */
+	loadData(account) {
+		let userInfo = window.sessionStorage.userInfo
+		if (!userInfo)
+			return false
+
+		userInfo = JSON.parse(userInfo)
+		if (userInfo.account === account) {
+			return this.loadSelfData()
+		}
+
+		axios.get('/getUserInfoByAccount', {
+			params: {
+				account: account
+			}
+		})
+		.then((res) => {
+			let data = res.data.data
+			this.setState({
+				isSelf: false,
+				info: data
+			})
+		})
+		.catch((err) => {
+			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+		})
+	}
+	/*  查看自己的信息  */
+	loadSelfData() {
 		let accessToken = window.sessionStorage['accessToken']
 		axios.get('/getUserInfo', {
 			params: {
@@ -38,8 +76,12 @@ class Info extends Component {
 				obj[name] = data[name]
 			}
 			this.setState({
+				isSelf: true,
 				info: obj
 			})
+		})
+		.catch((err) => {
+			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
 		})
 	}
 	/*  update data  */
@@ -101,14 +143,18 @@ class Info extends Component {
 		return (
 			<div ref="view" className="info-view">
 				<div className="form-group">
-					<div className="form-item">
-						<label htmlFor="name">Avatar</label>
-						<div className="user-avatar">
-							<img src={this.state.info.avatar} />
-							<input type="file" className="updateHeadImg" onChange={this.uploadImg} />
-						</div>
-						<small> Click the picture to upload avatar </small>
-					</div>
+					{
+						this.state.isSelf && (
+							<div className="form-item">
+								<label htmlFor="name">Avatar</label>
+								<div className="user-avatar">
+									<img src={this.state.info.avatar} />
+									<input type="file" className="updateHeadImg" onChange={this.uploadImg} />
+								</div>
+								<small> Click the picture to upload avatar </small>
+							</div>
+						)
+					}
 					<div className="form-item">
 						<label htmlFor="name">Name</label>
 						<input {...this.createProps('name', 'text')} />
@@ -125,7 +171,11 @@ class Info extends Component {
 						<label htmlFor="location">Location</label>
 						<input {...this.createProps('location', 'text')} />
 					</div>
-					<button className="update-btn" onClick={this.update}>Update Info</button>
+					{
+						this.state.isSelf && (
+							<button className="update-btn" onClick={this.update}>Update Info</button>
+						)
+					}
 				</div>
 				<div className="modal"></div>
 			</div>

@@ -14,7 +14,7 @@ var config = {
 	},
 	output: {
 		path: './dist',
-		publicPath: './',
+		publicPath: '/',
 		filename: 'static/js/[name].[chunkhash:5].js',
    		chunkFilename: 'static/js/[id].[chunkhash:5].js'
 	},

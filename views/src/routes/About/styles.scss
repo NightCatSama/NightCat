@@ -1,0 +1,7 @@
+@import '~stylesheets/common/util';
+
+.about-view {
+	flex: 1;
+	@include flex-center;
+	min-height: 100vh;
+}

@@ -12,11 +12,39 @@ class Sign extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			userInfo: null
+			userInfo: {}
 		}
+		this.notice = (msg, interval, options) => this.props.actions.execute('notice', msg, interval, options)
 	}
 	/*  设置顶部用户信息  */
 	componentWillMount() {
+		let account = this.context.router.params.account
+		if (account) {
+			this.loadData(account)
+		}
+		else {
+			this.loadSelfData()
+		}
+	}
+	/*  查看用户的信息  */
+	loadData(account) {
+		axios.get('/getUserInfoByAccount', {
+			params: {
+				account: account
+			}
+		})
+		.then((res) => {
+			let data = res.data.data
+			this.setState({
+				userInfo: data
+			})
+		})
+		.catch((err) => {
+			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+		})
+	}
+	/*  查看自己的信息  */
+	loadSelfData() {
 		let status = window.sessionStorage.login_status
 		if (!status)
 			return false
@@ -47,10 +75,10 @@ class Sign extends Component {
 				</div>
 				<ul className="user-router">
 					<li>
-						<IndexLink to="/user" activeClassName="active">Information</IndexLink>
+						<IndexLink to={`/user${this.context.router.params.account ? ('/' + this.context.router.params.account) : ''}`} activeClassName="active">Information</IndexLink>
 					</li>
 					<li>
-						<Link to="/user/game-data" activeClassName="active">Game Data</Link>
+						<Link to={`/user/game-data${this.context.router.params.account ? ('/' + this.context.router.params.account) : ''}`} activeClassName="active">Game Data</Link>
 					</li>
 				</ul>
 				{ this.props.children }

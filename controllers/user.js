@@ -5,7 +5,7 @@ import eventproxy from 'eventproxy'
 // import express from 'express'
 
 export default {
-	/*  得到用户信息  */
+	/*  根据AccessToken得到用户信息  */
 	getUserInfo: async(req, res, next) => {
 		let accessToken = req.query.accessToken
 
@@ -23,6 +23,33 @@ export default {
 			.then((user) => {
 				if (!user) {
 					return ep.emit('get_err', '尚未登录')
+				}
+				res.json({
+					success: true,
+					data: user
+				})
+			})
+			.catch(err => next(err))
+	},
+	/*  根据Account得到用户信息  */
+	getUserInfoByAccount: async(req, res, next) => {
+		let account = req.query.account
+
+		let ep = new eventproxy()
+		ep.fail(next)
+		ep.on('get_err', (msg, status = 403) => {
+			res.status(status)
+			res.json({
+				success: false,
+				message: msg
+			})
+		})
+
+		await User.getUserByAccount(account)
+			.then((user) => {
+				console.log(user)
+				if (!user) {
+					return ep.emit('get_err', '未找到该用户')
 				}
 				res.json({
 					success: true,

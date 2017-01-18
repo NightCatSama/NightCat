@@ -127,16 +127,14 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 
 			.iconfont {
 				margin-right: 8px;
+				width: 20px;
+				display: inline-block;
 				font-size: $icon-size;
 			}
 
 			&.active {
 				background-color: rgba($menu-color, 0.8);
 				color: $white;
-			}
-
-			&:nth-child(2n) {
-				// background-color: rgba(0, 0, 0, .16);
 			}
 
 			&:not(.active):hover {

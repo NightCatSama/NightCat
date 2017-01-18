@@ -17,10 +17,12 @@ router
 	.post('/verify', sign.verify)  //  验证登录信息是否有效
 	
 	.get('/getUserInfo', userRequired, user.getUserInfo)  //得到用户信息
+	.get('/getUserInfoByAccount', user.getUserInfoByAccount)  //浏览用户信息
 	.post('/saveUserInfo', userRequired, user.saveUserInfo)  //保存用户信息
 
 	.use(setStaticOnFront)  //  设置文件静态目录
 	.get('/', site.index) // 跳转页面
 	.get('/:name', site.index) // 跳转页面
+	.get('/user/:account', site.index) // 跳转页面
 
 export default router
