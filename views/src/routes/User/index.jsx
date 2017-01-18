@@ -18,6 +18,7 @@ class Sign extends Component {
 	}
 	/*  设置顶部用户信息  */
 	componentWillMount() {
+		console.log(this.context)
 		let account = this.context.router.params.account
 		if (account) {
 			this.loadData(account)

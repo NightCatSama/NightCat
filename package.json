@@ -4,8 +4,8 @@
   "private": true,
   "description": "A personal website",
   "scripts": {
-    "start": "set NODE_ENV=development && nodemon es/",
-    "deploy": "set NODE_ENV=production && pm2 start es/"
+    "start": "nodemon es/",
+    "deploy": "pm2 start es/index.prod.js"
   },
   "author": "NightCatSama (642163903@qq.com)",
   "dependencies": {

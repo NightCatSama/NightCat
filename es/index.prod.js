@@ -6,5 +6,5 @@ require('babel-core/register')(
 
 require('babel-polyfill')
 
-process.env.NODE_ENV = 'development'
+process.env.NODE_ENV = 'production'
 require('../app.js')
