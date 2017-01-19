@@ -18,7 +18,6 @@ class Sign extends Component {
 	}
 	/*  设置顶部用户信息  */
 	componentWillMount() {
-		console.log(this.context)
 		let account = this.context.router.params.account
 		if (account) {
 			this.loadData(account)
@@ -35,13 +34,12 @@ class Sign extends Component {
 			}
 		})
 		.then((res) => {
-			let data = res.data.data
 			this.setState({
-				userInfo: data
+				userInfo: res.data
 			})
 		})
 		.catch((err) => {
-			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+			this.notice(err.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
 		})
 	}
 	/*  查看自己的信息  */

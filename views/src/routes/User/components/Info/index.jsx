@@ -23,7 +23,7 @@ class Info extends Component {
 		}
 		this.update = this.update.bind(this)
 		this.uploadImg = this.uploadImg.bind(this)
-		this.notice = (msg, interval, options) => this.props.actions.execute('notice', msg, interval, options)
+		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
 	}
 	componentWillMount() {
 		let account = this.context.router.params.account
@@ -51,14 +51,13 @@ class Info extends Component {
 			}
 		})
 		.then((res) => {
-			let data = res.data.data
 			this.setState({
 				isSelf: false,
-				info: data
+				info: res.data
 			})
 		})
 		.catch((err) => {
-			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+			this.notice(err.message, 2000, 'error')
 		})
 	}
 	/*  查看自己的信息  */
@@ -70,10 +69,9 @@ class Info extends Component {
 			}
 		})
 		.then((res) => {
-			let data = res.data.data
 			let obj = {}
 			for (let name in this.state.info) {
-				obj[name] = data[name]
+				obj[name] = res.data[name]
 			}
 			this.setState({
 				isSelf: true,
@@ -81,25 +79,24 @@ class Info extends Component {
 			})
 		})
 		.catch((err) => {
-			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+			this.notice(err.message, 2000, 'error')
 		})
 	}
 	/*  update data  */
 	update() {
-		this.notice('Uploading data...', 0, { status: 'loading', styles: { top: 'auto', bottom: '30px' } })
+		this.notice('Uploading data...', 0, 'loading')
 
-		/*  此处axios保存数据，接口未写  */
 		axios.post('/saveUserInfo', {
 			accessToken: window.sessionStorage['accessToken'],
 			info: this.state.info
 		})
 		.then((res) => {
-			this.notice(res.data.message, 2000, { status: 'success', styles: { top: 'auto', bottom: '30px' } })
+			this.notice(res.message, 2000, 'success')
 			window.sessionStorage.removeItem('login_status')
 			setTimeout(() =>　window.location.reload(), 1000)
 		})
 		.catch((err) => {
-			this.notice(err.response.data.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+			this.notice(err.message, 2000, 'error')
 		})
 	}
 	/*  上传图片  */
@@ -109,7 +106,7 @@ class Info extends Component {
 			return false
 		}
 		if (file.size > 102400) {
-			return this.notice('Avatar can not be greater than 100kb', 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+			return this.notice('Avatar can not be greater than 100kb', 2000, 'error')
 		}
 		var reader = new FileReader();
 		reader.onload = (e) => {

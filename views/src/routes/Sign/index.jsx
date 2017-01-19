@@ -30,16 +30,25 @@ class Sign extends Component {
 		this.signin = this.signin.bind(this)
 		this.coverHandle = this.coverHandle.bind(this)
 		this.switchType = this.switchType.bind(this)
-		this.notice = (msg, interval = 2000, options) => this.props.actions.execute('notice', msg, interval, options)
+		this.notice = (msg, interval = 2000, status = 'error') => this.props.actions.execute('notice', msg, interval, { status: status })
+		this.toggleMenu = (bool, options) => this.props.actions.execute('menu', bool, options)
 	}
 	componentDidMount() {
 		let msg = this.props.location.query.message
-		msg && this.notice(msg, 2000, { status: 'error' })
+		msg && this.notice(msg)
+		this.toggleMenu(true, {
+			showUserGroup: false
+		})
+	}
+	componentWillUnmount() {
+		this.toggleMenu(true, {
+			showUserGroup: true
+		})
 	}
 	/*  调用注册接口  */
 	signup() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
-			return this.notice('请正确输入注册信息', 2000, { status: 'error' })
+			return this.notice('请正确输入注册信息')
 
 		axios.post('/signup', {
 			account: this.state.account,
@@ -55,24 +64,24 @@ class Sign extends Component {
 			})
 		})
 		.catch((err) => {
-			this.notice(err.response.data.message, 2000, { status: 'error' })
+			this.notice(err.message)
 		})
 	}
 	/*  调用登录接口  */
 	signin() {
 		if (this.progress.length && !this.progress.every((progress) => progress.classList.contains('success')))
-			return this.notice('请正确输入登录信息', 2000, { status: 'error' })
+			return this.notice('请正确输入登录信息')
 
 		axios.post('/signin', {
 			account: this.state.account,
 			password: this.state.password
 		})
 		.then((res) => {
-			this.setWebStorage(res.data ? res.data : '')
+			res.data && this.setWebStorage(res.data)
 			this.props.actions.execute('refreshMenu')
 			this.successTrantionToHome()
 		})
-		.catch((err) => this.notice(err.response.data.message, 2000, { status: 'error' }))
+		.catch((err) => this.notice(err.message))
 	}
 	/*  登录成功动画  */
 	successTrantionToHome() {

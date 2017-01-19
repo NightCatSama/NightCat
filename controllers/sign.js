@@ -118,18 +118,20 @@ export default {
 					return res.json({
 						success: true,
 						message: '登录成功',
-						is_admin: user.admin,
-						userInfo: {
-							account: user.account,
-							email: user.email,
-							name: user.name,
-							location: user.location,
-							website: user.website,
-							profile: user.profile,
-							avatar: user.avatar
-						},
-						accessToken: user.accessToken,
-						token: token
+						data: {
+							is_admin: user.admin,
+							userInfo: {
+								account: user.account,
+								email: user.email,
+								name: user.name,
+								location: user.location,
+								website: user.website,
+								profile: user.profile,
+								avatar: user.avatar
+							},
+							accessToken: user.accessToken,
+							token: token
+						}
 					})
 				}
 			})
@@ -153,17 +155,19 @@ export default {
 			res.json({
 				success: true,
 				message: '登录成功',
-				userInfo: {
-					account: user.account,
-					email: user.email,
-					name: user.name,
-					location: user.location,
-					website: user.website,
-					profile: user.profile,
-					avatar: user.avatar
-				},
-				accessToken: user.accessToken,
-				token: token
+				data: {
+					userInfo: {
+						account: user.account,
+						email: user.email,
+						name: user.name,
+						location: user.location,
+						website: user.website,
+						profile: user.profile,
+						avatar: user.avatar
+					},
+					accessToken: user.accessToken,
+					token: token
+				}
 			})
 		})
 		.catch(err => {

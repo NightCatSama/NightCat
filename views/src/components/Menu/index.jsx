@@ -54,7 +54,7 @@ class Menu extends Component {
 	signout() {
 		axios.post('/signout', {})
 		.then((res) => {
-			if (res.data.success) {
+			if (res.success) {
 				this.props.actions.execute('notice', '退出成功！', 2000, { status: 'success' })
 				this.clearWebStorage()
 				this.setState({
@@ -63,7 +63,7 @@ class Menu extends Component {
 				})
 			}
 		})
-		.catch((err) => this.props.actions.execute('notice', err.response.data.message, 2000, { status: 'error' }))
+		.catch((err) => this.props.actions.execute('notice', err.message, 2000, { status: 'error' }))
 	}
 	/*  清除 webstorage  */
 	clearWebStorage(data) {
