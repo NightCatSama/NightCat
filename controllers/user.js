@@ -7,7 +7,7 @@ import eventproxy from 'eventproxy'
 export default {
 	/*  根据AccessToken得到用户信息  */
 	getUserInfo: async(req, res, next) => {
-		let accessToken = req.query.accessToken
+		let accessToken = req.headers.accesstoken
 
 		let ep = new eventproxy()
 		ep.fail(next)
@@ -60,7 +60,7 @@ export default {
 	},
 	/*  保存用户信息  */
 	saveUserInfo: async(req, res, next) => {
-		let accessToken = req.body.accessToken
+		let accessToken = req.headers.accesstoken
 		let info = req.body.info
 
 		let ep = new eventproxy()

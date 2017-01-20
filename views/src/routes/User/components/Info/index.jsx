@@ -4,6 +4,7 @@ import React, { Component, PropTypes } from 'react'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
+import AuthAction from 'actions/AuthAction'
 
 import './styles'
 
@@ -36,12 +37,8 @@ class Info extends Component {
 	}
 	/*  查看用户的信息  */
 	loadData(account) {
-		let userInfo = window.sessionStorage.userInfo
-		if (!userInfo)
-			return false
-
-		userInfo = JSON.parse(userInfo)
-		if (userInfo.account === account) {
+		let { isLogin, userInfo } = this.props.auth
+		if (isLogin && userInfo.account === account) {
 			return this.loadSelfData()
 		}
 
@@ -62,12 +59,7 @@ class Info extends Component {
 	}
 	/*  查看自己的信息  */
 	loadSelfData() {
-		let accessToken = window.sessionStorage['accessToken']
-		axios.get('/getUserInfo', {
-			params: {
-				accessToken: accessToken
-			}
-		})
+		axios.get('/getUserInfo')
 		.then((res) => {
 			let obj = {}
 			for (let name in this.state.info) {
@@ -82,18 +74,17 @@ class Info extends Component {
 			this.notice(err.message, 2000, 'error')
 		})
 	}
-	/*  update data  */
+	/*  保存用户信息  */
 	update() {
 		this.notice('Uploading data...', 0, 'loading')
 
 		axios.post('/saveUserInfo', {
-			accessToken: window.sessionStorage['accessToken'],
 			info: this.state.info
 		})
 		.then((res) => {
 			this.notice(res.message, 2000, 'success')
-			window.sessionStorage.removeItem('login_status')
-			setTimeout(() =>　window.location.reload(), 1000)
+			this.props.authConf.setUserInfo(this.state.info)
+			this.props.authConf.refresh()
 		})
 		.catch((err) => {
 			this.notice(err.message, 2000, 'error')
@@ -181,19 +172,22 @@ class Info extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return {store: state}
+	return { auth: state.auth }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(EventBusAction, dispatch)
+	actions: bindActionCreators(EventBusAction, dispatch),
+	authConf: bindActionCreators(AuthAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Info)
 
 Info.propTypes = {
-	actions: PropTypes.any,
-	history: PropTypes.any,
-	location: PropTypes.any
+	auth: PropTypes.object,
+	authConf: PropTypes.object,
+	actions: PropTypes.object,
+	history: PropTypes.object,
+	location: PropTypes.object
 }
 
 Info.contextTypes = {

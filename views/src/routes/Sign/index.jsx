@@ -5,6 +5,7 @@ import isEmail from 'validator/lib/isEmail'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
+import AuthAction from 'actions/AuthAction'
 
 import Velocity from 'velocity-animate'
 
@@ -31,6 +32,7 @@ class Sign extends Component {
 		this.coverHandle = this.coverHandle.bind(this)
 		this.switchType = this.switchType.bind(this)
 		this.notice = (msg, interval = 2000, status = 'error') => this.props.actions.execute('notice', msg, interval, { status: status })
+		this.setUserStatus = this.props.authConf.setStatus
 		this.toggleMenu = (bool, options) => this.props.actions.execute('menu', bool, options)
 	}
 	componentDidMount() {
@@ -77,8 +79,8 @@ class Sign extends Component {
 			password: this.state.password
 		})
 		.then((res) => {
-			res.data && this.setWebStorage(res.data)
-			this.props.actions.execute('refreshMenu')
+			res.data && this.setUserStatus(res.data)
+			this.props.authConf.refresh()
 			this.successTrantionToHome()
 		})
 		.catch((err) => this.notice(err.message))
@@ -98,15 +100,6 @@ class Sign extends Component {
 			Velocity(el, { scale: 1, width: '100vw', height: '100vh' }, { duration: 1000, easing: 'easeOutQuart' })
 			Velocity(el, { opacity: 0 }, { duration: 1000, complete: () => this.context.router.replace(this.props.location.query.link || '/') })
 		}, 300)
-	}
-	/*  设置 webstorage  */
-	setWebStorage(data) {
-		window.localStorage.token = data.token
-		window.sessionStorage.accessToken = data.accessToken
-		window.sessionStorage.login_status = JSON.stringify({
-			isLogin: true
-		})
-		window.sessionStorage.userInfo = JSON.stringify(data.userInfo)
 	}
 	/*  input 输入同步  */
 	handleChange(e, name, fn) {
@@ -296,15 +289,17 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(EventBusAction, dispatch)
+	actions: bindActionCreators(EventBusAction, dispatch),
+	authConf: bindActionCreators(AuthAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sign)
 
 Sign.propTypes = {
-	actions: PropTypes.any,
-	history: PropTypes.any,
-	location: PropTypes.any
+	authConf: PropTypes.object,
+	actions: PropTypes.object,
+	history: PropTypes.object,
+	location: PropTypes.object
 }
 
 Sign.contextTypes = {

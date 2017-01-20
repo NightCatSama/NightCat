@@ -4,12 +4,12 @@ import { persistState } from 'redux-devtools'
 import DevTools from 'asset/DevTools'
 
 const enhancer = compose(
-  DevTools.instrument(),
-  persistState(
-    window.location.href.match(
-      /[?&]debug_session=([^&#]+)\b/
-    )
-  )
+	DevTools.instrument(),
+	persistState(
+		window.location.href.match(
+			/[?&]debug_session=([^&#]+)\b/
+		)
+	)
 )
 
 
@@ -18,4 +18,4 @@ let configureStore = (initialState) => {
     return store
 }
 
-export default configureStore
+module.exports = configureStore

@@ -5,6 +5,7 @@ import { Link, IndexLink } from 'react-router'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
+import AuthAction from 'actions/AuthAction'
 
 import './styles'
 
@@ -26,6 +27,9 @@ class Sign extends Component {
 			this.loadSelfData()
 		}
 	}
+	componentDidMount() {
+		this.props.authConf.subscribeEvents(this.loadSelfData.bind(this))
+	}
 	/*  查看用户的信息  */
 	loadData(account) {
 		axios.get('/getUserInfoByAccount', {
@@ -44,15 +48,10 @@ class Sign extends Component {
 	}
 	/*  查看自己的信息  */
 	loadSelfData() {
-		let status = window.sessionStorage.login_status
-		if (!status)
-			return false
-
-		status = JSON.parse(status)
-		if (status.isLogin) {
-			let userInfo = JSON.parse(window.sessionStorage.userInfo)
+		let { isLogin, userInfo } = this.props.auth
+		console.log(userInfo)
+		if (isLogin && userInfo) {
 			this.setState({
-				isLogin: true,
 				userInfo: {
 					account: userInfo.account,
 					email: userInfo.email,
@@ -87,20 +86,23 @@ class Sign extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return {store: state}
+	return { auth: state.auth }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(EventBusAction, dispatch)
+	actions: bindActionCreators(EventBusAction, dispatch),
+	authConf: bindActionCreators(AuthAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Sign)
 
 Sign.propTypes = {
-	children: PropTypes.any,
-	actions: PropTypes.any,
-	history: PropTypes.any,
-	location: PropTypes.any
+	auth: PropTypes.object,
+	children: PropTypes.object,
+	authConf: PropTypes.object,
+	actions: PropTypes.object,
+	history: PropTypes.object,
+	location: PropTypes.object
 }
 
 Sign.contextTypes = {

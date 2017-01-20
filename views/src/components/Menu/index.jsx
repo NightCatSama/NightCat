@@ -6,40 +6,36 @@ import './Menu'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
+import AuthAction from 'actions/AuthAction'
 
 class Menu extends Component {
 	constructor (props) {
-	    super(props)
-	    this.state = {
-	    	sideShow: false,
+		super(props)
+		this.state = {
+			sideShow: false,
 			isLogin: false,
 			userInfo: null
-	    }
-	    this.toggleMenu = this.toggleMenu.bind(this)
-	    this.signout = this.signout.bind(this)
-	    this.linkClick = this.linkClick.bind(this)
-	    this.windowClick = this.windowClick.bind(this)
+		}
+		this.toggleMenu = this.toggleMenu.bind(this)
+		this.signout = this.signout.bind(this)
+		this.linkClick = this.linkClick.bind(this)
+		this.windowClick = this.windowClick.bind(this)
 	}
 	componentWillMount() {
-		this.isSignin()
+		this.props.authConf.subscribeEvents(this.getUserInfo.bind(this))
+		this.getUserInfo()
 	}
 	/*  绑定全局事件  */
 	componentDidMount() {
 		document.body.addEventListener('click', this.windowClick, false)
-		this.props.actions.register('refreshMenu', this.isSignin.bind(this))
 	}
 	componentWillUnmount() {
 		document.body.removeEventListener('click', this.windowClick, false)
 	}
-	/*  判断用户是否已登录  */
-	isSignin() {
-		let status = window.sessionStorage.login_status
-		if (!status)
-			return false
-
-		status = JSON.parse(status)
-		if (status.isLogin) {
-			let userInfo = JSON.parse(window.sessionStorage.userInfo)
+	/*  得到用户信息  */
+	getUserInfo() {
+		let { isLogin, userInfo } = this.props.auth
+		if (isLogin && userInfo) {
 			this.setState({
 				isLogin: true,
 				userInfo: {
@@ -68,7 +64,6 @@ class Menu extends Component {
 	/*  清除 webstorage  */
 	clearWebStorage(data) {
 		window.localStorage.removeItem('token')
-		window.sessionStorage.removeItem('login_status')
 	}
 	/*  点击menu以外地区关闭menu  */
 	windowClick(e) {
@@ -115,16 +110,6 @@ class Menu extends Component {
 							<i className="iconfont icon-home"></i>
 							<span>Home</span>
 						</IndexLink>
-						{/*
-							<Link to="/single-games" activeClassName="active" className="link" onClick={this.linkClick}>
-								<i className="iconfont icon-singleGames"></i>
-								<span>Single Games</span>
-							</Link>
-							<Link to="/online-games" activeClassName="active" className="link" onClick={this.linkClick}>
-								<i className="iconfont icon-onlineGames"></i>
-								<span>Online Games</span>
-							</Link>
-						*/}
 						<Link to="/games" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-game"></i>
 							<span>Games</span>
@@ -190,11 +175,12 @@ class Menu extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return {store: state}
+	return { auth: state.auth }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(EventBusAction, dispatch)
+	actions: bindActionCreators(EventBusAction, dispatch),
+	authConf: bindActionCreators(AuthAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Menu)
@@ -203,6 +189,9 @@ Menu.propTypes = {
 	show: PropTypes.bool,
 	callback: PropTypes.func,
 	showUserGroup: PropTypes.bool,
+	store: PropTypes.object,
+	auth: PropTypes.object,
+	authConf: PropTypes.object,
 	actions: PropTypes.object
 }
 

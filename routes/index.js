@@ -10,6 +10,11 @@ const user = ctr.user
 
 router
 	.use(allowCrossDomain)
+	.post('/test', (req, res, next) => {
+		return res.json({
+
+		})
+	})
 	.get('/activeAccount', sign.activeAccount) // 账号激活
 	.post('/signin', sign.signin)  //  登录
 	.post('/signout', sign.signout)  //  退出登录

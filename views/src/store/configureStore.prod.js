@@ -6,4 +6,4 @@ let configureStore = (initialState) => {
     return store
 }
 
-export default configureStore
+module.exports = configureStore
