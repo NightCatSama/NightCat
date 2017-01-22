@@ -1,10 +1,12 @@
 import React, { Component, PropTypes } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import cs from 'classnames'
 import './message'
 
 export default class Message extends Component {
 	constructor (props) {
 	    super(props)
+	    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 	}
 	render() {
 		const status_map = {

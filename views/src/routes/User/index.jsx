@@ -15,10 +15,19 @@ class Sign extends Component {
 		this.state = {
 			userInfo: {}
 		}
-		this.notice = (msg, interval, options) => this.props.actions.execute('notice', msg, interval, options)
+		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
+	}
+	componentDidMount() {
+		this.props.authConf.subscribeEvents(this.loadSelfData.bind(this))
+		this.getUserInfo()
+	}
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.params.account !== this.state.userInfo.account) {
+			this.getUserInfo()
+		}
 	}
 	/*  设置顶部用户信息  */
-	componentWillMount() {
+	getUserInfo() {
 		let account = this.context.router.params.account
 		if (account) {
 			this.loadData(account)
@@ -26,9 +35,6 @@ class Sign extends Component {
 		else {
 			this.loadSelfData()
 		}
-	}
-	componentDidMount() {
-		this.props.authConf.subscribeEvents(this.loadSelfData.bind(this))
 	}
 	/*  查看用户的信息  */
 	loadData(account) {
@@ -43,13 +49,12 @@ class Sign extends Component {
 			})
 		})
 		.catch((err) => {
-			this.notice(err.message, 2000, { status: 'error', styles: { top: 'auto', bottom: '30px' } })
+			this.notice(err.message, 2000, 'error')
 		})
 	}
 	/*  查看自己的信息  */
 	loadSelfData() {
 		let { isLogin, userInfo } = this.props.auth
-		console.log(userInfo)
 		if (isLogin && userInfo) {
 			this.setState({
 				userInfo: {

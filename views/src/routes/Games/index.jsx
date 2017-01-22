@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { Link } from 'react-router'
 import cs from 'classnames'
 
@@ -22,11 +23,14 @@ const isPC = !/(iPhone|iPad|iPod|iOS|Android|SymbianOS|Windows Phone)/i.test(nav
 class Games extends Component {
 	constructor(props) {
 		super(props)
+	    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
+
 		this.state = {
 			active: 0,
 			isFull: true,
 			list_width: document.body.offsetWidth * 0.9
 		}
+		
 		this.games = games.filter((game) => game.isPC === isPC)
 		this.last = this.games.length - 1
 		this.countLimit = 5

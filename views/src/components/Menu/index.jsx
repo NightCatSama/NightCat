@@ -21,13 +21,11 @@ class Menu extends Component {
 		this.linkClick = this.linkClick.bind(this)
 		this.windowClick = this.windowClick.bind(this)
 	}
-	componentWillMount() {
-		this.props.authConf.subscribeEvents(this.getUserInfo.bind(this))
-		this.getUserInfo()
-	}
 	/*  绑定全局事件  */
 	componentDidMount() {
 		document.body.addEventListener('click', this.windowClick, false)
+		this.props.authConf.subscribeEvents(this.getUserInfo.bind(this))
+		this.getUserInfo()
 	}
 	componentWillUnmount() {
 		document.body.removeEventListener('click', this.windowClick, false)
@@ -120,7 +118,7 @@ class Menu extends Component {
 						</Link>
 						<Link to="/about" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-about"></i>
-							<span>About</span>
+							<span>About Me</span>
 						</Link>
 					</div>
 					{ this.props.showUserGroup && (this.state.isLogin ? (
@@ -151,14 +149,6 @@ class Menu extends Component {
 					) : (
 						<div className="user-group">
 							<div className="sign-btn-group">
-								{/*
-								<a href="javascript:;" className="sign-btn blue-btn" onClick={(e) => this.gotoSign(e, '/sign')}>
-									Sign in
-								</a>
-								<a href="javascript:;" className="sign-btn green-btn" onClick={(e) => this.gotoSign(e, '/sign', true)}>
-									Sign up
-								</a>
-								*/}
 								<Link to="/sign" className="sign-btn blue-btn" onClick={this.linkClick}>
 									Sign in
 								</Link>

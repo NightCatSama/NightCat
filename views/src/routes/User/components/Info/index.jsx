@@ -14,6 +14,7 @@ class Info extends Component {
 		this.state = {
 			isChange: false,
 			isSelf: false,
+			account: undefined,
 			info: {
 				name: '',
 				location: '',
@@ -26,7 +27,16 @@ class Info extends Component {
 		this.uploadImg = this.uploadImg.bind(this)
 		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
 	}
-	componentWillMount() {
+	componentDidMount() {
+		this.props.authConf.subscribeEvents(this.loadSelfData.bind(this))
+		this.getUserInfo()
+	}
+	componentWillReceiveProps(nextProps) {
+		if (nextProps.params.account !== this.state.account) {
+			this.getUserInfo()
+		}
+	}
+	getUserInfo() {
 		let account = this.context.router.params.account
 		if (account) {
 			this.loadData(account)
@@ -50,6 +60,7 @@ class Info extends Component {
 		.then((res) => {
 			this.setState({
 				isSelf: false,
+				account: account,
 				info: res.data
 			})
 		})
