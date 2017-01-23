@@ -7,7 +7,7 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var utils = require('./utils')
 
 var config = {
-	devtool:'source-map',
+	devtool:'#eval-source-ma',
 	entry: {
 		app: './src/main.js'
 	},

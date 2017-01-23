@@ -42,6 +42,7 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 		background: #243B55;
 		background: linear-gradient(290deg, #141E30, #243B55);
 	}
+
 	.menu-btn {
 		visibility: visible;
 		position: absolute;
@@ -123,6 +124,8 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 			position: relative;
 			color: lighten($menu-color, 10%);
 			text-decoration: none;
+			transform: translate3d(50px, 0, 0);
+			opacity: 0;
 			transition: all .3s;
 
 			.iconfont {
@@ -146,6 +149,15 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 			padding-top: 50px;
 		}
 	}
+	&.open .link-group  {
+		@for $i from 1 through 6 {
+			.link:nth-child(#{$i}) {
+				transform: translate3d(0, 0, 0);
+				opacity: 1;
+				transition: transform .6s cubic-bezier(0.175, 0.885, 0.32, 1.275) $i * 0.1s, opacity .6s cubic-bezier(0.175, 0.885, 0.32, 1.275) $i * 0.1s;
+			}
+		}
+	}
 
 	.user-group {
 		position: absolute;
@@ -155,6 +167,14 @@ $shadow: 1px 1px 3px rgba(0, 0, 0, .86);
 		padding: 0 $gap;
 		@include flex-h-center;
 		flex-direction: column;
+		opacity: 0;
+		transform: translate3d(0, 50px, 0);
+	}
+
+	&.open .user-group {
+		transform: translate3d(0, 0, 0);
+		opacity: 1;
+		transition: transform .8s .4s, opacity .8s .4s;
 	}
 
 	.personal-information {

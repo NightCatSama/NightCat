@@ -21,7 +21,6 @@ export default class About extends Component {
 		this.setScreenSize = this.setScreenSize.bind(this)
 	}
 	componentDidMount() {
-		/*  What !!?  */
 		setTimeout(() => {
 			document.addEventListener('mousemove', this.follow)
 			window.addEventListener('resize', this.setScreenSize)

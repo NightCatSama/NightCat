@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-// import cs from 'classnames'
-// import { Link } from 'react-router'
+import Canvas from './canvas'
 import './styles'
 
 export default class MyFriends extends Component {
@@ -9,12 +8,17 @@ export default class MyFriends extends Component {
 		this.state = {
 		}
 	}
+	componentDidMount() {
+		setTimeout(() => {
+			new Canvas(this.canvas)
+		}, 10)
+	}
 	render() {
 		return (
 			<div ref="view" className="my-friends-view">
-				<h1>施工中：)</h1>
+				<canvas id="canvas" ref={(ref) => this.canvas = ref}></canvas>
 			</div>
-		);
+		)
 	}
 }
 

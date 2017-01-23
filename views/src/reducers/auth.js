@@ -36,6 +36,7 @@ const headerBtn = handleActions({
 			events: state.events.concat(payload)
 		})
 	},
+	/*  刷新  */
 	[ActionTypes.REFRESH](state, { payload }) {
 		Array.from(state.events, (event) => event())
         return Object.assign({}, state)
