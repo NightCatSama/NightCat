@@ -62,7 +62,6 @@ export default class Particle {
 		this.my = e.clientY - this.bounds.top;
 	}
 	setSize() {
-		console.log(this.canvas.offsetWidth)
 		this.canvas.width = this.width = this.canvas.offsetWidth
 		this.canvas.height = this.height = this.canvas.offsetHeight
 	}

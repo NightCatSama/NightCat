@@ -28,7 +28,7 @@ class Info extends Component {
 		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
 	}
 	componentDidMount() {
-		this.props.authConf.subscribeEvents(this.loadSelfData.bind(this))
+		this.props.authConf.subscribeEvents('Info', this.loadSelfData.bind(this))
 		this.getUserInfo()
 	}
 	componentWillReceiveProps(nextProps) {
@@ -36,6 +36,10 @@ class Info extends Component {
 			this.getUserInfo()
 		}
 	}
+	componentWillUnmount() {
+		this.props.authConf.unsubscribeEvents('Info')
+	}
+	/*  得到用户信息  */
 	getUserInfo() {
 		let account = this.context.router.params.account
 		if (account) {
@@ -107,17 +111,53 @@ class Info extends Component {
 		if (!file) {
 			return false
 		}
-		if (file.size > 102400) {
-			return this.notice('Avatar can not be greater than 100kb', 2000, 'error')
-		}
-		var reader = new FileReader();
+		var reader = new FileReader()
 		reader.onload = (e) => {
-			this.setState({
-				info: Object.assign({}, this.state.info, { avatar: e.target.result })
+			this.compress(e.target.result).then((avatar) => {
+				this.setState({
+					info: Object.assign({}, this.state.info, { avatar: avatar })
+				})
 			})
 		}
 		reader.readAsDataURL(file)
 	}
+	/*  压缩图片  */
+	compress(src) {
+		return new Promise((res, rej) => {
+			/*  压缩配置  */
+			let opt = {
+				width: 320,
+				height: 320,
+				quality: 0.92
+			}
+
+			let img = new Image()
+			let canvas = document.createElement('CANVAS')
+			canvas.width = opt.width
+			canvas.height = opt.height
+			let cxt = canvas.getContext('2d')
+
+			img.onload = () => {
+				let size = [img.width, img.height]
+				/*  将长的方向进行裁剪  */
+				let x, y, base
+				if (size[0] > size[1]) {
+					y = 0
+					x = (size[0] - size[1]) / 2
+					base = size[1]
+				}
+				else {
+					x = 0
+					y = (size[1] - size[0]) / 2
+					base = size[0]
+				}
+				cxt.drawImage(img, x, y, base, base, 0, 0, opt.width, opt.height)
+				res(canvas.toDataURL('image/jpeg', opt.quality))
+			}
+
+			img.src = src
+		})
+	} 
 	/*  input 输入同步  */
 	handleChange(e, name) {
 		let val = e.target.value

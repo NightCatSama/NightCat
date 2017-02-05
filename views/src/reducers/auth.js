@@ -5,7 +5,7 @@ const initialState = {
 	isLogin: false,
 	accessToken: null,
 	userInfo: null,
-	events: [],
+	events: {},
 	signin_time: null
 }
 
@@ -32,14 +32,21 @@ const headerBtn = handleActions({
 	},
 	/*  订阅事件，当信息更新时刷新  */
 	[ActionTypes.SUBSCRIBE_EVENTS](state, { payload }) {
-		return Object.assign({}, state, {
-			events: state.events.concat(payload)
-		})
+		let newState = Object.assign({}, state)
+		newState.events[payload.key] = payload.fn
+		return newState
+	},
+	/*  取消订阅  */
+	[ActionTypes.UNSUBSCRIBE_EVENTS](state, { payload }) {
+		let newState = Object.assign({}, state)
+		delete newState[payload]
+		return newState
 	},
 	/*  刷新  */
 	[ActionTypes.REFRESH](state, { payload }) {
-		Array.from(state.events, (event) => event())
-        return Object.assign({}, state)
+		for (let key in state.events)
+			state.events[key]()
+        return state
 	}
 }, initialState)
 

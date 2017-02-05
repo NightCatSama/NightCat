@@ -18,13 +18,16 @@ class Sign extends Component {
 		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
 	}
 	componentDidMount() {
-		this.props.authConf.subscribeEvents(this.loadSelfData.bind(this))
+		this.props.authConf.subscribeEvents('User', this.loadSelfData.bind(this))
 		this.getUserInfo()
 	}
 	componentWillReceiveProps(nextProps) {
 		if (nextProps.params.account !== this.state.userInfo.account) {
 			this.getUserInfo()
 		}
+	}
+	componentWillUnmount() {
+		this.props.authConf.unsubscribeEvents('User')
 	}
 	/*  设置顶部用户信息  */
 	getUserInfo() {

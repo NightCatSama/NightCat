@@ -24,10 +24,11 @@ class Menu extends Component {
 	/*  绑定全局事件  */
 	componentDidMount() {
 		document.body.addEventListener('click', this.windowClick, false)
-		this.props.authConf.subscribeEvents(this.getUserInfo.bind(this))
+		this.props.authConf.subscribeEvents('Menu', this.getUserInfo.bind(this))
 		this.getUserInfo()
 	}
 	componentWillUnmount() {
+		this.props.authConf.unsubscribeEvents('Menu')
 		document.body.removeEventListener('click', this.windowClick, false)
 	}
 	/*  得到用户信息  */
