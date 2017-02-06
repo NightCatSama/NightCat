@@ -125,6 +125,7 @@ export default {
 								email: user.email,
 								name: user.name,
 								location: user.location,
+								github: user.github,
 								website: user.website,
 								profile: user.profile,
 								avatar: user.avatar
@@ -161,6 +162,7 @@ export default {
 						email: user.email,
 						name: user.name,
 						location: user.location,
+						github: user.github,
 						website: user.website,
 						profile: user.profile,
 						avatar: user.avatar

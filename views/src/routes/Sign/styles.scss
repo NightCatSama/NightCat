@@ -21,7 +21,7 @@ $switch-time: 0.4s;
 	}
 
 	.sign-wrap {
-		width: 315px;
+		width: 350px;
 		height: 400px;
 		display: flex;
 		position: relative;
@@ -32,6 +32,10 @@ $switch-time: 0.4s;
 		background-color: $sign-bg-color;
 		transition: height .3s;
 		opacity: 0.95;
+
+		@include max-screen(768px) {
+			width: 90%;
+		}
 
 		&.reset-wrap {
 			border-radius: 0;

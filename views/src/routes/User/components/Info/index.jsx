@@ -19,6 +19,7 @@ class Info extends Component {
 				name: '',
 				location: '',
 				avatar: '',
+				github: '',
 				profile: '',
 				website: ''
 			}
@@ -157,7 +158,7 @@ class Info extends Component {
 
 			img.src = src
 		})
-	} 
+	}
 	/*  input 输入同步  */
 	handleChange(e, name) {
 		let val = e.target.value
@@ -205,6 +206,10 @@ class Info extends Component {
 					<div className="form-item">
 						<label htmlFor="website">Website</label>
 						<input {...this.createProps('website', 'text')} />
+					</div>
+					<div className="form-item">
+						<label htmlFor="github">Github</label>
+						<input {...this.createProps('github', 'text')} />
 					</div>
 					<div className="form-item">
 						<label htmlFor="location">Location</label>

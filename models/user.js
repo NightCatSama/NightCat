@@ -43,6 +43,11 @@ let userSchema = new Schema({
 		type: String,
 		default: ''
 	},
+	/*  github  */
+	github: {
+		type: String,
+		default: ''
+	},
 	/*  位置  */
 	location: {
 		type: String,
@@ -64,9 +69,9 @@ let userSchema = new Schema({
 	}
 })
 
-userSchema.index({account: 1}, {unique: true, sparse: true})
-userSchema.index({email: 1}, {unique: true, sparse: true})
-userSchema.index({accessToken: 1})
+userSchema.index({ account: 1 }, { unique: true, sparse: true })
+userSchema.index({ email: 1 }, { unique: true, sparse: true })
+userSchema.index({ accessToken: 1 })
 
 userSchema.pre('save', (next) => {
 	var now = new Date();

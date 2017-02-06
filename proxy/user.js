@@ -42,6 +42,7 @@ export const newAndSave = async(data) => {
 	u.account = data.account
 	u.password = data.password
 	u.email = data.email
+	u.github = data.github
 	u.avatar = getGravatar(data.email)
 	u.active = data.active || false
 	u.accessToken = uuid.v4()

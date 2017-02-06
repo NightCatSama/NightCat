@@ -97,6 +97,7 @@ export default {
 				user.name = info.name
 				user.profile = info.profile
 				user.website = info.website
+				user.github = info.github
 				user.location = info.location
 				user.avatar = info.avatar
 				return user.save()
