@@ -26,7 +26,7 @@ var config = {
 		}],
 		loaders: [{
 			test: /\.(wav|mp3)$/,
-			loader: 'url-loader',
+			loader: 'url',
 			exclude: /node_modules/
 		}, {
 			test: /\.jsx?$/,

@@ -52,7 +52,6 @@ app.use(session({
 	}
 }))
 
-
 app.use('/admin/', admin_router)
 app.use('/', router)
 

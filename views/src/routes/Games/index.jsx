@@ -26,14 +26,19 @@ class Games extends Component {
 	    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 
 		this.state = {
+			//  当前项目
 			active: 0,
+			//  是否大屏显示游戏介绍（或者缩略图模式）
 			isFull: true,
+			//  列表宽度
 			list_width: document.body.offsetWidth * 0.9
 		}
 		
+		/*  将PC游戏和mobile分开  */
 		this.games = games.filter((game) => game.isPC === isPC)
-		this.last = this.games.length - 1
-		this.countLimit = 5
+		/*  当游戏数量大于该值则开启缩略图模式  */
+		this.countLimit = 0
+
 		this.windowResize = this.windowResize.bind(this)
 		this.changeThum = this.changeThum.bind(this)
 	}
@@ -41,6 +46,7 @@ class Games extends Component {
 	componentDidMount() {
 		window.addEventListener('resize', this.windowResize, false)
 	}
+	/*  注销所有绑定事件  */
 	componentWillUnmount() {
 		window.removeEventListener('resize', this.windowResize, false)
 	}
@@ -74,7 +80,7 @@ class Games extends Component {
 	/*  得到上下页按钮的class  */
 	getBtnClass(type) {
 		return cs('change-game-btn', 'iconfont', `icon-${type}`, {
-			disbaled: (type === 'prev' ? this.state.active === 0 : this.state.active === this.last)
+			disbaled: (type === 'prev' ? this.state.active === 0 : this.state.active === (this.games.length - 1))
 		})
 	}
 	/*  页面主体  */

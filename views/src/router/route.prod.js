@@ -1,13 +1,20 @@
 import React, { Component } from 'react'
 import { Router, browserHistory } from 'react-router'
 
-import createRoute from 'routes'
-import { autoLogin, userRequired } from './utils'
+import { createRoute, createIndexRoute, createChildRoutes, autoLogin, userRequired } from './utils'
+import Home from 'routes/Home'
 
 const rootRoute = {
 	path: '/',
-	component: require('../app').default,
-	indexRoute: createRoute(false, 'Home'),
+	// getComponent(nextState, callback) {
+	// 	require.ensure([], function(require) {
+	// 		callback(null, require('../app.jsx').default)
+	// 	})
+	// },
+	component: require('../app.jsx').default,
+	indexRoute: {
+		component: Home
+	},
 	childRoutes: [
 		createRoute('/sign', 'Sign'),
 		createRoute('/active_account', 'ActiveAccount'),
@@ -16,37 +23,40 @@ const rootRoute = {
 		createRoute('/about', 'About'),
 		createRoute('/user', 'User', {
 			onEnter: userRequired,
-			indexRoute: createRoute(false, 'User/components/Info'),
-			childRoutes: [
+			getIndexRoute: createIndexRoute('User/components/Info'),
+			getChildRoutes: createChildRoutes([
 				createRoute('/user/game-data', 'User/components/GameData')
-			]
+			])
 		}),
 		createRoute('/user/:account', 'User', {
-			indexRoute: createRoute(false, 'User/components/Info'),
-			childRoutes: [
+			getIndexRoute: createIndexRoute('User/components/Info'),
+			getChildRoutes: createChildRoutes([
 				createRoute('/user/game-data/:account', 'User/components/GameData')
-			]
+			])
 		}),
 		createRoute('/single-games', 'SingleGames', {
-			childRoutes: [
+			getChildRoutes: createChildRoutes([
 				createRoute('/single-games/factory', 'SingleGames/components/Factory')
-			]
+			])
 		}),
 		createRoute('/online-games', 'OnlineGames', {
 			onEnter: userRequired,
-			childRoutes: []
+			getChildRoutes: createChildRoutes([
+			])
 		})
 	],
 	onEnter: autoLogin
 }
 
+console.log(rootRoute)
+
 export default class Root extends Component {
 	render() {
 		return (
 			<div>
-				<Router 
+				<Router
 					history={browserHistory}
-					routes={rootRoute} 
+					routes={rootRoute}
 				/>
 			</div>
 		)

@@ -50,6 +50,7 @@ var config = {
 	resolve: {
 		extensions: ['', '.js', '.jsx', '.css', '.scss'],
 		alias: {
+			'config': path.join(SRC_PATH, './config'),
 			'actions': path.join(SRC_PATH, './actions'),
 			'asset': path.join(SRC_PATH, './asset'),
 			'components': path.join(SRC_PATH, './components'),
