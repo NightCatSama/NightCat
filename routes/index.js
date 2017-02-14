@@ -11,11 +11,6 @@ const user = ctr.user
 
 router
 	.use(allowCrossDomain)
-	.get('/resume', (req, res, next) => {
-		let app = req.app
-		app.use(express.static(path.join(__dirname, '../resume/')))
-		res.sendFile('./resume/', { root: path.join(__dirname, '../') })
-	})
 	.get('/activeAccount', sign.activeAccount) // 账号激活
 	.post('/signin', sign.signin)  //  登录
 	.post('/signout', sign.signout)  //  退出登录

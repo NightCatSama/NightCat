@@ -32,13 +32,5 @@ export default {
 	database: {
 		username: 'username',
 		password: 'password'
-	},
-
-	// github 登陆的配置
-	github_oauth: {
-		clientID: 'f34a0e50609f8dc19f8b',
-		clientSecret: '4de9dc2c0c03ee1e5c603e58963662f83cc2c048'
-	},
-	// 是否允许直接注册（否则只能走 github 的方式）
-	allow_sign_up: true
+	}
 }

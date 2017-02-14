@@ -10,6 +10,15 @@
 后端：NodeJS + Express + MongoDb<br>
 后台管理系统： Hbs + Jquery + Gulp <br>
 
+## 进度
+ - [x] 用户登录、注册和邮箱认证
+ - [x] 完成前端架构
+ - [x] 完成后端架构
+ - [x] 完成后台管理系统架构
+ - [x] React-router 按需加载
+ - [ ] 页面完善
+ - [ ] 实现联机功能
+
 ## 前端架构
     views/
       |- build/     // webpack配置文件夹
@@ -29,7 +38,6 @@
       |- config.js   // 配置文件
       |- http.js     // 请求拦截器
       |- main.js     // 入口文件
-            
 
 ## 后端架构
     nightcat/
@@ -43,10 +51,10 @@
       |- model/       // mongoose 模型
       |- proxy/       // 代理
       |- routes/      // 路由
+      |- socket/      // websocket通信
       |- views/       // 前端目录
       |- app.js       // 入口文件
-      
-      
+    
 ## 后台管理架构
     backstage/
       |- dist/        // 生产环境目录

@@ -2,8 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import './styles'
 
 import io from 'socket.io-client'
-
-let socket = io('http://localhost:80/gobang')
+import config from 'config'
 
 export default class Gobang extends Component {
 	constructor (props) {
@@ -12,6 +11,7 @@ export default class Gobang extends Component {
 			rooms: null,
 			userInfo: {}
 		}
+		this.socket = io(config.socket_host + '/gobang')
 		this.createRoom = this.createRoom.bind(this)
 	}
 	componentDidMount() {
@@ -26,15 +26,25 @@ export default class Gobang extends Component {
 		})
 
 		/*  请求所有房间信息  */
-		socket.on('rooms', (data) => {
-			console.log(data)
-			this.setState({
-				rooms: data
-			})
+		this.socket.on('Rooms', (data) => {
+			console.info(data)
+		})
+
+		this.socket.on('disconnect', function() {
+			console.log('与服务其断开')
+		})
+
+		this.socket.on('reconnect', function() {
+			console.log('重新连接到服务器')
 		})
 	}
 	createRoom() {
-
+		/*  创建房间  */
+		this.socket.emit('Create', {
+			userInfo: this.state.userInfo,
+			room_name: '求虐',
+			password: 'qweasd'
+		})
 	}
 	render() {
 		let userInfo = this.state.userInfo
@@ -43,7 +53,7 @@ export default class Gobang extends Component {
 				<section className="user-header">
 					<img className="user-avatar" src={ userInfo.avatar } />
 					<div className="user-info">
-						<h1 className="user-account">{ userInfo.account }</h1>
+						<h1 className="user-account">{ userInfo.name }</h1>
 						{
 							userInfo.gameData ? (
 								<p className="user-game-data">

@@ -84,7 +84,7 @@ class Sign extends Component {
 						<IndexLink to={`/user${this.context.router.params.account ? ('/' + this.context.router.params.account) : ''}`} activeClassName="active">Information</IndexLink>
 					</li>
 					<li>
-						<Link to={`/user/game-data${this.context.router.params.account ? ('/' + this.context.router.params.account) : ''}`} activeClassName="active">Game Data</Link>
+						<Link to={`/game-data${this.context.router.params.account ? ('/' + this.context.router.params.account) : ''}`} activeClassName="active">Game Data</Link>
 					</li>
 				</ul>
 				{ this.props.children }

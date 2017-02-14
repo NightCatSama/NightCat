@@ -1,9 +1,10 @@
 import axios from 'axios'
 import store from 'store'
+import config from 'config'
 
 let instance = axios.create({
-	baseURL: `${process.env.NODE_ENV === 'development' ? 'http://localhost:80' : ''}`,
-	withCredentials: process.env.NODE_ENV === 'development'
+	baseURL: config.host,
+	withCredentials: config.withCredentials
 })
 
 /*  请求拦截  */

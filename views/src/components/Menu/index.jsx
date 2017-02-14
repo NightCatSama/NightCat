@@ -111,12 +111,23 @@ class Menu extends Component {
 						</IndexLink>
 						<Link to="/games" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-game"></i>
-							<span>Games</span>
+							<span>All Game</span>
 						</Link>
+						<Link to="/games/local" activeClassName="active" className="link" onClick={this.linkClick}>
+							<i className="iconfont icon-singleGames"></i>
+							<span>Single Game</span>
+						</Link>
+						<Link to="/games/online" activeClassName="active" className="link" onClick={this.linkClick}>
+							<i className="iconfont icon-onlineGames"></i>
+							<span>Online Game</span>
+						</Link>
+						{/* 
+						暂时取消My Friends页面 
 						<Link to="/my-friends" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-myFriends"></i>
 							<span>My Friends</span>
 						</Link>
+						*/}
 						<Link to="/about" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-about"></i>
 							<span>About Me</span>

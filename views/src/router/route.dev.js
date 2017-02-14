@@ -33,24 +33,14 @@ const rootRoute = {
 		path: '/active_account',
 		component: ActiveAccount
 	}, {
-		path: '/user',
+		path: '/user(/:account)',
 		component: User,
 		onEnter: userRequired,
 		indexRoute: {
 			component: Info
 		},
 		childRoutes: [{
-			path: '/user/game-data',
-			component: GameData
-		}]
-	}, {
-		path: '/user/:account',
-		component: User,
-		indexRoute: {
-			component: Info
-		},
-		childRoutes: [{
-			path: '/user/game-data/:account',
+			path: '/game-data(/:account)',
 			component: GameData
 		}]
 	}, {
@@ -60,7 +50,7 @@ const rootRoute = {
 		path: '/about',
 		component: About
 	}, {
-		path: '/games',
+		path: '/games(/:type)',
 		component: Games
 	}, {
 		path: '/single-games',

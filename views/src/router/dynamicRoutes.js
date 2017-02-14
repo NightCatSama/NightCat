@@ -16,13 +16,6 @@ module.exports = [
 			})
 		}
 	}, {
-		path: 'games',
-		getComponent(nextState, cb) {
-			require.ensure([], (require) => {
-				cb(null, require('routes/Games').default)
-			})
-		}
-	}, {
 		path: 'about',
 		getComponent(nextState, cb) {
 			require.ensure([], (require) => {
@@ -37,7 +30,7 @@ module.exports = [
 			})
 		}
 	}, {
-		path: 'user',
+		path: 'user(/:account)',
 		onEnter: userRequired,
 		getComponent(nextState, cb) {
 			require.ensure([], (require) => {
@@ -55,7 +48,7 @@ module.exports = [
 			require.ensure([], function(require) {
 				callback(null, [
 					{
-						path: '/user/game-data',
+						path: '/game-data(/:account)',
 						getComponent(nextState, cb) {
 							require.ensure([], (require) => {
 								cb(null, require('routes/User/components/GameData').default)
@@ -66,32 +59,10 @@ module.exports = [
 			})
 		}
 	}, {
-		path: 'user/:account',
-		onEnter: userRequired,
+		path: 'games(/:type)',
 		getComponent(nextState, cb) {
 			require.ensure([], (require) => {
-				cb(null, require('routes/User').default)
-			})
-		},
-		getIndexRoute(nextState, cb) {
-			require.ensure([], (require) => {
-				cb(null, {
-					component: require('routes/User/components/Info').default
-				})
-			})
-		},
-		getChildRoutes(partialNextState, callback) {
-			require.ensure([], function(require) {
-				callback(null, [
-					{
-						path: '/user/game-data/:account',
-						getComponent(nextState, cb) {
-							require.ensure([], (require) => {
-								cb(null, require('routes/User/components/GameData').default)
-							})
-						}
-					}
-				])
+				cb(null, require('routes/Games').default)
 			})
 		}
 	}, {

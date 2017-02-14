@@ -10,8 +10,13 @@ export default (server) => {
 		socket.on('msg', function (data) {
 			console.log(data)
 		})
+
+		socket.on('Rooms', function (data) {
+			console.log('========falsdjfkolasjdf======== :>')
+		})
 	})
 
 	/*  五子棋  */
-	io.of('/gobang').on('connection', gobang)
+	let gobangIO = io.of('/gobang')
+	gobangIO.on('connection', (socket) => gobang(socket, gobangIO))
 }
