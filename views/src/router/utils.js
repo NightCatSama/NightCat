@@ -2,14 +2,12 @@ import store from 'store'
 
 /*  创建动态路由  */
 const createRoute = (path, name, options) => {
-	return function () {
-		return {
-			path,
-			getComponent(nextState, cb) {
-				require.ensure([], (require) => {
-					cb(null, require('routes/' + name + '/index.jsx'))
-				})
-			}
+	return {
+		path,
+		getComponent(nextState, cb) {
+			require.ensure([], (require) => {
+				cb(null, require('routes/' + name + '/index.jsx').default)
+			})
 		}
 	}
 }
