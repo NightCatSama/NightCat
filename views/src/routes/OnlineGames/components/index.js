@@ -1,5 +1,5 @@
-// import Factory from './Factory'
+import Gobang from './Gobang'
 
 export {
-	// Factory
+	Gobang
 }

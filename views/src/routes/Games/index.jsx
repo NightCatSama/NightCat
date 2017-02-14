@@ -11,11 +11,18 @@ import EventBusAction from 'actions/EventBusAction'
 
 const games = [{
 	name: 'Factory',
-	isPC: true,
+	type: 'pc',
 	iconColor: '#333',
 	path: 'single-games/factory',
 	img: require('images/factory.jpg'),
 	description: '将输入变量加工成对应的输出变量的游戏\n（编译环境取决你的浏览器）'
+}, {
+	name: 'Gobang',
+	type: 'common',
+	iconColor: '#fff',
+	path: 'online-games/gobang',
+	img: require('images/gobang.jpg'),
+	description: '在线五子棋对弈'
 }]
 
 const isPC = !/(iPhone|iPad|iPod|iOS|Android|SymbianOS|Windows Phone)/i.test(navigator.userAgent)
@@ -35,7 +42,7 @@ class Games extends Component {
 		}
 		
 		/*  将PC游戏和mobile分开  */
-		this.games = games.filter((game) => game.isPC === isPC)
+		this.games = games.filter((game) => game.type === 'common' || ((game.type === 'pc') === isPC))
 		/*  当游戏数量大于该值则开启缩略图模式  */
 		this.countLimit = 0
 

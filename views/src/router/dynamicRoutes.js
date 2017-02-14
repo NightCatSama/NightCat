@@ -141,6 +141,14 @@ module.exports = [
 		getChildRoutes(partialNextState, callback) {
 			require.ensure([], function(require) {
 				callback(null, [
+					{
+						path: 'gobang',
+						getComponent(nextState, cb) {
+							require.ensure([], (require) => {
+								cb(null, require('routes/OnlineGames/components/Gobang').default)
+							})
+						}
+					}
 				])
 			})
 		}

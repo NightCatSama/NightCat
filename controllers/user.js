@@ -47,7 +47,6 @@ export default {
 
 		await User.getUserByAccount(account)
 			.then((user) => {
-				console.log(user)
 				if (!user) {
 					return ep.emit('get_err', '未找到该用户')
 				}

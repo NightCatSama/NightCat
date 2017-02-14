@@ -18,6 +18,7 @@ import SingleGames from 'routes/SingleGames'
 import { Factory } from 'routes/SingleGames/components'
 
 import OnlineGames from 'routes/OnlineGames'
+import { Gobang } from 'routes/OnlineGames/components'
 
 const rootRoute = {
 	path: '/',
@@ -72,7 +73,10 @@ const rootRoute = {
 		path: '/online-games',
 		component: OnlineGames,
 		onEnter: userRequired,
-		childRoutes: []
+		childRoutes: [{
+			path: '/online-games/gobang',
+			component: Gobang
+		}]
 	}],
 	onEnter: autoLogin
 }

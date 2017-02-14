@@ -14,6 +14,8 @@ import hbs from 'express-hbs'
 import router from './routes'
 import admin_router from './routes/admin'
 
+import socket from './socket'
+
 const app = express()
 const MongoStore = connect(session)
 
@@ -69,6 +71,8 @@ else {
 	})
 }
 
-app.listen(config.port, function() {
+const server = app.listen(config.port, function() {
 	console.log(`The server is already started, Listen on port ${config.port}!`)
 })
+
+socket(server)
