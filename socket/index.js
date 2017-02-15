@@ -12,7 +12,7 @@ export default (server) => {
 		})
 
 		socket.on('Rooms', function (data) {
-			console.log('========falsdjfkolasjdf======== :>')
+			console.log('======== 有人连接 ======== :>')
 		})
 	})
 

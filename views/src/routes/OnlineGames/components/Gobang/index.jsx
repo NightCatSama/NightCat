@@ -10,7 +10,7 @@ export default class Gobang extends Component {
 		super(props)
 		this.state = {
 			online_count: 0,
-			data: null,
+			data: [],
 			userInfo: {}
 		}
 		this.socket = io(config.socket_host + '/gobang')
@@ -20,6 +20,9 @@ export default class Gobang extends Component {
 	}
 	componentDidMount() {
 		this.initState()
+	}
+	componentWillUnmount() {
+		this.socket.close()
 	}
 	initState() {
 		axios.get('/getUserInfo')
@@ -48,15 +51,15 @@ export default class Gobang extends Component {
 			})
 		})
 	}
-	/*  打开模态框  */
+	/*  切换模态框  */
 	toggleModal() {
-		this.modal.open()
+		this.modal.toggle()
 	}
 	/*  创建房间  */
 	createRoom() {
 		this.socket.emit('Create', {
 			userInfo: this.state.userInfo,
-			room_name: '求虐',
+			room_name: '夜喵的房间',
 			password: 'qweasd'
 		})
 	}
@@ -68,13 +71,16 @@ export default class Gobang extends Component {
 		let modalProps = {
 			key: 'modal',
 			ref: (ref) => this.modal = ref,
-			theme: 'info',
-			size: 'sm',
+			title: '创建房间',
+			cancelText: '取消',
+			confirmText: '创建',
 			width: 400,
 			role: 'confirm',
-			noMask: true,
-			// onCancel: () => this.router.replace('/'),
-			// onConfirm: () => this.router.replace('/test')
+			onCancel: () => this.modal.close(),
+			onConfirm: () => {
+				this.createRoom()
+				this.modal.close()
+			}
 		}
 		let userInfo = this.state.userInfo
 		return (
@@ -106,10 +112,10 @@ export default class Gobang extends Component {
 				</section>
 				<section className="gobang-list">
 				{
-					this.state.data ? Array.from(this.state.data, (obj, i) => {
+					this.state.data.length ? Array.from(this.state.data, (obj, i) => {
 						return (<div className="gobang-item" key={i}>
 							<div className="gobang-top">
-								{ obj.room_name }<br />
+								房间名：{ obj.room_name }<br />
 								<small className={`gobang-status ${obj.status === '等待中' ? 'waiting' : 'playing'}`}>{ obj.status }</small>
 							</div>
 							<div className="gobang-main">
@@ -129,7 +135,7 @@ export default class Gobang extends Component {
 										<div className="avatar placeholder">
 											<i className="iconfont icon-lock"></i>
 										</div>
-										<div className="join-btn" onClick={this.joinRoom}>点击加入</div>
+										<div className="join-btn name" onClick={this.joinRoom}>点击加入</div>
 									</div>
 									)
 								}
@@ -141,16 +147,7 @@ export default class Gobang extends Component {
 				}
 				</section>
 				<Modal {...modalProps}>
-					<Modal.Header>
-						<p>房间信息</p>
-					</Modal.Header>
-					<Modal.Body>
-						<p>NightCAT</p>
-					</Modal.Body>
-					<Modal.Footer>
-						<button onClick={() => this.createRoom()}>创建房间</button>
-						<button onClick={() => this.modal.cancel()}>取消</button>
-					</Modal.Footer>
+					<p>NightCAT</p>
 				</Modal>
 			</div>
 		)

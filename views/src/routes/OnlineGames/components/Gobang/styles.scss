@@ -76,21 +76,19 @@
 .gobang-list {
 	display: flex;
 	flex-wrap: wrap;
-	justify-content: center;
+	// justify-content: center;
 	padding: 10px 20px;
 
 	.gobang-item {
-		padding: 5px 10px;
+		padding: 20px 20px 30px;
 		margin: 10px;
-		width: 250px;
-		height: 150px;
-		color: $white;
-		background-color: $light-black;
-		border-radius: 8px;
+		background-color: #f3f3f3;
+		border-radius: 4px;
+		box-shadow: 0 0 3px 0 rgba(0, 0, 0, .36);
 	}
 
 	.gobang-top {
-		text-align: center;
+		padding-bottom: 10px;
 
 		.waiting {
 			color: $green;
@@ -108,13 +106,15 @@
 	justify-content: space-between;
 
 	.gobang-player {
-		width: 100px;
+		padding: 0 20px;
+		width: 150px;
 		text-align: center;
 
 		.avatar {
 			position: relative;
-			width: 64px;
-			height: 64px;
+			width: 80px;
+			height: 80px;
+			line-height: 80px;
 			border-radius: 50%;
 
 			&.placeholder {
@@ -129,9 +129,15 @@
 				top: 0;
 				bottom: 0;
 				margin: auto;
-				font-size: 50px;
-				color: #666;
+				font-size: 28px;
+				color: $white;
 			}
+		}
+
+		.name {
+			height: 21px;
+			font-size: 15px;
+			line-height: 21px;
 		}
 
 		.join-btn {
