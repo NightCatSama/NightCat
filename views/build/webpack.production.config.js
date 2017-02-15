@@ -29,21 +29,21 @@ var config = {
 			exclude: /node_modules/
 		}, {
 			test: /\.(scss|css)$/,
-			loaders: ['style', 'css', 'postcss', 'sass'],
+			loader: ExtractTextPlugin.extract('style', 'css!postcss!sass'),
 			exclude: /node_modules/
 		}, {
 			test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 			loader: 'url',
 			query: {
 				limit: 10000,
-				name: utils.assetsPath('img/[name].[hash:7].[ext]')
+				name: utils.assetsPath('img/[name].[hash:5].[ext]')
 			}
 		}, {
 			test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
 			loader: 'url',
 			query: {
 				limit: 10000,
-				name: utils.assetsPath('fonts/[name].[hash:7].[ext]')
+				name: utils.assetsPath('fonts/[name].[hash:5].[ext]')
 			}
 		}]
 	},
@@ -75,7 +75,7 @@ var config = {
 				NODE_ENV: JSON.stringify('production')
 			}
 		}),
-		new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash].css')),
+		new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash:5].css')),
 		new webpack.optimize.OccurenceOrderPlugin(),
 		new HtmlWebpackPlugin({
 			template: 'index.html',

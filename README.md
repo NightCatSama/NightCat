@@ -21,17 +21,17 @@
 
 ## 前端架构
     views/
-      |- build/     // webpack配置文件夹
+      |- build/     // webpack 配置目录
       |- dist/      // 打包后文件目录
       |- src/       // 项目目录
           |- asset/        // 放置其他、第三方文件
-          |- components/   // React 公用组件
+          |- components/   // React 共用组件
           |- images/       // 图片
-          |- stylesheets/  // 样式（主容器和公用样式）
-          |- actions/      // Redux action目录
-          |- reducers/     // Redux reducer目录
-          |- constants/    // Redux 使用常量描述Action类型
-          |- store/        // Redux 生成Store
+          |- stylesheets/  // 样式（主容器和公共样式）
+          |- actions/      // Redux action 目录
+          |- reducers/     // Redux reducer 目录
+          |- constants/    // Redux 使用常量描述 Action 类型
+          |- store/        // Redux Store 目录
           |- router        // React-router 配置
           |- routes        // 页面文件
       |- app.jsx     // 页面容器
@@ -41,17 +41,17 @@
 
 ## 后端架构
     nightcat/
-      |- backstage/   // 后台管理目录
+      |- backstage/   // 后台管理系统目录
       |- common/      // 共用模块
-      |- config/      // 后台配置目录
+      |- config/      // 后端配置目录
       |- controllers/ // 控制器
-      |- es/          // babel启动目录（开发模式，生产模式）
-      |- logs/        // 放置log文件
+      |- es/          // babel 启动目录（开发模式，生产模式）
+      |- logs/        // 放置日志文件
       |- middlewares/ // 中间件
       |- model/       // mongoose 模型
       |- proxy/       // 代理
       |- routes/      // 路由
-      |- socket/      // websocket通信
+      |- socket/      // websocket 通信
       |- views/       // 前端目录
       |- app.js       // 入口文件
     

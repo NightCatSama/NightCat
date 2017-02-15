@@ -1,27 +1,23 @@
-import React, { Component, PropTypes } from 'react'
-import style from './mask'
+import React, { Component, PropTypes } from 'react';
+import './mask.scss';
 
 export default class Mask extends Component {
 	constructor (props) {
-	    super(props)
+	    super(props);
 	}
 	render() {
-		let styles = {
-			display: this.props.show ? 'block' : 'none',
-			zIndex: this.props.zIndex || 0
-		}
+		let style = {display: this.props.show ? 'block' : 'none'};
 		return (
-			<div ref={(ref) => this.mask = ref } style={styles} className={style['mask']} onClick={this.props.onClick}></div>
-		)
+			<div ref={(ref) => this.mask = ref } style={style} className="ReactCat-Modal-Mask" onClick={this.props.onclick}></div>
+		);
 	}
 }
 
 Mask.propTypes = {
 	show: PropTypes.bool,
-	zIndex: PropTypes.number,
-	onClick: PropTypes.func
-}
+	onclick: PropTypes.func
+};
 
 Mask.defaultProps = {
 	show: false
-}
+};

@@ -1,0 +1,330 @@
+.Modal-Wrap {
+	position: fixed;
+	height: 100%;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 9999;
+	font-family: "Raleway", 'Microsoft YaHei', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif';
+
+	.Modal-Fade {
+		position: fixed;
+		height: 100%;
+		width: 100%;
+		left: 0;
+		top: 0;
+		background-color: rgba(0, 0, 0, .6);
+	}
+
+	.Modal {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		color: #333;
+		z-index: 1;
+		top: 0;
+		left: 0;
+		border-radius: 8px;
+		background-color: #FFF;
+		transition: transform .5s;
+
+		&.Modal-Vertical {
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		&.Modal-Horizontal {
+			left: 50%;
+			transform: translateX(-50%);
+		}
+
+		.Modal-Close {
+			color: #666;
+			position: absolute;
+			height: 4em;
+			line-height: 2em;
+			top: 0;
+			right: .5em;
+			font-size: 2em;
+			cursor: pointer;
+		}
+
+		.Modal-Header {
+			padding: .5em 1em;
+			height: 3em;
+			line-height: 3em;
+			border-radius: 8px 8px 0 0;
+			border-bottom: 1px solid #999;
+			cursor: auto;
+		}
+
+		.Modal-Body {
+			padding: 1em;
+			border-bottom: 1px solid #999;
+			cursor: auto;
+		}
+
+		.Modal-Footer {
+			padding: .5em;
+			border-radius: 0 0 8px 8px;
+			cursor: auto;
+			overflow: hidden;
+
+			button {
+				margin: 0 5px;
+				float: right;
+			}
+
+		}
+
+		&.Modal-success {
+			color: #2ECC71;
+		}
+
+		&.Modal-warning {
+			color: #f1c40f;
+		}
+
+		&.Modal-error {
+			color: #e74c3c;
+		}
+
+		&.Modal-info {
+			color: #3498db;
+
+			.Modal-Header {
+				background-color: #3498db;
+				color: #FFF;
+			}
+		}
+
+		&.Modal-primary {
+			color: #1abc9c;
+		}
+
+		&.Modal-Alert {
+			padding: 2em;
+			margin: 1em;
+
+			.Modal-Header {
+				padding: 0 1em;
+				height: 3em;
+				line-height: 3em;
+				border-radius: 8px 8px 0 0;
+				border-bottom: none;
+
+				.fa {
+					vertical-align: middle;
+					margin-right: 10px;
+				}
+
+			}
+
+			.Modal-Body {
+				padding: 5px 10px 5px 60px;
+				border-bottom: none;
+			}
+
+			.Modal-Footer {
+				padding: 0;
+				border-bottom: none;
+			}
+
+		}
+
+	}
+
+	&.Modal-Off {
+		display: none;
+
+		.Modal-Fade {
+			display: none;
+		}
+
+		.Modal {
+			display: none;
+		}
+
+	}
+
+}
+
+/*
+ * Animate.css [zoomIn fade fadeIn shake]
+ */
+@keyframes zoomIn {
+	from {
+		opacity: 0;
+		transform: scale3d(.3, .3, .3);
+	}
+
+	50% {
+		opacity: 1;
+	}
+
+}
+
+.zoomIn {
+	animation-name: zoomIn;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes zoomOut {
+	from {
+		opacity: 1;
+	}
+
+	50% {
+		opacity: 0;
+		transform: scale3d(.3, .3, .3);
+	}
+
+	to {
+		opacity: 0;
+	}
+
+}
+
+.zoomOut {
+	animation-name: zoomOut;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes fadeIn {
+	from {
+		opacity: 0;
+	}
+
+	to {
+		opacity: 1;
+	}
+
+}
+
+.fadeIn {
+	animation-name: fadeIn;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes fadeOut {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+	}
+
+}
+
+.fadeOut {
+	animation-name: fadeOut;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes fadeInUp {
+	from {
+		opacity: 0;
+		transform: translate3d(0, 30%, 0);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+
+}
+
+.fadeInUp {
+	animation-name: fadeInUp;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes fadeOutUp {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+		transform: translate3d(0, -30%, 0);
+	}
+
+}
+
+.fadeOutUp {
+	animation-name: fadeOutUp;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes fadeInDown {
+	from {
+		opacity: 0;
+		transform: translate3d(0, -30%, 0);
+	}
+
+	to {
+		opacity: 1;
+		transform: none;
+	}
+
+}
+
+.fadeInDown {
+	animation-name: fadeInDown;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes fadeOutDown {
+	from {
+		opacity: 1;
+	}
+
+	to {
+		opacity: 0;
+		transform: translate3d(0, 30%, 0);
+	}
+
+}
+
+.fadeOutDown {
+	animation-name: fadeOutDown;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}
+
+@keyframes shake {
+	from,
+	to {
+		transform: translate3d(0, 0, 0);
+	}
+
+	10%,
+	30%,
+	50%,
+	70%,
+	90% {
+		transform: translate3d(-10px, 0, 0);
+	}
+
+	20%,
+	40%,
+	60%,
+	80% {
+		transform: translate3d(10px, 0, 0);
+	}
+
+}
+
+.shake {
+	animation-name: shake;
+	animation-duration: .3s;
+	animation-fill-mode: both;
+}

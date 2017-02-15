@@ -40,7 +40,104 @@
 		}
 
 		@include max-screen(768px) {
-			padding: 12px 0 30px 0;
+			padding: 20px;
+		}
+	}
+
+	.tabs {
+		height: 40px;
+		line-height: 40px;
+		padding: 0 10px;
+		background-color: $roseate;
+		color: $white;
+		display: flex;
+
+		.online-count {
+			font-size: 15px;
+		}
+
+		.btn-group {
+			flex: 1;
+			display: flex;
+			justify-content: flex-end;
+		}
+
+		button {
+			border: none;
+			color: $white;
+			font-size: 16px;
+			margin-left: 30px;
+			background-color: $tr;
+			cursor: pointer;
 		}
 	}
 }
+
+.gobang-list {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	padding: 10px 20px;
+
+	.gobang-item {
+		padding: 5px 10px;
+		margin: 10px;
+		width: 250px;
+		height: 150px;
+		color: $white;
+		background-color: $light-black;
+		border-radius: 8px;
+	}
+
+	.gobang-top {
+		text-align: center;
+
+		.waiting {
+			color: $green;
+		}
+
+		.playing {
+			color: $red;
+		}
+	}
+}
+
+.gobang-main {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	.gobang-player {
+		width: 100px;
+		text-align: center;
+
+		.avatar {
+			position: relative;
+			width: 64px;
+			height: 64px;
+			border-radius: 50%;
+
+			&.placeholder {
+				display: inline-block;
+				background-color: #ccc;
+			}
+
+			.icon-lock {
+				position: absolute;
+				left: 0;
+				right: 0;
+				top: 0;
+				bottom: 0;
+				margin: auto;
+				font-size: 50px;
+				color: #666;
+			}
+		}
+
+		.join-btn {
+			cursor: pointer;
+			text-decoration: underline;
+		}
+	}
+}
+

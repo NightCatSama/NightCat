@@ -13,9 +13,9 @@ const createRoom = (data, socket) => {
 	rooms.push({
 		create_at: Date.now(),
 		room_name: data.room_name,
-		owner: data.userInfo.account,
+		owner: data.userInfo,
+		challenger: null,
 		password: data.password,
-		players: [data.userInfo],
 		status: '等待中'
 	})
 	
@@ -29,9 +29,12 @@ const createRoom = (data, socket) => {
 /*  发送房间信息  */
 const sendRooms = (io, isBroadcast) => {
 	let data = Array.from(rooms, (obj) => {
-		let { room_name, players, status } = obj
+		let { room_name, players, status, owner, challenger } = obj
 		return {
 			room_name,
+			isLock: !!obj.password,
+			owner,
+			challenger,
 			players,
 			status
 		}
