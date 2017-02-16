@@ -5,15 +5,7 @@ export default (server) => {
 	const io = SocketIO(server)
 
 	io.on('connection', (socket) => {
-		console.log('SocketIO is success!!! :>')
-
-		socket.on('msg', function (data) {
-			console.log(data)
-		})
-
-		socket.on('Rooms', function (data) {
-			console.log('======== 有人连接 ======== :>')
-		})
+		console.log('WebSocket is open')
 	})
 
 	/*  五子棋  */
