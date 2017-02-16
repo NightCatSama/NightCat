@@ -173,7 +173,7 @@
 		}
 	}
 
-	.gobang-top {
+	.gobang-item-top {
 		padding-bottom: 20px;
 
 		.waiting {
@@ -186,12 +186,12 @@
 	}
 }
 
-.gobang-main {
+.gobang-item-main {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
 
-	.gobang-player {
+	.gobang-item-player {
 		padding: 0 20px;
 		width: 150px;
 		text-align: center;

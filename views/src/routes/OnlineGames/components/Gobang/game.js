@@ -4,7 +4,7 @@ const GObangMain = ({socket, room_data}) => {
 	console.log(socket)
 	console.log(room_data)
 	return (
-		<h1>MiaoHAHA</h1>
+		<h1>NightCat Game.</h1>
 	)
 }
 

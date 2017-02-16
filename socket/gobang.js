@@ -39,6 +39,11 @@ const joinRoom = (data) => {
 	sendRooms()
 }
 
+/*  是否已经在房间中  */
+const isInRoom = (account) => {
+	rooms.some((data) => data.userInfo)
+}
+
 
 /*  发送房间信息  */
 const sendRooms = (isBroadcast) => {

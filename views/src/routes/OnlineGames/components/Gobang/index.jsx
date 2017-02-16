@@ -8,7 +8,7 @@ import EventBusAction from 'actions/EventBusAction'
 import io from 'socket.io-client'
 import config from 'config'
 
-import GobangMain from './game'
+import getGameMain from './game'
 
 class Gobang extends Component {
 	constructor (props) {
@@ -33,7 +33,7 @@ class Gobang extends Component {
 		this.initState()
 	}
 	componentWillUnmount() {
-		console.log('断开websocket链接~~~')
+		console.log('断开websocket链接')
 		this.socket.close()
 	}
 	initState() {
@@ -95,6 +95,64 @@ class Gobang extends Component {
 			room_data: Object.assign({}, this.state.room_data, { [key]: val })
 		})
 	}
+	getTabs() {
+		return (
+			<section className="tabs">
+				<div className="online-count">
+					在线人数：{ this.state.online_count }
+				</div>
+				<div className="btn-group">
+					<button onClick={this.toggleModal}>快速开始</button>
+					<button onClick={this.toggleModal}>创建房间</button>
+				</div>
+			</section>
+		)
+	}
+	getGameLobby() {
+		return (
+			this.state.data.length ? (
+				<section className="gobang-list">
+					{ Array.from(this.state.data, (obj, i) => {
+						return (
+							<div className="gobang-item" key={i}>
+								<div className="gobang-item-top">
+									房间名：{ obj.room_name }<br />
+									<small className={`gobang-status ${obj.status === '等待中' ? 'waiting' : 'playing'}`}>{ obj.status }</small>
+								</div>
+								<div className="gobang-item-main">
+									<div className="gobang-item-player">
+										<img className="avatar" src={ obj.owner.avatar } />
+										<div className="name">{ obj.owner.name }</div>
+									</div>
+									VS
+									{
+										obj.challenger ? (
+										<div className="gobang-item-player">
+											<img className="avatar" src={ obj.challenger.avatar } />
+											<div className="name">{ obj.challenger.name }</div>
+										</div>
+										) : (
+										<div className="gobang-item-player">
+											<div className="avatar placeholder">
+												{ obj.isLock && <i className="iconfont icon-lock"></i> }
+											</div>
+											<div className="join-btn name" onClick={this.joinRoom}>点击加入</div>
+										</div>
+										)
+									}
+								</div>
+							</div>
+						)
+					})
+					}
+				</section>
+				) : (
+					<aside className="no-data">
+						<i className="iconfont icon-cat-sleep"></i> No Room
+					</aside>
+				)
+			)
+	}
 	render() {
 		let modalProps = {
 			key: 'modal',
@@ -126,57 +184,13 @@ class Gobang extends Component {
 						}
 					</div>
 				</section>
-				<section className="tabs">
-					<div className="online-count">
-						在线人数：{ this.state.online_count }
-					</div>
-					<div className="btn-group">
-						<button onClick={this.toggleModal}>快速开始</button>
-						<button onClick={this.toggleModal}>创建房间</button>
-					</div>
-				</section>
-				{
-					this.state.data.length ? (
-					<section className="gobang-list">
-						{ Array.from(this.state.data, (obj, i) => {
-							return (
-								<div className="gobang-item" key={i}>
-									<div className="gobang-top">
-										房间名：{ obj.room_name }<br />
-										<small className={`gobang-status ${obj.status === '等待中' ? 'waiting' : 'playing'}`}>{ obj.status }</small>
-									</div>
-									<div className="gobang-main">
-										<div className="gobang-player">
-											<img className="avatar" src={ obj.owner.avatar } />
-											<div className="name">{ obj.owner.name }</div>
-										</div>
-										VS
-										{
-											obj.challenger ? (
-											<div className="gobang-player">
-												<img className="avatar" src={ obj.challenger.avatar } />
-												<div className="name">{ obj.challenger.name }</div>
-											</div>
-											) : (
-											<div className="gobang-player">
-												<div className="avatar placeholder">
-													{ obj.isLock && <i className="iconfont icon-lock"></i> }
-												</div>
-												<div className="join-btn name" onClick={this.joinRoom}>点击加入</div>
-											</div>
-											)
-										}
-									</div>
-								</div>
-							)
-						})
-						}
-					</section>
-					) : (
-						<aside className="no-data">
-							<i className="iconfont icon-cat-sleep"></i> No Room
-						</aside>
-					)
+				{ this.state.seat === 'lobby' && this.getTabs() }
+				{ 
+					this.state.seat === 'lobby' ?
+					this.getGameLobby() : getGameMain({
+						socket: this.socket,
+						room_data: this.state.room_data
+					})
 				}
 				<Modal {...modalProps}>
 					<div className="form-control">
@@ -188,12 +202,6 @@ class Gobang extends Component {
 						<input id="password" type="text" placeholder="留空则房间不加密" value={this.state.room_data.password} onChange={ (e) => this.handleChange(e, 'password') } />
 					</div>
 				</Modal>
-				{
-					this.state.seat === 'room' && GobangMain({
-						socket: this.socket,
-						room_data: this.state.room_data
-					})
-				}
 			</div>
 		)
 	}
