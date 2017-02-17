@@ -43,19 +43,20 @@ module.exports = [
 					component: require('routes/User/components/Info').default
 				})
 			})
+		}
+	}, {
+		path: 'game-data(/:account)',
+		onEnter: userRequired,
+		getComponent(nextState, cb) {
+			require.ensure([], (require) => {
+				cb(null, require('routes/User').default)
+			})
 		},
-		getChildRoutes(partialNextState, callback) {
-			require.ensure([], function(require) {
-				callback(null, [
-					{
-						path: '/game-data(/:account)',
-						getComponent(nextState, cb) {
-							require.ensure([], (require) => {
-								cb(null, require('routes/User/components/GameData').default)
-							})
-						}
-					}
-				])
+		getIndexRoute(nextState, cb) {
+			require.ensure([], (require) => {
+				cb(null, {
+					component: require('routes/User/components/GameData').default
+				})
 			})
 		}
 	}, {

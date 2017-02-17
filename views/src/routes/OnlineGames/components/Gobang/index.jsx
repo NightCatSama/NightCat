@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-import Modal from 'components/Modal'
+// import Modal from 'components/Modal'
 import './styles'
 
 import { connect } from 'react-redux'
@@ -8,7 +8,10 @@ import EventBusAction from 'actions/EventBusAction'
 import io from 'socket.io-client'
 import config from 'config'
 
-import getGameMain from './game'
+import Tabs from './components/Tabs'
+import Lobby from './components/Lobby'
+import Game from './components/Game'
+// import getGameMain from './game'
 
 class Gobang extends Component {
 	constructor (props) {
@@ -26,7 +29,6 @@ class Gobang extends Component {
 		this.notice = (msg, interval = 2000, status = 'error') => this.props.actions.execute('notice', msg, interval, { status: status })
 		this.socket = io(config.socket_host + '/gobang')
 		this.joinRoom = this.joinRoom.bind(this)
-		this.toggleModal = this.toggleModal.bind(this)
 		this.createRoom = this.createRoom.bind(this)
 	}
 	componentDidMount() {
@@ -36,6 +38,7 @@ class Gobang extends Component {
 		console.log('断开websocket链接')
 		this.socket.close()
 	}
+	/*  初始化  */
 	initState() {
 		axios.get('/getUserInfo')
 		.then((res) => {
@@ -58,6 +61,16 @@ class Gobang extends Component {
 			console.log('重新连接到服务器')
 		})
 	}
+	/*  提取需要传递的用户信息  */
+	extractInfo() {
+		let { account, avatar, name, gameData } = this.state.userInfo
+		return {
+			account,
+			avatar,
+			name,
+			gameData
+		}
+	}
 	/*  加载更新所有房间信息  */
 	updateRooms() {
 		this.socket.on('Rooms', (data) => {
@@ -72,14 +85,13 @@ class Gobang extends Component {
 		this.modal.toggle()
 	}
 	/*  创建房间  */
-	createRoom() {
+	createRoom(data) {
 		if (!this.state.room_data.room_name) {
 			return this.notice('房间名不能为空')
 		}
-		this.modal.close()
 		this.socket.emit('Create', {
-			userInfo: this.state.userInfo,
-			...this.state.room_data
+			userInfo: this.extractInfo(this.state.userInfo),
+			...data
 		})
 		this.setState({
 			seat: 'room'
@@ -87,84 +99,9 @@ class Gobang extends Component {
 	}
 	/*  加入房间  */
 	joinRoom() {
-
-	}
-	handleChange(e, key) {
-		let val = e.target.value
-		this.setState({
-			room_data: Object.assign({}, this.state.room_data, { [key]: val })
-		})
-	}
-	getTabs() {
-		return (
-			<section className="tabs">
-				<div className="online-count">
-					在线人数：{ this.state.online_count }
-				</div>
-				<div className="btn-group">
-					<button onClick={this.toggleModal}>快速开始</button>
-					<button onClick={this.toggleModal}>创建房间</button>
-				</div>
-			</section>
-		)
-	}
-	getGameLobby() {
-		return (
-			this.state.data.length ? (
-				<section className="gobang-list">
-					{ Array.from(this.state.data, (obj, i) => {
-						return (
-							<div className="gobang-item" key={i}>
-								<div className="gobang-item-top">
-									房间名：{ obj.room_name }<br />
-									<small className={`gobang-status ${obj.status === '等待中' ? 'waiting' : 'playing'}`}>{ obj.status }</small>
-								</div>
-								<div className="gobang-item-main">
-									<div className="gobang-item-player">
-										<img className="avatar" src={ obj.owner.avatar } />
-										<div className="name">{ obj.owner.name }</div>
-									</div>
-									VS
-									{
-										obj.challenger ? (
-										<div className="gobang-item-player">
-											<img className="avatar" src={ obj.challenger.avatar } />
-											<div className="name">{ obj.challenger.name }</div>
-										</div>
-										) : (
-										<div className="gobang-item-player">
-											<div className="avatar placeholder">
-												{ obj.isLock && <i className="iconfont icon-lock"></i> }
-											</div>
-											<div className="join-btn name" onClick={this.joinRoom}>点击加入</div>
-										</div>
-										)
-									}
-								</div>
-							</div>
-						)
-					})
-					}
-				</section>
-				) : (
-					<aside className="no-data">
-						<i className="iconfont icon-cat-sleep"></i> No Room
-					</aside>
-				)
-			)
+		console.log('join??')
 	}
 	render() {
-		let modalProps = {
-			key: 'modal',
-			ref: (ref) => this.modal = ref,
-			title: '创建房间',
-			cancelText: '取消',
-			confirmText: '创建',
-			width: 400,
-			role: 'confirm',
-			onCancel: () => this.modal.close(),
-			onConfirm: () => this.createRoom()
-		}
 		let userInfo = this.state.userInfo
 		return (
 			<div ref="view" className="gobang-view">
@@ -184,24 +121,14 @@ class Gobang extends Component {
 						}
 					</div>
 				</section>
-				{ this.state.seat === 'lobby' && this.getTabs() }
-				{ 
+				{
 					this.state.seat === 'lobby' ?
-					this.getGameLobby() : getGameMain({
-						socket: this.socket,
-						room_data: this.state.room_data
-					})
+					<section className="game-lobby-wrap">
+						<Tabs online_count={this.state.online_count} room_data={this.state.room_data} createRoom={this.createRoom} />
+						<Lobby data={this.state.data} joinRoom={this.joinRoom} />
+					</section> :
+					<Game socket={this.socket} />
 				}
-				<Modal {...modalProps}>
-					<div className="form-control">
-						<label htmlFor="room_name">Room Name：</label>
-						<input id="room_name" type="text" placeholder="输入房间名" value={this.state.room_data.room_name} onChange={ (e) => this.handleChange(e, 'room_name') } />
-					</div>
-					<div className="form-control">
-						<label htmlFor="password">Password：</label>
-						<input id="password" type="text" placeholder="留空则房间不加密" value={this.state.room_data.password} onChange={ (e) => this.handleChange(e, 'password') } />
-					</div>
-				</Modal>
 			</div>
 		)
 	}

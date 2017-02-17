@@ -27,9 +27,6 @@ class App extends Component {
 		this.props.actions.register('notice', this.openNotice.bind(this))
 		this.props.actions.register('menu', this.setMenu.bind(this))
 	}
-	componentDidMount() {
-		setTimeout(() => this.refs.container.style.display = 'block')
-	}
 	offsetView() {
 		this.refs.view.classList.toggle('offset')
 	}
@@ -66,7 +63,7 @@ class App extends Component {
 	}
 	render() {
 		return (
-			<div ref="container" style={{display: 'none'}}>
+			<div ref="container">
 				<div ref="view" className="container">
 					{ this.props.children }
 				</div>

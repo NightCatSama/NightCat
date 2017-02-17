@@ -40,6 +40,12 @@
 		}
 	}
 
+	.game-lobby-wrap {
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+	}
+
 	.tabs {
 		padding: 14px;
 		background-color: $roseate;

@@ -9,9 +9,7 @@ export default class MyFriends extends Component {
 		}
 	}
 	componentDidMount() {
-		setTimeout(() => {
-			new Canvas(this.canvas)
-		}, 10)
+		new Canvas(this.canvas)
 	}
 	render() {
 		return (

@@ -5,7 +5,7 @@ export default (server) => {
 	const io = SocketIO(server)
 
 	io.on('connection', (socket) => {
-		console.log('WebSocket is open')
+		console.log('WebSocket is open!')
 	})
 
 	/*  五子棋  */

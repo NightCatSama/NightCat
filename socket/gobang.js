@@ -21,7 +21,7 @@ const createRoom = (data) => {
 		password: data.password,
 		status: '等待中'
 	})
-	
+
 	socket.join(`${data.userInfo.account}`, () => {
 		console.log(socket)
 	})

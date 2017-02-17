@@ -38,11 +38,14 @@ const rootRoute = {
 		onEnter: userRequired,
 		indexRoute: {
 			component: Info
-		},
-		childRoutes: [{
-			path: '/game-data(/:account)',
+		}
+	}, {
+		path: '/game-data(/:account)',
+		component: User,
+		onEnter: userRequired,
+		indexRoute: {
 			component: GameData
-		}]
+		}
 	}, {
 		path: '/my-friends',
 		component: MyFriends
