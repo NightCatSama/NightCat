@@ -6,8 +6,6 @@ import './modal.scss'
 export default class Modal extends Component {
 	static defaultProps = {
 		show: false,
-		width: 520,
-		top: 100,
 		noMask: false,
 		maskClosable: true,
 		noClose: false,
@@ -33,19 +31,22 @@ export default class Modal extends Component {
 	componentDidMount() {
 		document.addEventListener('keydown', this.onKeyboard)
 	}
-	componentWillUnMount() {
+	componentWillUnmount() {
 		document.removeEventListener('keydown', this.onKeyboard)
 	}
 	onKeyboard(event) {
+		if (!this.state.show)
+			return false
+		
 		var code = event.keyCode
-			if (code === 27) {
-				event.preventDefault()
-				this.cancel()
-			}
-			else if (code === 13) {
-				event.preventDefault()
-				this.confirm()
-			}
+		if (code === 27) {
+			event.preventDefault()
+			this.cancel()
+		}
+		else if (code === 13) {
+			event.preventDefault()
+			this.confirm()
+		}
 	}
 	cancel() {
 		if (this.props.onCancel) {
@@ -73,11 +74,8 @@ export default class Modal extends Component {
 	}
 	render() {
 		let styles = {}
-		let wrapClass = cs('Modal-Wrap', {
-			hide: !this.state.show
-		})
 
-		let { width, top } = this.props
+		let { width, top, role } = this.props
 
 		if (width) {
 			styles.width = typeof width === 'number' ? `${width}px` : width
@@ -87,10 +85,16 @@ export default class Modal extends Component {
 			styles.top = typeof top === 'number' ? `${top}px` : top
 		}
 
+		let wrapClass = cs('Modal-Wrap', {
+			hide: !this.state.show
+		})
+
+		let modalClass = cs('Modal', this.props.className, role ? `Modal-${role}` : '')
+
 		return (
 			<div ref={(ref) => this.wrap = ref } className={wrapClass}>
 				{ this.props.noMask || <Mask show={this.state.show} onclick={() => this.props.maskClosable && this.cancel()} /> }
-				<div ref={(ref) => this.modal = ref } className="Modal" style={styles}>
+				<div ref={(ref) => this.modal = ref } className={modalClass} style={styles}>
 					{ this.props.noClose || <i className="iconfont icon-close Modal-Close" onClick={this.cancel}></i> }
 					{
 						this.props.header || (
@@ -117,6 +121,11 @@ export default class Modal extends Component {
 Modal.propTypes = {
 	children: PropTypes.any,
 	show: PropTypes.bool,
+	role: PropTypes.string,
+	className: PropTypes.oneOfType([
+		PropTypes.string,
+		PropTypes.object
+	]),
 	noMask: PropTypes.bool,
 	maskClosable: PropTypes.bool,
 	noClose: PropTypes.bool,

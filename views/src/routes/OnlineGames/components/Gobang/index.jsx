@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-// import Modal from 'components/Modal'
 import './styles'
 
 import { connect } from 'react-redux'
@@ -11,7 +10,6 @@ import config from 'config'
 import Tabs from './components/Tabs'
 import Lobby from './components/Lobby'
 import Game from './components/Game'
-// import getGameMain from './game'
 
 class Gobang extends Component {
 	constructor (props) {
@@ -20,38 +18,29 @@ class Gobang extends Component {
 			online_count: 0,
 			seat: 'lobby',
 			data: [],
-			room_data: {
-				room_name: '',
+			room_data: null,
+			room_id: '',
+			room_info: {
+				room_name: `${this.props.userInfo.name}的房间`,
 				password: ''
-			},
-			userInfo: {}
+			}
 		}
 		this.notice = (msg, interval = 2000, status = 'error') => this.props.actions.execute('notice', msg, interval, { status: status })
 		this.socket = io(config.socket_host + '/gobang')
+		this.socket.emit('Connect', this.props.userInfo)
 		this.joinRoom = this.joinRoom.bind(this)
 		this.createRoom = this.createRoom.bind(this)
+		this.leaveRoom = this.leaveRoom.bind(this)
 	}
 	componentDidMount() {
 		this.initState()
 	}
 	componentWillUnmount() {
-		console.log('断开websocket链接')
 		this.socket.close()
 	}
 	/*  初始化  */
 	initState() {
-		axios.get('/getUserInfo')
-		.then((res) => {
-			this.setState({
-				userInfo: res.data,
-				room_data: {
-					room_name: `${res.data.name}的房间`,
-					password: ''
-				}
-			})
-		})
-
-		this.updateRooms()
+		this.onEvent()
 
 		this.socket.on('disconnect', function() {
 			console.log('与服务其断开')
@@ -63,7 +52,7 @@ class Gobang extends Component {
 	}
 	/*  提取需要传递的用户信息  */
 	extractInfo() {
-		let { account, avatar, name, gameData } = this.state.userInfo
+		let { account, avatar, name, gameData } = this.props.userInfo
 		return {
 			account,
 			avatar,
@@ -71,14 +60,59 @@ class Gobang extends Component {
 			gameData
 		}
 	}
+	/*  监听事件  */
+	onEvent() {
+		this.socket.on('Rooms', this.getRooms.bind(this))
+		this.socket.on('Room', this.getRoomData.bind(this))
+		this.socket.on('inRoom', this.intoTheRoom.bind(this))
+		this.socket.on('Message', this.getMessage.bind(this))
+	}
 	/*  加载更新所有房间信息  */
-	updateRooms() {
-		this.socket.on('Rooms', (data) => {
-			console.log(data)
-			this.setState({
-				...data
-			})
+	getRooms(data) {
+		console.log(data)
+		this.setState({
+			...data
 		})
+	}
+	/*  获取单个房间信息  */
+	getRoomData(data) {
+		console.info(data)
+		this.setState({
+			...data
+		})
+	}
+	/**
+	 * 进入房间
+	 * @param  {object}  单个房间信息
+	 * @param  {string}  房间id
+	 * @param  {string}  角色 ['owner', 'challenger' [, 'audience']]
+	 * @return {null}
+	 */
+	intoTheRoom({room_data, room_id, role}) {
+		this.setState({
+			seat: 'room',
+			room_data,
+			room_id,
+			role
+		})
+	}
+	/**
+	 * 收到消息
+	 * @param  {string}  消息类型
+	 * @param  {string}  消息主体
+	 * @return {null}
+	 */
+	getMessage({type, msg}) {
+		switch(type) {
+			case 'error': 
+				this.notice(msg)
+				break
+			case 'print':
+				this.refs.gobang && this.refs.gobang.printMsg(msg)
+				break
+			default: 
+				break
+		}
 	}
 	/*  切换模态框  */
 	toggleModal() {
@@ -86,23 +120,33 @@ class Gobang extends Component {
 	}
 	/*  创建房间  */
 	createRoom(data) {
-		if (!this.state.room_data.room_name) {
+		if (!this.state.room_info.room_name) {
 			return this.notice('房间名不能为空')
 		}
 		this.socket.emit('Create', {
-			userInfo: this.extractInfo(this.state.userInfo),
+			userInfo: this.extractInfo(this.props.userInfo),
 			...data
 		})
-		this.setState({
-			seat: 'room'
+	}
+	/*  申请加入房间  */
+	joinRoom(room_id, password, role) {
+		this.socket.emit('Join', {
+			room_id,
+			password,
+			userInfo: this.extractInfo(this.props.userInfo)
 		})
 	}
-	/*  加入房间  */
-	joinRoom() {
-		console.log('join??')
+	/*  离开房间  */
+	leaveRoom() {
+		this.socket.emit('Leave')
+		this.setState({
+			seat: 'lobby',
+			room_data: null,
+			room_id: ''
+		})
 	}
 	render() {
-		let userInfo = this.state.userInfo
+		let userInfo = this.props.userInfo
 		return (
 			<div ref="view" className="gobang-view">
 				<section className="user-header">
@@ -124,10 +168,10 @@ class Gobang extends Component {
 				{
 					this.state.seat === 'lobby' ?
 					<section className="game-lobby-wrap">
-						<Tabs online_count={this.state.online_count} room_data={this.state.room_data} createRoom={this.createRoom} />
+						<Tabs online_count={this.state.online_count} room_info={this.state.room_info} createRoom={this.createRoom} />
 						<Lobby data={this.state.data} joinRoom={this.joinRoom} />
 					</section> :
-					<Game socket={this.socket} />
+					<Game ref="gobang" role={this.state.role} room_id={ this.state.room_id } room_data={this.state.room_data} socket={this.socket} leaveRoom={this.leaveRoom} />
 				}
 			</div>
 		)
@@ -135,7 +179,7 @@ class Gobang extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { store: state }
+	return { userInfo: state.auth.userInfo }
 }
 
 const mapDispatchToProps = (dispatch) => ({
@@ -146,6 +190,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Gobang)
 
 Gobang.propTypes = {
 	children: PropTypes.any,
+	userInfo: PropTypes.object,
 	actions: PropTypes.object,
 	location: PropTypes.any
 }

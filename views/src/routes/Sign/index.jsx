@@ -31,6 +31,7 @@ class Sign extends Component {
 		this.signin = this.signin.bind(this)
 		this.coverHandle = this.coverHandle.bind(this)
 		this.switchType = this.switchType.bind(this)
+		this.onKeyboard = this.onKeyboard.bind(this)
 		this.notice = (msg, interval = 2000, status = 'error') => this.props.actions.execute('notice', msg, interval, { status: status })
 		this.setUserStatus = this.props.authConf.setStatus
 		this.toggleMenu = (bool, options) => this.props.actions.execute('menu', bool, options)
@@ -41,11 +42,21 @@ class Sign extends Component {
 		this.toggleMenu(true, {
 			showUserGroup: false
 		})
+		document.addEventListener('keydown', this.onKeyboard)
 	}
 	componentWillUnmount() {
 		this.toggleMenu(true, {
 			showUserGroup: true
 		})
+		document.removeEventListener('keydown', this.onKeyboard)
+	}
+	/*  回车快速 登录/注册  */
+	onKeyboard() {
+		var code = event.keyCode
+		if (code === 13) {
+			event.preventDefault()
+			this.state.isSignin ? this.signin() : this.signup()
+		}
 	}
 	/*  调用注册接口  */
 	signup() {

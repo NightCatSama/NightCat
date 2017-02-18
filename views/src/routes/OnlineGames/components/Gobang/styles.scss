@@ -34,6 +34,8 @@
 		}
 
 		@include max-screen(768px) {
+			padding: 10px;
+
 			.user-account {
 				font-size: 20px;
 			}
@@ -74,8 +76,7 @@
 
 	.form-control {
 		padding: 10px 20px;
-		display: flex;
-		align-items: center;
+		@include flex-center;
 
 		label {
 			display: inline-block;
@@ -85,6 +86,7 @@
 
 		input {
 			flex: 1;
+			max-width: 180px;
 			position: relative;
 			padding: 8px 0;
 			color: $font-color;
@@ -96,7 +98,11 @@
 				-webkit-text-fill-color: $font-color;
 				-webkit-box-shadow: 0 0 0px 1000px $white inset;
 			}
+		}
 
+		@include max-screen(500px) {
+			padding: 10px 0;
+			font-size: 14px;
 		}
 	}
 
@@ -106,6 +112,18 @@
 
 		.iconfont {
 			font-size: 48px;
+		}
+	}
+
+	.myModal {
+		width: 450px;
+
+		@include max-screen(500px) {
+			width: 95%;
+
+			.Modal-Body {
+				padding: 10px 25px 10px 10px;
+			}
 		}
 	}
 }
@@ -183,7 +201,7 @@
 		padding-bottom: 20px;
 
 		.waiting {
-			color: $green;
+			color: $dark-green;
 		}
 
 		.playing {
@@ -239,3 +257,160 @@
 	}
 }
 
+.gobang {
+	flex: 1;
+	display: flex;
+	padding: 10px;
+	flex-direction: column;
+
+	.gobang-room-info {
+		display: flex;
+		justify-content: space-between;
+		height: 24px;
+		line-height: 24px;
+		margin-bottom: 10px;
+		font-weight: 600;
+
+		.gobang-status {
+			position: relative;
+			padding-left: 15px;
+			margin-left: 10px;
+
+			&::after {
+				content: '';
+				position: absolute;
+				left: 0;
+				top: 3px;
+				width: 10px;
+				height: 10px;
+				border-radius: 50%;
+			}
+
+			&.waiting {
+				color: $dark-green;
+
+				&::after {
+					background-color: $dark-green;
+				}
+			}
+
+			&.playing {
+				color: $red;
+
+				&::after {
+					background-color: $red;
+				}
+			}
+		}
+
+		.leave-room-btn {
+			color: $red;
+			font-size: 13px;
+			cursor: pointer;
+
+			&:hover {
+				opacity: .8;
+			}
+		}
+	}
+
+	.gobang-main {
+		display: flex;
+		flex: 1;
+		margin-bottom: 10px;
+		border-radius: 6px;
+		color: $white;
+		background-color: $blue;
+
+		@include max-screen(1000px) {
+			flex-direction: column;
+		}
+	}
+
+	.gobang-control {
+		height: 130px;
+		border-radius: 6px;
+		overflow: hidden;
+		background-color: $default2;
+		display: flex;
+		flex-direction: column;
+
+		.gobang-messages {
+			flex: 1;
+			padding: 10px;
+			font-size: 13px;
+			color: $white;
+			overflow: auto;
+		}
+
+		.gobang-input {
+			height: 30px;
+			margin: 5px;
+			padding: 0 10px;
+			border: none;
+			border-radius: 0 0 4px 4px;
+		}
+	}
+
+	.gobang-chessboard {
+		flex: 1;
+		min-height: 350px;
+		background-color: #eee;
+	}
+
+	.gobang-player-group {
+		padding: 20px 10px;
+		width: 220px;
+		flex-shrink: 0;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+
+		@include max-screen(1000px) {
+			width: 100%;
+			padding: 5px 10px;
+			flex-direction: row;
+		}
+	}
+
+	.gobang-player {
+		width: 100%;
+		text-align: center;
+
+		.avatar {
+			position: relative;
+			width: 80px;
+			height: 80px;
+			@include flex-center;
+			border-radius: 50%;
+			border: 2px solid rgba(255, 255, 255, .36);
+
+			&.placeholder {
+				background-color: $white;
+			}
+
+			.icon-cat {
+				font-size: 50px;
+				color: $default;
+			}
+		}
+
+		@include max-screen(1000px) {
+			@include flex-v-center;
+			text-align: left;
+
+			.avatar {
+				border-radius: 4px;
+				margin-right: 5px;
+			}
+		}
+	}
+
+	.ready-btn {
+		border: none;
+		background-color: $white;
+		color: $green;
+		padding: 10px;
+		font-size: 18px;
+	}
+}
