@@ -1,118 +1,16 @@
 const _default = {
-	size: 600,                          // 棋盘大小
-	shrink: 5,                         //  棋子大小 = 一格大小 - shrink
-	color: ['#000', '#FFF'],            // 玩家1 玩家2 颜色
-	cb: null,                           // 游戏结束回调方法
-	bg_texture: require('images/wood.png')  //  背景纹理
 }
 
 export default class Chess {
-	constructor(el, options){
+	constructor(options){
 		Object.assign(this, _default, options)
-		this.checkerboard = el
-		this.cxt = this.checkerboard.getContext('2d')
-		this.gap = this.size / 15
-
-		this.ignores = []
-		this.getMousePos = this.getMousePos.bind(this)
-		this.bindEvent()
-		this.init()
-	}
-	/*  绑定事件  */
-	bindEvent() {
-		this.checkerboard.addEventListener('click', this.getMousePos)
-	}
-	/*  解除绑定  */
-	unbindEvent() {
-		this.checkerboard.removeEventListener('click', this.getMousePos)
-	}
-	/*  初始化  */
-	init() {
-		this.cxt.clearRect(0, 0, this.size, this.size)
-		this.initSize()
 		this.player = 0
+		this.ignores = []
 		this.piece_count = 0
 		this.over = false
 		this.pieces = []
 		this.pieces0 = []
 		this.pieces1 = []
-		this.setBg()
-	}
-	/*  初始化大小  */
-	initSize() {
-		this.checkerboard.width = this.size
-		this.checkerboard.height = this.size
-		this.bounds = this.checkerboard.getBoundingClientRect()
-	}
-	/*  设置背景图  */
-	setBg() {
-		this.cxt.clearRect(0, 0, this.size, this.size)
-
-		this.image = new Image()
-		this.image.onload = () => {
-			this.cxt.fillStyle = this.cxt.createPattern(this.image, 'repeat')
-        	this.cxt.fillRect(0, 0, this.size, this.size)
-			this.createGridding()
-		}
-
-		this.image.src = this.bg_texture
-	}
-	/*  生成网格  */
-	createGridding() {
-		this.cxt.strokeStyle = '#000'
-		this.cxt.lineWidth = 1
-		for (let x = 0; x < 15; x++) {
-			this.cxt.moveTo(x * this.gap + this.gap / 2, this.gap / 2)
-			this.cxt.lineTo(x * this.gap + this.gap / 2, this.size - this.gap / 2)
-			this.cxt.moveTo(this.gap / 2, x * this.gap + this.gap / 2)
-			this.cxt.lineTo(this.size - this.gap / 2, x * this.gap + this.gap / 2)
-			this.cxt.stroke()
-		}
-	}
-	/*  点击事件  */
-	getMousePos(e) {
-		if (this.over)
-			return this.init()
-	    let mx = e.clientX - this.bounds.left
-		let my = e.clientY - this.bounds.top
-		this.checked(~~(mx / this.gap), ~~(my / this.gap))
-	}
-	/*  callback  */
-	callback(word) {
-		alert(word)
-		this.cb && this.cb(word)
-	}
-	/*  下了个棋子  */
-	checked(x, y) {
-		let index = this.getIndex(x, y)
-		if (this.pieces.indexOf(index) > -1)
-			return false
-		this.pieces.push(index)
-		this[`pieces${this.player}`].push(index)
-		this.createPiece(x, y, index)
-		this.isWin(index)
-		if (!this.over) {
-			this.player = +!this.player
-		}
-		else {
-			return setTimeout(() => this.callback(`${this.player ? '白' : '黑'}棋获得了胜利!`))
-		}
-		this.piece_count++
-		if (this.piece_count === 225) {
-			return setTimeout(() => this.callback('和棋!'))
-		}
-	}
-	/*  生成个棋子  */
-	createPiece(x, y, index) {
-		this.cxt.fillStyle = this.color[this.player]
-		this.cxt.shadowColor = '#000'
-		this.cxt.shadowBlur = 5
-
-		this.cxt.beginPath()
-		this.cxt.arc(x * this.gap + this.gap / 2, y * this.gap + this.gap / 2, (this.gap - this.shrink) / 2, 0, 2 * Math.PI, true)
-		this.cxt.closePath()
-
-		this.cxt.fill()
 	}
 	/*  是否赢了  */
 	isWin(index) {

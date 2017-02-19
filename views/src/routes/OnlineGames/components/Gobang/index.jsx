@@ -76,19 +76,19 @@ class Gobang extends Component {
 	}
 	/*  获取单个房间信息  */
 	getRoomData(data) {
-		console.info(data)
 		this.setState({
 			...data
 		})
 	}
 	/**
 	 * 进入房间
-	 * @param  {object}  单个房间信息
-	 * @param  {string}  房间id
-	 * @param  {string}  角色 ['owner', 'challenger' [, 'audience']]
+	 * @param  {object} room_data  单个房间信息
+	 * @param  {string} room_id    房间id
+	 * @param  {string} role       角色 ['owner', 'challenger' [, 'audience']]
 	 * @return {null}
 	 */
 	intoTheRoom({room_data, room_id, role}) {
+		console.info(room_data)
 		this.setState({
 			seat: 'room',
 			room_data,
@@ -98,8 +98,8 @@ class Gobang extends Component {
 	}
 	/**
 	 * 收到消息
-	 * @param  {string}  消息类型
-	 * @param  {string}  消息主体
+	 * @param  {string} type  消息类型
+	 * @param  {string} msg   消息主体
 	 * @return {null}
 	 */
 	getMessage({type, msg}) {

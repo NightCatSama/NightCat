@@ -318,9 +318,8 @@
 		display: flex;
 		flex: 1;
 		margin-bottom: 10px;
-		border-radius: 6px;
-		color: $white;
-		background-color: $blue;
+		background-color: $gray;
+		justify-content: center;
 
 		@include max-screen(1000px) {
 			flex-direction: column;
@@ -328,8 +327,9 @@
 	}
 
 	.gobang-control {
-		height: 130px;
-		border-radius: 6px;
+		flex: 1;
+		max-width: 300px;
+		padding: 10px;
 		overflow: hidden;
 		background-color: $default2;
 		display: flex;
@@ -337,51 +337,84 @@
 
 		.gobang-messages {
 			flex: 1;
+			background-color: $masstone;
 			padding: 10px;
 			font-size: 13px;
 			color: $white;
 			overflow: auto;
 		}
 
+		.gobang-msg {
+			margin-bottom: 3px;
+		}
+
 		.gobang-input {
 			height: 30px;
-			margin: 5px;
+			margin-top: 10px;
 			padding: 0 10px;
 			border: none;
-			border-radius: 0 0 4px 4px;
+		}
+
+		@include max-screen(1000px) {
+			width: 100%;
+			max-width: 100%;
+			height: 150px;
 		}
 	}
 
 	.gobang-chessboard {
-		flex: 1;
-		min-height: 350px;
-		background-color: #eee;
+		text-align: center;
+
+		canvas {
+			width: 100%;
+			height: 100%;
+		}
+	}
+
+	.gobang-left {
+		display: flex;
+		flex-direction: column;
 	}
 
 	.gobang-player-group {
-		padding: 20px 10px;
-		width: 220px;
+		position: relative;
+		flex: 1;
+		width: 300px;
+		border: 5px solid $light-black;
+		background-color: #FFF;
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
 		justify-content: space-between;
 
+		&:first-child {
+			margin-bottom: 1px;
+		}
+
 		@include max-screen(1000px) {
 			width: 100%;
-			padding: 5px 10px;
+			height: 100%;
 			flex-direction: row;
 		}
 	}
 
 	.gobang-player {
 		width: 100%;
+		height: 150px;
+		@include flex-center;
+		flex-direction: column;
+		color: $white;
+		background-color: $blue;
 		text-align: center;
 
 		.avatar {
+			display: inline-block;
 			position: relative;
 			width: 80px;
 			height: 80px;
-			@include flex-center;
+			line-height: 80px;
+			text-align: center;
+			margin-bottom: 5px;
 			border-radius: 50%;
 			border: 2px solid rgba(255, 255, 255, .36);
 
@@ -396,6 +429,8 @@
 		}
 
 		@include max-screen(1000px) {
+			flex: 1;
+			min-width: 150px;
 			@include flex-v-center;
 			text-align: left;
 
@@ -406,11 +441,59 @@
 		}
 	}
 
-	.ready-btn {
-		border: none;
+	.gobang-panel {
+		flex: 1;
+		padding: 8px 10px;
+		font-size: 16px;
 		background-color: $white;
-		color: $green;
+
+		.gobang-panel-item span {
+			display: inline-block;
+			width: 80px;
+			font-size: 15px;
+			margin: 3px 5px;
+			text-align: right;
+		}
+
+		@include max-screen(1000px) {
+			width: 150px;
+			flex: initial;
+			flex-shrink: 0;
+			display: flex;
+			font-size: 13px;
+			flex-direction: column;
+
+			.gobang-panel-item span {
+				width: 60px;
+				font-size: 12px;
+			}
+		}
+	}
+
+	.ready-status {
+		border: none;
 		padding: 10px;
 		font-size: 18px;
+		color: $font-color;
+		text-align: center;
+		background-color: $gray;
+
+		&.ready-btn {
+			background-color: $blue;
+			color: $white;
+			cursor: pointer;
+		}
+
+		&.is-ready {
+			background-color: $dark-default;
+		}
+
+		@include max-screen(1000px) {
+			position: absolute;
+			right: 5px;
+			bottom: 5px;
+			font-size: 15px;
+			padding: 5px 8px;
+		}
 	}
 }
