@@ -41,10 +41,9 @@ export default class Tabs extends Component {
 	}
 	/*  创建房间  */
 	createRoom() {
-		if (!this.state.room_info.room_name) {
-			return this.notice('房间名不能为空')
+		if (this.state.room_info.room_name) {
+			this.toggleModal()
 		}
-		this.toggleModal()
 		this.props.createRoom(this.state.room_info)
 	}
 	render() {
@@ -65,7 +64,6 @@ export default class Tabs extends Component {
 						在线人数：{ this.props.online_count }
 					</div>
 					<div className="btn-group">
-						<button onClick={this.toggleModal}>快速开始</button>
 						<button onClick={this.toggleModal}>创建房间</button>
 					</div>
 				</section>

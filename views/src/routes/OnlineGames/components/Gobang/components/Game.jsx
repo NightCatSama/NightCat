@@ -23,19 +23,24 @@ export default class Game extends Component {
 			size,
 			addPiece: (index) => this.sendIndex(index)
 		})
+		document.addEventListener('keydown', this.onKeyboard)
 	}
 	componentWillUnmount() {
 		clearInterval(this.timer)
 		this.timer = null
+		document.removeEventListener('keydown', this.onKeyboard)
 	}
 	/*  回车快速 发送消息  */
 	onKeyboard() {
 		var code = event.keyCode
-		let { room_data, role } = this.props
 		if (code === 13) {
-			this.props.socket.emit('Message', `【${room_data[role].name}】${this.msg.value}`, 'print')
-			this.msg.value = ''
+			this.sendMessage()
 		}
+	}
+	sendMessage() {
+		let { room_data, role } = this.props
+		this.props.socket.emit('Message', `【${room_data[role].name}】${this.msg.value}`, 'print')
+		this.msg.value = ''
 	}
 	/*  打印消息  */
 	printMsg(msg, type) {
@@ -48,12 +53,20 @@ export default class Game extends Component {
 	}
 	/*  游戏开始  */
 	start() {
+		this.timer = setInterval(() => {
+			this.setState({
+				off: this.state.off + 1
+			})
+		}, 1000)
 		this.chess.gameStart()
 	}
 	/*  游戏结束  */
 	over() {
 		clearInterval(this.timer)
 		this.timer = null
+		this.setState({
+			off: 0
+		})
 		this.chess.gameOver()
 	}
 	/*  切换准备状态  */
@@ -100,13 +113,6 @@ export default class Game extends Component {
 		})
 		if (isSelf && this.chess) {
 			this.chess.player = obj.player
-		}
-		if (obj && !this.timer && obj.player === this.props.room_data.player && this.props.room_data.status !== '等待中') {
-			this.timer = setInterval(() => {
-				this.setState({
-					off: this.state.off + 1
-				})
-			}, 1000)
 		}
 		let player = obj ? (
 		<div className="gobang-player-group">
@@ -200,7 +206,10 @@ export default class Game extends Component {
 								})
 							}
 						</div>
-						<input ref={(ref) => this.msg = ref} className="gobang-input" type="text" placeholder="Enter 发送消息" />
+						<div className="gobang-input-group">
+							<input ref={(ref) => this.msg = ref} className="gobang-input" type="text" placeholder="Enter 发送消息" />
+							<i className="iconfont icon-send" onClick={() => this.sendMessage()}></i>
+						</div>
 					</div>
 				</div>
 

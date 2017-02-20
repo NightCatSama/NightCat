@@ -22,8 +22,6 @@ router
 	.post('/saveUserInfo', signinRequire, user.saveUserInfo)  //  保存用户信息
 
 	.use(setStaticOnFront)  //  设置文件静态目录
-	.get('/', site.index) //  跳转页面
-	.get('/:name', site.index) //  跳转页面
-	.get('/user/:account', site.index) //  跳转页面
+	.get(['/', '/:name', '/user/:account', '/games/:type', '/single-games/:type', '/online-games/:type'], site.index) //  跳转页面
 
 export default router

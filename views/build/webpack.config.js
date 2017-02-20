@@ -31,6 +31,9 @@ var config = {
 		}, {
 			test: /\.jsx?$/,
 			loader: 'babel',
+			query: {
+				presets: ['react-hmre']
+			},
 			include: SRC_PATH,
 			exclude: /node_modules/
 		}, {

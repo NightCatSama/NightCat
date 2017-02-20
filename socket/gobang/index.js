@@ -2,7 +2,7 @@ import Online from '../on-line'
 import Game from './gobang'
 
 let rooms = {}
-const total_time = 10 * 60
+const total_time = 0.5 * 60
 let myOnline = new Online()
 
 /**
@@ -320,13 +320,13 @@ class Gobang {
 		winner = Object.assign(winner, {
 			ready: false,
 			status: '',
-			timer: total_time,
+			time: total_time,
 			win_number: winner.win_number + (isDraw ? 0 : 1)
 		})
 		loser = Object.assign(loser, {
 			ready: false,
 			status: '',
-			timer: total_time
+			time: total_time
 		})
 
 		this.sendMessage('Victory', 'success', winner.id)
@@ -361,7 +361,7 @@ class Gobang {
 		this.timer = null
 
 		if (result === 'win') {
-			this.broadcastMessage(`【系统消息】${player === 0 ? '黑' : '白'}棋获得胜利`, 'end')
+			this.broadcastMessage(`【系统消息】${data[data.camp[player]].name}（${player === 0 ? '黑' : '白'}棋）获得胜利`, 'end')
 			this.gameOver(player)
 		}
 		else if (result === 'draw') {
@@ -396,7 +396,8 @@ class Gobang {
 		})
 	}
 	TimerBegin(time, player) {
-		rooms[this.room_id].initial_time = Date.now()
+		let data = rooms[this.room_id]
+		data.initial_time = Date.now()
 		this.timer = setTimeout(() => {
 			this.broadcastMessage(`【系统消息】由于${player === 0 ? '黑' : '白'}棋时间用尽，所以${player === 0 ? '白' : '黑'}棋获得胜利！`, 'end')
 			this.gameOver(+!player)

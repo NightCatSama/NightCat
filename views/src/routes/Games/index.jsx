@@ -79,7 +79,7 @@ class Games extends Component {
 		/*  是否过滤不同类型游戏  */
 		this.type = this.context.router.params.type
 		if (this.type) {
-			filterGame = games.filter((game) => game.type === this.type)
+			filterGame = filterGame.filter((game) => game.type === this.type)
 		}
 		this.setState({
 			games: filterGame

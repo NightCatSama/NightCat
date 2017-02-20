@@ -143,7 +143,7 @@ class Gobang extends Component {
 	}
 	/*  创建房间  */
 	createRoom(data) {
-		if (!this.state.room_info.room_name) {
+		if (!data.room_name) {
 			return this.notice('房间名不能为空')
 		}
 		this.socket.emit('Create', {

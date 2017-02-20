@@ -139,23 +139,23 @@
 	}
 
 	@include max-screen(2259px) {
-	    width: 1750px;
+	    width: 2200px;
 	}
 
 	@include max-screen(1830px) {
-	    width: 1500px;
+	    width: 1800px;
 	}
 
 	@include max-screen(1580px) {
-	    width: 1250px;
+	    width: 1500px;
 	}
 
 	@include max-screen(1330px) {
-	    width: 1080px;
+	    width: 1300px;
 	}
 
 	@include max-screen(1080px) {
-	    width: 850px;
+	    width: 1000px;
 	}
 
 	@include max-screen(768px) {
@@ -347,17 +347,39 @@
 			margin-bottom: 3px;
 		}
 
-		.gobang-input {
-			height: 30px;
+		.gobang-input-group {
+			display: flex;
 			margin-top: 10px;
+			height: 30px;
+			justify-content: center;
+			align-items: center;
+		}
+
+		.gobang-input {
+			flex: 1;
+			height: 100%;
 			padding: 0 10px;
 			border: none;
+		}
+
+		.icon-send {
+			display: none;
+			font-size: 20px;
+			height: 30px;
+			line-height: 30px;
+			width: 40px;
+			text-align: center;
+			color: $white;
 		}
 
 		@include max-screen(1000px) {
 			width: 100%;
 			max-width: 100%;
 			height: 150px;
+
+			.icon-send {
+				display: block;
+			}
 		}
 	}
 
@@ -503,10 +525,12 @@
 
 		@include max-screen(1000px) {
 			position: absolute;
+			height: 32px;
+			line-height: 32px;
 			right: 5px;
 			bottom: 5px;
 			font-size: 15px;
-			padding: 5px 8px;
+			padding: 0px 8px;
 		}
 	}
 }
