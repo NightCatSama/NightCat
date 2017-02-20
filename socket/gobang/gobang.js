@@ -7,10 +7,26 @@ export default class Chess {
 		this.player = 0
 		this.ignores = []
 		this.piece_count = 0
-		this.over = false
 		this.pieces = []
 		this.pieces0 = []
 		this.pieces1 = []
+	}
+	/*  下了个棋子  */
+	addPieces(index) {
+		/*  是否已经存在  */
+		if (this.pieces.indexOf(index) > -1)
+			// this.unabled('该位置无法放置棋子')
+			return false
+
+		this.pieces.push(index)
+		this[`pieces${this.player}`].push(index)
+		if (this.isWin(index)) {
+			return 'win'
+		}
+		if (this.pieces.length === 225) {
+			return 'draw'
+		}
+		return true
 	}
 	/*  是否赢了  */
 	isWin(index) {
@@ -25,10 +41,11 @@ export default class Chess {
 		for (let type in lines) {
 			/*  其中一条线大于等于5个就赢了  */
 			if (lines[type].length >= 5) {
-				this.over = true
+				return true
 			}
 		}
 		this.ignores = []
+		return false
 	}
 	/*  得到该点四条线上的连点数  */
 	setLines(index, lines, haveType) {

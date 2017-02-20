@@ -10,27 +10,30 @@ export default class Game extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			messages: []
+			messages: [],
+			off: 0
 		}
+		this.timer = null
 		this.onKeyboard = this.onKeyboard.bind(this)
 	}
 	componentDidMount() {
 		let size = isPC ? this.chessboard.offsetHeight : this.chessboard.offsetWidth
 		this.chessboard.style.cssText = `width: ${size}px; height: ${size}px;`
-		new Chess(this.canvas, {
-			size
+		this.chess = new Chess(this.canvas, {
+			size,
+			addPiece: (index) => this.sendIndex(index)
 		})
-
-		document.addEventListener('keydown', this.onKeyboard)
 	}
 	componentWillUnmount() {
-		document.removeEventListener('keydown', this.onKeyboard)
+		clearInterval(this.timer)
+		this.timer = null
 	}
 	/*  回车快速 发送消息  */
 	onKeyboard() {
 		var code = event.keyCode
+		let { room_data, role } = this.props
 		if (code === 13) {
-			this.props.socket.emit('Message', `【${this.props.room_data[this.props.role].name}】${this.msg.value}`, 'print')
+			this.props.socket.emit('Message', `【${room_data[role].name}】${this.msg.value}`, 'print')
 			this.msg.value = ''
 		}
 	}
@@ -43,9 +46,33 @@ export default class Game extends Component {
 			}]
 		})
 	}
+	/*  游戏开始  */
+	start() {
+		this.chess.gameStart()
+	}
+	/*  游戏结束  */
+	over() {
+		clearInterval(this.timer)
+		this.timer = null
+		this.chess.gameOver()
+	}
 	/*  切换准备状态  */
 	toggleReady() {
 		this.props.socket.emit('Ready')
+	}
+	/*  发送棋子位置  */
+	sendIndex(index) {
+		this.props.socket.emit('Play', this.chess.player, index)
+	}
+	/*  获取棋子位置  */
+	getIndex(player, index) {
+		clearInterval(this.timer)
+		this.timer = null
+		this.setState({
+			off: 0
+		})
+		this.chess.renderPiece(player, index)
+		this.chess.status = +!this.chess.status
 	}
 	/*  根据准备状态返回字  */
 	getReadyWord(isReady, isSelf) {
@@ -57,17 +84,30 @@ export default class Game extends Component {
 		}
 	}
 	/*  格式化时间  */
-	formatTime(number) {
-		let minute = number / 60
+	formatTime(number, isPlayer) {
+		if (isPlayer) {
+			number -= this.state.off
+		}
+		let minute = ~~(number / 60)
 		let second = number % 60
 		return `${(minute < 10 ? '0' : '') + minute}:${(second < 10 ? '0' : '') + second}`
 	}
 	setPlayer(obj, role) {
 		let isSelf = this.props.role === role
-		let btnClass = cs('ready-status', {
+		let btnClass = cs('gobang-player-status', {
 			'ready-btn': isSelf,
 			'is-ready': obj && obj.ready
 		})
+		if (isSelf && this.chess) {
+			this.chess.player = obj.player
+		}
+		if (obj && !this.timer && obj.player === this.props.room_data.player && this.props.room_data.status !== '等待中') {
+			this.timer = setInterval(() => {
+				this.setState({
+					off: this.state.off + 1
+				})
+			}, 1000)
+		}
 		let player = obj ? (
 		<div className="gobang-player-group">
 			<div className="gobang-player">
@@ -89,18 +129,22 @@ export default class Game extends Component {
 			<div className="gobang-panel">
 				<div className="gobang-panel-item">
 					<span>阵营：</span>
-					{ obj.isBlack === undefined ? '随机' : (obj.isBlack ? '黑旗' : '白棋') }
+					{ obj.player === undefined ? '随机' : (obj.player ? '白旗' : '黑棋') }
 				</div>
 				<div className="gobang-panel-item">
 					<span>剩余时间：</span>
-					{ this.formatTime(obj.time) }
+					{ this.formatTime(obj.time, obj.player === this.props.room_data.player) }
 				</div>
 				<div className="gobang-panel-item">
 					<span>得分：</span>
 					{ obj.win_number }
 				</div>
 			</div>
-			<div className={btnClass} onClick={() => isSelf && this.toggleReady()}>{ this.getReadyWord(obj.ready, isSelf) }</div>
+			{
+				this.props.room_data.status === '等待中' ?
+				<div className={btnClass} onClick={() => isSelf && this.toggleReady()}>{ this.getReadyWord(obj.ready, isSelf) }</div> :
+				<div className="gobang-player-status">{ obj.status }</div>
+			}
 		</div>
 		) : (
 		<div className="gobang-player-group">

@@ -78,9 +78,9 @@ class Menu extends Component {
 		})
 	}
 	/*  跳转到登陆注册页  */
-	gotoSign(e, isSignin, bool) {
+	gotoSign(e, bool) {
 		this.linkClick(e)
-		this.context.router.push(isSignin + `?link=${this.context.router.location.pathname + (bool ? '&signup=1' : '')}`)
+		this.context.router.push(`/sign?link=${this.context.router.location.pathname + (bool ? '&signup=1' : '')}`)
 	}
 	/*  点击 跳转后自动收回  */
 	linkClick(e) {
@@ -161,12 +161,12 @@ class Menu extends Component {
 					) : (
 						<div className="user-group">
 							<div className="sign-btn-group">
-								<Link to="/sign" className="sign-btn blue-btn" onClick={this.linkClick}>
+								<a href="javascript:;" className="sign-btn blue-btn" onClick={(e) => this.gotoSign(e)}>
 									Sign in
-								</Link>
-								<Link to="/sign?signup=1" className="sign-btn green-btn" onClick={this.linkClick}>
+								</a>
+								<a href="javascript:;" className="sign-btn green-btn" onClick={(e) => this.gotoSign(e, true)}>
 									Sign up
-								</Link>
+								</a>
 							</div>
 						</div>
 					) )}

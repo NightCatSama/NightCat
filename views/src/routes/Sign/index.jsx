@@ -106,10 +106,10 @@ class Sign extends Component {
 			})
 			let el = this.refs.signWrap
 			el.classList.add('reset-wrap')
-			Velocity(el, { scale: 1.1 }, { duration: 200 })
-			Velocity(el, { scale: 0 }, { duration: 500 })
-			Velocity(el, { scale: 1, width: '100vw', height: '100vh' }, { duration: 1000, easing: 'easeOutQuart' })
-			Velocity(el, { opacity: 0 }, { duration: 1000, complete: () => this.context.router.replace(this.props.location.query.link || '/') })
+			Velocity(el, { scale: 1.1 }, { duration: 100 })
+			Velocity(el, { scale: 0 }, { duration: 300 })
+			Velocity(el, { scale: 1, width: '100vw', height: '100vh' }, { duration: 500, easing: 'easeOutQuart' })
+			Velocity(el, { opacity: 0 }, { duration: 500, complete: () => this.context.router.replace(this.props.location.query.link || '/') })
 		}, 300)
 	}
 	/*  input 输入同步  */

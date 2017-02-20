@@ -1,20 +1,23 @@
 import Online from '../on-line'
-import Chess from './chess'
+import Game from './gobang'
 
 let rooms = {}
+const total_time = 10 * 60
 let myOnline = new Online()
 
 /**
  * 包装返回的用户数据
  * @param  {Object} userInfo  用户数据
- * @param  {Number} game_time 剩余时长[单位：秒]
  * @return {Object}           包装后的用户数据
  */
-const getInitialUserData = (userInfo, game_time = 10 * 60) => {
-	return { 
+const getInitialUserData = (userInfo, id) => {
+	return {
 		ready: false,
-		time: game_time,
+		time: total_time,
+		status: '',
 		win_number: 0,
+		player: undefined,
+		id,
 		...userInfo
 	}
 }
@@ -24,17 +27,20 @@ const getInitialUserData = (userInfo, game_time = 10 * 60) => {
  * @param  {Object} userInfo  用户数据
  * @param  {String} room_name 房间名
  * @param  {String} password  密码
+ * @param  {String} id        Socket#id
  * @return {Object}           包装后的数据
  */
-const getInitialGameData = (userInfo, room_name, password) => {
+const getInitialGameData = (userInfo, room_name, password, id) => {
 	return {
 		create_at: Date.now(),
 		room_name,
 		password,
-		owner: getInitialUserData(userInfo),
+		owner: getInitialUserData(userInfo, id),
 		challenger: null,
-		game_data: new Chess(),
+		initial_time: 0,
+		game: new Game(),
 		number: 0,
+		player: 0,
 		status: '等待中'
 	}
 }
@@ -45,11 +51,11 @@ class Gobang {
 		this.socket = socket
 		this.io = io
 		this.data = null
+		this.timer = null
+		this.initial_time = 0
 		this.role = ''
 		this.room_id = ''
-		/*  总时长  */
-		this.all_time = 10 * 60 * 1000
-		
+
 		this.onEvent()
 	}
 	/*  监听事件  */
@@ -61,6 +67,7 @@ class Gobang {
 		this.socket.on('Leave', this.leaveRoom.bind(this)) //  离开房间
 		this.socket.on('Message', this.broadcastMessage.bind(this)) //  切换准备状态
 		this.socket.on('Ready', this.toggleReady.bind(this)) //  切换准备状态
+		this.socket.on('Play', this.addChessPieces.bind(this)) //  下了个棋子
 		this.socket.on('disconnect', this.destory.bind(this))  //  断开连接
 	}
 	/*  连接成功  */
@@ -85,6 +92,11 @@ class Gobang {
 	}
 	/*  是否已经在房间中  */
 	isIntoRoom() {
+		/*  开发环境下会导致this.data丢失报错  */
+		if (!this.data) {
+			return false
+		}
+
 		for (let account in rooms) {
 			if (this.data.account === account || (rooms[account].challenger && this.data.account === rooms[account].challenger.account)){
 				return true
@@ -125,11 +137,19 @@ class Gobang {
 	 * @param  {String} type 消息类型
 	 * @return {null}  
 	 */
-	sendMessage(msg, type) {
-		this.socket.emit('Message', {
-			type,
-			msg
-		})
+	sendMessage(msg, type, id) {
+		if (id) {
+			this.io.to(id).emit('Message', {
+				type,
+				msg
+			})
+		}
+		else {
+			this.socket.emit('Message', {
+				type,
+				msg
+			})
+		}
 	}
 	/**
 	 * 广播消息给房间
@@ -155,8 +175,8 @@ class Gobang {
 			return this.sendMessage('您已经在房间中', 'error')
 		}
 
-		rooms[userInfo.account] = getInitialGameData(userInfo, room_name, password)
-		
+		rooms[userInfo.account] = getInitialGameData(userInfo, room_name, password, this.socket.id)
+
 		//  角色设定为房主
 		this.role = 'owner'
 		this.room_id = userInfo.account
@@ -169,7 +189,7 @@ class Gobang {
 	 * @param  {Object} userInfo  加入者信息
 	 * @param  {String} room_name 房间名
 	 * @param  {String} password  密码
-	 * @return {null} 
+	 * @return {null}
 	 */
 	joinRoom({userInfo, room_id, password}) {
 		if (this.isIntoRoom()) {
@@ -181,10 +201,10 @@ class Gobang {
 		if (data.password && data.password !== password) {
 			return this.sendMessage('密码错误', 'error')
 		}
-		
+
 		//  角色设定为房主
 		this.role = 'challenger'
-		data.challenger = getInitialUserData(userInfo)
+		data.challenger = getInitialUserData(userInfo, this.socket.id)
 
 		this.emitJoinRoom(this.role)
 		this.broadcastMessage(`【系统消息】${userInfo.name}加入了房间`, 'print')
@@ -210,7 +230,7 @@ class Gobang {
 			return false
 		}
 		/*  房主退出  */
-		else if (this.data.account === this.room_id) {
+		else if (this.data && this.data.account === this.room_id) {
 			this.broadcastMessage(`【系统消息】房主${data.owner.name}离开了房间，此房间将无法继续使用`, 'print')
 
 			this.socket.leave(this.room_id, () => {
@@ -227,6 +247,13 @@ class Gobang {
 			this.broadcastMessage(`【系统消息】${data.challenger.name}离开了房间`, 'print')
 
 			this.socket.leave(this.room_id, () => {
+				data.owner = Object.assign(data.owner, {
+					status: '',
+					player: undefined,
+					win_number: 0,
+					time: total_time
+				})
+				data.number = 0
 				data.challenger = null
 				this.sendOneRoom()
 				this.room_id = ''
@@ -254,24 +281,126 @@ class Gobang {
 	/*  比赛开始啦  */
 	gameStart() {
 		let data = rooms[this.room_id]
-		/*  若为首次比赛，则随机一方黑旗  */
+		/*  若为首次比赛，则随机一方黑棋  */
 		let roles = ['owner', 'challenger']
 		if (!data.number) {
 			let isOwnerBlack = Math.random() >= 0.5
 			Array.from(roles, (role, i) => {
-				/*  房主代表true，挑战者代表false  */
-				data[role].isBlack = isOwnerBlack === !i
+				data[role].player = +(isOwnerBlack === !!i)
 			})
-			this.broadcastMessage(`【系统消息】系统随机判定为${isOwnerBlack ? '上' : '下'}方玩家先手（黑旗）`, 'print')
+			data.camp = isOwnerBlack ? roles : roles.reverse()
+			this.broadcastMessage(`【系统消息】系统随机判定为${isOwnerBlack ? '上' : '下'}方玩家先手（黑棋）`, 'print')
 		}
 		else {
 			Array.from(roles, (role, i) => {
-				data[role].isBlack = !data[role].isBlack
+				data[role].player = +!data[role].player
 			})
+			data.camp = data.camp.reverse()
 		}
+		data.player = 0
 		data.status = '比赛中'
-		this.broadcastMessage(`【系统消息】比赛开始！`, 'print')
+		this.broadcastMessage(`【系统消息】比赛开始！`, 'start')
+		this.setPlayerStatus()
 		this.sendRooms()
+	}
+	/*  比赛结束  */
+	gameOver(player, isDraw) {
+		let data = rooms[this.room_id]
+		if (!data) {
+			return false
+		}
+
+		data.number++
+		data.status = '等待中'
+		data.game = new Game()
+
+		let winner = data[data.camp[player]]
+		let loser = data[data.camp[+!player]]
+		winner.status = '胜利'
+		winner = Object.assign(winner, {
+			ready: false,
+			status: '',
+			timer: total_time,
+			win_number: winner.win_number + (isDraw ? 0 : 1)
+		})
+		loser = Object.assign(loser, {
+			ready: false,
+			status: '',
+			timer: total_time
+		})
+
+		this.sendMessage('Victory', 'success', winner.id)
+		this.sendMessage('Defeated', 'error', loser.id)
+		this.sendOneRoom()
+		this.sendRooms()
+	}
+	/**
+	 * 下了个棋子
+	 * @param {Number} player 玩家
+	 * @param {Number} index  下的位置
+	 */
+	addChessPieces(player, index) {
+		let data = rooms[this.room_id]
+		if (!data) {
+			return false
+		}
+		else if (data.player !== player) {
+			return this.sendMessage(`请等待对手下棋`, 'error')
+		}
+		let game = data.game
+		game.player = player
+
+		let result = game.addPieces(index)
+		if (!result) {
+			return this.sendMessage(`无效的放置位置`, 'error')
+		}
+
+		this.io.to(this.room_id).emit('Play', player, index)
+		data[data.camp[player]].time = data[data.camp[player]].time - ~~((Date.now() - data.initial_time) / 1000)
+		clearTimeout(this.timer)
+		this.timer = null
+
+		if (result === 'win') {
+			this.broadcastMessage(`【系统消息】${player === 0 ? '黑' : '白'}棋获得胜利`, 'end')
+			this.gameOver(player)
+		}
+		else if (result === 'draw') {
+			this.broadcastMessage('【系统消息】本场比赛结果为和棋', 'end')
+			this.gameOver(player, true)
+		}
+		else {
+			this.switchCamp()
+		}
+	}
+	/*  切换阵营  */
+	switchCamp() {
+		let data = rooms[this.room_id]
+
+		data.player = +!data.player
+		this.setPlayerStatus()
+		this.sendOneRoom()
+	}
+	/*  设置玩家状态  */
+	setPlayerStatus() {
+		let data = rooms[this.room_id]
+		let roles = data.camp
+
+		Array.from(roles, (role, i) => {
+			if (i === data.player) {
+				this.TimerBegin(data[role].time, data.player)
+				data[role].status = data.player ? '白棋回合' : '黑棋回合'
+			}
+			else {
+				data[role].status = ''
+			}
+		})
+	}
+	TimerBegin(time, player) {
+		rooms[this.room_id].initial_time = Date.now()
+		this.timer = setTimeout(() => {
+			this.broadcastMessage(`【系统消息】由于${player === 0 ? '黑' : '白'}棋时间用尽，所以${player === 0 ? '白' : '黑'}棋获得胜利！`, 'end')
+			this.gameOver(+!player)
+		}, time * 1000)
 	}
 }
 

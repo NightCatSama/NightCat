@@ -20,12 +20,13 @@ class Gobang extends Component {
 			data: [],
 			room_data: null,
 			room_id: '',
+			role: '',
 			room_info: {
 				room_name: `${this.props.userInfo.name}的房间`,
 				password: ''
 			}
 		}
-		this.notice = (msg, interval = 2000, status = 'error') => this.props.actions.execute('notice', msg, interval, { status: status })
+		this.notice = (msg, status = 'error') => this.props.actions.execute('notice', msg, 3000, { status: status })
 		this.socket = io(config.socket_host + '/gobang')
 		this.socket.emit('Connect', this.props.userInfo)
 		this.joinRoom = this.joinRoom.bind(this)
@@ -42,12 +43,15 @@ class Gobang extends Component {
 	initState() {
 		this.onEvent()
 
-		this.socket.on('disconnect', function() {
+		this.socket.on('disconnect', () => {
 			console.log('与服务其断开')
 		})
 
-		this.socket.on('reconnect', function() {
-			console.log('重新连接到服务器')
+		this.socket.on('reconnect', () => {
+			console.log('重新连接到服务器!')
+			this.setState({
+				data: []
+			})
 		})
 	}
 	/*  提取需要传递的用户信息  */
@@ -66,10 +70,10 @@ class Gobang extends Component {
 		this.socket.on('Room', this.getRoomData.bind(this))
 		this.socket.on('inRoom', this.intoTheRoom.bind(this))
 		this.socket.on('Message', this.getMessage.bind(this))
+		this.socket.on('Play', this.addPiece.bind(this))
 	}
 	/*  加载更新所有房间信息  */
 	getRooms(data) {
-		console.log(data)
 		this.setState({
 			...data
 		})
@@ -88,7 +92,6 @@ class Gobang extends Component {
 	 * @return {null}
 	 */
 	intoTheRoom({room_data, room_id, role}) {
-		console.info(room_data)
 		this.setState({
 			seat: 'room',
 			room_data,
@@ -104,15 +107,35 @@ class Gobang extends Component {
 	 */
 	getMessage({type, msg}) {
 		switch(type) {
-			case 'error': 
+			case 'error':
 				this.notice(msg)
+				break
+			case 'success':
+				this.notice(msg, 'success')
 				break
 			case 'print':
 				this.refs.gobang && this.refs.gobang.printMsg(msg)
 				break
-			default: 
+			case 'start':
+				if (this.refs.gobang) {
+					this.refs.gobang.printMsg(msg)
+					this.refs.gobang.start()
+				}
+				break
+			case 'end':
+				if (this.refs.gobang) {
+					this.refs.gobang.printMsg(msg)
+					this.refs.gobang.over()
+				}
+				break
+			default:
 				break
 		}
+	}
+	/*  下一枚棋子  */
+	addPiece(player, index) {
+		let gobang = this.refs.gobang
+		gobang && gobang.getIndex(player, index)
 	}
 	/*  切换模态框  */
 	toggleModal() {
@@ -171,7 +194,7 @@ class Gobang extends Component {
 						<Tabs online_count={this.state.online_count} room_info={this.state.room_info} createRoom={this.createRoom} />
 						<Lobby data={this.state.data} joinRoom={this.joinRoom} />
 					</section> :
-					<Game ref="gobang" role={this.state.role} room_id={ this.state.room_id } room_data={this.state.room_data} socket={this.socket} leaveRoom={this.leaveRoom} />
+					<Game ref="gobang" role={this.state.role} room_id={this.state.room_id} room_data={this.state.room_data} socket={this.socket} leaveRoom={this.leaveRoom} />
 				}
 			</div>
 		)
