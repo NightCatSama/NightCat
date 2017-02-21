@@ -4,6 +4,7 @@ import './styles'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
+import AuthAction from 'actions/AuthAction'
 import io from 'socket.io-client'
 import config from 'config'
 
@@ -128,6 +129,9 @@ class Gobang extends Component {
 					this.refs.gobang.over()
 				}
 				break
+			case 'update_game_data': 
+				this.props.authConf.setUserInfo(msg)
+				break
 			default:
 				break
 		}
@@ -179,7 +183,7 @@ class Gobang extends Component {
 						{
 							userInfo.gameData ? (
 								<p className="user-game-data">
-									游戏次数：{ userInfo.gameData.all_count }<br />
+									游戏场数：{ userInfo.gameData.all_count }<br />
 									胜率：{ userInfo.gameData.winRate }%
 								</p>
 							) : (
@@ -206,7 +210,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(EventBusAction, dispatch)
+	actions: bindActionCreators(EventBusAction, dispatch),
+	authConf: bindActionCreators(AuthAction, dispatch)
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Gobang)
@@ -214,6 +219,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Gobang)
 Gobang.propTypes = {
 	children: PropTypes.any,
 	userInfo: PropTypes.object,
+	authConf: PropTypes.object,
 	actions: PropTypes.object,
 	location: PropTypes.any
 }

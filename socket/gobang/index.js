@@ -285,8 +285,14 @@ class Gobang {
 	}
 	/*  保存胜负结果  */
 	saveGame(winner, loser) {
-		setGobangData(winner, true)
-		setGobangData(loser, false)
+		setGobangData(winner.account, true)
+		.then(data => {
+			this.sendMessage(data, 'update_game_data', winner.id)
+		})
+		setGobangData(loser.account, false)
+		.then(data => {
+			this.sendMessage(data, 'update_game_data', winner.id)
+		})
 	}
 	/*  比赛开始啦  */
 	gameStart() {
@@ -323,7 +329,7 @@ class Gobang {
 		let loser = data[role]
 		let winner = data[win_role]
 
-		this.saveGame(winner.account, loser.account)
+		this.saveGame(winner, loser)
 
 		this.broadcastMessage(`【系统消息】由于 ${loser.name} 离开了比赛，所以 ${winner.name} 获得胜利`, 'end')
 		data = Object.assign(data, {
@@ -359,7 +365,7 @@ class Gobang {
 		let winner = data[data.camp[player]]
 		let loser = data[data.camp[+!player]]
 
-		this.saveGame(winner.account, loser.account)
+		this.saveGame(winner, loser)
 
 		winner.status = '胜利'
 		winner = Object.assign(winner, {

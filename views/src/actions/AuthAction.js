@@ -5,14 +5,7 @@ const HeaderBtnActions = {
 	setStatus: createAction(ActionTypes.SET_STATUS),
 	setAccessToken: createAction(ActionTypes.SET_ACCESSTOKEN),
 	setUserInfo: createAction(ActionTypes.SET_USERINFO),
-	subscribeEvents: createAction(ActionTypes.SUBSCRIBE_EVENTS, (key, fn) => {
-		return {
-			key,
-			fn
-		}
-	}),
-	unsubscribeEvents: createAction(ActionTypes.UNSUBSCRIBE_EVENTS),
-	refresh: createAction(ActionTypes.REFRESH),
+	clearStatus: createAction(ActionTypes.CLEAR_STATUS)
 }
 
 export default HeaderBtnActions

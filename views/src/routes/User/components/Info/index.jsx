@@ -29,16 +29,16 @@ class Info extends Component {
 		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
 	}
 	componentDidMount() {
-		this.props.authConf.subscribeEvents('Info', this.loadSelfData.bind(this))
 		this.getUserInfo()
 	}
 	componentWillReceiveProps(nextProps) {
-		if (nextProps.params.account !== this.state.account) {
-			this.getUserInfo()
+		let account = this.context.router.params.account
+		if (account) {
+			this.loadData(account)
 		}
-	}
-	componentWillUnmount() {
-		this.props.authConf.unsubscribeEvents('Info')
+		else {
+			this.loadSelfData(nextProps.userInfo)
+		}
 	}
 	/*  得到用户信息  */
 	getUserInfo() {
@@ -52,7 +52,7 @@ class Info extends Component {
 	}
 	/*  查看用户的信息  */
 	loadData(account) {
-		let { isLogin, userInfo } = this.props.auth
+		let { isLogin, userInfo } = this.props
 		if (isLogin && userInfo.account === account) {
 			return this.loadSelfData()
 		}
@@ -74,20 +74,10 @@ class Info extends Component {
 		})
 	}
 	/*  查看自己的信息  */
-	loadSelfData() {
-		axios.get('/getUserInfo')
-		.then((res) => {
-			let obj = {}
-			for (let name in this.state.info) {
-				obj[name] = res.data[name]
-			}
-			this.setState({
-				isSelf: true,
-				info: obj
-			})
-		})
-		.catch((err) => {
-			this.notice(err.message, 2000, 'error')
+	loadSelfData(info) {
+		this.setState({
+			isSelf: true,
+			info: info || this.props.userInfo
 		})
 	}
 	/*  保存用户信息  */
@@ -99,8 +89,8 @@ class Info extends Component {
 		})
 		.then((res) => {
 			this.notice(res.message, 2000, 'success')
+			console.log(this.state.info)
 			this.props.authConf.setUserInfo(this.state.info)
-			this.props.authConf.refresh()
 		})
 		.catch((err) => {
 			this.notice(err.message, 2000, 'error')
@@ -228,7 +218,10 @@ class Info extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { auth: state.auth }
+	return {
+		isLogin: state.auth.isLogin,
+		userInfo: state.auth.userInfo
+	}
 }
 
 const mapDispatchToProps = (dispatch) => ({
@@ -239,7 +232,8 @@ const mapDispatchToProps = (dispatch) => ({
 export default connect(mapStateToProps, mapDispatchToProps)(Info)
 
 Info.propTypes = {
-	auth: PropTypes.object,
+	isLogin: PropTypes.bool,
+	userInfo: PropTypes.object,
 	authConf: PropTypes.object,
 	actions: PropTypes.object,
 	history: PropTypes.object,

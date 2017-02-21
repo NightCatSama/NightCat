@@ -91,7 +91,6 @@ class Sign extends Component {
 		})
 		.then((res) => {
 			res.data && this.setUserStatus(res.data)
-			this.props.authConf.refresh()
 			this.successTrantionToHome()
 		})
 		.catch((err) => this.notice(err.message))

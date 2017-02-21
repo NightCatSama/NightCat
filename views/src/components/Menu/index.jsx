@@ -24,26 +24,9 @@ class Menu extends Component {
 	/*  绑定全局事件  */
 	componentDidMount() {
 		document.body.addEventListener('click', this.windowClick, false)
-		this.props.authConf.subscribeEvents('Menu', this.getUserInfo.bind(this))
-		this.getUserInfo()
 	}
 	componentWillUnmount() {
-		this.props.authConf.unsubscribeEvents('Menu')
 		document.body.removeEventListener('click', this.windowClick, false)
-	}
-	/*  得到用户信息  */
-	getUserInfo() {
-		let { isLogin, userInfo } = this.props.auth
-		if (isLogin && userInfo) {
-			this.setState({
-				isLogin: true,
-				userInfo: {
-					name: userInfo.name,
-					profile: userInfo.profile,
-					avatar: userInfo.avatar
-				}
-			})
-		}
 	}
 	/*  退出登录  */
 	signout() {
@@ -52,10 +35,8 @@ class Menu extends Component {
 			if (res.success) {
 				this.props.actions.execute('notice', '退出成功！', 2000, { status: 'success' })
 				this.clearWebStorage()
-				this.setState({
-					isLogin: false,
-					userInfo: null
-				})
+				console.log(this.props.authConf)
+				this.props.authConf.clearStatus()
 			}
 		})
 		.catch((err) => this.props.actions.execute('notice', err.message, 2000, { status: 'error' }))
@@ -133,12 +114,12 @@ class Menu extends Component {
 							<span>About Me</span>
 						</Link>
 					</div>
-					{ this.props.showUserGroup && (this.state.isLogin ? (
+					{ this.props.showUserGroup && (this.props.isLogin ? (
 						<div className="user-group">
 							<div className="personal-information">
-								<img className="avatar" src={this.state.userInfo.avatar} />
-								<h2 className="user-name">{this.state.userInfo.name}</h2>
-								<small className="user-profile">{this.state.userInfo.profile}</small>
+								<img className="avatar" src={this.props.userInfo.avatar} />
+								<h2 className="user-name">{this.props.userInfo.name}</h2>
+								<small className="user-profile">{this.props.userInfo.profile}</small>
 								<div className="follow">
 									<a href="https://github.com/NightCatSama" target="_blank">
 										<i className="iconfont icon-github"></i>
@@ -177,7 +158,10 @@ class Menu extends Component {
 }
 
 const mapStateToProps = (state) => {
-	return { auth: state.auth }
+	return {
+		userInfo: state.auth.userInfo,
+		isLogin: state.auth.isLogin
+	}
 }
 
 const mapDispatchToProps = (dispatch) => ({
@@ -189,10 +173,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(Menu)
 
 Menu.propTypes = {
 	show: PropTypes.bool,
+	isLogin: PropTypes.bool,
+	userInfo: PropTypes.object,
 	callback: PropTypes.func,
 	showUserGroup: PropTypes.bool,
 	store: PropTypes.object,
-	auth: PropTypes.object,
 	authConf: PropTypes.object,
 	actions: PropTypes.object
 }

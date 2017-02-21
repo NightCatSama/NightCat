@@ -27,26 +27,12 @@ const headerBtn = handleActions({
 	/*  更新userInfo  */
 	[ActionTypes.SET_USERINFO](state, { payload }) {
 		return Object.assign({}, state, {
-			userInfo: Object.assign(state.userInfo, payload)
+			userInfo: Object.assign({}, state.userInfo, payload)
 		})
 	},
-	/*  订阅事件，当信息更新时刷新  */
-	[ActionTypes.SUBSCRIBE_EVENTS](state, { payload }) {
-		let newState = Object.assign({}, state)
-		newState.events[payload.key] = payload.fn
-		return newState
-	},
-	/*  取消订阅  */
-	[ActionTypes.UNSUBSCRIBE_EVENTS](state, { payload }) {
-		let newState = Object.assign({}, state)
-		delete newState[payload]
-		return newState
-	},
-	/*  刷新  */
-	[ActionTypes.REFRESH](state, { payload }) {
-		for (let key in state.events)
-			state.events[key]()
-        return state
+	/*  退出登录  */
+	[ActionTypes.CLEAR_STATUS](state, {payLoad}) {
+		return initialState
 	}
 }, initialState)
 

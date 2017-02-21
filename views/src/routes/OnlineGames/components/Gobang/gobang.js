@@ -19,6 +19,7 @@ export default class Chess {
 		this.pieces0 = []
 		this.pieces1 = []
 		this.clickHandle = this.clickHandle.bind(this)
+		this.resetBount = this.resetBount.bind(this)
 		this.createCover()
 		this.bindEvent()
 		this.init()
@@ -34,10 +35,12 @@ export default class Chess {
 	}
 	/*  绑定事件  */
 	bindEvent() {
+		window.addEventListener('resize', this.resetBount)
 		this.cover.addEventListener('click', this.clickHandle)
 	}
 	/*  解除绑定  */
 	unbindEvent() {
+		window.removeEventListener('resize', this.resetBount)
 		this.cover.removeEventListener('click', this.clickHandle)
 	}
 	/*  初始化  */
@@ -47,6 +50,9 @@ export default class Chess {
 		this.initSize()
 		this.status = 'unable'  //  不可点击
 		this.cover.classList.add('unable')
+	}
+	resetBount() {
+		this.bounds = this.checkerboard.getBoundingClientRect()
 	}
 	gameStart() {
 		this.cxt.clearRect(0, 0, this.size, this.size)

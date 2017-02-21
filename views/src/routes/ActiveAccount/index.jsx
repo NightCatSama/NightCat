@@ -16,11 +16,11 @@ class ActiveAccount extends Component {
 		axios.get(`/activeAccount${this.props.location.search}`)
 		.then((res) => {
 			this.setState({
-				success: res.data.success,
-				message: res.data.message
+				success: res.success,
+				message: res.message
 			})
 		})
-		.catch((err) => console.log(err.response.data.message))
+		.catch((err) => console.log(err.message))
 	}
 	componentDidMount() {
 		this.timer = setTimeout(() => {
