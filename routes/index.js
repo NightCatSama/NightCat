@@ -8,6 +8,7 @@ let router = express.Router();
 const sign = ctr.sign
 const site = ctr.site
 const user = ctr.user
+const game = ctr.game
 
 router
 	.use(allowCrossDomain)

@@ -49,7 +49,6 @@ export const newAndSave = async(data) => {
 	return await u.save()
 }
 
-
 export default {
 	getUsers,
 	getUserByNames,

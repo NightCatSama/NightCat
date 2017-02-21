@@ -179,8 +179,8 @@ class Gobang extends Component {
 						{
 							userInfo.gameData ? (
 								<p className="user-game-data">
-									游戏次数：{ userInfo.gameData.count }<br />
-									胜率：{ userInfo.gameData.winRate }
+									游戏次数：{ userInfo.gameData.all_count }<br />
+									胜率：{ userInfo.gameData.winRate }%
 								</p>
 							) : (
 								<small className="user-game-data">暂无比赛记录</small>

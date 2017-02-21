@@ -13,7 +13,6 @@ let SITE_ROOT_URL = `http://${config.host}`
  * @param {Object} data 邮件对象
  */
 export const sendMail = (data, link) => {
-	console.log(config)
 	if (config.debug) {
 		opn(link)
 		return
@@ -25,14 +24,14 @@ export const sendMail = (data, link) => {
 		transporter.sendMail(data, function(err, res) {
 			if (err) {
 				// 写为日志
-				logger.error('send mail error', err, data)
+				logger.error('发送验证邮件错误', err, data)
 				return done(err)
 			}
 			return done()
 		})
 	},	function(err) {
 		if (err) {
-			return logger.error('send mail finally error', err, data);
+			return logger.error('发送验证邮件失败', err, data);
 		}
 		logger.info('send mail success', data)
 	})
@@ -88,7 +87,7 @@ export const sendActiveMail = (who, token, account) => {
 		<a href="${link}" class="miao"></a>
 	</article>
 	`
-	
+
 	sendMail({
 		from: from,
 		to: to,

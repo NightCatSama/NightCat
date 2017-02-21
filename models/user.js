@@ -68,8 +68,18 @@ let userSchema = new Schema({
 		default: false
 	},
 	gameData: {
-		type: Object,
-		default: null
+		all_count: {
+			type: Number,
+			default: 0
+		},
+		win_count: {
+			type: Number,
+			default: 0
+		},
+		winRate: {
+			type: Number,
+			default: 0
+		}
 	}
 })
 
@@ -78,9 +88,9 @@ userSchema.index({ email: 1 }, { unique: true, sparse: true })
 userSchema.index({ accessToken: 1 })
 
 userSchema.pre('save', (next) => {
-	var now = new Date();
-	userSchema.update_at = now;
-	next();
+	var now = new Date()
+	userSchema.update_at = now
+	next()
 })
 
 let user = mongoose.model('user', userSchema)

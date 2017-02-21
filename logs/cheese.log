@@ -1,0 +1,185 @@
+[2017-02-21 20:17:22.144] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.toObject(...).save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:28
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:35:10.946] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 20:35:21.394] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 20:38:26.367] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.gameData.toObject is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:29:31
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:42:34.875] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.toObject(...).save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:29:28
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:51:44.472] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: myUser.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:19
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:52:51.011] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.gameData.toObject is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:13:30
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:55:11.676] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: game.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:55:16.972] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: game.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:55:41.483] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: game.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:58:33.883] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: game.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:32:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:58:44.751] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 20:59:47.515] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 ReferenceError: cb is not defined
+    at C:/Users/admin/Desktop/server/proxy/game.js:33:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 20:59:56.387] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:00:34.418] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:12:12.177] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.toJSON is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:30:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:12:21.429] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:30:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:15:08.531] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:32:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:16:12.239] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:17:50.759] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: _user4.default.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:10
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:17:57.862] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: _user4.default.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:10
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:18:22.937] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: _user4.default.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:31:10
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:20:18.189] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:23:45.627] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.lean is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:29:17
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:28:24.400] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: _user4.default.save is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:32:22
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:31:07.346] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: data.toJSON is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:30:26
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:31:53.225] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.gameData.toObject is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:11:30
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:32:12.139] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 TypeError: user.gameData.toJSON is not a function
+    at C:/Users/admin/Desktop/server/proxy/game.js:11:30
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:33:15.926] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 ReferenceError: USER is not defined
+    at C:/Users/admin/Desktop/server/proxy/game.js:28:23
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:33:36.942] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 { MongoError: E11000 duplicate key error collection: admin.users index: _id_ dup key: { : ObjectId('58ac401ef3588a2760b1715a') }
+    at Function.MongoError.create (C:\Users\admin\Desktop\server\node_modules\mongodb-core\lib\error.js:31:11)
+    at toError (C:\Users\admin\Desktop\server\node_modules\mongodb\lib\utils.js:114:22)
+    at C:\Users\admin\Desktop\server\node_modules\mongodb\lib\collection.js:657:23
+    at handleCallback (C:\Users\admin\Desktop\server\node_modules\mongodb\lib\utils.js:95:56)
+    at C:\Users\admin\Desktop\server\node_modules\mongodb\lib\bulk\unordered.js:465:9
+    at handleCallback (C:\Users\admin\Desktop\server\node_modules\mongodb\lib\utils.js:95:56)
+    at resultHandler (C:\Users\admin\Desktop\server\node_modules\mongodb\lib\bulk\unordered.js:413:5)
+    at C:\Users\admin\Desktop\server\node_modules\mongodb-core\lib\connection\pool.js:455:18
+    at _combinedTickCallback (internal/process/next_tick.js:67:7)
+    at process._tickCallback (internal/process/next_tick.js:98:9)
+  name: 'MongoError',
+  message: 'E11000 duplicate key error collection: admin.users index: _id_ dup key: { : ObjectId(\'58ac401ef3588a2760b1715a\') }',
+  driver: true,
+  code: 11000,
+  index: 0,
+  errmsg: 'E11000 duplicate key error collection: admin.users index: _id_ dup key: { : ObjectId(\'58ac401ef3588a2760b1715a\') }',
+  getOperation: [Function],
+  toJSON: [Function],
+  toString: [Function] }
+[2017-02-21 21:34:14.952] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:34:41.066] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:34:48.994] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:37:17.905] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 { MongooseError: 
+    at ValidationError (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\error\validation.js:23:11)
+    at model.Document.invalidate (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1486:32)
+    at model.Document.set (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:753:10)
+    at model.set [as all_count] (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1788:25)
+    at Function.assign (<anonymous>)
+    at C:/Users/admin/Desktop/server/proxy/game.js:22:29
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+  errors: 
+   { 'gameData.all_count': 
+      { MongooseError: Cast to Number failed for value "NaN" at path "gameData.all_count"
+          at CastError (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\error\cast.js:26:11)
+          at model.Document.set (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:754:7)
+          at model.set [as all_count] (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1788:25)
+          at Function.assign (<anonymous>)
+          at C:/Users/admin/Desktop/server/proxy/game.js:22:29
+          at process._tickCallback (internal/process/next_tick.js:103:7)
+        message: 'Cast to Number failed for value "NaN" at path "gameData.all_count"',
+        name: 'CastError',
+        stringValue: '"NaN"',
+        kind: 'Number',
+        value: NaN,
+        path: 'gameData.all_count',
+        reason: [Object] },
+     'gameData.win_count': 
+      { MongooseError: Cast to Number failed for value "NaN" at path "gameData.win_count"
+          at CastError (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\error\cast.js:26:11)
+          at model.Document.set (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:754:7)
+          at model.set [as win_count] (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1788:25)
+          at Function.assign (<anonymous>)
+          at C:/Users/admin/Desktop/server/proxy/game.js:22:29
+          at process._tickCallback (internal/process/next_tick.js:103:7)
+        message: 'Cast to Number failed for value "NaN" at path "gameData.win_count"',
+        name: 'CastError',
+        stringValue: '"NaN"',
+        kind: 'Number',
+        value: NaN,
+        path: 'gameData.win_count',
+        reason: [Object] } },
+  message: 'user validation failed',
+  name: 'ValidationError' }
+[2017-02-21 21:37:38.710] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 { MongooseError: 
+    at ValidationError (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\error\validation.js:23:11)
+    at model.Document.invalidate (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1486:32)
+    at model.Document.set (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:753:10)
+    at model.set [as all_count] (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1788:25)
+    at Function.assign (<anonymous>)
+    at C:/Users/admin/Desktop/server/proxy/game.js:22:29
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+  errors: 
+   { 'gameData.all_count': 
+      { MongooseError: Cast to Number failed for value "NaN" at path "gameData.all_count"
+          at CastError (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\error\cast.js:26:11)
+          at model.Document.set (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:754:7)
+          at model.set [as all_count] (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1788:25)
+          at Function.assign (<anonymous>)
+          at C:/Users/admin/Desktop/server/proxy/game.js:22:29
+          at process._tickCallback (internal/process/next_tick.js:103:7)
+        message: 'Cast to Number failed for value "NaN" at path "gameData.all_count"',
+        name: 'CastError',
+        stringValue: '"NaN"',
+        kind: 'Number',
+        value: NaN,
+        path: 'gameData.all_count',
+        reason: [Object] },
+     'gameData.win_count': 
+      { MongooseError: Cast to Number failed for value "NaN" at path "gameData.win_count"
+          at CastError (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\error\cast.js:26:11)
+          at model.Document.set (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:754:7)
+          at model.set [as win_count] (C:\Users\admin\Desktop\server\node_modules\mongoose\lib\document.js:1788:25)
+          at Function.assign (<anonymous>)
+          at C:/Users/admin/Desktop/server/proxy/game.js:22:29
+          at process._tickCallback (internal/process/next_tick.js:103:7)
+        message: 'Cast to Number failed for value "NaN" at path "gameData.win_count"',
+        name: 'CastError',
+        stringValue: '"NaN"',
+        kind: 'Number',
+        value: NaN,
+        path: 'gameData.win_count',
+        reason: [Object] } },
+  message: 'user validation failed',
+  name: 'ValidationError' }
+[2017-02-21 21:39:19.663] [ERROR] cheese - 修改五子棋数据时，服务器发生错误 ReferenceError: gameData is not defined
+    at C:/Users/admin/Desktop/server/proxy/game.js:12:9
+    at process._tickCallback (internal/process/next_tick.js:103:7)
+[2017-02-21 21:39:59.332] [ERROR] cheese - 修改五子棋数据时找不到用户
+[2017-02-21 21:39:59.334] [ERROR] cheese - 修改五子棋数据失败
+[2017-02-21 21:42:30.531] [ERROR] cheese - 修改五子棋数据时找不到用户
+[2017-02-21 21:42:30.533] [ERROR] cheese - 修改五子棋数据失败

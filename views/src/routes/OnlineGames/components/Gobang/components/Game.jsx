@@ -26,8 +26,7 @@ export default class Game extends Component {
 		document.addEventListener('keydown', this.onKeyboard)
 	}
 	componentWillUnmount() {
-		clearInterval(this.timer)
-		this.timer = null
+		this.timerEnd()
 		document.removeEventListener('keydown', this.onKeyboard)
 	}
 	/*  回车快速 发送消息  */
@@ -51,22 +50,30 @@ export default class Game extends Component {
 			}]
 		})
 	}
-	/*  游戏开始  */
-	start() {
+	/*  开始计时  */
+	timerBegin() {
 		this.timer = setInterval(() => {
 			this.setState({
 				off: this.state.off + 1
 			})
 		}, 1000)
-		this.chess.gameStart()
 	}
-	/*  游戏结束  */
-	over() {
+	/*  计时结束  */
+	timerEnd() {
 		clearInterval(this.timer)
 		this.timer = null
 		this.setState({
 			off: 0
 		})
+	}
+	/*  游戏开始  */
+	start() {
+		!this.timer && this.timerBegin()
+		this.chess.gameStart()
+	}
+	/*  游戏结束  */
+	over() {
+		this.timer && this.timerEnd()
 		this.chess.gameOver()
 	}
 	/*  切换准备状态  */
@@ -75,6 +82,7 @@ export default class Game extends Component {
 	}
 	/*  发送棋子位置  */
 	sendIndex(index) {
+		this.timerEnd()
 		this.props.socket.emit('Play', this.chess.player, index)
 	}
 	/*  获取棋子位置  */
@@ -84,16 +92,17 @@ export default class Game extends Component {
 		this.setState({
 			off: 0
 		})
+		this.timerBegin()
 		this.chess.renderPiece(player, index)
 		this.chess.status = +!this.chess.status
 	}
 	/*  根据准备状态返回字  */
 	getReadyWord(isReady, isSelf) {
 		if (isReady) {
-			return isSelf ? '取消准备' : '已准备' 
+			return isSelf ? '取消准备' : '已准备'
 		}
 		else {
-			return isSelf ? '点击准备' : '未准备' 
+			return isSelf ? '点击准备' : '未准备'
 		}
 	}
 	/*  格式化时间  */
@@ -123,8 +132,8 @@ export default class Game extends Component {
 					{
 						obj.gameData ? (
 							<p className="user-game-data">
-								游戏次数：{ obj.gameData.count }<br />
-								胜率：{ obj.gameData.winRate }
+								游戏次数：{ obj.gameData.all_count }<br />
+								胜率：{ obj.gameData.winRate }%
 							</p>
 						) : (
 							<small className="user-game-data">暂无比赛记录</small>

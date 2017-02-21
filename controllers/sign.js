@@ -128,6 +128,7 @@ export default {
 								github: user.github,
 								website: user.website,
 								profile: user.profile,
+								gameData: user.gameData,
 								avatar: user.avatar
 							},
 							accessToken: user.accessToken,
@@ -165,6 +166,7 @@ export default {
 						github: user.github,
 						website: user.website,
 						profile: user.profile,
+						gameData: user.gameData,
 						avatar: user.avatar
 					},
 					accessToken: user.accessToken,

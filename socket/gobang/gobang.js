@@ -1,9 +1,6 @@
-const _default = {
-}
-
 export default class Chess {
 	constructor(options){
-		Object.assign(this, _default, options)
+		Object.assign(this, options)
 		this.player = 0
 		this.ignores = []
 		this.piece_count = 0
@@ -84,7 +81,7 @@ export default class Chess {
 
 		if (type && this.typeLine[type].indexOf(index) === -1)
 			return false
-		
+
 		this.ignores.push(index)
 		if (this[`pieces${this.player}`].indexOf(index) > -1)
 			return true
@@ -148,7 +145,7 @@ export default class Chess {
 			16: 'd',
 			14: 't'
 		}
-		return maps[Math.abs(index - p)]  //  's'竖, 'h'横, 't'上升线, 'd'下降线 
+		return maps[Math.abs(index - p)]  //  's'竖, 'h'横, 't'上升线, 'd'下降线
 	}
 	/*  根据索引获取坐标  */
 	getXY(index) {

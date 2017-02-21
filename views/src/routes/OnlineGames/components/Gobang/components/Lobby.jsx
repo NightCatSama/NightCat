@@ -53,8 +53,8 @@ export default class Lobby extends Component {
 									</div>
 									<div className="gobang-item-main">
 										<div className="gobang-item-player">
-											<img className="avatar" src={ obj.owner.avatar } />
-											<div className="name">{ obj.owner.name }</div>
+											<img className="avatar" src={ obj.owner && obj.owner.avatar } />
+											<div className="name">{ obj.owner && obj.owner.name }</div>
 										</div>
 										VS
 										{

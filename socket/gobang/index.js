@@ -1,8 +1,10 @@
 import Online from '../on-line'
 import Game from './gobang'
 
+import { setGobangData } from '../../proxy/game'
+
 let rooms = {}
-const total_time = 0.5 * 60
+const total_time = 10 * 60
 let myOnline = new Online()
 
 /**
@@ -135,7 +137,7 @@ class Gobang {
 	 * 返回消息给客户端
 	 * @param  {String} msg  消息内容
 	 * @param  {String} type 消息类型
-	 * @return {null}  
+	 * @return {null}
 	 */
 	sendMessage(msg, type, id) {
 		if (id) {
@@ -155,7 +157,7 @@ class Gobang {
 	 * 广播消息给房间
 	 * @param  {String} msg  消息内容
 	 * @param  {String} type 消息类型
-	 * @return {null}  
+	 * @return {null}
 	 */
 	broadcastMessage(msg, type) {
 		this.io.to(this.room_id).emit('Message', {
@@ -234,8 +236,13 @@ class Gobang {
 			this.broadcastMessage(`【系统消息】房主${data.owner.name}离开了房间，此房间将无法继续使用`, 'print')
 
 			this.socket.leave(this.room_id, () => {
-				data.owner = null
-				this.sendOneRoom()
+				if (data.status === '比赛中') {
+					this.gameSuppend('owner', 'challenger')
+				}
+				else {
+					data.owner = null
+					this.sendOneRoom()
+				}
 				delete rooms[this.room_id]
 				this.room_id = ''
 
@@ -247,17 +254,15 @@ class Gobang {
 			this.broadcastMessage(`【系统消息】${data.challenger.name}离开了房间`, 'print')
 
 			this.socket.leave(this.room_id, () => {
-				data.owner = Object.assign(data.owner, {
-					status: '',
-					player: undefined,
-					win_number: 0,
-					time: total_time
-				})
-				data.number = 0
-				data.challenger = null
-				this.sendOneRoom()
-				this.room_id = ''
+				if (data.status === '比赛中') {
+					this.gameSuppend('challenger', 'owner')
+				}
+				else {
+					data.challenger = null
+					this.sendOneRoom()
+				}
 
+				this.room_id = ''
 				this.sendRooms()
 			})
 		}
@@ -277,6 +282,11 @@ class Gobang {
 			this.gameStart()
 		}
 		this.sendOneRoom()
+	}
+	/*  保存胜负结果  */
+	saveGame(winner, loser) {
+		setGobangData(winner, true)
+		setGobangData(loser, false)
 	}
 	/*  比赛开始啦  */
 	gameStart() {
@@ -303,6 +313,38 @@ class Gobang {
 		this.setPlayerStatus()
 		this.sendRooms()
 	}
+	/*  比赛中断  */
+	gameSuppend(role, win_role) {
+		let data = rooms[this.room_id]
+		if (!data) {
+			return false
+		}
+
+		let loser = data[role]
+		let winner = data[win_role]
+
+		this.saveGame(winner.account, loser.account)
+
+		this.broadcastMessage(`【系统消息】由于 ${loser.name} 离开了比赛，所以 ${winner.name} 获得胜利`, 'end')
+		data = Object.assign(data, {
+			initial_time: 0,
+			game: new Game(),
+			number: 0,
+			player: 0,
+			[role]: null,
+			status: '等待中'
+		})
+		winner = Object.assign(winner, {
+			ready: false,
+			status: '',
+			player: undefined,
+			timer: total_time,
+			win_number: 0
+		})
+
+		this.sendMessage('Victory', 'success', winner.id)
+		this.sendOneRoom()
+	}
 	/*  比赛结束  */
 	gameOver(player, isDraw) {
 		let data = rooms[this.room_id]
@@ -316,17 +358,20 @@ class Gobang {
 
 		let winner = data[data.camp[player]]
 		let loser = data[data.camp[+!player]]
+
+		this.saveGame(winner.account, loser.account)
+
 		winner.status = '胜利'
 		winner = Object.assign(winner, {
 			ready: false,
 			status: '',
-			time: total_time,
+			timer: total_time,
 			win_number: winner.win_number + (isDraw ? 0 : 1)
 		})
 		loser = Object.assign(loser, {
 			ready: false,
 			status: '',
-			time: total_time
+			timer: total_time
 		})
 
 		this.sendMessage('Victory', 'success', winner.id)
@@ -361,7 +406,7 @@ class Gobang {
 		this.timer = null
 
 		if (result === 'win') {
-			this.broadcastMessage(`【系统消息】${data[data.camp[player]].name}（${player === 0 ? '黑' : '白'}棋）获得胜利`, 'end')
+			this.broadcastMessage(`【系统消息】${player === 0 ? '黑' : '白'}棋获得胜利`, 'end')
 			this.gameOver(player)
 		}
 		else if (result === 'draw') {
@@ -396,8 +441,7 @@ class Gobang {
 		})
 	}
 	TimerBegin(time, player) {
-		let data = rooms[this.room_id]
-		data.initial_time = Date.now()
+		rooms[this.room_id].initial_time = Date.now()
 		this.timer = setTimeout(() => {
 			this.broadcastMessage(`【系统消息】由于${player === 0 ? '黑' : '白'}棋时间用尽，所以${player === 0 ? '白' : '黑'}棋获得胜利！`, 'end')
 			this.gameOver(+!player)
