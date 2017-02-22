@@ -8,7 +8,6 @@ export const setGobangData = async(account, isWin) => {
 				if (!user) {
 					return logger.error('修改五子棋数据时找不到用户')
 				}
-				console.log(user.gameData)
 				if (!user.gameData) {
 					user.gameData = {
 						all_count: 1,

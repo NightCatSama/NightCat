@@ -9,10 +9,6 @@ export default class Lobby extends Component {
 		}
 		this.room_id = 0
 	}
-	componentDidMount() {
-	}
-	componentWillUnmount() {
-	}
 	openPassword(isLock, room_id) {
 		if (!isLock) {
 			return this.props.joinRoom(room_id)

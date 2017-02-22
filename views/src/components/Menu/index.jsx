@@ -35,7 +35,6 @@ class Menu extends Component {
 			if (res.success) {
 				this.props.actions.execute('notice', '退出成功！', 2000, { status: 'success' })
 				this.clearWebStorage()
-				console.log(this.props.authConf)
 				this.props.authConf.clearStatus()
 			}
 		})
@@ -102,8 +101,8 @@ class Menu extends Component {
 							<i className="iconfont icon-onlineGames"></i>
 							<span>Online Game</span>
 						</Link>
-						{/* 
-						暂时取消My Friends页面 
+						{/*
+						暂时取消My Friends页面
 						<Link to="/my-friends" activeClassName="active" className="link" onClick={this.linkClick}>
 							<i className="iconfont icon-myFriends"></i>
 							<span>My Friends</span>

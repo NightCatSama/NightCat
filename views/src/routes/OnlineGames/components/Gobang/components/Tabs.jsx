@@ -11,8 +11,6 @@ export default class Tabs extends Component {
 		this.toggleModal = this.toggleModal.bind(this)
 	    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 	}
-	componentDidMount() {
-	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
 			room_info: nextProps.room_info
