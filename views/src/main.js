@@ -1,14 +1,15 @@
 import React from 'react'
 import { render } from 'react-dom'
-import Root from 'router/route'
+import routes from 'router'
 import { Provider } from 'react-redux'
-import store from 'store'
-import axios from './http'
+import createStore from 'store'
+import createInstance from './http'
 
-window.axios = axios
+const store = createStore()
+window.axios = createInstance(store)
 
 render(
 <Provider store={store}>
-	<Root />
+	{routes(store)}
 </Provider>, document.getElementById('app')
 )
