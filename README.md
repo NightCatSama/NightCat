@@ -16,8 +16,8 @@
  - [x] 完成后端架构
  - [x] 完成后台管理系统架构
  - [x] React-router 按需加载
- - [ ] 页面完善
- - [ ] 实现联机功能
+ - [x] 页面完善
+ - [x] 实现联机功能
 
 ## 前端架构
     views/
@@ -42,15 +42,15 @@
 ## 后端架构
     nightcat/
       |- backstage/   // 后台管理系统目录
-      |- common/      // 共用模块
+      |- common/      // 公共模块
       |- config/      // 后端配置目录
       |- controllers/ // 控制器
       |- es/          // babel 启动目录（开发模式，生产模式）
       |- logs/        // 放置日志文件
       |- middlewares/ // 中间件
       |- model/       // mongoose 模型
-      |- proxy/       // 代理
-      |- routes/      // 路由
+      |- proxy/       // 操作数据库的代理
+      |- routes/      // 路由文件
       |- socket/      // websocket 通信
       |- views/       // 前端目录
       |- app.js       // 入口文件
