@@ -5,7 +5,7 @@ if (process.env.NODE_ENV === 'development') {
 		/*  react-devtools 配置  */
 		devtools: false,
 		devtoolsPosition: 'left',
-		logger: false,
+		logger: true,
 
 		/*  http 配置 */
 		withCredentials: true,

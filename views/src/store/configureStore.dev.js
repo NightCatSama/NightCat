@@ -19,6 +19,8 @@ const finalCreateStore = compose(
 	)
 )(createStore)
 
-export default function configureStore(initialState) {
+const configureStore = (initialState) => {
 	return finalCreateStore(rootReducer, initialState)
 }
+
+export default configureStore

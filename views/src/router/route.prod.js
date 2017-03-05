@@ -5,10 +5,9 @@ import App from '../app'
 import getRoutes from './dynamicRoutes.js'
 
 const routes = (store) => {
-	let state = store.getState()
 	/*  是否自动登陆  */
 	const autoLogin = (nextState, replaceState, callback) => {
-		let { isLogin } = state.auth
+		let { isLogin } = store.getState().auth
 		if (isLogin) {
 			callback()
 			return
@@ -36,7 +35,7 @@ const routes = (store) => {
 
 	/*  需要登陆  */
 	const userRequired = (nextState, replaceState) => {
-		let { isLogin } = state.auth
+		let { isLogin } = store.getState().auth
 		if (!isLogin) {
 			replaceState(`/Sign?message=${encodeURIComponent('请先登录')}&link=${nextState.location.pathname}`)
 			return
