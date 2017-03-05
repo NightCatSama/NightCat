@@ -47,6 +47,31 @@ const getInitialGameData = (userInfo, room_name, password, id) => {
 	}
 }
 
+/**
+ * 游戏结束后更新数据
+ * @param  {Object}  gameData 用户游戏资料
+ * @param  {Boolean} isWin    是否获胜
+ * @return {Object}           返回新的数据
+ */
+const updateGameData = (gameData, isWin) => {
+	if (!gameData) {
+		return {
+			all_count: 1,
+			win_count: isWin ? 1 : 0,
+			winRate: isWin ? 100 : 0
+		}
+	}
+	else {
+		let all_count = (gameData.all_count || 0) + 1
+		let win_count = (gameData.win_count || 0) + (isWin ? 1 : 0)
+		return Object.assign(gameData, {
+			all_count,
+			win_count,
+			winRate: ~~((win_count / all_count) * 100)
+		})
+	}
+}
+
 /*  miao  */
 class Gobang {
 	constructor(socket, io) {
@@ -291,7 +316,7 @@ class Gobang {
 		})
 		setGobangData(loser.account, false)
 		.then(data => {
-			this.sendMessage(data, 'update_game_data', winner.id)
+			this.sendMessage(data, 'update_game_data', loser.id)
 		})
 	}
 	/*  比赛开始啦  */
@@ -345,6 +370,7 @@ class Gobang {
 			status: '',
 			player: undefined,
 			timer: total_time,
+			gameData: updateGameData(winner.gameData, true),
 			win_number: 0
 		})
 
@@ -367,21 +393,28 @@ class Gobang {
 
 		this.saveGame(winner, loser)
 
-		winner.status = '胜利'
 		winner = Object.assign(winner, {
 			ready: false,
 			status: '',
 			timer: total_time,
+			gameData: updateGameData(winner.gameData, true),
 			win_number: winner.win_number + (isDraw ? 0 : 1)
 		})
 		loser = Object.assign(loser, {
 			ready: false,
 			status: '',
+			gameData: updateGameData(loser.gameData, false),
 			timer: total_time
 		})
 
-		this.sendMessage('Victory', 'success', winner.id)
-		this.sendMessage('Defeated', 'error', loser.id)
+		if (isDraw) {
+			this.sendMessage('和棋', 'success', winner.id)
+			this.sendMessage('和棋', 'success', loser.id)
+		}
+		else {
+			this.sendMessage('Victory', 'success', winner.id)
+			this.sendMessage('Defeated', 'error', loser.id)
+		}
 		this.sendOneRoom()
 		this.sendRooms()
 	}

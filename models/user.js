@@ -59,10 +59,10 @@ let userSchema = new Schema({
 		default: false
 	},
 	/*  令牌  */
-  	accessToken: {
-  		type: String
-  	},
-  	/*  是否管理员  */
+	accessToken: {
+		type: String
+	},
+	/*  是否管理员  */
 	admin: {
 		type: Boolean,
 		default: false

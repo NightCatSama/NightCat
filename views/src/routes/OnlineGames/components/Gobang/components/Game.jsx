@@ -36,6 +36,7 @@ export default class Game extends Component {
 			this.sendMessage()
 		}
 	}
+	/*  发送消息  */
 	sendMessage() {
 		let { room_data, role } = this.props
 		this.props.socket.emit('Message', `【${room_data[role].name}】${this.msg.value}`, 'print')
@@ -48,6 +49,8 @@ export default class Game extends Component {
 				type,
 				msg
 			}]
+		}, () => {
+			this.messages.scrollTop = 9999
 		})
 	}
 	/*  开始计时  */
@@ -205,7 +208,7 @@ export default class Game extends Component {
 						<canvas ref={(ref) => this.canvas = ref}></canvas>
 					</div>
 					<div className="gobang-control">
-						<div className="gobang-messages">
+						<div className="gobang-messages" ref={(ref) => this.messages = ref}>
 							{
 								Array.from(this.state.messages, (obj, i) => {
 									let className = cs('gobang-msg')

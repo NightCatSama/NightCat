@@ -37,6 +37,13 @@ class Gobang extends Component {
 	componentDidMount() {
 		this.initState()
 	}
+	shouldComponentUpdate(nextProps) {
+		if (!nextProps.userInfo) {
+			this.context.router.push('/')
+			return false
+		}
+		return true
+	}
 	componentWillUnmount() {
 		this.socket.close()
 	}
@@ -129,7 +136,7 @@ class Gobang extends Component {
 					this.refs.gobang.over()
 				}
 				break
-			case 'update_game_data': 
+			case 'update_game_data':
 				this.props.authConf.setUserInfo(msg)
 				break
 			default:
