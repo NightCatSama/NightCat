@@ -92,7 +92,7 @@ class Gobang {
 		this.socket.on('Create', this.createRoom.bind(this)) //  创建房间
 		this.socket.on('Join', this.joinRoom.bind(this)) //  加入房间
 		this.socket.on('Leave', this.leaveRoom.bind(this)) //  离开房间
-		this.socket.on('Message', this.broadcastMessage.bind(this)) //  切换准备状态
+		this.socket.on('Message', this.broadcastMessage.bind(this)) //  广播消息
 		this.socket.on('Ready', this.toggleReady.bind(this)) //  切换准备状态
 		this.socket.on('Play', this.addChessPieces.bind(this)) //  下了个棋子
 		this.socket.on('disconnect', this.destory.bind(this))  //  断开连接
@@ -238,6 +238,9 @@ class Gobang {
 	}
 	/*  通知客户端进入房间  */
 	emitJoinRoom(role) {
+		if (role !== 'admin')
+			console.info('你不能通过这里')
+
 		this.socket.join(this.room_id, () => {
 			this.socket.emit('inRoom', {
 				room_id: this.room_id,
