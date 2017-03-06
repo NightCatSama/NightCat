@@ -9,10 +9,10 @@ if (process.env.NODE_ENV === 'development') {
 
 		/*  http 配置 */
 		withCredentials: true,
-		host: 'http://localhost:80',
+		host: 'http://localhost:3000',
 
 		/*  socket.io  */
-		socket_host: 'http://localhost:80'
+		socket_host: 'http://localhost:3000'
 	}
 }
 else {
