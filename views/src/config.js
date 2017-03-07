@@ -5,7 +5,8 @@ if (process.env.NODE_ENV === 'development') {
 		/*  react-devtools 配置  */
 		devtools: false,
 		devtoolsPosition: 'left',
-		logger: true,
+		/*  是否开启redux-logger  */
+		logger: false,
 
 		/*  http 配置 */
 		withCredentials: true,

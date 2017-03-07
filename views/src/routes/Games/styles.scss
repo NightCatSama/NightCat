@@ -168,6 +168,16 @@
 				}
 			}
 		}
+
+		.other-data {
+			padding: 10px 20px;
+			text-align: left;
+			font-size: 14px;
+
+			.data-item {
+				margin: 5px 0;
+			}
+		}
 	}
 
 	.thumbnail-btn {
@@ -196,7 +206,8 @@
 		}
 		.game-detail {
 			.detail-group {
-				background-color: rgba($white, 0.6);
+				background-color: rgba($white, 0.75);
+				width: 100%;
 			}
 
 			.cover-group {

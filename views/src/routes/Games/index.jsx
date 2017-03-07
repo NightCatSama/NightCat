@@ -2,6 +2,7 @@ import React, { Component, PropTypes } from 'react'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 import { Link } from 'react-router'
 import cs from 'classnames'
+import Star from 'components/Star'
 
 import './styles'
 
@@ -11,20 +12,34 @@ import EventBusAction from 'actions/EventBusAction'
 
 const games = [{
 	name: 'Factory',
+	name_cn: '数据加工厂',
 	terminal: 'pc',
 	type: 'local',
+	star: 3,
 	iconColor: '#333',
 	path: '/single-games/factory',
 	img: require('images/factory.jpg'),
-	description: '将输入变量加工成对应的输出变量的游戏\n（编译环境取决你的浏览器）'
+	description: '将输入变量加工成对应的输出变量的游戏（编译环境取决你的浏览器）'
 }, {
 	name: 'Gobang',
+	name_cn: '五子棋（联机）',
 	terminal: 'common',
 	type: 'online',
+	star: 4,
 	iconColor: '#fff',
 	path: '/online-games/gobang',
 	img: require('images/gobang.jpg'),
-	description: '在线五子棋对弈'
+	description: '在线五子棋对弈（需要登陆）'
+}, {
+	name: 'Gobang',
+	name_cn: '五子棋（本地对战）',
+	terminal: 'common',
+	type: 'local',
+	star: 4,
+	iconColor: '#fff',
+	path: '/online-games/gobang',
+	img: require('images/gobang.jpg'),
+	description: '在线五子棋对弈（需要登陆）'
 }]
 
 const isPC = !/(iPhone|iPad|iPod|iOS|Android|SymbianOS|Windows Phone)/i.test(navigator.userAgent)
@@ -131,8 +146,20 @@ class Games extends Component {
 					<i className={this.getBtnClass('prev')} style={{ color: data.iconColor }} onClick={() => this.setAction(this.state.active - 1)}></i>
 					<div className="cover-group" style={{ backgroundImage: `url(${data.img})` }}></div>
 					<div className="detail-group">
-						<h1>{data.name}</h1>
-						<small>{data.description}</small>
+						<h1>{ data.name }</h1>
+						<small>{ data.name_cn }</small>
+						<div className="other-data">
+							<div className="data-item">
+								类型：{ data.type === 'local' ? '本地游戏' : '联机游戏' }
+							</div>
+							<div className="data-item">
+								推荐程度：
+								<Star count={data.star} />
+							</div>
+							<div className="data-item">
+								游戏描述：{ data.description }
+							</div>
+						</div>
 						<Link to={data.path} className="jump-btn">Play</Link>
 					</div>
 					<i className={this.getBtnClass('next')} onClick={() => this.setAction(this.state.active + 1)}></i>

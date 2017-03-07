@@ -14,7 +14,7 @@ import User from 'routes/User'
 import { Info, GameData } from 'routes/User/components'
 
 import SingleGames from 'routes/SingleGames'
-import { Factory } from 'routes/SingleGames/components'
+import { LocalGobang, Factory } from 'routes/SingleGames/components'
 
 import OnlineGames from 'routes/OnlineGames'
 import { Gobang } from 'routes/OnlineGames/components'
@@ -98,6 +98,9 @@ const routes = (store) => {
 			childRoutes: [{
 				path: '/single-games/factory',
 				component: Factory
+			}, {
+				path: '/single-games/gobang',
+				component: LocalGobang
 			}]
 		}, {
 			path: '/online-games',
