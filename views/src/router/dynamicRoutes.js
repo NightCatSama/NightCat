@@ -51,7 +51,6 @@ export default function (userRequired, autoLogin) {
 			}
 		}, {
 			path: 'single-games',
-			onEnter: userRequired,
 			getComponent(nextState, cb) {
 				require.ensure([], (require) => {
 					cb(null, require('routes/SingleGames').default)
