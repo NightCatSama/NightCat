@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-// import Canvas from '../asset/Canvas/'
 
 import './styles'
 

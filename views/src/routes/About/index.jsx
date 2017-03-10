@@ -1,9 +1,6 @@
 import React, { Component, PropTypes } from 'react'
-// import cs from 'classnames'
-// import { Link } from 'react-router'
 
 import './styles'
-// import './cat'
 
 export default class About extends Component {
 	constructor (props) {

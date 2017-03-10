@@ -12,9 +12,7 @@ class Menu extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			sideShow: false,
-			isLogin: false,
-			userInfo: null
+			sideShow: false
 		}
 		this.toggleMenu = this.toggleMenu.bind(this)
 		this.signout = this.signout.bind(this)

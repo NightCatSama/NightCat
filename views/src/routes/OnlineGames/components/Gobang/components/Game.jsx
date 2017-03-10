@@ -135,8 +135,8 @@ export default class Game extends Component {
 					{
 						obj.gameData ? (
 							<p className="user-game-data">
-								游戏次数：{ obj.gameData.all_count }<br />
-								胜率：{ obj.gameData.winRate }%
+								<span>游戏次数：{ obj.gameData.all_count }</span>
+								<span>胜率：{ obj.gameData.winRate }%</span>
 							</p>
 						) : (
 							<small className="user-game-data">暂无比赛记录</small>
@@ -193,9 +193,9 @@ export default class Game extends Component {
 		return (
 			<div className="gobang">
 				<div className="gobang-room-info">
-					<div>
-						{ room_name }
-						<small className={`gobang-status ${status === '等待中' ? 'waiting' : 'playing'}`}>{ status }</small>
+					<div className="gobang-room-status">
+						<span>{ room_name }</span>
+						<span className={`gobang-status ${status === '等待中' ? 'waiting' : 'playing'}`}>{ status }</span>
 					</div>
 					<div className="leave-room-btn" onClick={() => this.modal.toggle()}>离开房间</div>
 				</div>

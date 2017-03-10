@@ -3,7 +3,7 @@ import './mask.scss';
 
 export default class Mask extends Component {
 	constructor (props) {
-	    super(props);
+	    super(props)
 	}
 	render() {
 		let style = {display: this.props.show ? 'block' : 'none'};

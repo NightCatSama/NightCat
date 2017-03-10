@@ -1,20 +1,12 @@
 import React, { Component, PropTypes } from 'react'
-// import cs from 'classnames'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
 
-// import './styles'
-
 class SingleGames extends Component {
 	constructor (props) {
 		super(props)
-		this.state = {
-		}
-	}
-	componentDidMount() {
-		/*  根据AccessToken获取用户基础信息  */
 	}
 	render() {
 		return (

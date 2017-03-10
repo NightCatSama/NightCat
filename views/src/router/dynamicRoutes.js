@@ -30,7 +30,6 @@ export default function (userRequired, autoLogin) {
 			}
 		}, {
 			path: 'user(/:account)',
-			onEnter: userRequired,
 			getComponent(nextState, cb) {
 				require.ensure([], (require) => {
 					cb(null, require('routes/User').default)
@@ -40,21 +39,6 @@ export default function (userRequired, autoLogin) {
 				require.ensure([], (require) => {
 					cb(null, {
 						component: require('routes/User/components/Info').default
-					})
-				})
-			}
-		}, {
-			path: 'game-data(/:account)',
-			onEnter: userRequired,
-			getComponent(nextState, cb) {
-				require.ensure([], (require) => {
-					cb(null, require('routes/User').default)
-				})
-			},
-			getIndexRoute(nextState, cb) {
-				require.ensure([], (require) => {
-					cb(null, {
-						component: require('routes/User/components/GameData').default
 					})
 				})
 			}

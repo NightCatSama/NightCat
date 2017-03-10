@@ -19,7 +19,7 @@
 	.msg {
 		position: absolute;
 		left: 50%;
-		top: -50px;
+		top: -30px;
 		transform: translateX(-50%);
 		font-size: 20px;
 		font-weight: bold;
@@ -27,5 +27,7 @@
 
 	canvas {
 		width: 100%;
+		border: 1px solid #ccc;
+		box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, .2);
 	}
 }

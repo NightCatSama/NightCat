@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react'
-// import cs from 'classnames'
+import Immutable from 'seamless-immutable'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -13,72 +13,19 @@ class Info extends Component {
 		super(props)
 		this.state = {
 			isChange: false,
-			isSelf: false,
 			account: undefined,
-			info: {
-				name: '',
-				location: '',
-				avatar: '',
-				github: '',
-				profile: '',
-				website: ''
-			}
+			info: this.props.userInfo
 		}
 		this.update = this.update.bind(this)
 		this.uploadImg = this.uploadImg.bind(this)
 		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
 	}
-	componentDidMount() {
-		this.getUserInfo()
-	}
 	componentWillReceiveProps(nextProps) {
-		let account = this.context.router.params.account
-		if (account) {
-			this.loadData(account)
-		}
-		else {
-			this.loadSelfData(nextProps.userInfo)
-		}
-	}
-	/*  得到用户信息  */
-	getUserInfo() {
-		let account = this.context.router.params.account
-		if (account) {
-			this.loadData(account)
-		}
-		else {
-			this.loadSelfData()
-		}
-	}
-	/*  查看用户的信息  */
-	loadData(account) {
-		let { isLogin, userInfo } = this.props
-		if (isLogin && userInfo.account === account) {
-			return this.loadSelfData()
-		}
-
-		axios.get('/getUserInfoByAccount', {
-			params: {
-				account: account
-			}
-		})
-		.then((res) => {
+		if (nextProps.userInfo !== this.state.info) {
 			this.setState({
-				isSelf: false,
-				account: account,
-				info: res.data
+				info: nextProps.userInfo
 			})
-		})
-		.catch((err) => {
-			this.notice(err.message, 2000, 'error')
-		})
-	}
-	/*  查看自己的信息  */
-	loadSelfData(info) {
-		this.setState({
-			isSelf: true,
-			info: info || this.props.userInfo
-		})
+		}
 	}
 	/*  保存用户信息  */
 	update() {
@@ -89,7 +36,6 @@ class Info extends Component {
 		})
 		.then((res) => {
 			this.notice(res.message, 2000, 'success')
-			console.log(this.state.info)
 			this.props.authConf.setUserInfo(this.state.info)
 		})
 		.catch((err) => {
@@ -106,7 +52,7 @@ class Info extends Component {
 		reader.onload = (e) => {
 			this.compress(e.target.result).then((avatar) => {
 				this.setState({
-					info: Object.assign({}, this.state.info, { avatar: avatar })
+					info: Immutable.merge(this.state.info, { avatar: avatar })
 				})
 			})
 		}
@@ -154,7 +100,7 @@ class Info extends Component {
 		let val = e.target.value
 		this.setState({
 			isChange: true,
-			info: Object.assign(this.state.info, { [name]: val })
+			info:  Immutable.merge(this.state.info, { [name]: val })
 		})
 	}
 	/*  生成input的props  */
@@ -165,7 +111,9 @@ class Info extends Component {
 			id: name,
 			ref: name,
 			type: type,
-			value: this.state.info[name],
+			readOnly: !this.props.isSelf,
+			disabled: !this.props.isSelf,
+			value: this.state.info[name] || '',
 			onChange: (e) => this.handleChange(e, name)
 		}
 	}
@@ -174,7 +122,7 @@ class Info extends Component {
 			<div ref="view" className="info-view">
 				<div className="form-group">
 					{
-						this.state.isSelf && (
+						this.props.isSelf && (
 							<div className="form-item">
 								<label htmlFor="name">Avatar</label>
 								<div className="user-avatar">
@@ -206,7 +154,7 @@ class Info extends Component {
 						<input {...this.createProps('location', 'text')} />
 					</div>
 					{
-						this.state.isSelf && (
+						this.props.isSelf && (
 							<button className="update-btn" onClick={this.update}>Update Info</button>
 						)
 					}
@@ -219,8 +167,6 @@ class Info extends Component {
 
 const mapStateToProps = (state) => {
 	return {
-		isLogin: state.auth.isLogin,
-		userInfo: state.auth.userInfo
 	}
 }
 
@@ -233,6 +179,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(Info)
 
 Info.propTypes = {
 	isLogin: PropTypes.bool,
+	isSelf: PropTypes.bool,
 	userInfo: PropTypes.object,
 	authConf: PropTypes.object,
 	actions: PropTypes.object,

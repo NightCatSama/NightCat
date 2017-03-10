@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Immutable from 'seamless-immutable'
 import cs from 'classnames'
 import isEmail from 'validator/lib/isEmail'
 
@@ -16,7 +17,7 @@ class Sign extends Component {
 		super(props)
 		this.state = {
 			isSignin: this.props.location.query.signup ? false : true,
-			shrinks: {},
+			shrinks: Immutable({}),
 			account: '',
 			password: '',
 			repassword: '',
@@ -157,7 +158,7 @@ class Sign extends Component {
 				password: '',
 				repassword: '',
 				email: '',
-				shrinks: {},
+				shrinks: Immutable({}),
 				isSignin: !this.state.isSignin
 			})
 			setTimeout(() => {
@@ -168,9 +169,8 @@ class Sign extends Component {
 	/*  babel缩小控制  */
 	isShrink(name) {
 		let bool = (document.activeElement.id === name || this.state[name])
-		Object.assign(this.state.shrinks, { [name]: bool })
 		this.setState({
-			shrinks: this.state.shrinks
+			shrinks: Immutable.merge(this.state.shrinks, { [name]: bool })
 		})
 	}
 	/*  验证账号 */

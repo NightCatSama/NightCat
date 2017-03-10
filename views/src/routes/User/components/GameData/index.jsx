@@ -1,39 +1,27 @@
 import React, { Component, PropTypes } from 'react'
-
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
-import EventBusAction from 'actions/EventBusAction'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 
 import './styles'
 
 class GameData extends Component {
 	constructor (props) {
 		super(props)
-		this.state = {
-			account: '',
-			email: '',
-			info: {
-				name: '',
-				location: '',
-				profile: '',
-				avatar: '',
-				website: ''
-			}
-		}
+	    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 	}
 	componentWillMount() {
 	}
 	render() {
+		let { gameData } = this.props.userInfo
 		return (
 			<div ref="view" className="game-data-view">
 				{
-					this.props.gameData ? (
+					gameData ? (
 						<div className="game-data">
 							<i className="iconfont icon-cat"></i>
 							<p>
-								游戏场数：{ this.props.gameData.all_count }<br />
-								胜利场数：{ this.props.gameData.win_count }<br />
-								胜率：{ this.props.gameData.winRate }%
+								游戏场数：{ gameData.all_count }<br />
+								胜利场数：{ gameData.win_count }<br />
+								胜率：{ gameData.winRate }%
 							</p>
 						</div>
 					) : (
@@ -45,23 +33,8 @@ class GameData extends Component {
 	}
 }
 
-const mapStateToProps = (state) => {
-	return { gameData: state.auth.userInfo.gameData }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-	actions: bindActionCreators(EventBusAction, dispatch)
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(GameData)
+export default GameData
 
 GameData.propTypes = {
-	gameData: PropTypes.object,
-	actions: PropTypes.any,
-	history: PropTypes.any,
-	location: PropTypes.any
-}
-
-GameData.contextTypes = {
-	router: React.PropTypes.any.isRequired
+	userInfo: PropTypes.object.isRequired
 }
