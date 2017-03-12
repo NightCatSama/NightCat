@@ -3,7 +3,7 @@ export default {
 	host: 'localhost:8080',
 
 	/*  端口信息  */
-	port: 80,
+	port: 3000,
 	dev_port: 8080,
 
 	/*  mongodb 配置  */

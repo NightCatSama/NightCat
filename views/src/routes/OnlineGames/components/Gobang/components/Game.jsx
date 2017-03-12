@@ -4,8 +4,6 @@ import cs from 'classnames'
 
 import Chess from '../gobang'
 
-const isPC = !/(iPhone|iPad|iPod|iOS|Android|SymbianOS|Windows Phone)/i.test(navigator.userAgent)
-
 export default class Game extends Component {
 	constructor(props) {
 		super(props)
@@ -17,22 +15,20 @@ export default class Game extends Component {
 		this.onKeyboard = this.onKeyboard.bind(this)
 	}
 	componentDidMount() {
-		let size = isPC ? this.chessboard.offsetHeight : this.chessboard.offsetWidth
-		this.chessboard.style.cssText = `width: ${size}px; height: ${size}px;`
 		this.chess = new Chess(this.canvas, {
-			size,
 			addPiece: (index) => this.sendIndex(index)
 		})
 		document.addEventListener('keydown', this.onKeyboard)
 	}
 	componentWillUnmount() {
 		this.timerEnd()
+		this.chess.unbindEvent()
 		document.removeEventListener('keydown', this.onKeyboard)
 	}
 	/*  回车快速 发送消息  */
-	onKeyboard() {
+	onKeyboard(event) {
 		var code = event.keyCode
-		if (code === 13) {
+		if (code === 13 && this.msg.value) {
 			this.sendMessage()
 		}
 	}
@@ -65,9 +61,6 @@ export default class Game extends Component {
 	timerEnd() {
 		clearInterval(this.timer)
 		this.timer = null
-		this.setState({
-			off: 0
-		})
 	}
 	/*  游戏开始  */
 	start() {
@@ -76,7 +69,7 @@ export default class Game extends Component {
 	}
 	/*  游戏结束  */
 	over() {
-		this.timer && this.timerEnd()
+		this.timerEnd()
 		this.chess.gameOver()
 	}
 	/*  切换准备状态  */
@@ -90,12 +83,11 @@ export default class Game extends Component {
 	}
 	/*  获取棋子位置  */
 	getIndex(player, index) {
-		clearInterval(this.timer)
-		this.timer = null
+		this.timerEnd()
 		this.setState({
 			off: 0
 		})
-		this.timerBegin()
+		this.props.room_data.status !== '等待中' && this.timerBegin()
 		this.chess.renderPiece(player, index)
 		this.chess.status = +!this.chess.status
 	}
@@ -123,11 +115,14 @@ export default class Game extends Component {
 			'ready-btn': isSelf,
 			'is-ready': obj && obj.ready
 		})
+		let groupClass = cs('gobang-player-group', {
+			'is-self-bout': obj && this.props.room_data.status !== '等待中' && this.props.room_data.player === obj.player && isSelf
+		})
 		if (isSelf && this.chess) {
 			this.chess.player = obj.player
 		}
 		let player = obj ? (
-		<div className="gobang-player-group">
+		<div className={groupClass}>
 			<div className="gobang-player">
 				<img className="avatar" src={ obj.avatar } />
 				<div className="user-info">
@@ -135,8 +130,8 @@ export default class Game extends Component {
 					{
 						obj.gameData ? (
 							<p className="user-game-data">
-								游戏次数：{ obj.gameData.all_count }<br />
-								胜率：{ obj.gameData.winRate }%
+								<span>游戏次数：{ obj.gameData.all_count }</span>
+								<span>胜率：{ obj.gameData.winRate }%</span>
 							</p>
 						) : (
 							<small className="user-game-data">暂无比赛记录</small>

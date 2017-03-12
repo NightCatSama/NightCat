@@ -341,6 +341,9 @@ class Gobang {
 			})
 			data.camp = data.camp.reverse()
 		}
+		Array.from(roles, (role, i) => {
+			data[role].time = total_time
+		})
 		data.player = 0
 		data.status = '比赛中'
 		this.broadcastMessage(`【系统消息】比赛开始！`, 'start')
@@ -391,6 +394,8 @@ class Gobang {
 		data.status = '等待中'
 		data.game = new Game()
 
+		this.TimerEnd()
+
 		let winner = data[data.camp[player]]
 		let loser = data[data.camp[+!player]]
 
@@ -406,8 +411,8 @@ class Gobang {
 		loser = Object.assign(loser, {
 			ready: false,
 			status: '',
-			gameData: updateGameData(loser.gameData, false),
-			timer: total_time
+			timer: total_time,
+			gameData: updateGameData(loser.gameData, false)
 		})
 
 		if (isDraw) {
@@ -428,7 +433,7 @@ class Gobang {
 	 */
 	addChessPieces(player, index) {
 		let data = rooms[this.room_id]
-		if (!data) {
+		if (!data || data.status !== '比赛中') {
 			return false
 		}
 		else if (data.player !== player) {
@@ -436,17 +441,13 @@ class Gobang {
 		}
 		let game = data.game
 		game.player = player
+		data[data.camp[player]].time = data[data.camp[player]].time - ~~((Date.now() - data.initial_time) / 1000)
 
+		//  判断棋子位置
 		let result = game.addPieces(index)
 		if (!result) {
 			return this.sendMessage(`无效的放置位置`, 'error')
 		}
-
-		this.io.to(this.room_id).emit('Play', player, index)
-		data[data.camp[player]].time = data[data.camp[player]].time - ~~((Date.now() - data.initial_time) / 1000)
-		clearTimeout(this.timer)
-		this.timer = null
-
 		if (result === 'win') {
 			this.broadcastMessage(`【系统消息】${player === 0 ? '黑' : '白'}棋获得胜利`, 'end')
 			this.gameOver(player)
@@ -458,6 +459,11 @@ class Gobang {
 		else {
 			this.switchCamp()
 		}
+
+		//  广播添加新棋子
+		this.io.to(this.room_id).emit('Play', player, index)
+		
+		this.TimerEnd()
 	}
 	/*  切换阵营  */
 	switchCamp() {
@@ -482,12 +488,22 @@ class Gobang {
 			}
 		})
 	}
+	/**
+	 * 开启定时器
+	 * @param {Number} time   剩余的事件
+	 * @param {Number} player 玩家
+	 */
 	TimerBegin(time, player) {
 		rooms[this.room_id].initial_time = Date.now()
 		this.timer = setTimeout(() => {
 			this.broadcastMessage(`【系统消息】由于${player === 0 ? '黑' : '白'}棋时间用尽，所以${player === 0 ? '白' : '黑'}棋获得胜利！`, 'end')
 			this.gameOver(+!player)
 		}, time * 1000)
+	}
+	/*  关闭定时器  */
+	TimerEnd() {
+		clearTimeout(this.timer)
+		this.timer = null
 	}
 }
 

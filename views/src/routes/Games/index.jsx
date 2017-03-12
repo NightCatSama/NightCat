@@ -97,6 +97,7 @@ class Games extends Component {
 			filterGame = filterGame.filter((game) => game.type === this.type)
 		}
 		this.setState({
+			active: 0,
 			games: filterGame
 		})
 	}
