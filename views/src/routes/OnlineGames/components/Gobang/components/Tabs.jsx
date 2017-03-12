@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import Immutable from 'seamless-immutable'
 import Modal from 'components/Modal'
 import PureRenderMixin from 'react-addons-pure-render-mixin'
 
@@ -6,14 +7,14 @@ export default class Tabs extends Component {
 	constructor(props) {
 		super(props)
 		this.state = {
-			room_info: this.props.room_info,
+			room_info: Immutable(this.props.room_info),
 		}
 		this.toggleModal = this.toggleModal.bind(this)
 	    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 	}
 	componentWillReceiveProps(nextProps) {
 		this.setState({
-			room_info: nextProps.room_info
+			room_info: Immutable(nextProps.room_info)
 		})
 	}
 	shouldComponentUpdate(nextProps, nextState) {
@@ -24,8 +25,6 @@ export default class Tabs extends Component {
 		}
 		return true
 	}
-	componentWillUnmount() {
-	}
 	/*  切换模态框  */
 	toggleModal() {
 		this.modal.toggle()
@@ -34,7 +33,7 @@ export default class Tabs extends Component {
 	handleChange(e, key) {
 		let val = e.target.value
 		this.setState({
-			room_info: Object.assign({}, this.state.room_info, { [key]: val })
+			room_info: Immutable.merge(this.state.room_info, { [key]: val })
 		})
 	}
 	/*  创建房间  */

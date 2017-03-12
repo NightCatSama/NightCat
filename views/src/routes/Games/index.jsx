@@ -35,11 +35,11 @@ const games = [{
 	name_cn: '五子棋（本地对战）',
 	terminal: 'common',
 	type: 'local',
-	star: 4,
+	star: 3,
 	iconColor: '#fff',
-	path: '/online-games/gobang',
-	img: require('images/gobang.jpg'),
-	description: '在线五子棋对弈（需要登陆）'
+	path: '/single-games/gobang',
+	img: require('images/gobang_local.jpg'),
+	description: '本地对战五子棋对弈'
 }]
 
 const isPC = !/(iPhone|iPad|iPod|iOS|Android|SymbianOS|Windows Phone)/i.test(navigator.userAgent)
@@ -77,7 +77,7 @@ class Games extends Component {
 		window.addEventListener('resize', this.windowResize, false)
 	}
 	/*  切换类型时更新  */
-	componentWillReceiveProps(nextProps, pp) {
+	componentWillReceiveProps(nextProps) {
 		if (nextProps.params.type !== this.type) {
 			this.initGames()
 		}
@@ -88,9 +88,8 @@ class Games extends Component {
 	}
 	/*  过滤游戏  */
 	initGames() {
-		let filterGame = []
 		/*  将PC游戏和mobile分开  */
-		filterGame = games.filter((game) => game.terminal === 'common' || ((game.terminal === 'pc') === isPC))
+		let filterGame = games.filter((game) => game.terminal === 'common' || ((game.terminal === 'pc') === isPC))
 		/*  是否过滤不同类型游戏  */
 		this.type = this.context.router.params.type
 		if (this.type) {

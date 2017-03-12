@@ -42,6 +42,7 @@ class Template extends Component {
 		this.setState({
 			msg: player === undefined ? '和棋' : `${player ? '白' : '黑'}棋获得了胜利!`
 		})
+		alert(`${player ? '白' : '黑'}棋获得了胜利!`)
 	}
 	render() {
 		return (

@@ -238,8 +238,9 @@ class Gobang {
 	}
 	/*  通知客户端进入房间  */
 	emitJoinRoom(role) {
-		if (role !== 'admin')
-			console.info('你不能通过这里')
+		if (role !== 'admin') {
+			return console.info('你不能通过这里')
+		}
 
 		this.socket.join(this.room_id, () => {
 			this.socket.emit('inRoom', {

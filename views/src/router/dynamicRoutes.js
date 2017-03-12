@@ -30,7 +30,6 @@ export default function (userRequired, autoLogin) {
 			}
 		}, {
 			path: 'user(/:account)',
-			onEnter: userRequired,
 			getComponent(nextState, cb) {
 				require.ensure([], (require) => {
 					cb(null, require('routes/User').default)
@@ -44,21 +43,6 @@ export default function (userRequired, autoLogin) {
 				})
 			}
 		}, {
-			path: 'game-data(/:account)',
-			onEnter: userRequired,
-			getComponent(nextState, cb) {
-				require.ensure([], (require) => {
-					cb(null, require('routes/User').default)
-				})
-			},
-			getIndexRoute(nextState, cb) {
-				require.ensure([], (require) => {
-					cb(null, {
-						component: require('routes/User/components/GameData').default
-					})
-				})
-			}
-		}, {
 			path: 'games(/:type)',
 			getComponent(nextState, cb) {
 				require.ensure([], (require) => {
@@ -67,7 +51,6 @@ export default function (userRequired, autoLogin) {
 			}
 		}, {
 			path: 'single-games',
-			onEnter: userRequired,
 			getComponent(nextState, cb) {
 				require.ensure([], (require) => {
 					cb(null, require('routes/SingleGames').default)

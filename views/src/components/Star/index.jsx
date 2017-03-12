@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react'
+import PureRenderMixin from 'react-addons-pure-render-mixin'
 import './styles'
 
 import { connect } from 'react-redux'
@@ -8,8 +9,7 @@ import EventBusAction from 'actions/EventBusAction'
 class Star extends Component {
 	constructor(props) {
 		super(props)
-		this.state = {
-		}
+	    this.shouldComponentUpdate = PureRenderMixin.shouldComponentUpdate.bind(this)
 	}
 	componentDidMount() {
 	}

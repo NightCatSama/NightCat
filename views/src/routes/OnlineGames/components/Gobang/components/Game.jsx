@@ -188,9 +188,9 @@ export default class Game extends Component {
 		return (
 			<div className="gobang">
 				<div className="gobang-room-info">
-					<div>
-						{ room_name }
-						<small className={`gobang-status ${status === '等待中' ? 'waiting' : 'playing'}`}>{ status }</small>
+					<div className="gobang-room-status">
+						<span>{ room_name }</span>
+						<span className={`gobang-status ${status === '等待中' ? 'waiting' : 'playing'}`}>{ status }</span>
 					</div>
 					<div className="leave-room-btn" onClick={() => this.modal.toggle()}>离开房间</div>
 				</div>

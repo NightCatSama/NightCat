@@ -1,6 +1,8 @@
 import React, { Component, PropTypes } from 'react'
-import { Link, IndexLink } from 'react-router'
-// import cs from 'classnames'
+import Immutable from 'seamless-immutable'
+
+import Info from './components/Info'
+import GameData from './components/GameData'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -13,7 +15,9 @@ class Sign extends Component {
 	constructor (props) {
 		super(props)
 		this.state = {
-			userInfo: {}
+			isSelf: false,
+			type: 'information',
+			userInfo: Immutable({})
 		}
 		this.notice = (msg, interval, status) => this.props.actions.execute('notice', msg, interval, { status: status, styles: { top: 'auto', bottom: '30px' } })
 	}
@@ -48,7 +52,8 @@ class Sign extends Component {
 		})
 		.then((res) => {
 			this.setState({
-				userInfo: res.data
+				isSelf: false,
+				userInfo: Immutable.merge(this.state.userInfo, res.data)
 			})
 		})
 		.catch((err) => {
@@ -63,11 +68,8 @@ class Sign extends Component {
 				userInfo = info
 			}
 			this.setState({
-				userInfo: {
-					account: userInfo.account,
-					email: userInfo.email,
-					avatar: userInfo.avatar
-				}
+				isSelf: true,
+				userInfo: Immutable.merge(this.state.userInfo, userInfo)
 			})
 		}
 		else {
@@ -84,13 +86,15 @@ class Sign extends Component {
 				</div>
 				<ul className="user-router">
 					<li>
-						<IndexLink to={`/user${this.context.router.params.account ? ('/' + this.context.router.params.account) : ''}`} activeClassName="active">Information</IndexLink>
+						<a href="javascript:;" className={ this.state.type === 'information' ? 'active' : '' } onClick={() => this.setState({ type: 'information' })}>Information</a>
 					</li>
 					<li>
-						<Link to={`/game-data${this.context.router.params.account ? ('/' + this.context.router.params.account) : ''}`} activeClassName="active">Game Data</Link>
+						<a href="javascript:;" className={ this.state.type === 'gameData' ? 'active' : '' } onClick={() => this.setState({ type: 'gameData' })}>Game Data</a>
 					</li>
 				</ul>
-				{ this.props.children }
+				{
+					this.state.type === 'information' ? (<Info isSelf={this.state.isSelf} userInfo={this.state.userInfo} />) : (<GameData isSelf={this.state.isSelf} userInfo={this.state.userInfo} />)
+				}
 			</div>
 		);
 	}

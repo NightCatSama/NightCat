@@ -1,5 +1,4 @@
 import React, { Component, PropTypes } from 'react'
-// import cs from 'classnames'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'

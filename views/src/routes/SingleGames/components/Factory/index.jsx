@@ -24,9 +24,6 @@ class Factory extends Component {
 		this.toggleMenu = (bool) => this.props.actions.execute('menu', bool)
 		this.clickFn = this.clickFn.bind(this)
 	}
-	componentDidMount() {
-		// this.switchState()
-	}
 	componentWillUnmount() {
 		this.toggleMenu(true)
 	}
