@@ -73,6 +73,13 @@ export default function (userRequired, autoLogin) {
 									cb(null, require('routes/SingleGames/components/Factory').default)
 								})
 							}
+						}, {
+							path: 'gobang',
+							getComponent(nextState, cb) {
+								require.ensure([], (require) => {
+									cb(null, require('routes/SingleGames/components/gobang').default)
+								})
+							}
 						}
 					])
 				})

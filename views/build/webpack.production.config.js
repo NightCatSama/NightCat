@@ -72,7 +72,7 @@ var config = {
 		}),
 		new webpack.DefinePlugin({
 			'process.env': {
-				NODE_ENV: JSON.stringify('production')
+				NODE_ENV: '"production"'
 			}
 		}),
 		new ExtractTextPlugin(utils.assetsPath('css/[name].[contenthash:5].css')),
