@@ -4,7 +4,7 @@ import { setStaticOnFront } from '../middlewares/request'
 import ctr from '../controllers'
 import express from 'express'
 import path from 'path'
-let router = express.Router();
+let router = express.Router()
 const sign = ctr.sign
 const site = ctr.site
 const user = ctr.user
@@ -22,7 +22,6 @@ router
 	.get('/getUserInfoByAccount', user.getUserInfoByAccount)  //  浏览用户信息
 	.post('/saveUserInfo', signinRequire, user.saveUserInfo)  //  保存用户信息
 
-	.use(setStaticOnFront)  //  设置文件静态目录
-	.get(['/', '/:name', '/user/:account', '/games/:type', '/single-games/:type', '/online-games/:type'], site.index) //  跳转页面
+	.get('*', site.index) //  跳转页面
 
 export default router

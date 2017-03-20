@@ -28,7 +28,8 @@
 				password: $('#password').val()
 			},
 			dataType: 'json',
-			success: (data) => {
+			success: (res) => {
+				let data = res.data
 				if (data.is_admin) {
 					window.localStorage.token = data.token
 					window.sessionStorage.login_status = JSON.stringify({

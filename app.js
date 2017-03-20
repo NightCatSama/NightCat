@@ -29,8 +29,8 @@ app.engine('hbs', hbs.express4({
 app.set('view engine', 'hbs')
 
  /*  前后端的文件public路径  */
-app.set('back_static_views', relative('./backstage/dist'))
-app.set('back_views', relative('./backstage/public'))
+app.set('back_static_views', relative('./backstage/dist/'))
+app.set('back_views', relative('./backstage/public/'))
 app.set('frone_views', relative('./views/dist/'))
 
 app.use(favicon(relative('favicon.ico')))
@@ -54,7 +54,10 @@ app.use(session({
 	}
 }))
 
+app.use(express.static(app.get('back_static_views')))
 app.use('/admin/', admin_router)
+
+app.use(express.static(app.get('frone_views')))
 app.use('/', router)
 
 // error handler
