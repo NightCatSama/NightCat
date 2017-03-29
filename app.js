@@ -10,6 +10,7 @@ import errorhandler from 'errorhandler'
 import connect from 'connect-mongo'
 import logger from './common/logger'
 import hbs from 'express-hbs'
+import compression from 'compression'
 
 import router from './routes'
 import admin_router from './routes/admin'
@@ -17,6 +18,10 @@ import admin_router from './routes/admin'
 import socket from './socket'
 
 const app = express()
+
+/*  开启Gzip压缩  */
+app.use(compression())
+
 const MongoStore = connect(session)
 
 const relative = (_path) => path.relative(__dirname, _path)
