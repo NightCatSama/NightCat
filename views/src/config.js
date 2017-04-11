@@ -20,7 +20,7 @@ else {
 	obj = {
 		host: '',
 		withCredentials: false,
-		socket_host: 'http://nightcat.win'
+		socket_host: 'https://nightcat.win'
 	}
 }
 
