@@ -10,19 +10,18 @@
 		position: relative;
 		overflow: hidden;
 		cursor: default;
-		background-image: url('../../images/bg.jpg');
-		background-repeat: no-repeat;
-		background-size: cover;
-		background-position: center;
+		background-color: $black;
 	}
 
 	.info {
+		position: absolute;
+		top: 50%;
+		left: 50%;
 		color: $white;
-		font-size: 20px;
-		margin: 120px 0 0 60px;
-		width: 300px;
-		text-shadow: $font-light;
-		text-align: center;
+		font-size: 50px;
+		// text-shadow: $font-light;
+		user-select: none;
+		transform: translate(-50%, -50%);
 
 		@include max-screen(768px) {
 			position: absolute;

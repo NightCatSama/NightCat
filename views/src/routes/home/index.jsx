@@ -17,7 +17,6 @@ class Home extends Component {
 					<div className="first-screen">
 						<section className="info">
 							<h1>NightCat</h1>
-							<small>- Welcome to NightCat game city -</small>
 						</section>
 					</div>
 					<div className="main hide">

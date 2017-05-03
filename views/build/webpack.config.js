@@ -2,8 +2,10 @@ var path = require('path')
 var webpack = require('webpack')
 var autoprefixer = require('autoprefixer')
 var SRC_PATH = path.resolve(__dirname, '../src')
+var DIST_PATH = path.resolve(__dirname, '../dist')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 
+var port = require('../../config/config.dev.js').dev_port
 var utils = require('./utils')
 
 var config = {
@@ -13,7 +15,7 @@ var config = {
 	},
 	output: {
 		path: './dist',
-		publicPath: 'http://localhost:8080/',
+		publicPath: `http://localhost:${port}/`,
 		filename: 'static/js/[name].js',
 		chunkFilename: 'static/js/[id].[chunkhash:5].js'
 	},
@@ -95,7 +97,8 @@ var config = {
 		hot: true,
 		inline: true,
 		progress: true,
-		contentBase: './src/'
+		port: port,
+		contentBase: SRC_PATH
 	},
 	postcss: [
 		autoprefixer({

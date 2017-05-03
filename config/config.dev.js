@@ -1,10 +1,10 @@
-export default {
+module.exports = {
 	debug: true,
-	host: 'localhost:8080',
+	host: 'localhost:2333',
 
 	/*  端口信息  */
 	port: 3000,
-	dev_port: 8080,
+	dev_port: 2333,
 
 	/*  mongodb 配置  */
 	db_port: 27017,
