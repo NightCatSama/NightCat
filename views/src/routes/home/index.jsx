@@ -1,14 +1,27 @@
 import React, { Component, PropTypes } from 'react'
 
+import Canvas from 'asset/Canvas'
 import './styles'
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import EventBusAction from 'actions/EventBusAction'
 
+const isPC = !/(iPhone|iPad|iPod|iOS|Android|SymbianOS|Windows Phone)/i.test(navigator.userAgent)
+
 class Home extends Component {
 	constructor (props) {
 		super(props)
+	}
+	componentDidMount () {
+		const option = isPC ? null : {
+			ball_count: 15,
+			line_range: 120,
+			r_range: [5, 12]
+		} 
+		setTimeout(() => {
+			new Canvas('canvas', option)
+		})
 	}
 	render() {
 		return (
@@ -18,11 +31,7 @@ class Home extends Component {
 						<section className="info">
 							<h1>NightCat</h1>
 						</section>
-					</div>
-					<div className="main hide">
-						<section>
-							Factory
-						</section>
+						<canvas id="canvas"></canvas>
 					</div>
 				</div>
 			</span>
