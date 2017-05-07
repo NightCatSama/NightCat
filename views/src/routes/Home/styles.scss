@@ -17,20 +17,13 @@
 		position: absolute;
 		top: 50%;
 		left: 50%;
-		color: $font-color;
 		font-size: 50px;
-		// text-shadow: $font-light;
 		user-select: none;
 		transform: translate(-50%, -50%);
+		z-index: 3;
 
 		@include max-screen(768px) {
-			position: absolute;
-			margin: 0;
-			left: 50%;
-			bottom: 50px;
-			color: #333;
-			font-size: 16px;
-			transform: translateX(-50%);
+			font-size: 20px;
 		}
 	}
 
