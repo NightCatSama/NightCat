@@ -18,7 +18,7 @@ class Home extends Component {
 			ball_count: 15,
 			line_range: 120,
 			r_range: [5, 12]
-		} 
+		}
 		setTimeout(() => {
 			new Canvas('canvas', option)
 		})
@@ -33,6 +33,9 @@ class Home extends Component {
 						</section>
 						<canvas id="canvas"></canvas>
 					</div>
+					<aside>
+						<a href="https://github.com/NightCatSama/My-Animat/blob/master/bead/src/javascripts/canvas.js">source code</a>
+					</aside>
 				</div>
 			</span>
 		);

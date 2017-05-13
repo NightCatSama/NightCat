@@ -20,10 +20,26 @@
 		font-size: 50px;
 		user-select: none;
 		transform: translate(-50%, -50%);
-		z-index: 3;
+		z-index: 1;
 
 		@include max-screen(768px) {
 			font-size: 20px;
+		}
+	}
+
+	aside {
+		position: absolute;
+		right: 8px;
+		bottom: 8px;
+		font-size: 12px;
+		z-index: 5;
+
+		a {
+			color: #333;
+
+			&:hover {
+				color: $blue;
+			}
 		}
 	}
 
