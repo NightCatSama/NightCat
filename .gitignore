@@ -1,3 +1,6 @@
 node_modules/
 config/config.prod.js
 npm-debug.log
+
+mongodb.cmd
+mongodb.conf

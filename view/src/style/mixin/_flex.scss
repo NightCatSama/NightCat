@@ -1,0 +1,43 @@
+// 水平垂直居中
+@mixin flex-center($display: flex, $direction: row) {
+  @if ($display != '') {
+    display: $display;
+  }
+  @else {
+    display: flex;
+  }
+
+  @if ($direction != row) {
+    flex-direction: $direction;
+  }
+
+  justify-content: center;
+  align-items: center;
+}
+
+// 主轴居中
+@mixin flex-main-center($display: flex, $direction: row) {
+  @if ($display) {
+    display: $display;
+  }
+  @else {
+    display: flex;
+  }
+
+  @if ($direction != row) {
+    flex-direction: $direction;
+  }
+
+  justify-content: center;
+}
+
+// 交叉轴居中
+@mixin flex-cross-center($display: flex, $direction: row) {
+  display: $display;
+
+  @if ($direction != row) {
+    flex-direction: $direction;
+  }
+
+  align-items: center;
+}

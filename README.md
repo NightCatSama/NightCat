@@ -19,7 +19,7 @@
  - [x] 页面完善
  - [x] 实现联机功能
 
-## 前端架构
+## 前端架构 (React弃坑)
     views/
       |- build/     // webpack 配置目录
       |- dist/      // 打包后文件目录
@@ -54,7 +54,7 @@
       |- socket/      // websocket 通信
       |- views/       // 前端目录
       |- app.js       // 入口文件
-    
+
 ## 后台管理架构
     backstage/
       |- dist/        // 生产环境目录
