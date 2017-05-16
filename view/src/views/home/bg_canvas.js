@@ -7,12 +7,12 @@ const _default = {
   line_range: 200,      // 连线范围
   r_range: [10, 20],    // 半径范围
   color: _defaultColors, // 小球颜色组
-  bgColor: [[243, 243, 243], [51, 51, 51]], // 背景颜色组
-  textColor: [[51, 51, 51], [243, 243, 243]], // 文本颜色组
+  bgColor: [[255, 255, 255], [212, 212, 212], [0, 0, 0], [66, 66, 66]], // 背景颜色组
+  textColor: [[0, 0, 0], [66, 66, 66], [255, 255, 255], [212, 212, 212]], // 文本颜色组
   mouseColor: _defaultColors, // 鼠标颜色组
-  period: 4000,  // 颜色呼吸周期
-  bgPeriod: 10000, // 背景颜色呼吸周期
-  textPeriod: 10000, // 文本颜色呼吸周期
+  period: 3000,  // 颜色呼吸周期
+  bgPeriod: 8000, // 背景颜色呼吸周期
+  textPeriod: 8000, // 文本颜色呼吸周期
   opacity: [0.3, 0.8],   // 透明度范围
   speed: [-1, 1],    // 速度范围
   clickPause: false // 是否点击暂停
@@ -436,7 +436,7 @@ export default class Canvas {
       return false
     }
     ball.color = ball.color.map((n, i) => {
-      if (index === ball.ColorList.length) {
+      if (index >= ball.ColorList.length) {
         ball.cur_i = index = 0
         ball.cur_color++
         if (ball.cur_color === ball.ColorGroup.length - 1) {
