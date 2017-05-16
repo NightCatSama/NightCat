@@ -1,5 +1,6 @@
 # [NightCat](http://nightcat.win/)
 
+## 从零开始使用 `Vue` 重构
 ------
 
 ## 目的

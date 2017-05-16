@@ -1,4 +1,4 @@
-const _defaultColors = [[240, 91, 114], [49, 105, 146], [153, 47, 37], [120, 115, 201], [153, 105, 33], [70, 120, 33], [28, 110, 110], [75, 75, 120]]
+const _defaultColors = [[240, 91, 114, 3000], [49, 105, 146, 3000], [153, 47, 37, 3000], [120, 115, 201, 3000], [153, 105, 33, 3000], [70, 120, 33, 3000], [28, 110, 110, 3000], [75, 75, 120]]
 
 const _default = {
   txt: 'NightCat',      // 文本
@@ -6,13 +6,13 @@ const _default = {
   ball_count: 30,       // 总个数
   line_range: 200,      // 连线范围
   r_range: [10, 20],    // 半径范围
-  color: _defaultColors, // 小球颜色组
-  bgColor: [[255, 255, 255], [212, 212, 212], [0, 0, 0], [66, 66, 66]], // 背景颜色组
-  textColor: [[0, 0, 0], [66, 66, 66], [255, 255, 255], [212, 212, 212]], // 文本颜色组
+  color: _defaultColors, // 小球颜色组 [[r, g, b, time]...] *time: 在该颜色停留的时间
+  bgColor: [[224, 224, 224, 20000], [22, 22, 22, 20000]], // 背景颜色组
+  textColor: [[52, 52, 52, 20000], [224, 224, 224, 20000]], // 文本颜色组
   mouseColor: _defaultColors, // 鼠标颜色组
-  period: 3000,  // 颜色呼吸周期
-  bgPeriod: 8000, // 背景颜色呼吸周期
-  textPeriod: 8000, // 文本颜色呼吸周期
+  period: 5000,  // 颜色呼吸周期
+  bgPeriod: 5000, // 背景颜色呼吸周期
+  textPeriod: 5000, // 文本颜色呼吸周期
   opacity: [0.3, 0.8],   // 透明度范围
   speed: [-1, 1],    // 速度范围
   clickPause: false // 是否点击暂停
@@ -114,7 +114,10 @@ export default class Canvas {
   //  得到颜色渐变数组
   getColorList (color) {
     //  颜色差值[r, g, b]
-    let ColorDis = [color[1][0] - color[0][0], color[1][1] - color[0][1], color[1][2] - color[0][2]]
+    let startColor = color[0]
+    let endColor = color[1]
+
+    let ColorDis = endColor.map((end, i) => end - startColor[i])
 
     //  颜色差最大的绝对值
     let ColorLength = Math.max(Math.abs(ColorDis[0]), Math.abs(ColorDis[1]), Math.abs(ColorDis[2]))
@@ -430,8 +433,24 @@ export default class Canvas {
   }
   //  更新颜色
   updateGradientData (ball) {
-    ball.cur_i += ball.changeValue
-    let index = ~~(ball.cur_i)
+    let index
+
+    if (ball.ColorGroup[ball.cur_color][3]) {
+      let v = ball.ColorGroup[ball.cur_color][3] / 16.7
+      if (ball.cur_i <= v) {
+        ball.cur_i += 1
+        return false
+      }
+      else {
+        ball.cur_i += ball.changeValue
+        index = ~~(ball.cur_i - v)
+      }
+    }
+    else {
+      ball.cur_i += ball.changeValue
+      index = ~~(ball.cur_i)
+    }
+
     if (index === ball.cur_i) {
       return false
     }
@@ -439,9 +458,9 @@ export default class Canvas {
       if (index >= ball.ColorList.length) {
         ball.cur_i = index = 0
         ball.cur_color++
+        ball.cur_color = ball.cur_color % ball.ColorGroup.length
         if (ball.cur_color === ball.ColorGroup.length - 1) {
           ball.ColorList = this.getColorList([ball.ColorGroup[ball.cur_color], ball.ColorGroup[0]])
-          ball.cur_color = -1
         }
         else {
           ball.ColorList = this.getColorList([ball.ColorGroup[ball.cur_color], ball.ColorGroup[ball.cur_color + 1]])
