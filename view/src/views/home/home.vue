@@ -1,9 +1,11 @@
 <template>
   <div class="home-view">
-    <canvas id="bg_canvas"></canvas>
-    <aside class="source_link">
-      <a href="https://github.com/NightCatSama/My-Animat/blob/master/bead/src/javascripts/canvas.js" target="_blank">source code</a>
-    </aside>
+    <section class="canvas-bg">
+      <canvas id="bg_canvas"></canvas>
+      <aside class="source_link">
+        <a href="https://github.com/NightCatSama/My-Animat/blob/master/bead/src/javascripts/canvas.js" target="_blank">source code</a>
+      </aside>
+    </section>
   </div>
 </template>
 
@@ -30,11 +32,16 @@ export default {
     height: 100vh;
     @include flex-center;
 
+    .canvas-bg {
+      width: 100%;
+      height: 100%;
+    }
+
     #bg_canvas {
       width: 100%;
       height: 100%;
     }
-    
+
     .source_link {
       position: absolute;
       right: 8px;

@@ -2,13 +2,17 @@ const _defaultColors = [[240, 91, 114, 3000], [49, 105, 146, 3000], [153, 47, 37
 
 const _default = {
   txt: 'NightCat',      // 文本
-  font: 'normal 100px sans-serif', // 文本样式
+  fontFamily: {
+    name: 'Nothing You Could Do',
+    url: 'https://fonts.gstatic.com/s/nothingyoucoulddo/v6/jpk1K3jbJoyoK0XKaSyQAZXIiu60FL2bNvn8mktkB5z3rGVtsTkPsbDajuO5ueQw.woff2'
+  },
+  font: 'normal normal 120px Nothing You Could Do', // 文本样式
   ball_count: 30,       // 总个数
   line_range: 200,      // 连线范围
   r_range: [10, 20],    // 半径范围
   color: _defaultColors, // 小球颜色组 [[r, g, b, time]...] *time: 在该颜色停留的时间
-  bgColor: [[224, 224, 224, 20000], [22, 22, 22, 20000]], // 背景颜色组
-  textColor: [[52, 52, 52, 20000], [224, 224, 224, 20000]], // 文本颜色组
+  bgColor: [[224, 224, 224, 10000], [22, 22, 22, 10000]], // 背景颜色组
+  textColor: [[52, 52, 52, 10000], [224, 224, 224, 10000]], // 文本颜色组
   mouseColor: _defaultColors, // 鼠标颜色组
   period: 5000,  // 颜色呼吸周期
   bgPeriod: 5000, // 背景颜色呼吸周期
@@ -36,6 +40,7 @@ export default class Canvas {
 
     Object.assign(this.mouse, this.initGradientData(this.period, this.mouseColor))
 
+    this.fontLoaded = false
     this.vballs = []
     this.balls = []
     this.bg = this.initGradientData(this.bgPeriod, this.bgColor)
@@ -45,6 +50,7 @@ export default class Canvas {
     this.mouseHandle = this.mouseHandle.bind(this)
     this.init = this.init.bind(this)
     this.bindEvent()
+    this.loadFont()
     this.init()
     this.start()
   }
@@ -53,6 +59,18 @@ export default class Canvas {
     this.width = this.canvas.width = this.canvas.offsetWidth
     this.height = this.canvas.height = this.canvas.offsetHeight
     this.bounds = this.canvas.getBoundingClientRect()
+  }
+  loadFont () {
+    if (!this.fontFamily || !FontFace) {
+      this.fontLoaded = true
+      return false
+    }
+
+    let font = new FontFace(this.fontFamily.name, `url(${this.fontFamily.url})`)
+    font.load().then((font) => {
+      document.fonts.add(font)
+      this.fontLoaded = true
+    })
   }
   //  绑定事件
   bindEvent () {
@@ -94,9 +112,9 @@ export default class Canvas {
       if (!this.isAnimate) return false
 
       this.cxt.clearRect(0, 0, this.width, this.height)
-      this.renderBackground()
+      this.fontLoaded && this.renderBackground()
       this.render()
-      this.renderText()
+      this.fontLoaded && this.renderText()
       this.update()
       requestAnimationFrame(step)
     }
@@ -454,6 +472,7 @@ export default class Canvas {
     if (index === ball.cur_i) {
       return false
     }
+
     ball.color = ball.color.map((n, i) => {
       if (index >= ball.ColorList.length) {
         ball.cur_i = index = 0
@@ -466,7 +485,7 @@ export default class Canvas {
           ball.ColorList = this.getColorList([ball.ColorGroup[ball.cur_color], ball.ColorGroup[ball.cur_color + 1]])
         }
       }
-      return ball.ColorList[index][i]
+      return ball.ColorList.length ? ball.ColorList[index][i] : n
     })
   }
   getRGBA (color, opacity = 1) {
@@ -536,7 +555,7 @@ export default class Canvas {
     this.cxt.stroke()
   }
   renderBackground () {
-    this.cxt.fillStyle = this.getRGBA(this.bg.color, 1)
+    this.cxt.fillStyle = this.getRGBA(this.bg.color)
     this.cxt.fillRect(0, 0, this.width, this.height)
   }
   //  写字
@@ -545,7 +564,7 @@ export default class Canvas {
 
     this.cxt.font = this.font
     this.cxt.textAlign = 'center'
-    this.cxt.fillStyle = this.getRGBA(this.text.color)
+    this.cxt.fillStyle = this.getRGBA(this.text.color, 0.8)
     this.cxt.fillText(this.txt, this.width / 2, this.height / 2)
 
     this.cxt.restore()
