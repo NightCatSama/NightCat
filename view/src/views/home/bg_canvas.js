@@ -5,7 +5,7 @@ const _default = {
   fontFamily: {
     name: 'Nothing You Could Do',
     url: 'https://fonts.gstatic.com/s/nothingyoucoulddo/v6/jpk1K3jbJoyoK0XKaSyQAZXIiu60FL2bNvn8mktkB5z3rGVtsTkPsbDajuO5ueQw.woff2'
-  },
+  },  // 字体
   font: 'normal normal 120px Nothing You Could Do', // 文本样式
   ball_count: 30,       // 总个数
   line_range: 200,      // 连线范围
@@ -29,6 +29,9 @@ export default class Canvas {
 
     Object.assign(this, _default, option)
 
+    this.fontLoaded = false
+    this.vballs = []
+    this.balls = []
     this.mouse = {
       x: 0,
       y: 0,
@@ -37,12 +40,7 @@ export default class Canvas {
       catchBall: false,
       onLine: false
     }
-
     Object.assign(this.mouse, this.initGradientData(this.period, this.mouseColor))
-
-    this.fontLoaded = false
-    this.vballs = []
-    this.balls = []
     this.bg = this.initGradientData(this.bgPeriod, this.bgColor)
     this.text = this.initGradientData(this.textPeriod, this.textColor)
 
@@ -61,11 +59,12 @@ export default class Canvas {
     this.bounds = this.canvas.getBoundingClientRect()
   }
   loadFont () {
-    if (!this.fontFamily || !FontFace) {
+    if (!this.fontFamily || typeof FontFace === 'undefined') {
       this.fontLoaded = true
       return false
     }
 
+    console.log(123)
     let font = new FontFace(this.fontFamily.name, `url(${this.fontFamily.url})`)
     font.load().then((font) => {
       document.fonts.add(font)
