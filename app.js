@@ -9,7 +9,6 @@ import config from './config'
 import errorhandler from 'errorhandler'
 import connect from 'connect-mongo'
 import logger from './common/logger'
-import hbs from 'express-hbs'
 import compression from 'compression'
 
 import router from './routes'
@@ -26,16 +25,7 @@ const MongoStore = connect(session)
 
 const relative = (_path) => path.relative(__dirname, _path)
 
- /*  使用hbs模板引擎  */
-app.engine('hbs', hbs.express4({
-	partialsDir: relative('./backstage/partials'),
-	defaultLayout: relative('./backstage/layout/default.hbs')
-}))
-app.set('view engine', 'hbs')
-
- /*  前后端的文件public路径  */
-app.set('back_static_views', relative('./admin/static/'))
-// app.set('back_views', relative('./backstage/public/'))
+ /*  前端的文件public路径  */
 app.set('frone_views', relative('./view/dist/'))
 
 app.use(favicon(relative('favicon.ico')))
@@ -59,11 +49,10 @@ app.use(session({
 	}
 }))
 
-// app.use(express.static('./admin/static/'))
-
-// app.use(express.static(app.get('back_static_views')))
+/* nuxt */
 app.use('/admin/', admin_router)
 
+/* front end */
 app.use(express.static(app.get('frone_views')))
 app.use('/', router)
 
