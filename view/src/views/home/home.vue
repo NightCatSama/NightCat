@@ -3,7 +3,7 @@
     <section class="canvas-bg">
       <canvas id="bg_canvas"></canvas>
       <aside class="source_link">
-        <a href="https://github.com/NightCatSama/My-Animat/blob/master/bead/src/javascripts/canvas.js" target="_blank">source code</a>
+        <a href="https://github.com/NightCatSama/NightCat/blob/master/view/src/views/home/bg_canvas.js" target="_blank">source code</a>
       </aside>
     </section>
   </div>
@@ -46,7 +46,7 @@ export default {
       position: absolute;
       right: 8px;
       bottom: 8px;
-      font-size: 14px;
+      font-size: 13px;
       z-index: 5;
 
       a {
