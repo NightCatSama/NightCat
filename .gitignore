@@ -1,5 +1,6 @@
 .idea*
 .vscode
+.nuxt
 .DS_Store
 node_modules/
 config/config.prod.js
