@@ -1,6 +1,12 @@
+.idea*
+.vscode
+.DS_Store
 node_modules/
 config/config.prod.js
-npm-debug.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
 
 mongodb.cmd
 mongodb.conf
