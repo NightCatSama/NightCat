@@ -12,7 +12,7 @@ const nuxt = new Nuxt(config)
 
 router
 	.post('/list', admin.list) // 获取用户列表
-  .get(['admin/', '/admin/', '/admin/*'], nuxt.render)
+  .get('/admin/*', nuxt.render)
 
 // Build only in dev mode
 if (config.dev) {
