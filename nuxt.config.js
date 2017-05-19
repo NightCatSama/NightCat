@@ -1,8 +1,10 @@
+import path from 'path'
+
 module.exports = {
   dev: process.env.NODE_ENV !== 'production',
   srcDir: __dirname + '/admin/',
   router: {
-    base: '/admin'
+    base: '/admin/'
   },
   /*
   ** Headers of the page
@@ -38,6 +40,10 @@ module.exports = {
           loader: 'eslint-loader',
           exclude: /(node_modules)/
         })
+        // config.output.publicPath = '/admin/_nuxt/'
+      }
+      if (ctx.isServer) {
+        // config.output.publicPath = '/admin/_nuxt/'
       }
     }
   }

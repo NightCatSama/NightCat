@@ -25,8 +25,9 @@ const MongoStore = connect(session)
 
 const relative = (_path) => path.relative(__dirname, _path)
 
- /*  前端的文件public路径  */
+ /*  静态文件路径  */
 app.set('frone_views', relative('./view/dist/'))
+app.set('admin_views', relative('./admin/_nuxt/'))
 
 app.use(favicon(relative('favicon.ico')))
 
@@ -50,7 +51,7 @@ app.use(session({
 }))
 
 /* nuxt */
-app.use('/admin/', admin_router)
+app.use('/', admin_router)
 
 /* front end */
 app.use(express.static(app.get('frone_views')))

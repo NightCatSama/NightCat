@@ -1,4 +1,4 @@
-import { setStaticOnBack } from '../middlewares/request'
+import { getStaticFileOnAdmin } from '../middlewares/request'
 import { userAdminRequired } from '../middlewares/auth'
 import ctr from '../controllers'
 import express from 'express'
@@ -12,7 +12,7 @@ const nuxt = new Nuxt(config)
 
 router
 	.post('/list', admin.list) // 获取用户列表
-  .use(nuxt.render)
+  .get(['admin/', '/admin/', '/admin/*'], nuxt.render)
 
 // Build only in dev mode
 if (config.dev) {
