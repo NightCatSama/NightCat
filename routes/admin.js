@@ -1,4 +1,4 @@
-import { setStaticOnBack } from '../middlewares/request'
+import { getStaticFileOnAdmin } from '../middlewares/request'
 import { userAdminRequired } from '../middlewares/auth'
 import ctr from '../controllers'
 import express from 'express'

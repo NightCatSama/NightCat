@@ -1,7 +1,5 @@
 import { User } from '../proxy'
 import { formatDate } from '../common/utils'
-import express from 'express'
-import hbs from 'express-hbs'
 
 export default {
 	/*  跳转后台登陆页面  */
@@ -12,9 +10,6 @@ export default {
 	},
 	/*  后台管理页面  */
 	index: async(req, res) => {
-		hbs.registerHelper('format', (date, option) => {
-			return formatDate(date, 'yyyy-MM-dd hh:mm:ss')
-		})
 		await User.getUsers()
 			.then((data) => {
 				res.render('index', {
