@@ -5,7 +5,6 @@
   "description": "A personal website",
   "scripts": {
     "start": "nodemon es/",
-    "admin": "node es/",
     "deploy": "pm2 start es/index.prod.js"
   },
   "author": "NightCatSama (642163903@qq.com)",
@@ -31,11 +30,7 @@
     "serve-favicon": "~2.3.0",
     "socket.io": "^1.7.2",
     "uuid": "^3.0.1",
-    "validator": "^6.2.1",
-    "axios": "^0.16.1",
-    "cross-env": "^4.0.0",
-    "nuxt": "~0.10.6",
-    "source-map-support": "^0.4.14"
+    "validator": "^6.2.1"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",
@@ -44,16 +39,6 @@
     "babel-preset-stage-2": "^6.18.0",
     "errorhandler": "^1.5.0",
     "nodemon": "^1.11.0",
-    "opn": "^4.0.2",
-    "babel-eslint": "^7.1.1",
-    "backpack-core": "^0.3.0",
-    "eslint": "^3.13.1",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-loader": "^1.7.1",
-    "eslint-plugin-html": "^2.0.1",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-node": "^4.2.2",
-    "eslint-plugin-promise": "^3.4.0",
-    "eslint-plugin-standard": "^3.0.1"
+    "opn": "^4.0.2"
   }
 }

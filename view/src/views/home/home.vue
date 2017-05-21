@@ -31,6 +31,8 @@ export default {
   .home-view {
     height: 100vh;
     @include flex-center;
+    background-color: rgb(52, 52, 52);
+    overflow: hidden;
 
     .canvas-bg {
       width: 100%;

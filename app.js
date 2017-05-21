@@ -50,7 +50,7 @@ app.use(session({
 }))
 
 /* nuxt */
-app.use('/admin/', admin_router)
+// app.use('/admin/', admin_router)
 
 /* front end */
 app.use(express.static(app.get('frone_views')))
