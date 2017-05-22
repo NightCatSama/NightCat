@@ -1,2 +1,0 @@
-define([],function(){"use strict";console.log(123)});
-//# sourceMappingURL=data:application/json;charset=utf8;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbImluZGV4LmpzIl0sIm5hbWVzIjpbImNvbnNvbGUiLCJsb2ciXSwibWFwcGluZ3MiOiJpQ0FDQUEsU0FBUUMsSUFBSSIsImZpbGUiOiJpbmRleC5qcyIsInNvdXJjZXNDb250ZW50IjpbImxldCBhID0gMTIzO1xyXG5jb25zb2xlLmxvZygxMjMpIl19
