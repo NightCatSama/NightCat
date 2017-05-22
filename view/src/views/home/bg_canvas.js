@@ -57,6 +57,7 @@ export default class Canvas {
     this.width = this.canvas.width = this.canvas.offsetWidth
     this.height = this.canvas.height = this.canvas.offsetHeight
     this.bounds = this.canvas.getBoundingClientRect()
+    this.mirrorRange = Math.max(this.r_range[1] * 2, this.line_range)
   }
   loadFont () {
     if (!this.fontFamily || typeof FontFace === 'undefined') {
@@ -64,7 +65,6 @@ export default class Canvas {
       return false
     }
 
-    console.log(123)
     let font = new FontFace(this.fontFamily.name, `url(${this.fontFamily.url})`)
     font.load().then((font) => {
       document.fonts.add(font)
@@ -156,16 +156,18 @@ export default class Canvas {
       vx: this.getRandomNumber(this.speed),  // 水平方向加速度
       vy: this.getRandomNumber(this.speed),  // 垂直方向加速度
       opacity: this.getRandomNumber(this.opacity), // 透明度
-      is_infect: false,  // 是否被鼠标颜色感染
+      is_infect: false,  // 是否进入鼠标范围
       type: ~~this.getRandomNumber([0, 3]),  // 小球类型[-1:鼠标, 0:实心球, 1:圆环, 2:双环]
       reverse: false, // 是否反向颜色渐变
       withMouse: 0  // 与鼠标位置的关系  [0:范围外, 1:范围内, 2:球中]
     }
 
+    //  半径由透明度决定（越谈越大）
     ball.r = (1 - ball.opacity) * (this.r_range[1] - this.r_range[0]) + this.r_range[0]
     ball.x = this.getRandomNumber([ball.r, this.width - ball.r])
     ball.y = this.getRandomNumber([ball.r, this.height - ball.r])
 
+    //  判断是否重合，重合则重新加
     if (this.isOverlap(ball)) {
       return this.addBall()
     }
@@ -210,7 +212,7 @@ export default class Canvas {
   }
   //  判断位置生成镜像球
   addMirrorBalls (ball) {
-    let range = this.r_range[1] * 4
+    let range = this.mirrorRange
     let balls = []
     const newPos = {}
     if (ball.x < range) {
@@ -357,10 +359,6 @@ export default class Canvas {
       this.renderTypeArc(x, y, ball.r, this.getRGBA(color, ball.opacity), ball.emptyR, ball.sonR)
     }
   }
-  resetColorList (ball) {
-    ball.cur_i = 0
-    ball.reverse = false
-  }
   //  处理两球碰撞
   crashHandle (b1, b2) {
     let deg = Math.atan2(b2.y - b1.y, b2.x - b1.x)
@@ -451,9 +449,11 @@ export default class Canvas {
   //  更新颜色
   updateGradientData (ball) {
     let index
+    //  颜色停留时间
+    let pauseTime = ball.ColorGroup[ball.cur_color][3]
 
-    if (ball.ColorGroup[ball.cur_color][3]) {
-      let v = ball.ColorGroup[ball.cur_color][3] / 16.7
+    if (pauseTime) {
+      let v = pauseTime / 16.7
       if (ball.cur_i <= v) {
         ball.cur_i += 1
         return false
@@ -472,6 +472,7 @@ export default class Canvas {
       return false
     }
 
+    //  更新颜色
     ball.color = ball.color.map((n, i) => {
       if (index >= ball.ColorList.length) {
         ball.cur_i = index = 0
@@ -487,6 +488,7 @@ export default class Canvas {
       return ball.ColorList.length ? ball.ColorList[index][i] : n
     })
   }
+  //  根据颜色数组获取rgba颜色字符串
   getRGBA (color, opacity = 1) {
     return color === 'transparent' ? color : `rgba(${~~color[0]}, ${~~color[1]}, ${~~color[2]}, ${opacity})`
   }
@@ -494,6 +496,7 @@ export default class Canvas {
   getRandomNumber ([min, max], decimal) {
     return (Math.random() * (max - min)) + min
   }
+  //  画各种类型的圆
   renderTypeArc (x, y, r, color, innerR, centerR) {
     this.cxt.fillStyle = color
 
