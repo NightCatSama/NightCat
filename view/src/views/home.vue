@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Canvas from './bg_canvas'
+import Canvas from '@/assets/bg_canvas'
 
 export default {
   name: 'home',
@@ -26,7 +26,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-  @import '../../style/index';
+  @import '../style/index';
 
   .home-view {
     height: 100vh;
