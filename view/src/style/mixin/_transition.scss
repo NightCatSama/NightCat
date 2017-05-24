@@ -1,0 +1,100 @@
+// bounce
+@mixin bounce($prefix: '', $enter_time: .5s, $leave_time: .2s) {
+  .#{$prefix}bounce-enter-active {
+    animation: bounce-in $enter_time;
+  }
+  .#{$prefix}bounce-leave-active {
+    animation: bounce-out $leave_time;
+  }
+  @keyframes bounce-in {
+    0% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.05);
+    }
+    100% {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  @keyframes bounce-out {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+  }
+}
+
+// fade
+@mixin fade($prefix: '', $time: .5s) {
+  .#{$prefix}fade-enter-active {
+    animation: fade-in $time;
+  }
+  .#{$prefix}fade-leave-active {
+    animation: fade-out $time;
+  }
+  @keyframes fade-in {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  @keyframes fade-out {
+    0% {
+      opacity: 1;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+// slide-up
+@mixin slide-up($prefix: '', $time: .5s) {
+  .#{$prefix}slide-up-enter, .#{$prefix}slide-up-leave-to {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  .#{$prefix}slide-up-enter-active, .#{$prefix}slide-up-leave-active {
+    transition: transform _time ease, opacity _time ease;
+  }
+}
+
+// slide-down
+@mixin slide-down($prefix: '', $time: .5s) {
+  .#{$prefix}slide-down-enter, .#{$prefix}slide-down-leave-to {
+    transform: translateY(-30px);
+    opacity: 0;
+  }
+  .#{$prefix}slide-down-enter-active, .#{$prefix}slide-down-leave-active {
+    transition: transform _time ease, opacity _time ease;
+  }
+}
+// slide-left
+@mixin slide-left($prefix: '', $time: .5s) {
+  .#{$prefix}slide-left-enter, .#{$prefix}slide-left-leave-to {
+    transform: translateX(30px);
+    opacity: 0;
+  }
+  .#{$prefix}slide-left-enter-active, .#{$prefix}slide-left-leave-active {
+    transition: transform _time ease, opacity _time ease;
+  }
+}
+// slide-right
+@mixin slide-right($prefix: '', $time: .5s) {
+  .#{$prefix}slide-right-enter, .#{$prefix}slide-right-leave-to {
+    transform: translateX(-30px);
+    opacity: 0;
+  }
+  .#{$prefix}slide-right-enter-active, .#{$prefix}slide-right-leave-active {
+    transition: transform _time ease, opacity _time ease;
+  }
+}

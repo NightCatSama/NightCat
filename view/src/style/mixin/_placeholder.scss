@@ -1,0 +1,15 @@
+//  占位符
+@mixin placeholder($color: #CCC, $font-size: inherit) {
+    &::-moz-placeholder {
+        color: $color;
+        font-size: $font-size;
+    }
+    &:-ms-input-placeholder {
+        color: $color;
+        font-size: $font-size;
+    }
+    &::-webkit-input-placeholder {
+        color: $color;
+        font-size: $font-size;
+    }
+}

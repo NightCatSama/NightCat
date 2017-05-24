@@ -6,6 +6,10 @@ module.exports = {
   parserOptions: {
     sourceType: 'module'
   },
+  globals: {
+    "prefixCls": true,
+    "axios": true
+  },
   env: {
     browser: true,
   },
