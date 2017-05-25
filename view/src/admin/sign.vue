@@ -120,34 +120,19 @@ export default {
       vm.status = val.length >= 6 ? 'normal' : 'error'
       vm.process = val.length / 6 * 100
 
-      if (isByteLength(val, { min: 6, max: 20 }) && isAlphanumeric(val)) {
-        return true
-      }
-      else {
-        return false
-      }
+      return isByteLength(val, { min: 6, max: 20 }) && isAlphanumeric(val)
     },
     passwordIsRight (val, vm) {
       vm.status = val.length >= 6 ? 'normal' : 'error'
       vm.process = val.length / 6 * 100
 
-      if (isByteLength(val, { min: 6 }) && isAlphanumeric(val)) {
-        return true
-      }
-      else {
-        return false
-      }
+      return isByteLength(val, { min: 6 }) && isAlphanumeric(val)
     },
     passwordIsEqual (val, vm) {
       vm.status = val === this.password ? 'normal' : 'error'
       vm.process = val ? 100 : 0
 
-      if (val === this.password) {
-        return true
-      }
-      else {
-        return false
-      }
+      return val === this.password
     },
     login () {
       this.$http.post('/signin', {
