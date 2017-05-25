@@ -12,6 +12,7 @@ const game = ctr.game
 
 router
 	.use(allowCrossDomain)
+	.get('/github', sign.signinByGithub) // 账号激活
 	.get('/activeAccount', sign.activeAccount) // 账号激活
 	.post('/signin', sign.signin)  //  登录
 	.post('/signout', sign.signout)  //  退出登录

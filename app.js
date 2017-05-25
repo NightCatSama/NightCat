@@ -27,7 +27,6 @@ const relative = (_path) => path.relative(__dirname, _path)
 
  /*  静态文件路径  */
 app.set('frone_views', relative('./view/dist/'))
-app.set('admin_views', relative('./admin/_nuxt/'))
 
 app.use(favicon(relative('favicon.ico')))
 
@@ -52,6 +51,7 @@ app.use(session({
 
 /* front end */
 app.use(express.static(app.get('frone_views')))
+app.use('/admin', admin_router)
 app.use('/', router)
 
 // error handler

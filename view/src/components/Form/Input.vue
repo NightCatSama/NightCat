@@ -2,15 +2,19 @@
   <div :class="wrap_class">
     <label :for="name" :class="label_class">{{ label }}</label>
     <input
+      ref="input"
       :id="name"
       :class="input_class"
       :type="type"
       :value="val"
+      :disabled="disabled"
+      :readonly="readonly"
       @input="inputHandle"
       @focus="_focus"
       @blur="_blur"
+      @keyup.enter="$emit('enter')"
       :placeholder="in_placeholder" />
-    <span :class="progress_class" :style="{ width: process + '%' }"></span>
+    <span :class="progress_class" :style="{ width: Math.min(process, 100) + '%' }"></span>
   </div>
 </template>
 
@@ -29,9 +33,12 @@
         type: String,
         required: true
       },
+      disabled: Boolean,
+      readonly: Boolean,
       id: String,
       placeholder: String,
       value: String,
+      filter: Function,
       verify: Function
     },
     data () {
@@ -44,7 +51,13 @@
     },
     watch: {
       val (val) {
+        if (this.verify) {
+          this.$emit('update:complete', this.verify(val, this))
+        }
         this.$emit('input', val)
+      },
+      value (val) {
+        this.val = val
       }
     },
     computed: {
@@ -81,7 +94,7 @@
     methods: {
       inputHandle (e) {
         let val = e.target.value
-        this.val = this.verify ? this.verify(val, this) : val
+        this.val = e.target.value = this.filter ? this.filter(val) : val
       },
       _focus (e) {
         this.$emit('focus')
@@ -93,7 +106,7 @@
       }
     },
     mounted () {
-      this.val = this.verify ? this.verify(this.val, this) : this.val
+      this.val = this.filter ? this.filter(this.val) : this.val
     }
   }
 </script>
@@ -138,8 +151,13 @@
 
     @include placeholder($placeholder, 13px);
 
+    [disabled] {
+      opacity: .3;
+      cursor: not-allowed;
+    }
+
     &:-webkit-autofill {
-      -webkit-text-fill-color: $white;
+      -webkit-text-fill-color: $font;
       -webkit-box-shadow: 0 0 0px 1000px $white inset;
     }
   }
@@ -153,13 +171,13 @@
     transition: width .3s;
 
     &.normal {
-      background-color: $blue;
+      background-color: $blue_l3;
     }
     &.error {
-      background-color: $red;
+      background-color: $red_l3;
     }
     &.success {
-      background-color: $green;
+      background-color: $green_l3;
     }
   }
 </style>

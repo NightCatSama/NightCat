@@ -18,7 +18,7 @@ else {
 export default new Router({
   mode: 'history',
   routes: [
-    Routes,
+    ...Routes,
     AdminRoutes
   ]
 })

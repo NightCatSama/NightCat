@@ -25,10 +25,10 @@ let userSchema = new Schema({
 		default: ''
 	},
 	/*  头像  */
-    avatar: {
-        type: String
-    },
-    /*  注册时间  */
+  avatar: {
+      type: String
+  },
+  /*  注册时间  */
 	created_at: {
 		type: Date,
 		default: Date.now
@@ -67,6 +67,11 @@ let userSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	/*  是否重置密码  */
+	resetPwd: {
+		type: Boolean,
+		default: false
+	},
 	gameData: {
 		all_count: {
 			type: Number,
@@ -84,7 +89,7 @@ let userSchema = new Schema({
 })
 
 userSchema.index({ account: 1 }, { unique: true, sparse: true })
-userSchema.index({ email: 1 }, { unique: true, sparse: true })
+// userSchema.index({ email: 1 }, { unique: true, sparse: true })
 userSchema.index({ accessToken: 1 })
 
 userSchema.pre('save', (next) => {

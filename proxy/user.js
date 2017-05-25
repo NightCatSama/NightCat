@@ -38,13 +38,16 @@ export const getUserByAccessToken = async(accessToken) => {
  /*  生成新用户  */
 export const newAndSave = async(data) => {
 	let u = new user()
-	u.name = data.account
+	u.name = data.name || data.account
 	u.account = data.account
 	u.password = data.password
+	u.resetPwd = !!data.resetPwd
+	u.profile = data.profile
+	u.location = data.location,
 	u.email = data.email
 	u.github = data.github
-	u.avatar = getGravatar(data.email)
-	u.active = data.active || false
+	u.avatar = data.avatar || getGravatar(data.email || '')
+	u.active = !!data.active
 	u.accessToken = uuid.v4()
 	return await u.save()
 }

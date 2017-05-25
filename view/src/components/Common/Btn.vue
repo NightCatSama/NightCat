@@ -1,5 +1,5 @@
 <template>
-  <button :type="type" :class="component_class" @click="handleClick">
+  <button :type="type" :class="component_class" @click="handleClick" :disabled="disabled">
     <Icon v-if="is_loading" name="loading" :rotate="true"></Icon>
     <Icon v-if="!is_loading && prefix" :name="prefix"></Icon>
     <span v-if="loading_text">
@@ -83,17 +83,13 @@
       border-color: darken($default, 25%);
     }
 
-    &:active {
+    &:not(.disabled):active {
       border-color: darken($default, 10%);
     }
 
     &.disabled {
       opacity: .3;
       cursor: not-allowed;
-
-      &:active {
-        box-shadow: none;
-      }
     }
   }
 

@@ -1,5 +1,6 @@
 const Admin = r => require.ensure([], () => r(require('@/admin/index')), 'admin')
-const Login = r => require.ensure([], () => r(require('@/admin/login')), 'admin')
+const Sign = r => require.ensure([], () => r(require('@/admin/sign')), 'admin-sign')
+const Home = r => require.ensure([], () => r(require('@/admin/home')), 'admin-home')
 
 export default {
   path: '/admin',
@@ -7,8 +8,15 @@ export default {
   component: Admin,
   children: [{
     path: '',
+    name: 'Admin-Home',
+    component: Home
+  }, {
+    path: 'login',
     name: 'Admin-Login',
-    component: Login
+    component: Sign
+  }, {
+    path: 'register',
+    name: 'Admin-Register',
+    component: Sign
   }]
 }
-
