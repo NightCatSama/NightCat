@@ -4,7 +4,8 @@ import config from '@/config'
 const createInstance = () => {
   let instance = axios.create({
     baseURL: config.host,
-    withCredentials: config.withCredentials
+    withCredentials: config.withCredentials,
+    headers: {'Content-Type': 'application/json'}
   })
 
   /*  请求拦截  */

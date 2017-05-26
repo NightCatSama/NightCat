@@ -14,6 +14,7 @@ const setStaticOnFront = async(req, res, next) => {
 	app.use(express.static(app.get('frone_views')))
 	next()
 }
+
 export {
 	setStaticOnFront,
 	getStaticFileOnAdmin

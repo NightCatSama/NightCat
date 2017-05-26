@@ -8,6 +8,7 @@
           type="password"
           label="Password"
           :verify="passwordIsRight"
+          :complete.sync="pwdPass"
           >
         </Input>
         <Icon name="right-circle" :size="18" class="next-icon" @click.native="setPwd"></Icon>
@@ -30,20 +31,25 @@ export default {
   },
   methods: {
     setPwd () {
-      if (this.pwdPass) {
-        console.log(123)
+      if (!this.pwdPass) {
+        this.$http.post('/graphql', {
+          query: `mutation RootMutationType {
+            setPassword (password: "${this.password}") {
+              success
+            }
+          }`
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((err) => console.log(err))
       }
     },
     passwordIsRight (val, vm) {
       vm.status = val.length >= 6 ? 'normal' : 'error'
       vm.process = val.length / 6 * 100
 
-      if (isByteLength(val, { min: 6 }) && isAlphanumeric(val)) {
-        return true
-      }
-      else {
-        return false
-      }
+      return isByteLength(val, { min: 6 }) && isAlphanumeric(val)
     }
   }
 }

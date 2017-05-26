@@ -5,6 +5,7 @@ import morgan from 'morgan'
 import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import session from 'express-session'
+import graphqlHTTP from 'express-graphql'
 import config from './config'
 import errorhandler from 'errorhandler'
 import connect from 'connect-mongo'
@@ -15,6 +16,9 @@ import router from './routes'
 import admin_router from './routes/admin'
 
 import socket from './socket'
+import { graphql } from 'graphql'
+import { getRootValue } from './middlewares/graphql'
+import schema from './graphQL'
 
 const app = express()
 
@@ -32,6 +36,11 @@ app.use(favicon(relative('favicon.ico')))
 
 app.use(morgan('dev'))
 app.use(bodyParser.json())
+
+app.use(bodyParser.text({
+	type: 'application/graphql'
+}))
+
 app.use(bodyParser.urlencoded({
 	extended: true
 }))
@@ -53,6 +62,20 @@ app.use(session({
 app.use(express.static(app.get('frone_views')))
 app.use('/admin', admin_router)
 app.use('/', router)
+
+/* graphQL */
+app.post('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
+	schema: schema,
+	pretty: true,
+	rootValue: await getRootValue(request),
+	graphql: true,
+	formatError: (error) => ({
+	  message: error.message,
+	  locations: error.locations,
+	  stack: error.stack,
+	  path: error.path
+	})
+})))
 
 // error handler
 if (config.debug) {

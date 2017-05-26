@@ -58,7 +58,6 @@
       <!-- Other -->
       <div v-if="type === 'other'" class="form">
         <Btn class="sign-btn" @click="loginByGithub">Github</Btn>
-        <Btn class="sign-btn">Email</Btn>
       </div>
 
       <!-- 导航 -->
@@ -173,7 +172,7 @@ export default {
       })
     },
     loginByGithub () {
-      window.location = `https://github.com/login/oauth/authorize?client_id=${config.github.clientId}&redirect_uri=${config.host + '/github'}&state=admin`
+      window.location = `https://github.com/login/oauth/authorize?client_id=${config.github.clientId}&state=admin&scope=user`
     }
   }
 }

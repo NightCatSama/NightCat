@@ -89,7 +89,6 @@ let userSchema = new Schema({
 })
 
 userSchema.index({ account: 1 }, { unique: true, sparse: true })
-// userSchema.index({ email: 1 }, { unique: true, sparse: true })
 userSchema.index({ accessToken: 1 })
 
 userSchema.pre('save', (next) => {

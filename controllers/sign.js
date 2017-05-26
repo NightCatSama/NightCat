@@ -130,12 +130,10 @@ export default {
 		let access_token
 
 		//  得到github的access_token
-		await axios.get('https://github.com/login/oauth/access_token', {
-			params: {
-				code,
-				client_id: clientId,
-				client_secret: clientSecret
-			}
+		await axios.post('https://github.com/login/oauth/access_token', {
+			code,
+			client_id: clientId,
+			client_secret: clientSecret
 		})
 		.then((res) => {
 			 access_token = res.data.split('&')[0].split('=')[1]
@@ -148,17 +146,35 @@ export default {
 			})
 		})
 
-		let userData
 		//  根据access_token获取用户数据
-		await axios.get('https://api.github.com/user?access_token=' + access_token)
-		.then((res) => {
-			userData = res.data
+		let userData = await axios.post('https://api.github.com/graphql', {
+			query: `
+			query {
+				viewer {
+					login,
+					name,
+					email,
+					bio,
+					url,
+					avatarUrl,
+					location
+				}
+			}`
+		}, {
+			headers: {
+				Authorization: `bearer ${access_token}`
+			}
 		})
+		.catch(err => next(err))
+
+		userData = userData.data.data.viewer
 
 		//  判断用户名是否已注册
+		let is_exist = false
 		await User.getUserByAccount(userData.login)
 		.then((user) => {
 			if (user) {
+				is_exist = true
 				let token = utils.signToken(user.account)
 				req.session.token = token
 				req.session.is_admin = user.admin
@@ -167,6 +183,11 @@ export default {
 					.redirect(`/${state}`)
 			}
 		})
+		.catch(err => next(err))
+
+		if (is_exist) {
+			return false
+		}
 
 		let userInfo = {
 			name: userData.name,
@@ -203,8 +224,6 @@ export default {
 	resetPwd: async(req, res, next) => {
 		let newPwd = req.body.password
 		let accessToken = req.header.accesstoken
-
-		console.log(newPwd, accessToken)
 	},
 
 

@@ -51,9 +51,7 @@
     },
     watch: {
       val (val) {
-        if (this.verify) {
-          this.$emit('update:complete', this.verify(val, this))
-        }
+        this.is_complete(val)
         this.$emit('input', val)
       },
       value (val) {
@@ -96,6 +94,11 @@
         let val = e.target.value
         this.val = e.target.value = this.filter ? this.filter(val) : val
       },
+      is_complete (val) {
+        if (this.verify) {
+          this.$emit('update:complete', this.verify(val, this))
+        }
+      },
       _focus (e) {
         this.$emit('focus')
         this.is_focus = true
@@ -107,6 +110,7 @@
     },
     mounted () {
       this.val = this.filter ? this.filter(this.val) : this.val
+      this.is_complete(this.val)
     }
   }
 </script>
