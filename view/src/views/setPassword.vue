@@ -31,19 +31,14 @@ export default {
   },
   methods: {
     setPwd () {
-      if (!this.pwdPass) {
-        this.$http.post('/graphql', {
-          query: `mutation RootMutationType {
-            setPassword (password: "${this.password}") {
-              success
-            }
-          }`
-        })
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((err) => console.log(err))
-      }
+      this.$graphql.mutation('setPassword', {
+        access_token: 'f863c578-f7d0-41f5-8e0c-90e5184e95fe',
+        password: 'NewPwd'
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((err) => console.log(err))
     },
     passwordIsRight (val, vm) {
       vm.status = val.length >= 6 ? 'normal' : 'error'

@@ -10,6 +10,7 @@ import User from '../../models/user.js';
 import { getUsers, getUserByAccount } from '../../proxy/user.js'
 
 let UserMutation = {
+  //  修改名字
   resetName: {
     type: UserType,
     description: 'modify user name',
@@ -34,6 +35,27 @@ let UserMutation = {
       })
     }
   },
+
+  //  重置密码
+  setPassword: {
+    type: UserType,
+    description: 'modify user password',
+    args: {
+      password: {
+        type: new GraphQLNonNull(GraphQLString),
+        description: 'new password'
+      }
+    },
+    resolve: async(root, { password }) => {
+      console.log(root)
+      return {
+        name: 'fuck'
+      }
+    }
+  },
+
+
+  //  移除用户
   removeUser: {
     type: UserType,
     description: 'remove user',

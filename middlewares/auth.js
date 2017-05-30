@@ -22,6 +22,7 @@ export const userRequired = (req, res, next) => {
 
 /*  需要管理员权限  */
 export const userAdminRequired = (req, res, next) => {
+	console.log(req.path)
 	if (req.path === '/login' || req.path === '/register') {
 		return next()
 	}

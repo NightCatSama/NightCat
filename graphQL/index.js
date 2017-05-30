@@ -19,7 +19,8 @@ const schema = new GraphQLSchema({
     name: 'RootMutationType',
     fields: {
       resetName: UserMutation.resetName,
-      removeUser: UserMutation.removeUser
+      removeUser: UserMutation.removeUser,
+      setPassword: UserMutation.setPassword
     }
   })
 })

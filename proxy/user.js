@@ -29,9 +29,9 @@ export const getUserByEmail = async(email) => {
 }
 
  /*  根据access_token查找用户  */
-export const getUserByAccessToken = async(accessToken) => {
+export const getUserByAccessToken = async(access_token) => {
 	return await user.findOne({
-		accessToken: accessToken
+		access_token: access_token
 	})
 }
 
@@ -48,7 +48,7 @@ export const newAndSave = async(data) => {
 	u.github = data.github
 	u.avatar = data.avatar || getGravatar(data.email || '')
 	u.active = !!data.active
-	u.accessToken = uuid.v4()
+	u.access_token = uuid.v4()
 	return await u.save()
 }
 

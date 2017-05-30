@@ -1,7 +1,7 @@
 import axios from 'axios'
 import config from '@/config'
 
-const createInstance = () => {
+const createInstance = (store) => {
   let instance = axios.create({
     baseURL: config.host,
     withCredentials: config.withCredentials,
@@ -14,6 +14,7 @@ const createInstance = () => {
       if (config.log_request) {
         console.log('// request --------------')
         console.log(req)
+        console.log('// ----------------------')
       }
       return req
     })
@@ -24,6 +25,7 @@ const createInstance = () => {
       if (config.log_response) {
         console.log('// response --------------')
         console.log(res.data)
+        console.log('// -----------------------')
       }
       return res.data
     },

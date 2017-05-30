@@ -40,7 +40,7 @@ export const returnUserData = (user) => {
 			gameData: user.gameData,
 			avatar: user.avatar
 		},
-		accessToken: user.accessToken,
+		access_token: user.access_token
 	}
 }
 

@@ -1,24 +1,42 @@
 import Vue from 'vue'
-import Router from 'vue-router'
+import VueRouter from 'vue-router'
+import View from '@/views'
 
-Vue.use(Router)
+Vue.use(VueRouter)
 
-let Routes, AdminRoutes
+const createRouter = (store) => {
+  let Routes, AdminRoutes
 
-//  根据开发/生产环境是否开启路由懒加载
-if (process.env.NODE_ENV === 'production') {
-  Routes = require('./routes.prod').default
-  AdminRoutes = require('./routes.admin.prod').default
+  //  根据开发/生产环境是否开启路由懒加载
+  if (process.env.NODE_ENV === 'production') {
+    Routes = require('./routes.prod').default
+    AdminRoutes = require('./routes.admin.prod').default
+  }
+  else {
+    Routes = require('./routes.dev').default
+    AdminRoutes = require('./routes.admin.dev').default
+  }
+
+  let router = new VueRouter({
+    mode: 'history',
+    routes: [{
+      path: '/',
+      component: View,
+      children: [
+        ...Routes,
+        AdminRoutes
+      ],
+      beforeEnter: (to, from, next) => {
+        if (store.state.is_login) {
+          next()
+        }
+        next()
+      }
+    }]
+  })
+
+  return router
 }
-else {
-  Routes = require('./routes.dev').default
-  AdminRoutes = require('./routes.admin.dev').default
-}
 
-export default new Router({
-  mode: 'history',
-  routes: [
-    ...Routes,
-    AdminRoutes
-  ]
-})
+export default createRouter
+

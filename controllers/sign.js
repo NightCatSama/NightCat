@@ -204,6 +204,10 @@ export default {
 		//  如果未注册则直接注册
 		await User.newAndSave(userInfo)
 		.then((user) => {
+			let token = utils.signToken(user.account)
+			req.session.token = token
+			req.session.is_admin = user.admin
+			
 			return res.status(302)
 				.redirect('/setPassword')
 		})
@@ -223,7 +227,7 @@ export default {
 	/*  重置密码  */
 	resetPwd: async(req, res, next) => {
 		let newPwd = req.body.password
-		let accessToken = req.header.accesstoken
+		let access_token = req.header.access_token
 	},
 
 

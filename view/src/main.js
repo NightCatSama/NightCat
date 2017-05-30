@@ -1,19 +1,25 @@
 import Vue from 'vue'
 import App from './App'
-import router from './router'
+import createRouter from './router'
+import GraphQL from './assets/graphql'
 
 import createInstance from './http'
-// import store from './store'
+import store from './store'
 import Components from './components'
 
-Vue.use(Components)
-Vue.config.productionTip = false
+let router = createRouter(store)
+let axios = createInstance(store)
+Vue.prototype.$http = axios
 
-Vue.prototype.$http = createInstance()
+Vue.use(Components)
+Vue.use(GraphQL, axios)
+
+Vue.config.productionTip = false
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  store,
   router,
   template: '<App/>',
   components: { App }

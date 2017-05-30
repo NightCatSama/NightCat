@@ -143,15 +143,15 @@ export default {
           this.$toast('非管理员身份', 'error')
         }
         else {
-          this.$toast(res.message, {
-            type: 'success',
-            callback: () => {
-              console.log(this.$router)
-              this.$router.replace({
-                name: 'Admin-Home'
-              })
-            }
-          })
+          return console.log(res)
+          // this.$toast(res.message, {
+          //   type: 'success',
+          //   callback: () => {
+          //     this.$router.replace({
+          //       name: 'Admin-Home'
+          //     })
+          //   }
+          // })
         }
       })
       .catch((err) => {

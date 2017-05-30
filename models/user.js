@@ -59,7 +59,7 @@ let userSchema = new Schema({
 		default: false
 	},
 	/*  令牌  */
-	accessToken: {
+	access_token: {
 		type: String
 	},
 	/*  是否管理员  */
@@ -89,7 +89,7 @@ let userSchema = new Schema({
 })
 
 userSchema.index({ account: 1 }, { unique: true, sparse: true })
-userSchema.index({ accessToken: 1 })
+userSchema.index({ access_token: 1 })
 
 userSchema.pre('save', (next) => {
 	var now = new Date()
