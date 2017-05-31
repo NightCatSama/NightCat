@@ -4,10 +4,10 @@ let Schema = mongoose.Schema
 
 let userSchema = new Schema({
 	/*  昵称  */
-    name: {
-        type: String,
-    },
-    /*  账号  */
+  name: {
+      type: String,
+  },
+  /*  账号  */
 	account: {
 		type: String,
 	},

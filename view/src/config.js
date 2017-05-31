@@ -8,7 +8,7 @@ if (process.env.NODE_ENV === 'development') {
     /*  http 配置 */
     withCredentials: true,
     host: 'http://localhost:3000',
-    log_request: true,
+    log_request: false,
     log_response: true,
 
     /* github登录 */

@@ -10,7 +10,6 @@ export const signinRequire = (req, res, next) => {
 	next()
 }
 
-
 /*  未登录跳转到登录页  */
 export const userRequired = (req, res, next) => {
 	if (!req.session || !req.session.token) {

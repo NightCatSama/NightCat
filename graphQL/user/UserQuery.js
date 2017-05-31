@@ -14,8 +14,7 @@ let UserQuery = {
   users: {
     type: new GraphQLList(UserType),
     descriptions: 'All users info',
-    resolve: (root) => {
-      console.log(root)
+    resolve: (user) => {
       return getUsers()
     }
   },
@@ -27,19 +26,10 @@ let UserQuery = {
         type: new GraphQLNonNull(GraphQLString)
       }
     },
-    resolve: (root, { account }) => {
-      console.log(root)
-      console.log(account)
+    resolve: (user, { account }) => {
       return getUserByAccount(account)
     }
-  },
-  count: {
-    type: new GraphQLNonNull(GraphQLInt),
-    descriptions: 'test',
-    resolve: () => {
-      return 123
-    }
-  },
+  }
 };
 
 

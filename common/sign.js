@@ -29,7 +29,7 @@ export const verifyToken = (token) => {
 export const returnUserData = (user) => {
 	return {
 		is_admin: user.admin,
-		userInfo: {
+		user_info: {
 			account: user.account,
 			email: user.email,
 			name: user.name,
@@ -39,8 +39,7 @@ export const returnUserData = (user) => {
 			profile: user.profile,
 			gameData: user.gameData,
 			avatar: user.avatar
-		},
-		access_token: user.access_token
+		}
 	}
 }
 

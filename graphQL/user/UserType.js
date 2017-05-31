@@ -22,6 +22,14 @@ let UserType = new GraphQLObjectType({
       type: GraphQLString,
       description: 'user name'
     },
+    email: {
+      type: GraphQLString,
+      description: 'user email'
+    },
+    avatar: {
+      type: GraphQLString,
+      description: 'user avatar'
+    },
     password: {
       type: GraphQLString,
       description: 'user password'

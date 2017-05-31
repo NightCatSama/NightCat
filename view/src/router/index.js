@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import { createInstance } from '@/http'
 import View from '@/views'
 
 Vue.use(VueRouter)
@@ -26,14 +27,24 @@ const createRouter = (store) => {
         ...Routes,
         AdminRoutes
       ],
-      beforeEnter: (to, from, next) => {
-        if (store.state.is_login) {
-          next()
-        }
-        next()
-      }
+      beforeEnter: autoLogin
     }]
   })
+
+  // 进入页面判断自动登录
+  function autoLogin (to, from, next) {
+    if (store.state.is_login) {
+      return next()
+    }
+
+    createInstance(store).post('/verify', {})
+      .then((res) => {
+        let data = res.data
+        store.commit('setSignStatus', data)
+        next()
+      })
+      .catch(() => next())
+  }
 
   return router
 }

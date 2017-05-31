@@ -10,7 +10,7 @@ import User from '../../models/user.js';
 import { getUsers, getUserByAccount } from '../../proxy/user.js'
 
 let UserMutation = {
-  //  修改名字
+  // 修改名字
   resetName: {
     type: UserType,
     description: 'modify user name',
@@ -36,7 +36,7 @@ let UserMutation = {
     }
   },
 
-  //  重置密码
+  // 重置密码
   setPassword: {
     type: UserType,
     description: 'modify user password',
@@ -46,16 +46,28 @@ let UserMutation = {
         description: 'new password'
       }
     },
-    resolve: async(root, { password }) => {
-      console.log(root)
-      return {
-        name: 'fuck'
+    resolve: async(user, { password }, req, res) => {
+      console.log(res)
+      if (!user) {
+        throw Error('请先登录')
+        return false
       }
+
+      if (!user.resetPwd) {
+        throw Error('无法修改密码')
+        return false
+      }
+
+      user.resetPwd = false
+      user.password = password
+      user.save()
+
+      return user
     }
   },
 
 
-  //  移除用户
+  // 移除用户
   removeUser: {
     type: UserType,
     description: 'remove user',

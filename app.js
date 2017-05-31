@@ -70,10 +70,9 @@ app.post('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
 	rootValue: await getRootValue(request),
 	graphql: true,
 	formatError: (error) => ({
+	  name: error.path,
 	  message: error.message,
-	  locations: error.locations,
-	  stack: error.stack,
-	  path: error.path
+	  locations: error.locations
 	})
 })))
 

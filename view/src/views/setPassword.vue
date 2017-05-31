@@ -32,13 +32,12 @@ export default {
   methods: {
     setPwd () {
       this.$graphql.mutation('setPassword', {
-        access_token: 'f863c578-f7d0-41f5-8e0c-90e5184e95fe',
-        password: 'NewPwd'
-      })
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((err) => console.log(err))
+        password: this.password
+      }, `
+        name
+      `)
+      .then((res) => this.$toast('设置成功', 'success'))
+      .catch((err) => this.$toast(err.message, 'error'))
     },
     passwordIsRight (val, vm) {
       vm.status = val.length >= 6 ? 'normal' : 'error'
