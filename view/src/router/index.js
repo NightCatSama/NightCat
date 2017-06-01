@@ -1,11 +1,10 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { createInstance } from '@/http'
 import View from '@/views'
 
 Vue.use(VueRouter)
 
-const createRouter = (store) => {
+const createRouter = (store, graphql) => {
   let Routes, AdminRoutes
 
   //  根据开发/生产环境是否开启路由懒加载
@@ -37,13 +36,17 @@ const createRouter = (store) => {
       return next()
     }
 
-    createInstance(store).post('/verify', {})
-      .then((res) => {
-        let data = res.data
-        store.commit('setSignStatus', data)
-        next()
-      })
-      .catch(() => next())
+    graphql.query(`
+      user {
+        account,
+        avatar
+      }
+    `)
+    .then((res) => {
+      store.commit('setSignStatus', res)
+      next()
+    })
+    .catch(() => next())
   }
 
   return router

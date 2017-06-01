@@ -7,15 +7,14 @@ import {
 } from 'graphql';
 
 import UserType from './UserType.js';
-import User from '../../models/user.js';
-import { getUsers, getUserByAccount } from '../../proxy/user.js'
+import User from '../../proxy/user.js'
 
 let UserQuery = {
   users: {
     type: new GraphQLList(UserType),
     descriptions: 'All users info',
-    resolve: (user) => {
-      return getUsers()
+    resolve: async() => {
+      return await User.getUsers()
     }
   },
   user: {
@@ -23,11 +22,18 @@ let UserQuery = {
     descriptions: 'User info by account',
     args: {
       account: {
-        type: new GraphQLNonNull(GraphQLString)
+        type: GraphQLString
       }
     },
-    resolve: (user, { account }) => {
-      return getUserByAccount(account)
+    resolve: async(root, { account }) => {
+      if (account) {
+        return await User.getUserByAccount(account)
+      }
+      else {
+        if (!root.user) throw Error('身份认证失败')
+
+        return root.user
+      }
     }
   }
 };

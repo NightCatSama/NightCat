@@ -18,8 +18,10 @@ const schema = new GraphQLSchema({
   mutation: new GraphQLObjectType({
     name: 'RootMutationType',
     fields: {
-      resetName: UserMutation.resetName,
-      removeUser: UserMutation.removeUser,
+      login: UserMutation.login,
+      register: UserMutation.register,
+      logout: UserMutation.logout,
+      setEmail: UserMutation.setEmail,
       setPassword: UserMutation.setPassword
     }
   })

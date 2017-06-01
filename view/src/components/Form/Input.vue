@@ -94,9 +94,9 @@
         let val = e.target.value
         this.val = e.target.value = this.filter ? this.filter(val) : val
       },
-      is_complete (val) {
+      is_complete () {
         if (this.verify) {
-          this.$emit('update:complete', this.verify(val, this))
+          this.$emit('update:complete', this.verify(this.val, this))
         }
       },
       _focus (e) {

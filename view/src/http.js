@@ -9,10 +9,7 @@ export const createInstance = (store) => {
     headers: {'Content-Type': 'application/json'}
   })
 
-  /*  请求拦截  */
   instance.interceptors.request.use(requestHandle)
-
-  /*  响应拦截  */
   instance.interceptors.response.use(responseHandle, errorHandle)
 
   return instance
@@ -26,10 +23,7 @@ export const createGraphQLInstance = (store) => {
     headers: {'Content-Type': 'application/graphql'}
   })
 
-  /*  请求拦截  */
   instance.interceptors.request.use(requestHandle)
-
-  /*  响应拦截  */
   instance.interceptors.response.use(graphqlResponseHandle, errorHandle)
 
   return instance
@@ -37,19 +31,11 @@ export const createGraphQLInstance = (store) => {
 
 // 处理请求
 function requestHandle (req) {
-  if (config.log_request) {
-    console.log(`url: ${req.url} `)
-    console.log(req)
-  }
   return req
 }
 
 // 处理响应
 function responseHandle (res) {
-  if (config.log_response) {
-    console.log(`url: ${res.config.url} `)
-    console.log(res.data)
-  }
   return res.data
 }
 
@@ -65,10 +51,7 @@ function graphqlResponseHandle (res) {
 // 错误处理
 function errorHandle (err) {
   try {
-    if (config.log_response) {
-      console.log(err.response.data)
-    }
-    return Promise.reject(err.response.data)
+    return err.response.data.errors ? Promise.reject(err.response.data.errors[0]) : Promise.reject(err.response.data)
   }
   catch (err) {
     return Promise.reject({

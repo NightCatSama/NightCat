@@ -6,16 +6,7 @@
 
 <script>
 export default {
-  name: 'app',
-  mounted () {
-    // this.$graphql.query('users', `
-    //   name,
-    //   password
-    // `)
-    // .then((res) => {
-    //   console.log(res.data)
-    // })
-  }
+  name: 'app'
 }
 </script>
 

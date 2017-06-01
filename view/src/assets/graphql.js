@@ -1,30 +1,18 @@
-const install = (Vue, axios) => {
-  let graphql = {}
-
-  graphql.mutation = (name, params, res) => {
-    let str = Array.from(Object.keys(params), (key) => `${key}: "${params[key]}"`).join(',')
-    return axios.post('/graphql',
-      `mutation {
-        ${name} (${str}) {
-          ${res || ''}
-        }
-      }`
-    )
-    .then((res) => res.data[name])
+export default class Graphql {
+  constructor (axios) {
+    this.axios = axios
+    this.query = this.create('query')
+    this.mutation = this.create('mutation')
   }
-
-  graphql.query = (name, res) => {
-    return axios.post('/graphql',
-      `query {
-        ${name} {
-          ${res || ''}
-        }
-      }`
-    )
-    .then((res) => res.data[name])
+  create (type) {
+    return (main) => {
+      let name = main.match(/\w+\b/)
+      return this.axios.post('/graphql',
+        `${type} {
+          ${main}
+        }`
+      )
+      .then((res) => res.data[name])
+    }
   }
-
-  Vue.prototype.$graphql = graphql
 }
-
-export default install

@@ -1,13 +1,20 @@
 export const state = {
   signin_time: null,
   is_login: false,
-  user_info: null
+  user: null
 }
 
 export const mutations = {
-  setSignStatus (state, payload) {
-    state.user_info = payload.user_info
+  setSignStatus (state, { account, avatar }) {
+    state.user = {
+      account,
+      avatar
+    }
     state.is_login = true
     state.signin_time = new Date()
+  },
+  logout (state) {
+    state.user = null
+    state.is_login = false
   }
 }

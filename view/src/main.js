@@ -7,12 +7,15 @@ import { createInstance, createGraphQLInstance } from './http'
 import store from './store'
 import Components from './components'
 
-let router = createRouter(store)
+let axios = createInstance(store)
+let graphql = new GraphQL(createGraphQLInstance(store))
+let router = createRouter(store, graphql)
 
 Vue.use(Components)
-Vue.use(GraphQL, createGraphQLInstance(store))
 
-Vue.prototype.$http = createInstance(store)
+Vue.prototype.$http = axios
+Vue.prototype.$graphql = graphql
+
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

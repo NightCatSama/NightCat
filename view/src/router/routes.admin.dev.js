@@ -1,6 +1,7 @@
 import Admin from '@/admin/'
 import Home from '@/admin/home'
 import Sign from '@/admin/sign'
+import User from '@/admin/user'
 
 export default {
   path: '/admin',
@@ -8,7 +9,12 @@ export default {
   children: [{
     path: '',
     name: 'Admin-Home',
-    component: Home
+    component: Home,
+    children: [{
+      path: 'user',
+      name: 'Admin-User',
+      component: User
+    }]
   }, {
     path: 'login',
     name: 'Admin-Login',

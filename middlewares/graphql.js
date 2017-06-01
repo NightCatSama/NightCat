@@ -3,13 +3,11 @@ import { User } from '../proxy'
 /*  GraphQl 身份  */
 const getRootValue = async(req) => {
   let access_token = req.session.token
-  let is_login = false
+  let root = {}
 
-  if (!access_token) {
-    return null
-  }
+  if (access_token) root.user = await User.getUserByAccessToken(access_token)
 
-  return await User.getUserByAccessToken(access_token)
+  return root
 }
 
 export {

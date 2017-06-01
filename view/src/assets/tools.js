@@ -1,3 +1,4 @@
+// 得到样式对象
 export const getStyles = (obj, unit) => {
   let result = {}
   for (let key in obj) {

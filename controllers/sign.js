@@ -143,17 +143,18 @@ export default {
 		// 根据access_token获取用户数据
 		let userData = await axios.post('https://api.github.com/graphql', {
 			query: `
-			query {
-				viewer {
-					login,
-					name,
-					email,
-					bio,
-					url,
-					avatarUrl,
-					location
+				query {
+					viewer {
+						login,
+						name,
+						email,
+						bio,
+						url,
+						avatarUrl,
+						location
+					}
 				}
-			}`
+			`
 		}, {
 			headers: {
 				Authorization: `bearer ${access_token}`

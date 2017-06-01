@@ -4,6 +4,7 @@ import Icon from './Common/Icon.vue'
 import Btn from './Common/Btn.vue'
 
 import Toast from './View/Toast'
+import Popover from './View/Popover'
 
 const install = (Vue) => {
   Vue.component(Input.name, Input)
@@ -12,6 +13,7 @@ const install = (Vue) => {
   Vue.component(Btn.name, Btn)
 
   Vue.use(Toast)
+  Vue.use(Popover)
 }
 
 export default install

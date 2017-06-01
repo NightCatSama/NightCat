@@ -93,41 +93,43 @@
 // slide-up
 @mixin slide-up($prefix: '', $time: .5s) {
   .#{$prefix}slide-up-enter, .#{$prefix}slide-up-leave-to {
-    transform: translateY(30px);
+    transform: translateY(15px);
     opacity: 0;
   }
   .#{$prefix}slide-up-enter-active, .#{$prefix}slide-up-leave-active {
-    transition: transform _time ease, opacity _time ease;
+    transition: transform $time ease, opacity $time ease;
   }
 }
 
 // slide-down
 @mixin slide-down($prefix: '', $time: .5s) {
   .#{$prefix}slide-down-enter, .#{$prefix}slide-down-leave-to {
-    transform: translateY(-30px);
+    transform: translateY(-15px);
     opacity: 0;
   }
   .#{$prefix}slide-down-enter-active, .#{$prefix}slide-down-leave-active {
-    transition: transform _time ease, opacity _time ease;
+    transition: transform $time ease, opacity $time ease;
   }
 }
+
 // slide-left
 @mixin slide-left($prefix: '', $time: .5s) {
   .#{$prefix}slide-left-enter, .#{$prefix}slide-left-leave-to {
-    transform: translateX(30px);
+    transform: translateX(15px);
     opacity: 0;
   }
   .#{$prefix}slide-left-enter-active, .#{$prefix}slide-left-leave-active {
-    transition: transform _time ease, opacity _time ease;
+    transition: transform $time ease, opacity $time ease;
   }
 }
+
 // slide-right
 @mixin slide-right($prefix: '', $time: .5s) {
   .#{$prefix}slide-right-enter, .#{$prefix}slide-right-leave-to {
-    transform: translateX(-30px);
+    transform: translateX(-15px);
     opacity: 0;
   }
   .#{$prefix}slide-right-enter-active, .#{$prefix}slide-right-leave-active {
-    transition: transform _time ease, opacity _time ease;
+    transition: transform $time ease, opacity $time ease;
   }
 }

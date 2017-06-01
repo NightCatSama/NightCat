@@ -31,10 +31,10 @@ export default {
   },
   methods: {
     setPwd () {
-      this.$graphql.mutation('setPassword', {
-        password: this.password
-      }, `
-        name
+      this.$graphql.mutation(`
+        setPassword (password: "${this.password}") {
+          name
+        }
       `)
       .then((res) => this.$toast('设置成功', 'success'))
       .catch((err) => this.$toast(err.message, 'error'))
@@ -49,7 +49,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '../style/index';
 
   .set-password-view {

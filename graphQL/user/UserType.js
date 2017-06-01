@@ -1,6 +1,7 @@
 import {
   GraphQLObjectType,
   GraphQLList,
+  GraphQLBoolean,
   GraphQLString,
   GraphQLInt,
   GraphQLID
@@ -8,31 +9,51 @@ import {
 
 let UserType = new GraphQLObjectType({
   name: 'User',
-  description: 'A user',
+  description: '用户信息',
   fields: () => ({
     _id: {
       type: GraphQLID,
-      description: 'user id'
+      description: 'id'
     },
     account: {
       type: GraphQLString,
-      description: 'user account'
+      description: '账号'
     },
     name: {
       type: GraphQLString,
-      description: 'user name'
+      description: '用户昵称'
     },
     email: {
       type: GraphQLString,
-      description: 'user email'
+      description: '邮箱'
     },
     avatar: {
       type: GraphQLString,
-      description: 'user avatar'
+      description: '头像'
     },
-    password: {
+    profile: {
       type: GraphQLString,
-      description: 'user password'
+      description: '概况'
+    },
+    location: {
+      type: GraphQLString,
+      description: '位置'
+    },
+    github: {
+      type: GraphQLString,
+      description: 'Github'
+    },
+    website: {
+      type: GraphQLString,
+      description: '个人网站'
+    },
+    admin: {
+      type: GraphQLBoolean,
+      description: ' 是否管理员'
+    },
+    active: {
+      type: GraphQLBoolean,
+      description: ' 邮箱是否已激活'
     }
   })
 });
