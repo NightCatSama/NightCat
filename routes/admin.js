@@ -4,10 +4,8 @@ import ctr from '../controllers'
 import express from 'express'
 
 let router = express.Router()
-const admin = ctr.admin
 
 router
   .use(userAdminRequired)
-  .post('/list', admin.list) // 获取用户列表
 
 export default router

@@ -2,18 +2,25 @@ import Admin from '@/admin/'
 import Home from '@/admin/home'
 import Sign from '@/admin/sign'
 import User from '@/admin/user'
+import Article from '@/admin/article'
 
 export default {
   path: '/admin',
   component: Admin,
   children: [{
     path: '',
-    name: 'Admin-Home',
     component: Home,
     children: [{
+      path: '',
+      redirect: { name: 'Admin-User' }
+    }, {
       path: 'user',
       name: 'Admin-User',
       component: User
+    }, {
+      path: 'book',
+      name: 'Admin-Article',
+      component: Article
     }]
   }, {
     path: 'login',

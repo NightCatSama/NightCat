@@ -3,18 +3,12 @@
     <AdminHeader :user="user"></AdminHeader>
     <main>
       <nav class="nav">
-        <Popover ref="popover" trigger="hover" placement="right" :show_arrow="false" :use_shadow="false" class-name="nav-popover">
-          <div>用户管理</div>
-          <router-link to="/admin/user" slot="reference">
-            <Icon name="user" :size="24"></Icon>
-          </router-link>
-        </Popover>
-        <Popover ref="popover" trigger="hover" placement="right" :show_arrow="false" :use_shadow="false" class-name="nav-popover">
-          <div>文章管理</div>
-          <router-link to="/admin/book" slot="reference">
-            <Icon name="book" :size="24"></Icon>
-          </router-link>
-        </Popover>
+        <router-link to="/admin/user" slot="reference">
+          <Icon name="user" :size="24"></Icon>
+        </router-link>
+        <router-link to="/admin/book" slot="reference">
+          <Icon name="book" :size="24"></Icon>
+        </router-link>
       </nav>
       <router-view></router-view>
     </main>
@@ -40,7 +34,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import '../style/index';
 
   .admin-home {
@@ -78,14 +72,5 @@
         }
       }
     }
-  }
-
-  .nav-popover {
-    padding: 5px;
-    min-width: auto;
-    width: auto;
-    font-size: 14px;
-    background-color: $grey2;
-    color: $white;
   }
 </style>

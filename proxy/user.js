@@ -4,8 +4,14 @@ import uuid from 'uuid'
 
  /*  获取完整的用户列表  */
 export const getUsers = async() => {
-	return await user.find({})
+	return await user.find({}).sort({ 'admin': -1 })
 }
+
+ /*  获取完整的用户列表  */
+export const getQueryUsers = async() => {
+	return await user.find().skip().limit()
+}
+
 
  /*  根据用户名查找用户  */
 export const getUserByNames = async(name) => {

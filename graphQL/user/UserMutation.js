@@ -4,11 +4,12 @@ import {
   GraphQLBoolean,
   GraphQLNonNull
 } from 'graphql'
+
 import uuid from 'uuid'
 import validator from 'validator'
 
-import UserType from './UserType.js'
-import User from '../../proxy/user.js'
+import UserType from './UserType'
+import User from '../../proxy/user'
 
 // 更新 access_token, 保持单点登录
 const updateToken = async(user, req) => {
@@ -115,6 +116,26 @@ let UserMutation = {
   },
 
 
+  setAdmin: {
+    type: UserType,
+    description: '设置/取消 管理员',
+    args: {
+       account: {
+        type: new GraphQLNonNull(GraphQLString),
+        description: '账号'
+      }
+    },
+    resolve: async(root, { account }, req) => {
+      if (!root.user) throw Error('账号未登录')
+      if (!root.user.admin) throw Error('你没有管理员权限')
+
+      let user = await User.getUserByAccount(account)
+      user.admin = !user.admin
+      return await user.save()
+    }
+  },
+
+
   setPassword: {
     type: UserType,
     description: '修改密码',
@@ -128,10 +149,10 @@ let UserMutation = {
       if (!root.user) throw Error('账号未登录')
       if (!root.user.resetPwd) throw Error('无法修改密码')
 
-      user.resetPwd = false
-      user.password = password
+      root.user.resetPwd = false
+      root.user.password = password
 
-      return await user.save()
+      return await root.user.save()
     }
   }
 }

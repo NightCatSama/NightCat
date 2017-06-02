@@ -32,7 +32,7 @@
         return getClass(prefixCls, [
           '',
           {
-            [`${prefixCls}-rotate`]: this.rotate
+            'rotate': this.rotate
           }
         ]).concat([
           'iconfont',

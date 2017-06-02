@@ -22,6 +22,7 @@ const schema = new GraphQLSchema({
       register: UserMutation.register,
       logout: UserMutation.logout,
       setEmail: UserMutation.setEmail,
+      setAdmin: UserMutation.setAdmin,
       setPassword: UserMutation.setPassword
     }
   })

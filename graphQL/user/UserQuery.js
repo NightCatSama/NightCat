@@ -4,17 +4,29 @@ import {
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull
-} from 'graphql';
+} from 'graphql'
 
-import UserType from './UserType.js';
-import User from '../../proxy/user.js'
+import Pagination from '../pagination.js'
+
+import UserType from './UserType';
+import User from '../../proxy/user'
+
+let usersPagination = new Pagination({
+  name: 'Users',
+  type: UserType,
+})
 
 let UserQuery = {
   users: {
-    type: new GraphQLList(UserType),
-    descriptions: 'All users info',
-    resolve: async() => {
-      return await User.getUsers()
+    type: usersPagination.type,
+    descriptions: '所有用户',
+    args: {
+      ...usersPagination.args
+    },
+    resolve: async(root, args) => {
+      let users = await User.getUsers()
+
+      return await usersPagination.resolve(users, args)
     }
   },
   user: {

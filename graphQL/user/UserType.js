@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID
-} from 'graphql';
+} from 'graphql'
 
 let UserType = new GraphQLObjectType({
   name: 'User',
@@ -56,6 +56,6 @@ let UserType = new GraphQLObjectType({
       description: ' 邮箱是否已激活'
     }
   })
-});
+})
 
-export default UserType;
+export default UserType
