@@ -123,7 +123,7 @@
   .#{$prefixCls}-wrap {
     display: inline-block;
     position: relative;
-    margin-top: 20px;
+    margin-top: 24px;
   }
 
   .#{$prefixCls}-label {

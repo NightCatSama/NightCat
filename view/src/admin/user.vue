@@ -1,30 +1,35 @@
 <template>
   <div class="admin-user">
-    <ul class="user-list">
-      <li v-for="(user, i) in list" :class="{ active: active === i }" @click="active = i">
-        <img :src="user.avatar" alt="avatar" />
-        <div class="account">
-          {{ user.account }}
-        </div>
-        <span v-if="user.admin" class="admin-badge">管理员</span>
-      </li>
+    <!--左侧用户列表-->
+    <div class="sidebar">
+      <ul class="user-list">
+        <li v-for="(user, i) in list" :class="{ active: active === i }" @click="active = i">
+          <img :src="user.avatar" alt="avatar" />
+          <div class="account">
+            {{ user.account }}
+          </div>
+          <span v-if="user.admin" class="admin-badge">管理员</span>
+        </li>
+      </ul>
       <Btn class="next-btn" v-show="hasNextPage" @click="getUserList">Loadmore</Btn>
-    </ul>
-    <div class="user-main">
+    </div>
+
+    <!--用户详情-->
+    <div class="admin-main">
       <template v-if="userInfo">
-        <div class="user-info">
-          <div class="user-info-item">账号：{{ userInfo.account }}</div>
-          <div class="user-info-item">昵称：{{ userInfo.name }}</div>
-          <div class="user-info-item">邮箱：{{ userInfo.email }}</div>
-          <div class="user-info-item">概况：{{ userInfo.profile }}</div>
-          <div class="user-info-item">位置：{{ userInfo.location }}</div>
-          <div class="user-info-item">Github：{{ userInfo.github }}</div>
-          <div class="user-info-item">网站：{{ userInfo.website }}</div>
-          <Btn class="user-info-item" @click="setAdmin">{{ userInfo.admin ? '取消管理员' : '设置管理员' }}</Btn>
+        <div class="user-group">
+          <img :src="userInfo.avatar + '?size=200'" alt="avatar" />
+          <div class="user-info">
+            <div class="user-info-item">账号：{{ userInfo.account }}</div>
+            <div class="user-info-item">昵称：{{ userInfo.name }}</div>
+            <div class="user-info-item">邮箱：{{ userInfo.email }}</div>
+            <div class="user-info-item">概况：{{ userInfo.profile }}</div>
+            <div class="user-info-item">位置：{{ userInfo.location }}</div>
+            <div class="user-info-item">Github：{{ userInfo.github }}</div>
+            <div class="user-info-item">网站：{{ userInfo.website }}</div>
+          </div>
         </div>
-        <div class="avatar-group">
-          <img :src="userInfo.avatar" alt="avatar" />
-        </div>
+        <Btn class="admin-btn" @click="setAdmin">{{ userInfo.admin ? '取消管理员' : '设置管理员' }}</Btn>
       </template>
     </div>
   </div>
@@ -144,9 +149,6 @@
     .user-list {
       display: flex;
       flex-direction: column;
-      margin-right: 20px;
-      width: 300px;
-      background-color: $white;
 
       li {
         height: 120px;
@@ -167,22 +169,21 @@
           color: $white;
         }
       }
-
-      .next-btn {
-        border: none;
-        border-radius: 0;
-        background-color: $grey4;
-        color: $font1;
-        height: 44px;
-      }
     }
 
-    .user-main {
-      position: relative;
-      flex: 1;
-      background-color: $white;
-      margin-right: 20px;
-      padding: 20px;
+    .admin-main {
+      flex-direction: column;
+    }
+
+    .user-group {
+      display: flex;
+
+      img {
+        width: 208px;
+        height: 208px;
+        border-radius: 8px;
+        margin-right: 20px;
+      }
     }
 
     .user-info {
@@ -192,18 +193,10 @@
 
       &-item {
         margin: 5px 0 10px;
-      }
-    }
 
-    .avatar-group {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-
-      img {
-        width: 128px;
-        height: 128px;
-        border-radius: 50%;
+        &:last-child {
+          margin-bottom: 0;
+        }
       }
     }
 
@@ -214,6 +207,11 @@
       color: $white;
       border-radius: 4px;
       padding: 2px 3px;
+    }
+
+    .admin-btn {
+      max-width: 400px;
+      margin-top: 20px;
     }
   }
 </style>

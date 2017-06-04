@@ -65,14 +65,11 @@
     left: 50%;
     transform: translate(-50%, -50%);
     padding: 8px 15px;
-    color: $font1;
-    background-color: $white;
+    font-size: 14px;
+    color: $white;
+    background-color: $blue;
     box-shadow: $paper-shadow;
-
-    &-primary {
-      color: $white;
-      background-color: $blue;
-    }
+    z-index: 9999;
 
     &-error {
       color: $white;

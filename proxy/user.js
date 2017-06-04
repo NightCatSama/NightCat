@@ -15,30 +15,22 @@ export const getQueryUsers = async() => {
 
  /*  根据用户名查找用户  */
 export const getUserByNames = async(name) => {
-	return await user.findOne({
-		name: name
-	})
+	return await user.findOne({ name })
 }
 
  /*  根据账号查找用户  */
 export const getUserByAccount = async(account) => {
-	return await user.findOne({
-		account: account
-	})
+	return await user.findOne({ account })
 }
 
  /*  根据邮箱查找用户  */
 export const getUserByEmail = async(email) => {
-	return await user.findOne({
-		email: email
-	})
+	return await user.findOne({ email })
 }
 
  /*  根据access_token查找用户  */
 export const getUserByAccessToken = async(access_token) => {
-	return await user.findOne({
-		access_token: access_token
-	})
+	return await user.findOne({ access_token })
 }
 
  /*  生成新用户  */

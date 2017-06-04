@@ -4,7 +4,7 @@ let Schema = mongoose.Schema
 
 let airicleSchema = new Schema({
   // 文章标题
-  name: {
+  title: {
     type: String
   },
   // 作者

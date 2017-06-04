@@ -8,7 +8,7 @@ import {
 
 import Pagination from '../pagination.js'
 
-import UserType from './UserType';
+import UserType from './UserType'
 import User from '../../proxy/user'
 
 let usersPagination = new Pagination({
@@ -19,7 +19,7 @@ let usersPagination = new Pagination({
 let UserQuery = {
   users: {
     type: usersPagination.type,
-    descriptions: '所有用户',
+    descriptions: '所有用户的数据，支持分页',
     args: {
       ...usersPagination.args
     },
@@ -31,7 +31,7 @@ let UserQuery = {
   },
   user: {
     type: UserType,
-    descriptions: 'User info by account',
+    descriptions: '获得单个用户的数据，查询条件为空时则获取自己的数据',
     args: {
       account: {
         type: GraphQLString
@@ -48,7 +48,7 @@ let UserQuery = {
       }
     }
   }
-};
+}
 
 
-export default UserQuery;
+export default UserQuery

@@ -71,21 +71,6 @@ let userSchema = new Schema({
 	resetPwd: {
 		type: Boolean,
 		default: false
-	},
-	// 游戏数据
-	gameData: {
-		all_count: {
-			type: Number,
-			default: 0
-		},
-		win_count: {
-			type: Number,
-			default: 0
-		},
-		winRate: {
-			type: Number,
-			default: 0
-		}
 	}
 })
 

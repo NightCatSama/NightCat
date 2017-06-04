@@ -36,7 +36,12 @@ export default {
           name
         }
       `)
-      .then((res) => this.$toast('设置成功', 'success'))
+      .then((res) => {
+        this.$toast('设置成功', 'success')
+        this.$router.replace({
+          name: 'Admin-User'
+        })
+      })
       .catch((err) => this.$toast(err.message, 'error'))
     },
     passwordIsRight (val, vm) {

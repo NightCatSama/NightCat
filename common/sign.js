@@ -1,10 +1,11 @@
 import md5 from 'md5'
 import jwt from 'jsonwebtoken'
+import uuid from 'uuid'
 import config from '../config'
 
 /*  生成默认头像  */
 export const getGravatar = (email) => {
-	return `https://cdn.v2ex.com/gravatar/${md5(email)}/?d=https://cdn.v2ex.com/gravatar/9606f9cc7e486b4cc5c118b9c0ad1d48`
+	return `https://www.gravatar.com/avatar/${md5(email)}/?d=https://www.gravatar.com/avatar/9606f9cc7e486b4cc5c118b9c0ad1d48`
 }
 
 /*  jwt加密  */
@@ -43,8 +44,18 @@ export const returnUserData = (user) => {
 	}
 }
 
+// 更新 access_token, 保持单点登录
+export const updateToken = async(user, req) => {
+  let token = uuid.v4()
+  req.session.token = token
+  req.session.is_admin = user.admin
+  user.access_token = token
+  return await user.save()
+}
+
 export default {
 	getGravatar,
+	updateToken,
 	signToken,
 	verifyToken,
 	returnUserData

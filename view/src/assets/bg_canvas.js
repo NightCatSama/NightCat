@@ -565,9 +565,10 @@ export default class Canvas {
     this.cxt.save()
 
     this.cxt.font = this.font
+    let fontSize = ~~(this.font.match(/\d+(?=px)/)[0])
     this.cxt.textAlign = 'center'
     this.cxt.fillStyle = this.getRGBA(this.text.color, 0.8)
-    this.cxt.fillText(this.txt, this.width / 2, this.height / 2)
+    this.cxt.fillText(this.txt, this.width / 2, this.height / 2 + fontSize / 2)
 
     this.cxt.restore()
   }

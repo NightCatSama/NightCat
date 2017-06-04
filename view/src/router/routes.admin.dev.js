@@ -3,6 +3,8 @@ import Home from '@/admin/home'
 import Sign from '@/admin/sign'
 import User from '@/admin/user'
 import Article from '@/admin/article'
+import Tag from '@/admin/tag'
+import EditArticle from '@/admin/editArticle'
 
 export default {
   path: '/admin',
@@ -18,9 +20,21 @@ export default {
       name: 'Admin-User',
       component: User
     }, {
-      path: 'book',
+      path: 'tag',
+      name: 'Admin-Tag',
+      component: Tag
+    }, {
+      path: 'article',
       name: 'Admin-Article',
       component: Article
+    }, {
+      path: 'article/add',
+      name: 'Admin-AddArticle',
+      component: EditArticle
+    }, {
+      path: 'article/:type/:id',
+      name: 'Admin-EditArticle',
+      component: EditArticle
     }]
   }, {
     path: 'login',

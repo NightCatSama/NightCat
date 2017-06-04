@@ -5,14 +5,12 @@ import ctr from '../controllers'
 import express from 'express'
 import path from 'path'
 let router = express.Router()
-const sign = ctr.sign
-const site = ctr.site
-const user = ctr.user
-const game = ctr.game
+const { signinByGithub } = ctr.github
+const { site } = ctr.site
 
 router
 	.use(allowCrossDomain)
-	.get('/github', sign.signinByGithub) // 账号激活
-	.get('*', site.index) //  跳转页面
+	.get('/github', signinByGithub) // 账号激活
+	.get('*', site) //  跳转页面
 
 export default router

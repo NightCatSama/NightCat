@@ -35,6 +35,7 @@
           >
         </Input>
         <Btn class="sign-btn" :disabled="!accountPass || !pwdPass" type="submit">{{ type.toLocaleUpperCase() }}</Btn>
+        <div v-if="type === 'login'" class="other-btn" @click="type = 'other'">Other</div>
       </form>
 
       <!-- Other -->
@@ -46,7 +47,6 @@
       <ul class="type-nav">
         <li :class="{ active: type === 'login' }" @click="type = 'login'">Login</li>
         <li :class="{ active: type === 'register' }" @click="type = 'register'">Register</li>
-        <li :class="{ active: type === 'other' }" @click="type = 'other'">Other</li>
       </ul>
     </div>
   </div>
@@ -186,7 +186,7 @@ export default {
   .form-wrap {
     position: relative;
     width: 400px;
-    height: 300px
+    height: 320px
   }
 
   .form {
@@ -219,6 +219,7 @@ export default {
     height: 50%;
     color: $font1;
     font-size: 14px;
+    list-style: none;
     transform: translateX(20px);
     transition: all .3s;
 
@@ -234,6 +235,18 @@ export default {
       &.active {
         color: $blue;
       }
+    }
+  }
+
+  .other-btn {
+    font-size: 13px;
+    margin-top: 15px;
+    cursor: pointer;
+    color: $font2;
+    transition: color .3s;
+
+    &:hover {
+      color: $blue;
     }
   }
 </style>

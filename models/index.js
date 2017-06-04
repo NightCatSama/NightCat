@@ -2,6 +2,8 @@ import mongoose from 'mongoose'
 import config from '../config'
 
 import user from './user'
+import article from './article'
+import tag from './tag'
 
 mongoose.Promise = global.Promise
 
@@ -16,5 +18,7 @@ db.once('open', () => {
 })
 
 export {
-	user
+	user,
+    article,
+    tag
 }

@@ -5,20 +5,11 @@ import {
   GraphQLNonNull
 } from 'graphql'
 
-import uuid from 'uuid'
 import validator from 'validator'
+import { updateToken } from '../../common/sign'
 
 import UserType from './UserType'
 import User from '../../proxy/user'
-
-// 更新 access_token, 保持单点登录
-const updateToken = async(user, req) => {
-  let token = uuid.v4()
-  req.session.token = token
-  req.session.is_admin = user.admin
-  user.access_token = token
-  return await user.save()
-}
 
 let UserMutation = {
   login: {
@@ -93,6 +84,7 @@ let UserMutation = {
 
       req.session.destroy()
       root.user.access_token = ''
+      
       return await root.user.save()
     }
   },
@@ -111,6 +103,7 @@ let UserMutation = {
       if (!root.user) throw Error('账号未登录')
 
       root.user.email = email
+
       return await root.user.save()
     }
   },
@@ -131,6 +124,7 @@ let UserMutation = {
 
       let user = await User.getUserByAccount(account)
       user.admin = !user.admin
+
       return await user.save()
     }
   },
