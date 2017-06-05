@@ -12,7 +12,7 @@
         <Icon name="delete" :size="24"></Icon>
       </div>
     </aside>
-    
+
     <!--左侧文章列表-->
     <div class="sidebar">
       <ul class="article-list">
@@ -35,7 +35,7 @@
           </div>
         </li>
         <Btn class="next-btn" v-show="hasNextPage" @click="getArticleList">Loadmore</Btn>
-      </ul> 
+      </ul>
     </div>
 
     <!--文章详情-->
@@ -112,6 +112,8 @@
         .catch((err) => this.$toast(err.message, 'error'))
       },
       deleteArticle () {
+        if (!this.list[this.active]) return this.$toast('没有文章可以删除。')
+
         this.$prompt('确定删除这篇文章吗？', () => {
           this.$graphql.mutation(`
             deleteArticle (id: "${this.list[this.active]._id}") {
@@ -135,6 +137,8 @@
         window.localStorage.setItem('tags', JSON.stringify(article.tags))
       },
       gotoEditArticle () {
+        if (!this.list[this.active]) return this.$toast('没有文章可以编辑。')
+
         let article = this.list[this.active]
         this.setDraft(article)
 
