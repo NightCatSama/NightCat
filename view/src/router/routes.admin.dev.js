@@ -3,8 +3,8 @@ import Home from '@/admin/home'
 import Sign from '@/admin/sign'
 import User from '@/admin/user'
 import Article from '@/admin/article'
-import Tag from '@/admin/tag'
 import EditArticle from '@/admin/editArticle'
+import Tag from '@/admin/tag'
 
 export default {
   path: '/admin',

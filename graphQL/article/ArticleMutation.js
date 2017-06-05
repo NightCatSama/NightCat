@@ -39,8 +39,6 @@ let ArticleMutation = {
 
       tags = parseArray(tags)
 
-      console.log(tags)
-
       let newArticle = await Article.newAndSave({
         author: root.user.account,
         title,
