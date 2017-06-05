@@ -121,7 +121,6 @@
             }
           `)
           .then((res) => {
-            console.log(res)
             this.$toast('删除成功', 'success')
             let active = this.active
             this.active = Math.max(active - 1, 0)

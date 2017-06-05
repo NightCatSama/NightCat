@@ -28,7 +28,7 @@ else {
 
     /* github登录 */
     github: {
-      clientId: 'f34a0e50609f8dc19f8b'
+      clientId: serverConfig.github.clientId
     },
 
     /*  socket.io  */
