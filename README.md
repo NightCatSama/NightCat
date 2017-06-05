@@ -19,12 +19,14 @@
   - [x] 自动登录
   - [x] Github Oauth
 - [x] [后台管理系统](https://nightcat.win/admin)
+  - [x] 登录/注册
   - [x] 用户管理
   - [x] 文章管理
   - [x] 标签管理
 - [ ] [前端](https://nightcat.win/)
   - [x] 首页
+  - [ ] 登录/注册
   - [ ] 文章
   - [ ] 个人信息
   - [ ] 其他
-   
+
