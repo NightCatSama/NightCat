@@ -84,7 +84,7 @@ let UserMutation = {
 
       req.session.destroy()
       root.user.access_token = ''
-      
+
       return await root.user.save()
     }
   },
@@ -120,9 +120,12 @@ let UserMutation = {
     },
     resolve: async(root, { account }, req) => {
       if (!root.user) throw Error('账号未登录')
-      if (!root.user.admin) throw Error('你没有管理员权限')
+      if (!root.user.superAdmin) throw Error('你没有超级管理员权限')
 
       let user = await User.getUserByAccount(account)
+
+      if (user.superAdmin) throw Error('你没有权限')
+
       user.admin = !user.admin
 
       return await user.save()

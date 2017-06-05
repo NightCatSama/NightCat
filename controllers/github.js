@@ -54,7 +54,7 @@ export default {
 		let user = await User.getUserByEmail(userData.email)
 			.catch(err => next(err))
 
-		// 判断用户名是否已注册
+		// 判断邮箱是否已注册
 		if (user) {
 			await updateToken(user, req)
 
@@ -64,7 +64,7 @@ export default {
 
 		let userInfo = {
 			name: userData.name,
-			account: userData.login,
+			account: userData.email,
 			email: userData.email,
 			password: '123456',
 			resetPwd: true,

@@ -120,8 +120,15 @@
           }
         `)
         .then((res) => {
-          this.$toast('添加成功', 'success')
           this.clearDraft()
+          this.$toast('添加成功', {
+            type: 'success',
+            callback: () => {
+              this.$router.replace({
+                name: 'Admin-Article'
+              })
+            }
+          })
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
@@ -132,8 +139,15 @@
           }
         `)
         .then((res) => {
-          this.$toast('保存成功', 'success')
           this.clearDraft()
+          this.$toast('保存成功', {
+            type: 'success',
+            callback: () => {
+              this.$router.replace({
+                name: 'Admin-Article'
+              })
+            }
+          })
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
@@ -205,6 +219,9 @@
     mounted () {
       this.getTags()
       this.getDraft()
+    },
+    destroyed () {
+      this.type === 'edit' && this.clearDraft()
     }
   }
 </script>

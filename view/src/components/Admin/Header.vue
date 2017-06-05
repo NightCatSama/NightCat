@@ -12,7 +12,7 @@
         <img :src="user.avatar" alt="avatar" />
       </div>
       <div v-else>
-        <router-link to="/Admin/login">点击登录</router-link>
+        <router-link to="/admin/login">点击登录</router-link>
       </div>
     </div>
   </header>

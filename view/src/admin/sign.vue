@@ -127,10 +127,7 @@ export default {
         }
       `)
       .then((res) => {
-        if (!res.admin) return this.$toast('非管理员身份', 'error')
-
         this.$store.commit('setSignStatus', res)
-
         this.$toast('登录成功', {
           type: 'success',
           callback: () => {
@@ -153,12 +150,11 @@ export default {
       `)
       .then((res) => {
         this.$store.commit('setSignStatus', res)
-
         this.$toast('注册成功', {
           type: 'success',
           callback: () => {
             this.$router.replace({
-              name: 'Admin-Home'
+              name: 'Admin-User'
             })
           }
         })

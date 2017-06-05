@@ -14,17 +14,21 @@ export const getTagByName = async(name) => {
 export const patchesTag = async(id, newTags, oldTags = []) => {
 	const deleteArr = oldTags.filter((name) => newTags.indexOf(name) === -1)
 	const addArr = newTags.filter((name) => oldTags.indexOf(name) === -1)
-	
+
 	Array.from(deleteArr, async(name) => {
 		let t = await getTagByName(name)
+		if (!t) return false
+
 		let index = t.article.indexOf(id)
 
 		index > -1 && t.article.splice(index, 1)
 		await t.save()
 	})
-	
+
 	Array.from(addArr, async(name) => {
 		let t = await getTagByName(name)
+		if (!t) return false
+
 		let index = t.article.indexOf(id)
 
 		index === -1 && t.article.push(id)

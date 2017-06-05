@@ -67,6 +67,11 @@ let userSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	// 是否超级管理员
+	superAdmin: {
+		type: Boolean,
+		default: false
+	},
 	// 是否重置密码
 	resetPwd: {
 		type: Boolean,

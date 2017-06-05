@@ -49,11 +49,15 @@ let UserType = new GraphQLObjectType({
     },
     admin: {
       type: GraphQLBoolean,
-      description: ' 是否管理员'
+      description: '是否管理员'
+    },
+    superAdmin: {
+      type: GraphQLBoolean,
+      description: '是否超级管理员'
     },
     active: {
       type: GraphQLBoolean,
-      description: ' 邮箱是否已激活'
+      description: '邮箱是否已激活'
     }
   })
 })

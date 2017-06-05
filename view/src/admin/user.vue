@@ -7,8 +7,10 @@
           <img :src="user.avatar" alt="avatar" />
           <div class="account">
             {{ user.account }}
+            <br />
+            <small v-if="user.superAdmin" class="admin-badge red">超级管理员</small>
+            <small v-if="!user.superAdmin && user.admin" class="admin-badge">管理员</small>
           </div>
-          <span v-if="user.admin" class="admin-badge">管理员</span>
         </li>
       </ul>
       <Btn class="next-btn" v-show="hasNextPage" @click="getUserList">Loadmore</Btn>
@@ -29,7 +31,7 @@
             <div class="user-info-item">网站：{{ userInfo.website }}</div>
           </div>
         </div>
-        <Btn class="admin-btn" @click="setAdmin">{{ userInfo.admin ? '取消管理员' : '设置管理员' }}</Btn>
+        <Btn v-if="!userInfo.superAdmin" class="admin-btn" @click="setAdmin">{{ userInfo.admin ? '取消管理员' : '设置管理员' }}</Btn>
       </template>
     </div>
   </div>
@@ -77,7 +79,8 @@
             github,
             website,
             active,
-            admin
+            admin,
+            superAdmin
           }
         `)
         .then((res) => {
@@ -114,7 +117,8 @@
                 name,
                 email,
                 avatar,
-                admin
+                admin,
+                superAdmin
               }
               cursor
             }
@@ -155,6 +159,10 @@
         @include flex-cross-center;
         padding: 20px;
         border-bottom: 1px solid #eee;
+        font-size: 14px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         cursor: pointer;
 
         img {
@@ -201,12 +209,18 @@
     }
 
     .admin-badge {
+      display: inline-block;
       font-size: 13px;
-      margin-left: 10px;
+      margin-top: 4px;
+      width: auto;
       background-color: $blue;
       color: $white;
       border-radius: 4px;
       padding: 2px 3px;
+
+      &.red {
+        background-color: $red;
+      }
     }
 
     .admin-btn {
