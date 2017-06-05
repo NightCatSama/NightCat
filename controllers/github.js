@@ -72,15 +72,15 @@ export default {
 			profile: userData.bio,
 			github: userData.url,
 			avatar: userData.avatarUrl,
-			location: userData.location,
-			access_token: token
+			location: userData.location
 		}
+
 		// 如果未注册则直接注册
 		user = await User.newAndSave(userInfo)
 
     if (user) {
 			await updateToken(user, req)
-      
+
 			return res.status(302)
 				.redirect('/setPassword')
     }
