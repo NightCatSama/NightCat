@@ -1,7 +1,8 @@
 <template>
   <transition name="bounce-center" @after-leave="afterLeave">
     <div v-if="show" :class="component_class">
-      {{ content }}
+      <Icon v-if="show_icon" :name="iconType[type]" :size="16"></Icon>
+      <div class="cat-toast-content">{{ content }}</div>
     </div>
   </transition>
 </template>
@@ -15,9 +16,20 @@
       return {
         show: false,
         content: '',
-        time: 2000,
+        time: 200000,
         type: '',
-        callback: null
+        callback: null,
+        iconType: {
+          'default': 'info-circle',
+          'primary': 'info-circle',
+          'success': 'check-circle',
+          'error': 'close-circle',
+          'warning': 'exclamation-circle'
+        },
+        show_icon: {
+          type: Boolean,
+          default: true
+        }
       }
     },
     computed: {
@@ -25,7 +37,8 @@
         return [
           prefixCls,
           {
-            [`${prefixCls}-${this.type}`]: this.type && this.type !== 'default'
+            [`${prefixCls}-${this.type}`]: this.type,
+            [`${prefixCls}-show_icon`]: this.show_icon
           }
         ]
       }
@@ -64,25 +77,44 @@
     top: 50px;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 8px 15px;
-    font-size: 14px;
+    border-radius: 3px;
     color: $white;
-    background-color: $blue;
-    box-shadow: $paper-shadow;
-    z-index: 9999;
+    letter-spacing: -.2em;
+    box-shadow: $near_shadow;
+    overflow: hidden;
+    z-index: 99999;
+
+    .cat-toast-content {
+      display: inline-block;
+      padding: 8px 15px;
+      letter-spacing: 0;
+    }
+
+    .cat-icon {
+      display: inline-block;
+      color: #fff;
+      height: 100%;
+      margin-left: 10px;
+    }
+
+    &-default {
+      background-color: #666;
+    }
+
+    &-primary {
+      background-color: $blue;
+    }
 
     &-error {
-      color: $white;
       background-color: $red;
     }
 
     &-warning {
-      color: $white;
+      color: #333;
       background-color: $yellow;
     }
 
     &-success {
-      color: $white;
       background-color: $green;
     }
   }
