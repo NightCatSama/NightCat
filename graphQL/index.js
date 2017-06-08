@@ -29,6 +29,7 @@ const schema = new GraphQLSchema({
     name: 'RootMutationType',
     fields: {
       login: UserMutation.login,
+      loginByEmail: UserMutation.loginByEmail,
       register: UserMutation.register,
       logout: UserMutation.logout,
       setEmail: UserMutation.setEmail,

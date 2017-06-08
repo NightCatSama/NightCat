@@ -39,6 +39,34 @@ let UserMutation = {
   },
 
 
+  loginByEmail: {
+    type: UserType,
+    description: '邮箱登录',
+    args: {
+      email: {
+        type: new GraphQLNonNull(GraphQLString),
+        description: '账号'
+      },
+      password: {
+        type: new GraphQLNonNull(GraphQLString),
+        description: '密码'
+      }
+    },
+    resolve: async(root, { email, password }, req) => {
+      if (!email || email === '') throw Error('邮箱不能为空')
+      if (!password || password === '') throw Error('密码不能为空')
+      if (!validator.isEmail(email)) throw Error('邮箱格式不对')
+
+      let user = await User.getUserByEmail(email)
+
+      if (!user) throw Error('账号不存在')
+      if (user.password !== password) throw Error('密码错误')
+
+      return await updateToken(user, req)
+    }
+  },
+
+
   register: {
     type: UserType,
     description: '账号注册',
@@ -56,7 +84,7 @@ let UserMutation = {
         description: '再次输入密码'
       }
     },
-    resolve: async(root, { account, password, repassword }) => {
+    resolve: async(root, { account, password, repassword }, req) => {
       if ([account, password, repassword].some((v) => v === '')) throw Error('信息不完整')
       if (!validator.isByteLength(account, { min: 6, max: 20 })) throw Error('账号至少需要6个字符')
       if (!validator.isByteLength(password, { min: 6 })) throw Error('密码至少需要6个字符')
@@ -71,7 +99,7 @@ let UserMutation = {
 
       if (!user) throw Error('注册失败')
 
-      return user
+      return await updateToken(user, req)
     }
   },
 

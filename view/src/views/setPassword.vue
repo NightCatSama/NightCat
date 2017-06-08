@@ -32,10 +32,12 @@ export default {
   methods: {
     setPwd () {
       this.$graphql.mutation(`
-        setPassword (password: "${this.password}") {
+        setPassword ($password) {
           name
         }
-      `)
+      `, {
+        password: this.password
+      })
       .then((res) => {
         this.$toast('设置成功', 'success')
         this.$router.replace({

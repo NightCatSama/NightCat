@@ -16,7 +16,7 @@
       return {
         show: false,
         content: '',
-        time: 200000,
+        time: 1500,
         type: '',
         callback: null,
         iconType: {

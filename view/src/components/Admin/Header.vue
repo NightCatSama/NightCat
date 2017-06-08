@@ -4,15 +4,18 @@
       NightCat 后台管理
     </div>
     <Popover ref="popover" trigger="hover" placement="bottom-right" :offset="20">
-      <div class="logout-btn" @click="logout">退出登录</div>
+      <div class="sign-btn" @click="logout">退出登录</div>
+    </Popover>
+    <Popover ref="loginPopover" trigger="hover" placement="bottom-right" :offset="20">
+      <div class="sign-btn" @click="login">登录</div>
     </Popover>
     <div class="right-group">
-      <div v-if="user" class="user-group" v-popover:popover>
+      <div v-if="user" key="logout" class="user-group" v-popover:popover>
         <div>{{ user.account }}</div>
         <img :src="user.avatar" alt="avatar" />
       </div>
-      <div v-else>
-        <router-link to="/admin/login">点击登录</router-link>
+      <div v-show="!user" key="login" class="user-group" v-popover:loginPopover>
+        游客模式
       </div>
     </div>
   </header>
@@ -49,6 +52,11 @@
           this.$toast('退出成功', 'success')
           this.$refs.popover.close()
           this.$store.commit('logout')
+        })
+      },
+      login () {
+        this.$router.replace({
+          name: 'Admin-Login'
         })
       }
     }
@@ -96,7 +104,7 @@
     }
   }
 
-  .logout-btn {
+  .sign-btn {
     padding: 10px;
     cursor: pointer;
     font-size: 14px;

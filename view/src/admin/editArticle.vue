@@ -77,7 +77,7 @@
     name: 'admin-add-article',
     data () {
       return {
-        type: this.$route.params.type,
+        type: this.$route.name === 'Admin-AddArticle' ? 'add' : 'edit',
         modalShow: false,
         content: '',
         title: '',
@@ -114,11 +114,17 @@
         })
       },
       addArticle () {
+        let { title, content, cover, tags } = this
         this.$graphql.mutation(`
-          addArticle (title: "${this.title}", content: ${JSON.stringify(this.content)}, cover: "${this.cover}", tags: ${JSON.stringify(JSON.stringify(this.tags))}) {
+          addArticle ($title, $content, $cover, $tags) {
             author
           }
-        `)
+        `, {
+          title,
+          content,
+          cover,
+          tags
+        })
         .then((res) => {
           this.clearDraft()
           this.$toast('添加成功', {
@@ -133,11 +139,18 @@
         .catch((err) => this.$toast(err.message, 'error'))
       },
       updateArticle () {
+        let { title, content, cover, tags } = this
         this.$graphql.mutation(`
-          updateArticle (id: "${this.$route.params.id}", title: "${this.title}", content: ${JSON.stringify(this.content)}, cover: "${this.cover}", tags: ${JSON.stringify(JSON.stringify(this.tags))}) {
+          updateArticle ($id, $title, $content, $cover, $tags) {
             author
           }
-        `)
+        `, {
+          id: this.$route.params.id,
+          title,
+          content,
+          cover,
+          tags
+        })
         .then((res) => {
           this.clearDraft()
           this.$toast('保存成功', {

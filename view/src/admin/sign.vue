@@ -4,6 +4,17 @@
       <!-- Login form -->
       <form v-if="type !== 'other'" @submit.prevent="submit" class="form">
         <Input
+          v-if="type === 'login'"
+          ref="account"
+          class="form-item"
+          v-model="account"
+          label="Account / Email"
+          :complete.sync="accountPass"
+          :verify="accountOrEmailIsRight"
+          >
+        </Input>
+        <Input
+          v-if="type === 'register'"
           ref="account"
           class="form-item"
           v-model="account"
@@ -41,6 +52,7 @@
       <!-- Other -->
       <div v-if="type === 'other'" class="form">
         <Btn class="sign-btn" @click="loginByGithub">Github</Btn>
+        <Btn class="sign-btn" @click="loginByVisitor">Visitor</Btn>
       </div>
 
       <!-- 导航 -->
@@ -55,6 +67,7 @@
 <script>
 import isAlphanumeric from 'validator/lib/isAlphanumeric'
 import isByteLength from 'validator/lib/isByteLength'
+import isEmail from 'validator/lib/isEmail'
 import config from '@/config'
 
 export default {
@@ -91,6 +104,13 @@ export default {
       val = val.length > 20 ? val.slice(0, 20) : val
       return val
     },
+    // 验证账号或邮箱是否正确
+    accountOrEmailIsRight (val, vm) {
+      vm.status = val.length >= 6 ? 'normal' : 'error'
+      vm.process = val.length / 6 * 100
+
+      return isByteLength(val, { min: 6 })
+    },
     // 验证账号是否正确
     accountIsRight (val, vm) {
       vm.status = val.length >= 6 ? 'normal' : 'error'
@@ -119,13 +139,48 @@ export default {
     },
     // 登录
     login () {
+      let account = this.account
+      isEmail(account) ? this.loginByEmail(account) : this.loginByAccount(account)
+    },
+    // 通过账号登录
+    loginByAccount (account) {
+      let { password } = this
       this.$graphql.mutation(`
-        login (account: "${this.account}", password: "${this.password}") {
+        login ($account, $password) {
           account,
           admin,
           avatar
         }
-      `)
+      `, {
+        account,
+        password
+      })
+      .then((res) => {
+        this.$store.commit('setSignStatus', res)
+        this.$toast('登录成功', {
+          type: 'success',
+          callback: () => {
+            this.$router.replace({
+              name: 'Admin-User'
+            })
+          }
+        })
+      })
+      .catch((err) => this.$toast(err.message, 'error'))
+    },
+    // 通过邮箱登录
+    loginByEmail (email) {
+      let { password } = this
+      this.$graphql.mutation(`
+        loginByEmail ($email, $password) {
+          account,
+          admin,
+          avatar
+        }
+      `, {
+        email,
+        password
+      })
       .then((res) => {
         this.$store.commit('setSignStatus', res)
         this.$toast('登录成功', {
@@ -141,13 +196,18 @@ export default {
     },
     // 注册
     register () {
+      let { account, password, repassword } = this
       this.$graphql.mutation(`
-        register (account: "${this.account}", password: "${this.password}", repassword: "${this.repassword}") {
+        register ($account, $password, $repassword) {
           account,
           admin,
           avatar
         }
-      `)
+      `, {
+        account,
+        password,
+        repassword
+      })
       .then((res) => {
         this.$store.commit('setSignStatus', res)
         this.$toast('注册成功', {
@@ -166,6 +226,12 @@ export default {
     // 通过 github 登录
     loginByGithub () {
       window.location = `https://github.com/login/oauth/authorize?client_id=${config.github.clientId}&state=admin&scope=user`
+    },
+    // 直接登录
+    loginByVisitor () {
+      this.$router.replace({
+        name: 'Admin-User'
+      })
     }
   }
 }

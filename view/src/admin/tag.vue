@@ -57,10 +57,12 @@
       },
       addTag () {
         this.$graphql.mutation(`
-          addTag (name: "${this.name}") {
+          addTag ($name) {
             name
           }
-        `)
+        `, {
+          name: this.name
+        })
         .then((res) => {
           this.$toast('添加成功', 'success')
           this.addModalShow = false
@@ -70,10 +72,12 @@
       },
       removeTag () {
         this.$graphql.mutation(`
-          removeTag (name: "${this.activeTag}") {
+          removeTag ($name) {
             name
           }
-        `)
+        `, {
+          name: this.activeTag
+        })
         .then((res) => {
           this.$toast('删除成功', 'success')
           this.active = null

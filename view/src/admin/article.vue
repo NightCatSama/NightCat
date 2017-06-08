@@ -85,7 +85,7 @@
     methods: {
       getArticleList () {
         this.$graphql.query(`
-          article (first: 10, after: "${this.cursor || ''}") {
+          article ($first, $after) {
             edges {
               node {
                 _id,
@@ -103,7 +103,10 @@
               endCursor
             }
           }
-        `)
+        `, {
+          first: 5,
+          after: this.cursor
+        })
         .then((res) => {
           this.hasNextPage = res.pageInfo.hasNextPage
           this.list = this.list.concat(res.edges.map((obj) => obj.node))
@@ -116,10 +119,12 @@
 
         this.$prompt('确定删除这篇文章吗？', () => {
           this.$graphql.mutation(`
-            deleteArticle (id: "${this.list[this.active]._id}") {
+            deleteArticle ($id) {
               _id
             }
-          `)
+          `, {
+            id: this.list[this.active]._id
+          })
           .then((res) => {
             this.$toast('删除成功', 'success')
             let active = this.active
@@ -242,6 +247,7 @@
       overflow: auto;
 
       .markdown-body {
+        margin: 20px;
         width: 100%;
       }
     }

@@ -48,6 +48,7 @@
         page: 0,
         list: [],
         data: {},
+        cursor: '',
         active: 0
       }
     },
@@ -110,7 +111,7 @@
       },
       getUserList () {
         this.$graphql.query(`
-          users (first: 10, after: "${this.cursor || ''}") {
+          users ($first, $after) {
             edges {
               node {
                 account,
@@ -127,7 +128,10 @@
               endCursor
             }
           }
-        `)
+        `, {
+          first: 5,
+          after: this.cursor
+        })
         .then((res) => {
           this.hasNextPage = res.pageInfo.hasNextPage
           this.list = this.list.concat(res.edges.map((obj) => obj.node))

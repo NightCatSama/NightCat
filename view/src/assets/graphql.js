@@ -5,8 +5,16 @@ export default class Graphql {
     this.mutation = this.create('mutation')
   }
   create (type) {
-    return (main) => {
+    return (main, variable) => {
       let name = main.match(/\w+\b/)
+
+      if (variable) {
+        for (let key in variable) {
+          let reg = new RegExp(`\\$${key}`)
+          main = main.replace(reg, `${key}: ${typeof variable[key] === 'object' ? JSON.stringify(JSON.stringify(variable[key])) : JSON.stringify(variable[key])}`)
+        }
+      }
+
       return this.axios.post('/graphql',
         `${type} {
           ${main}

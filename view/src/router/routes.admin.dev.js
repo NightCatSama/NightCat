@@ -32,7 +32,7 @@ export default {
       name: 'Admin-AddArticle',
       component: EditArticle
     }, {
-      path: 'article/:type/:id',
+      path: 'article/edit/:id',
       name: 'Admin-EditArticle',
       component: EditArticle
     }]
