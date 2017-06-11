@@ -145,7 +145,7 @@
   .#{$prefixCls} {
     width: 100%;
     position: relative;
-    padding: 8px 20px 4px 0;
+    padding: 8px 0 4px 0;
     color: $font;
     background-color: $tr;
     border: none;

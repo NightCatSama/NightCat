@@ -85,6 +85,30 @@ let ArticleMutation = {
     }
   },
 
+  
+  releaseArticle: {
+    type: ArticleType,
+    description: '发布或下架文章',
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLString),
+        description: '文章id'
+      }
+    },
+    resolve: async(root, { id }) => {
+      if (!root.user) throw Error('请先登录')
+      if (!root.user.admin) throw Error('你没有权限')
+
+      let article = await Article.getArticleById(id)
+
+      if (!article) throw Error('未找到文章')
+
+      article.release = !article.release
+
+      return await article.save()
+    }
+  },
+
 
   updateArticle: {
     type: ArticleType,

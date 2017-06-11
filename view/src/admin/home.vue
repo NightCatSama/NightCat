@@ -83,6 +83,10 @@
         background-color: $green;
       }
 
+      &.yellow {
+        background-color: $yellow;
+      }
+
       &.router-link-active {
         opacity: 1;
         background-color: $grey;

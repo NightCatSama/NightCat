@@ -2,14 +2,16 @@ const _defaultColors = [[240, 91, 114, 3000], [49, 105, 146, 3000], [153, 47, 37
 
 const _default = {
   txt: 'NightCat',      // 文本
+  font: 'normal normal 120px Nothing You Could Do', // 文本样式
+  bottomTxt: ' - press any key to enter - ',  // 底部文本
+  bottomFont: 'normal normal 24px Nothing You Could Do', // 底部文本样式
   fontFamily: {
     name: 'Nothing You Could Do',
     url: 'https://fonts.gstatic.com/s/nothingyoucoulddo/v6/jpk1K3jbJoyoK0XKaSyQAZXIiu60FL2bNvn8mktkB5z3rGVtsTkPsbDajuO5ueQw.woff2'
   },  // 字体
-  font: 'normal normal 120px Nothing You Could Do', // 文本样式
-  ball_count: 30,       // 总个数
-  line_range: 200,      // 连线范围
-  r_range: [10, 20],    // 半径范围
+  ballCount: 30,       // 总个数
+  lineRange: 200,      // 连线范围
+  radiusRange: [10, 20],    // 半径范围
   color: _defaultColors, // 小球颜色组 [[r, g, b, time]...] *time: 在该颜色停留的时间
   bgColor: [[224, 224, 224, 10000], [22, 22, 22, 10000]], // 背景颜色组
   textColor: [[52, 52, 52, 10000], [224, 224, 224, 10000]], // 文本颜色组
@@ -52,12 +54,12 @@ export default class Canvas {
     this.init()
     this.start()
   }
-  //  初始化canvas
+  // 初始化canvas
   init () {
     this.width = this.canvas.width = this.canvas.offsetWidth
     this.height = this.canvas.height = this.canvas.offsetHeight
     this.bounds = this.canvas.getBoundingClientRect()
-    this.mirrorRange = Math.max(this.r_range[1] * 2, this.line_range)
+    this.mirrorRange = Math.max(this.radiusRange[1] * 2, this.lineRange)
   }
   loadFont () {
     if (!this.fontFamily || typeof FontFace === 'undefined') {
@@ -71,23 +73,23 @@ export default class Canvas {
       this.fontLoaded = true
     })
   }
-  //  绑定事件
+  // 绑定事件
   bindEvent () {
     this.canvas.addEventListener('click', this.clickHandle, false)
     this.canvas.addEventListener('mousemove', this.mouseHandle, false)
     window.addEventListener('resize', this.init, false)
   }
-  //  移除事件
+  // 移除事件
   unbindEvent () {
     this.canvas.removeEventListener('click', this.clickHandle, false)
     this.canvas.removeEventListener('mousemove', this.mouseHandle, false)
     window.removeEventListener('resize', this.init, false)
   }
-  //  点击控制动画
+  // 点击控制动画
   clickHandle (e) {
     this.clickPause && this.toggleAnimateStatus()
   }
-  //  鼠标移动事件
+  // 鼠标移动事件
   mouseHandle (e) {
     let mx = e.clientX - this.bounds.left
     let my = e.clientY - this.bounds.top
@@ -95,13 +97,13 @@ export default class Canvas {
     this.mouse.x = mx
     this.mouse.y = my
   }
-  //  动画开始
+  // 动画开始
   start () {
     if (this.isAnimate) {
       return false
     }
 
-    for (var i = this.vballs.length; i < this.ball_count; i++) {
+    for (var i = this.vballs.length; i < this.ballCount; i++) {
       this.addBall()
     }
 
@@ -119,7 +121,7 @@ export default class Canvas {
     }
     requestAnimationFrame(step)
   }
-  //  切换动画状态
+  // 切换动画状态
   toggleAnimateStatus () {
     if (this.isAnimate) {
       this.isAnimate = false
@@ -128,18 +130,18 @@ export default class Canvas {
       this.start()
     }
   }
-  //  得到颜色渐变数组
+  // 得到颜色渐变数组
   getColorList (color) {
-    //  颜色差值[r, g, b]
+    // 颜色差值[r, g, b]
     let startColor = color[0]
     let endColor = color[1]
 
     let ColorDis = endColor.map((end, i) => end - startColor[i])
 
-    //  颜色差最大的绝对值
+    // 颜色差最大的绝对值
     let ColorLength = Math.max(Math.abs(ColorDis[0]), Math.abs(ColorDis[1]), Math.abs(ColorDis[2]))
 
-    //  颜色变化系数
+    // 颜色变化系数
     let ColorChange = ColorDis.map((c) => c / ColorLength)
 
     let ColorList = []
@@ -150,7 +152,7 @@ export default class Canvas {
 
     return ColorList
   }
-  //  增加一个球
+  // 增加一个球
   addBall () {
     let ball = {
       vx: this.getRandomNumber(this.speed),  // 水平方向加速度
@@ -162,12 +164,12 @@ export default class Canvas {
       withMouse: 0  // 与鼠标位置的关系  [0:范围外, 1:范围内, 2:球中]
     }
 
-    //  半径由透明度决定（越谈越大）
-    ball.r = (1 - ball.opacity) * (this.r_range[1] - this.r_range[0]) + this.r_range[0]
+    // 半径由透明度决定（越谈越大）
+    ball.r = (1 - ball.opacity) * (this.radiusRange[1] - this.radiusRange[0]) + this.radiusRange[0]
     ball.x = this.getRandomNumber([ball.r, this.width - ball.r])
     ball.y = this.getRandomNumber([ball.r, this.height - ball.r])
 
-    //  判断是否重合，重合则重新加
+    // 判断是否重合，重合则重新加
     if (this.isOverlap(ball)) {
       return this.addBall()
     }
@@ -187,7 +189,7 @@ export default class Canvas {
 
     this.vballs.push(ball)
   }
-  //  判断该位置是否重叠
+  // 判断该位置是否重叠
   isOverlap (ball) {
     return !this.vballs.every((b) => {
       let d = Math.sqrt(Math.pow(ball.x - b.x, 2) + Math.pow(ball.y - b.y, 2))
@@ -197,7 +199,7 @@ export default class Canvas {
       return true
     })
   }
-  //  根据虚拟球生成四个镜像球
+  // 得到实体球和镜像球
   getBalls () {
     var ball = null
     var balls = []
@@ -210,7 +212,7 @@ export default class Canvas {
 
     return balls
   }
-  //  判断位置生成镜像球
+  // 判断位置生成镜像球
   addMirrorBalls (ball) {
     let range = this.mirrorRange
     let balls = []
@@ -238,7 +240,7 @@ export default class Canvas {
 
     return balls
   }
-  //  添加一个镜像Ball
+  // 添加一个镜像球
   addMirrorBall (ball, obj) {
     var newBall = {}
     for (var key in ball) {
@@ -252,7 +254,7 @@ export default class Canvas {
 
     return newBall
   }
-  //  渲染
+  // 渲染
   render (progress) {
     this.balls.length = 0
 
@@ -266,20 +268,23 @@ export default class Canvas {
       this.renderBall(ball, i)
     })
   }
-  //  渲染单个球
+  // 渲染单个球
   renderBall (ball, i) {
     let x = ball.x
     let y = ball.y
     let color = ball.color
 
-    //  连线
+    // 连线
     Array.from(this.balls, (b, index) => {
       if (index <= i) {
         return false
       }
 
+      // 得到距离
       let d = Math.sqrt(Math.pow(x - b.x, 2) + Math.pow(y - b.y, 2))
-      if (d < this.line_range && d > (ball.r + b.r)) {
+
+      // 在范围内且没有碰撞时
+      if (d < this.lineRange && d > (ball.r + b.r)) {
         if (b.type === -1) {
           ball.withMouse = 1
           ball.is_infect = true
@@ -288,7 +293,7 @@ export default class Canvas {
             return false
           }
         }
-        let opacity = 1 - d / this.line_range
+        let opacity = 1 - d / this.lineRange
         let ballColor = this.getRGBA(color, opacity)
         let bColor = this.getRGBA(b.color, opacity)
 
@@ -322,6 +327,7 @@ export default class Canvas {
 
         this.cxt.restore()
       }
+      // 碰撞
       else if (d < (ball.r + b.r) && !b.isCrash && !ball.isCrash) {
         if (b.type === -1) {
           ball.withMouse = 2
@@ -342,13 +348,14 @@ export default class Canvas {
           }
         }
       }
+      // 范围外
       else if (b.type === -1) {
         ball.withMouse = 0
         ball.is_infect = false
       }
     })
 
-    //  大球体
+    // 画球【三种类型】
     if (ball.type === 0) {
       this.renderTypeArc(x, y, ball.r, this.getRGBA(color, ball.opacity))
     }
@@ -359,7 +366,8 @@ export default class Canvas {
       this.renderTypeArc(x, y, ball.r, this.getRGBA(color, ball.opacity), ball.emptyR, ball.sonR)
     }
   }
-  //  处理两球碰撞
+  // 处理两球碰撞
+  // 参考链接：http://www.jscon.co/coding/frontend/canvas_ball_collision.html
   crashHandle (b1, b2) {
     let deg = Math.atan2(b2.y - b1.y, b2.x - b1.x)
     let speed1 = Math.sqrt(b1.vx * b1.vx + b1.vy * b1.vy)
@@ -382,9 +390,11 @@ export default class Canvas {
     b2.fx = Math.cos(deg) * fx2 + Math.cos(deg + Math.PI / 2) * fy2
     b2.fy = Math.sin(deg) * fx2 + Math.sin(deg + Math.PI / 2) * fy2
   }
-  //  更新
+  // 更新
   update () {
+    // 只需要计算更新实体球
     this.vballs = this.vballs.map((ball) => {
+      // 超出页面范围重置到镜像位置
       if (ball.x < -ball.r) {
         ball.x = ball.x + this.width
       }
@@ -398,6 +408,7 @@ export default class Canvas {
         ball.y = ball.y - this.height
       }
 
+      // 碰撞处理
       if (ball.isCrash) {
         ball.isCrash = false
 
@@ -405,6 +416,7 @@ export default class Canvas {
         ball.vy = ball.fy
       }
 
+      // 在鼠标范围内（排斥）
       if (ball.withMouse === 1) {
         let g = Math.random() * 0.02
 
@@ -420,11 +432,14 @@ export default class Canvas {
           ball.vx = ball.vx * 0.99 - g
         }
       }
+
+      // 如果鼠标停留在球上则不运动
       if (ball.withMouse !== 2) {
         ball.x += ball.vx
         ball.y += ball.vy
       }
 
+      // 更新小球颜色
       this.updateGradientData(ball)
 
       return ball
@@ -434,7 +449,7 @@ export default class Canvas {
     this.updateGradientData(this.bg)
     this.updateGradientData(this.text)
   }
-  //  初始化颜色渐变对象
+  // 初始化颜色渐变对象
   initGradientData (period, colors) {
     let ColorList = this.getColorList(colors)
     return {
@@ -446,10 +461,10 @@ export default class Canvas {
       ColorGroup: colors  // 渐变颜色组
     }
   }
-  //  更新颜色
+  // 更新颜色
   updateGradientData (ball) {
     let index
-    //  颜色停留时间
+    // 颜色停留时间
     let pauseTime = ball.ColorGroup[ball.cur_color][3]
 
     if (pauseTime) {
@@ -472,7 +487,7 @@ export default class Canvas {
       return false
     }
 
-    //  更新颜色
+    // 更新颜色
     ball.color = ball.color.map((n, i) => {
       if (index >= ball.ColorList.length) {
         ball.cur_i = index = 0
@@ -488,15 +503,15 @@ export default class Canvas {
       return ball.ColorList.length ? ball.ColorList[index][i] : n
     })
   }
-  //  根据颜色数组获取rgba颜色字符串
+  // 根据颜色数组获取rgba颜色字符串
   getRGBA (color, opacity = 1) {
     return color === 'transparent' ? color : `rgba(${~~color[0]}, ${~~color[1]}, ${~~color[2]}, ${opacity})`
   }
-  //  根据范围得到一个随机数[[范围], 小数位]
+  // 根据范围得到一个随机数[[范围], 小数位]
   getRandomNumber ([min, max], decimal) {
     return (Math.random() * (max - min)) + min
   }
-  //  画各种类型的圆
+  // 画各种类型的圆
   renderTypeArc (x, y, r, color, innerR, centerR) {
     this.cxt.fillStyle = color
 
@@ -507,7 +522,7 @@ export default class Canvas {
 
     this.cxt.fill()
   }
-  //  画一个实心圆
+  // 画一个实心圆
   renderArc (x, y, r, color) {
     this.cxt.fillStyle = color
 
@@ -516,7 +531,7 @@ export default class Canvas {
 
     this.cxt.fill()
   }
-  //  画一个圆环
+  // 画一个圆环
   renderRing (x, y, r, color, innerR) {
     this.cxt.fillStyle = color
 
@@ -526,7 +541,7 @@ export default class Canvas {
 
     this.cxt.fill()
   }
-  //  画一个双圆
+  // 画一个双圆
   renderDoubleArc (x, y, r, color, innerR, centerR) {
     this.cxt.fillStyle = color
 
@@ -537,7 +552,7 @@ export default class Canvas {
 
     this.cxt.fill()
   }
-  //  画一条线
+  // 画一条线
   renderLine (x1, y1, x2, y2) {
     this.cxt.beginPath()
     this.cxt.moveTo(x1, y1)
@@ -545,7 +560,7 @@ export default class Canvas {
 
     this.cxt.stroke()
   }
-  //  画个三角形
+  // 画个三角形
   renderTri (coord1, coord2, coord3) {
     this.cxt.beginPath()
     this.cxt.moveTo(coord1.x, coord1.y)
@@ -556,11 +571,12 @@ export default class Canvas {
 
     this.cxt.stroke()
   }
+  // 填充背景色
   renderBackground () {
     this.cxt.fillStyle = this.getRGBA(this.bg.color)
     this.cxt.fillRect(0, 0, this.width, this.height)
   }
-  //  写字
+  // 写字
   renderText () {
     this.cxt.save()
 
@@ -569,6 +585,11 @@ export default class Canvas {
     this.cxt.textAlign = 'center'
     this.cxt.fillStyle = this.getRGBA(this.text.color, 0.8)
     this.cxt.fillText(this.txt, this.width / 2, this.height / 2 + fontSize / 2)
+
+    this.cxt.font = this.bottomFont
+    this.cxt.textAlign = 'center'
+    this.cxt.fillStyle = this.getRGBA(this.text.color, 0.6)
+    this.cxt.fillText(this.bottomTxt, this.width / 2, this.height / 2 + fontSize + 30)
 
     this.cxt.restore()
   }

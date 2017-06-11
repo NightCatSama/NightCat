@@ -90,7 +90,7 @@
       },
       minusClick () {
         if (!this.activeTag) {
-          return this.$toast('请先选中一个标签')
+          return this.$toast('请先选中一个标签', 'warning')
         }
         this.$prompt('确定删除该标签吗？', this.removeTag)
       }

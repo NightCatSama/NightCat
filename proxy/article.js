@@ -1,8 +1,9 @@
 import { article } from '../models'
 
  /*  获取全部文章  */
-export const getArticle = async() => {
-	return await article.find({}).sort({ 'created_at': -1 })
+export const getArticle = async(condition) => {
+	condition = condition || {}
+	return await article.find(condition).sort({ 'created_at': -1 })
 }
 
  /*  根据id查找标签  */
@@ -18,6 +19,7 @@ export const newAndSave = async(data) => {
 	a.tags = data.tags
 	a.content = data.content
 	a.cover = data.cover
+	a.release = false
 	return await a.save()
 }
 

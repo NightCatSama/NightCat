@@ -2,7 +2,7 @@
   <div class="admin-add-article">
     <!--侧边按钮组-->
     <aside class="aside">
-      <router-link class="radius-btn" :to="{ name: 'Admin-Article' }" exact>
+      <router-link class="radius-btn blue" :to="{ name: 'Admin-Article' }" exact>
         <Icon name="bars" :size="24"></Icon>
       </router-link>
       <div class="radius-btn green" @click="editArticle">
@@ -47,8 +47,12 @@
       <div v-if="allTags.length === 0">
         暂无标签
       </div>
-      <div v-else v-for="(tag, i) in allTags" :class="['tag-badge', { active: tags.indexOf(tag) > -1 }]" @click="clickTag(tag)">
-        {{ tag }}
+      <div v-else>
+        <h1>Tag</h1>
+        <hr />
+        <div v-for="(tag, i) in allTags" :class="['tag-badge', { active: tags.indexOf(tag) > -1 }]" @click="clickTag(tag)">
+          {{ tag }}
+        </div>
       </div>
     </Modal>
   </div>
@@ -365,8 +369,15 @@
 
   .admin-add-article {
     .modal {
-      padding: 20px;
-      text-align: center;
+      padding: 80px 60px;
+
+      h1 {
+        margin-bottom: 10px;
+      }
+
+      hr {
+        margin-bottom: 20px;
+      }
 
       button {
         margin-top: 20px;

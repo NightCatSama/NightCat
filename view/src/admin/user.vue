@@ -32,6 +32,7 @@
           </div>
         </div>
         <Btn v-if="!userInfo.superAdmin" class="admin-btn" @click="setAdmin">{{ userInfo.admin ? '取消管理员' : '设置管理员' }}</Btn>
+        <Btn v-if="!userInfo.superAdmin" class="admin-btn red" @click="removeUser">删除用户</Btn>
       </template>
     </div>
   </div>
@@ -108,6 +109,24 @@
           this.$forceUpdate()
         })
         .catch((err) => this.$toast(err.message, 'error'))
+      },
+      removeUser () {
+        this.$prompt('确认删除该用户吗', () => {
+          let account = this.account
+          let index = this.active
+
+          this.$graphql.mutation(`
+            removeUser (account: "${account}") {
+              account
+            }
+          `)
+          .then((res) => {
+            this.$toast('删除成功', 'success')
+            this.active = index - 1
+            this.list.splice(index, 1)
+          })
+          .catch((err) => this.$toast(err.message, 'error'))
+        })
       },
       getUserList () {
         this.$graphql.query(`
@@ -229,7 +248,11 @@
 
     .admin-btn {
       max-width: 400px;
-      margin-top: 20px;
+      margin-top: 10px;
+
+      &.red {
+        color: $red;
+      }
     }
   }
 </style>

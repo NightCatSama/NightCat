@@ -3,7 +3,7 @@
     <section class="canvas-bg">
       <canvas id="bg_canvas"></canvas>
       <aside class="source_link">
-        <a href="https://github.com/NightCatSama/NightCat/blob/master/view/src/views/home/bg_canvas.js" target="_blank">source code</a>
+        <a href="https://github.com/NightCatSama/NightCat/blob/master/view/src/assets/bg_canvas.js" target="_blank">source code</a>
       </aside>
     </section>
   </div>
@@ -11,6 +11,7 @@
 
 <script>
 import Canvas from '@/assets/bg_canvas'
+import { on, off } from '@/assets/tools'
 
 export default {
   name: 'home',
@@ -18,9 +19,20 @@ export default {
     return {
     }
   },
+  methods: {
+    gotoHome () {
+      this.$router.push({
+        name: 'Article'
+      })
+    }
+  },
   mounted () {
     /* eslint-disable no-new */
     new Canvas('bg_canvas')
+    on(document, 'keyup', this.gotoHome)
+  },
+  beforeDestroy () {
+    off(document, 'keyup', this.gotoHome)
   }
 }
 </script>

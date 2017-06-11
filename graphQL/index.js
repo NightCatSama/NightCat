@@ -22,7 +22,8 @@ const schema = new GraphQLSchema({
 
       article: ArticleQuery.article,
 
-      tags: TagQuery.tags
+      tags: TagQuery.tags,
+      articleByTag: TagQuery.articleByTag
     }
   }),
   mutation: new GraphQLObjectType({
@@ -35,10 +36,12 @@ const schema = new GraphQLSchema({
       setEmail: UserMutation.setEmail,
       setAdmin: UserMutation.setAdmin,
       setPassword: UserMutation.setPassword,
+      removeUser: UserMutation.removeUser,
 
       addArticle: ArticleMutation.addArticle,
       deleteArticle: ArticleMutation.deleteArticle,
       updateArticle: ArticleMutation.updateArticle,
+      releaseArticle: ArticleMutation.releaseArticle,
 
       addTag: TagMutation.addTag,
       removeTag: TagMutation.removeTag

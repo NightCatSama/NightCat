@@ -17,7 +17,7 @@
         show: false,
         content: '',
         time: 1500,
-        type: '',
+        type: 'default',
         callback: null,
         iconType: {
           'default': 'info-circle',
@@ -110,7 +110,6 @@
     }
 
     &-warning {
-      color: #333;
       background-color: $yellow;
     }
 

@@ -21,6 +21,7 @@
         </li>
         <li v-for="(article, i) in list" :class="{ active: active === i }" @click="active = i">
           <div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>
+          <div :class="['release-tag', { released: article.release }]" @click.stop="modifyRelease(i)"></div>
           <div class="info">
             <h3 class="title">
               {{ article.title }}
@@ -83,6 +84,7 @@
       }
     },
     methods: {
+      // 得到文章列表
       getArticleList () {
         this.$graphql.query(`
           article ($first, $after) {
@@ -94,6 +96,7 @@
                 author,
                 cover,
                 tags,
+                release,
                 created_at
               }
               cursor
@@ -114,6 +117,28 @@
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
+      // 发布/下架 文章
+      modifyRelease (index) {
+        let article = this.list[index]
+        let word = article.release ? '下架' : '发布'
+
+        this.$prompt(`确定${word}这篇文章吗？`, () => {
+          this.$graphql.mutation(`
+            releaseArticle ($id) {
+              release
+            }
+          `, {
+            id: article._id
+          })
+          .then((res) => {
+            this.$toast('修改成功', 'success')
+            this.list[index].release = res.release
+            this.$forceUpdate()
+          })
+          .catch((err) => this.$toast(err.message, 'error'))
+        })
+      },
+      // 删除文章
       deleteArticle () {
         if (!this.list[this.active]) return this.$toast('没有文章可以删除。')
 
@@ -134,14 +159,16 @@
           .catch((err) => this.$toast(err.message, 'error'))
         })
       },
+      // 保存草稿
       setDraft (article) {
         window.localStorage.setItem('content', article.content)
         window.localStorage.setItem('title', article.title)
         window.localStorage.setItem('cover', article.cover)
         window.localStorage.setItem('tags', JSON.stringify(article.tags))
       },
+      // 跳转至文章编辑页面
       gotoEditArticle () {
-        if (!this.list[this.active]) return this.$toast('没有文章可以编辑。')
+        if (!this.list[this.active]) return this.$toast('没有文章可以编辑。', 'warning')
 
         let article = this.list[this.active]
         this.setDraft(article)
@@ -202,6 +229,18 @@
           transition: all .3s;
         }
 
+        .release-tag {
+          position: absolute;
+          top: 0;
+          right: 0;
+          opacity: .4;
+          @include triangle(36px, $blue, top-right);
+
+          &.released {
+            @include triangle(36px, $green, top-right);
+          }
+        }
+
         .info {
           position: relative;
           z-index: 9;
@@ -211,13 +250,13 @@
           }
 
           small {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: normal;
           }
 
           time {
             display: block;
-            font-size: 15px;
+            font-size: 14px;
             margin-top: 5px;
           }
         }
@@ -230,6 +269,9 @@
           .cover {
             opacity: .9;
             box-shadow: inset 0 0 20px 5px rgba(0, 0, 0, 0.36);
+          }
+          .release-tag {
+            opacity: .8;
           }
         }
       }

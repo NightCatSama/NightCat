@@ -29,6 +29,8 @@ let UserQuery = {
       return await usersPagination.resolve(users, args)
     }
   },
+
+  
   user: {
     type: UserType,
     descriptions: '获得单个用户的数据，查询条件为空时则获取自己的数据',

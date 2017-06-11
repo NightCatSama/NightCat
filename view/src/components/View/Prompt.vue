@@ -50,7 +50,7 @@
 <style lang="scss">
  .cat-prompy {
    padding: 20px;
-   border-radius: 8px;
+   border-radius: 3px;
    text-align: center;
 
    button {

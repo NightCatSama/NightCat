@@ -4,7 +4,7 @@ import uuid from 'uuid'
 
  /*  获取完整的用户列表  */
 export const getUsers = async() => {
-	return await user.find({}).sort({ 'admin': -1 })
+	return await user.find({}).sort({ 'superAdmin': -1 }).sort({ 'admin': -1 })
 }
 
  /*  获取完整的用户列表  */

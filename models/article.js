@@ -23,6 +23,10 @@ let airicleSchema = new Schema({
   cover: {
     type: String
   },
+  // 是否发布
+  release: {
+    type: Boolean
+  },
   // 注册时间
   created_at: {
     type: Date,

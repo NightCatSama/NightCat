@@ -179,6 +179,26 @@ let UserMutation = {
 
       return await root.user.save()
     }
+  },
+
+
+  removeUser: {
+    type: UserType,
+    description: '删除用户',
+    args: {
+      account: {
+        type: new GraphQLNonNull(GraphQLString),
+        description: '账号'
+      }
+    },
+    resolve: async(root, { account }, req) => {
+      if (!root.user) throw Error('账号未登录')
+      if (!root.user.superAdmin) throw Error('你没有超级管理员权限')
+
+      let user = await User.getUserByAccount(account)
+
+      return await user.remove()
+    }
   }
 }
 

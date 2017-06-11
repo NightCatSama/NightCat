@@ -50,7 +50,6 @@ let TagMutation = {
 
       Array.from(tag.article, async(id) => {
         let article =  await Article.getArticleById(id)
-        console.log(article)
 
         let index = article.tags.indexOf(name)
         article.tags.splice(index, 1)

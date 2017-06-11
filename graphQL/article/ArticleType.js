@@ -37,6 +37,10 @@ let ArticleType = new GraphQLObjectType({
       type: GraphQLString,
       description: '封面图'
     },
+    release: {
+      type: GraphQLBoolean,
+      description: '是否发布'
+    },
     created_at: {
       type: GraphQLString,
       description: '注册时间',
