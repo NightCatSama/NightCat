@@ -3,15 +3,22 @@ import App from './App'
 import createRouter from './router'
 import GraphQL from './assets/graphql'
 
-import { createInstance, createGraphQLInstance } from './http'
+import { createInstance, createGraphQLInstance } from './assets/http'
 import store from './store'
 import Components from './components'
 
-let axios = createInstance(store)
-let graphql = new GraphQL(createGraphQLInstance(store))
-let router = createRouter(store, graphql)
-
 Vue.use(Components)
+
+let { start, success, error } = Vue.prototype.$loading
+let hook = {
+  start,
+  success,
+  error
+}
+
+let axios = createInstance(store, hook)
+let graphql = new GraphQL(createGraphQLInstance(store, hook))
+let router = createRouter(store, graphql)
 
 Vue.prototype.$http = axios
 Vue.prototype.$graphql = graphql

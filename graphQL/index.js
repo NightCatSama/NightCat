@@ -21,6 +21,7 @@ const schema = new GraphQLSchema({
       user: UserQuery.user,
 
       article: ArticleQuery.article,
+      getArticleById: ArticleQuery.getArticleById,
 
       tags: TagQuery.tags,
       articleByTag: TagQuery.articleByTag

@@ -59,7 +59,7 @@ export default {
 			await updateToken(user, req)
 
 			return res.status(302)
-				.redirect(`/${state}`)
+				.redirect(`${state}`)
 		}
 
 		let userInfo = {

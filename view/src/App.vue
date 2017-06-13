@@ -13,4 +13,7 @@ export default {
 <style lang="scss">
 @import './style/core/index';
 
+#app {
+  overflow-x: hidden;
+}
 </style>

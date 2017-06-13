@@ -2,54 +2,61 @@ import axios from 'axios'
 import config from '@/config'
 
 // 普通请求
-export const createInstance = (store) => {
+export const createInstance = (store, hook) => {
   let instance = axios.create({
     baseURL: config.host,
+    timeout: 30000,
     withCredentials: config.withCredentials,
     headers: {'Content-Type': 'application/json'}
   })
 
-  instance.interceptors.request.use(requestHandle)
-  instance.interceptors.response.use(responseHandle, errorHandle)
+  instance.interceptors.request.use((req) => requestHandle(req, hook), (err) => errorHandle(err, hook))
+  instance.interceptors.response.use((res) => responseHandle(res, hook), (err) => errorHandle(err, hook))
 
   return instance
 }
 
 // Graphql 请求
-export const createGraphQLInstance = (store) => {
+export const createGraphQLInstance = (store, hook) => {
   let instance = axios.create({
     baseURL: config.host,
+    timeout: 30000,
     withCredentials: config.withCredentials,
     headers: {'Content-Type': 'application/graphql'}
   })
 
-  instance.interceptors.request.use(requestHandle)
-  instance.interceptors.response.use(graphqlResponseHandle, errorHandle)
+  instance.interceptors.request.use((req) => requestHandle(req, hook), (err) => errorHandle(err, hook))
+  instance.interceptors.response.use((res) => graphqlResponseHandle(res, hook), (err) => errorHandle(err, hook))
 
   return instance
 }
 
 // 处理请求
-function requestHandle (req) {
+function requestHandle (req, hook) {
+  hook.start && hook.start()
   return req
 }
 
 // 处理响应
-function responseHandle (res) {
+function responseHandle (res, hook) {
+  hook.success && hook.success()
   return res.data
 }
 
 // 处理 graphql 的响应
-function graphqlResponseHandle (res) {
+function graphqlResponseHandle (res, hook) {
   if (res.data.errors) {
+    hook.error && hook.error()
     return Promise.reject(res.data.errors[0])
   }
 
-  return responseHandle(res)
+  return responseHandle(res, hook)
 }
 
 // 错误处理
-function errorHandle (err) {
+function errorHandle (err, hook) {
+  hook.error && hook.error()
+
   try {
     return err.response.data.errors ? Promise.reject(err.response.data.errors[0]) : Promise.reject(err.response.data)
   }

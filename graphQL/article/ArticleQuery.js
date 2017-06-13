@@ -4,6 +4,7 @@ import {
   GraphQLBoolean,
   GraphQLInt,
   GraphQLList,
+  GraphQLID,
   GraphQLNonNull
 } from 'graphql'
 
@@ -34,6 +35,25 @@ let ArticleQuery = {
       } : null)
 
       return await articlePagination.resolve(data, args)
+    }
+  },
+
+
+  getArticleById: {
+    type: ArticleType,
+    descriptions: '根据 id 获取文章',
+    args: {
+      id: {
+        type: GraphQLID,
+        descriptions: '文章 ID'
+      }
+    },
+    resolve: async(root, { id }) => {
+      let data = await Article.getArticleById(id)
+
+      if (!data) throw Error('未找到文章')
+
+      return data
     }
   }
 }

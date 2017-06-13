@@ -1,10 +1,11 @@
-const Admin = r => require.ensure([], () => r(require('@/admin/index')), 'admin')
-const Sign = r => require.ensure([], () => r(require('@/admin/sign')), 'admin-sign')
-const Home = r => require.ensure([], () => r(require('@/admin/home')), 'admin-home')
-const User = r => require.ensure([], () => r(require('@/admin/user')), 'admin-home')
-const Article = r => require.ensure([], () => r(require('@/admin/article')), 'admin-article')
-const EditArticle = r => require.ensure([], () => r(require('@/admin/editArticle')), 'admin-article')
-const Tag = r => require.ensure([], () => r(require('@/admin/tag')), 'admin-tag')
+const Admin = r => require.ensure([], () => r(require('@/views/admin/index')), 'admin')
+const Home = r => require.ensure([], () => r(require('@/views/admin/home')), 'admin-home')
+const User = r => require.ensure([], () => r(require('@/views/admin/user')), 'admin-home')
+const Article = r => require.ensure([], () => r(require('@/views/admin/article')), 'admin-article')
+const EditArticle = r => require.ensure([], () => r(require('@/views/admin/editArticle')), 'admin-article')
+const Tag = r => require.ensure([], () => r(require('@/views/admin/tag')), 'admin-tag')
+
+const Sign = r => require.ensure([], () => r(require('@/views/common/sign')), 'admin-sign')
 
 export default {
   path: '/admin',
