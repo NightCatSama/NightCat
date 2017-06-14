@@ -54,6 +54,10 @@ let ArticleType = new GraphQLObjectType({
       resolve: (root) => {
         return formatDate(root.update_at, 'yyyy-MM-dd hh:mm:ss')
       }
+    },
+    view: {
+      type: GraphQLString,
+      description: '解析后的内容'
     }
   })
 })

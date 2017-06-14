@@ -1,6 +1,8 @@
-const Page = r => require.ensure([], () => r(require('@/views/fe/index')), 'home')
+// const Page = r => require.ensure([], () => r(require('@/views/fe/index')), 'home')
+import Page from '@/views/fe/index'
+
 const Home = r => require.ensure([], () => r(require('@/views/fe/home')), 'home')
-const ArticleList = r => require.ensure([], () => r(require('@/views/fe/articleList')), 'article')
+const ArticleList = r => require.ensure([], () => r(require('@/views/fe/articleList')), 'home')
 const Article = r => require.ensure([], () => r(require('@/views/fe/article')), 'article')
 const Search = r => require.ensure([], () => r(require('@/views/fe/search')), 'search')
 const Link = r => require.ensure([], () => r(require('@/views/fe/link')), 'link')

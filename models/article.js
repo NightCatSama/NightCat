@@ -1,4 +1,5 @@
 import mongoose from 'mongoose'
+import md from '../common/markdown'
 
 let Schema = mongoose.Schema
 
@@ -43,6 +44,10 @@ airicleSchema.pre('save', (next) => {
   var now = new Date()
   airicleSchema.update_at = now
   next()
+})
+
+airicleSchema.virtual('view').get(function () {
+  return md.render(this.content)
 })
 
 let article = mongoose.model('article', airicleSchema)
