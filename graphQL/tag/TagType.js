@@ -23,7 +23,7 @@ let TagType = new GraphQLObjectType({
       type: new GraphQLList(GraphQLString),
       description: '该标签下的文章'
     },
-    length: {
+    count: {
       type: GraphQLInt,
       description: '该标签下的文章数量'
     }

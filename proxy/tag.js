@@ -1,8 +1,8 @@
 import { tag } from '../models'
 
- /*  获取全部文章  */
+ /*  获取全部标签  */
 export const getTags = async() => {
-	return await tag.find({}).sort({ 'length': -1 })
+	return await tag.find({}).sort({ 'count': -1 })
 }
 
  /*  根据名字查找标签  */

@@ -1,5 +1,4 @@
 <template>
-  <!--删除模态框-->
   <Modal v-model="show" class-name="cat-prompy" @hide="remove">
     <div>{{ msg }}</div>
     <Btn @click="checked">确定</Btn>
@@ -22,6 +21,13 @@
         cb: null
       }
     },
+    watch: {
+      show (val) {
+        if (!val) {
+          this.$destroy()
+        }
+      }
+    },
     methods: {
       remove () {
         document.body.removeChild(this.$el)
@@ -40,8 +46,10 @@
       on(document, 'keyup', this.handleEnter)
       document.body.appendChild(this.$el)
     },
-    destroyed () {
+    beforeDestroy () {
       off(document, 'keyup', this.handleEnter)
+    },
+    destroyed () {
       this.remove()
     }
   }

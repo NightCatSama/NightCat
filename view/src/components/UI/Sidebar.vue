@@ -25,9 +25,10 @@
       </template>
     </div>
     <nav class="nav">
-      <router-link to="article">Home</router-link>
-      <router-link to="admin">Admin</router-link>
-      <router-link to="link">Link</router-link>
+      <router-link to="/article">Home</router-link>
+      <router-link to="/search">Search</router-link>
+      <router-link to="/admin">Admin</router-link>
+      <router-link to="/link">Link</router-link>
     </nav>
   </div>
 </template>

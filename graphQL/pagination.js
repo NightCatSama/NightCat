@@ -31,16 +31,20 @@ export default class Pagination {
       descriptions: '保存分页相关数据的对象',
       fields: () => ({
         startCursor: {
-          type: GraphQLString
+          type: GraphQLString,
+          description: '返回列表首项的标识'
         },
         endCursor: {
-          type: GraphQLString
+          type: GraphQLString,
+          description: '返回列表尾项的标识'
         },
         hasNextPage: {
-          type: GraphQLBoolean
+          type: GraphQLBoolean,
+          description: '是否有下一页'
         },
         hasPrevPage: {
-          type: GraphQLBoolean
+          type: GraphQLBoolean,
+          description: '是否有上一页'
         }
       })
     })
@@ -53,10 +57,12 @@ export default class Pagination {
       descriptions: 'Edges',
       fields: () => ({
         node: {
-          type: this._type
+          type: this._type,
+          description: '列表单项的数据'
         },
         cursor: {
-          type: GraphQLString
+          type: GraphQLString,
+          description: '标识'
         }
       })
     }))
@@ -68,6 +74,9 @@ export default class Pagination {
       name: `${this._name}`,
       description: '包装后的类型',
       fields: () => ({
+        totalCount: {
+          type: GraphQLInt
+        },
         pageInfo: {
           type: this.getPageInfoType()
         },
@@ -96,12 +105,16 @@ export default class Pagination {
       after: {
         type: GraphQLString,
         description: '规定在此标志之后的列表'
+      },
+      offset: {
+        type: GraphQLInt,
+        description: '规定从该索引开始获取'
       }
     }
   }
 
 
-  async resolve (node, { first, last, before, after }) {
+  async resolve (node, { first, last, before, after, offset = 0 }) {
     const len = node.length
     const beforeOffset = this.getOffset(before, len)
     const afterOffset = this.getOffset(after, -1)
@@ -134,15 +147,17 @@ export default class Pagination {
       )
     }
 
-    const slice = node.slice(
-      Math.max(startOffset, 0),
-      Math.min(endOffset, len),
-    )
+    let range = [
+      Math.max(startOffset + offset, 0),
+      Math.min(endOffset + offset, len)
+    ]
+
+    const slice = node.slice(...range)
 
     let edges = Array.from(slice, (obj, i) => {
       return {
         node: obj,
-        cursor: this.getCursor(startOffset + i)
+        cursor: this.getCursor(range[0] + i)
       }
     })
 
@@ -153,13 +168,12 @@ export default class Pagination {
 
     return {
       edges,
+      totalCount: upperBound - lowerBound,
       pageInfo: {
         startCursor: startEdge ? startEdge.cursor : null,
         endCursor: endEdge ? endEdge.cursor : null,
-        hasPrevPage:
-          typeof last === 'number' ? startOffset > lowerBound : false,
-        hasNextPage:
-          typeof first === 'number' ? endOffset < upperBound : false
+        hasPrevPage: range[0] > lowerBound,
+        hasNextPage: range[1] < upperBound
       }
     }
   }

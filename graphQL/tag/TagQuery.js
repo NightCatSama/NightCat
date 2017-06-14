@@ -1,5 +1,6 @@
 // GraphQL
 import {
+  GraphQLBoolean,
   GraphQLString,
   GraphQLInt,
   GraphQLList,
@@ -34,17 +35,27 @@ let TagQuery = {
       name: {
         type: new GraphQLNonNull(GraphQLString)
       },
+      release: {
+        type: GraphQLBoolean,
+        descriptions: '是否发布过的文章'
+      },
       ...articlePagination.args
     },
     resolve: async(root, args) => {
       let tag = await Tag.getTagByName(args.name)
       if (!tag) throw Error('标签不存在！')
-      
-      let data = Array.from((tag.article), async(id) => {
-        return await Article.getArticleById(id)
-      })
 
-      return await articlePagination.resolve(data, args)
+      let data = []
+      for (let i = 0, len = tag.article.length; i < len; i++) {
+        let id = tag.article[i]
+        let article =  await Article.getArticleById(id)
+
+        if (typeof args.release === 'undefined' || article.release === (args.release || false)) {
+          data.push(article)
+        }
+      }
+
+      return await articlePagination.resolve(data.sort((a, b) => b.created_at - a.created_at), args)
     }
   }
 }

@@ -1,6 +1,10 @@
 import Page from '@/views/fe/index'
 import Home from '@/views/fe/home'
+import ArticleList from '@/views/fe/articleList'
 import Article from '@/views/fe/article'
+import Search from '@/views/fe/search'
+import Link from '@/views/fe/link'
+import User from '@/views/fe/user'
 
 import SetPassword from '@/views/common/setPassword'
 import Sign from '@/views/common/sign'
@@ -39,11 +43,23 @@ export default [{
   component: Page,
   children: [{
     path: 'article',
+    name: 'ArticleList',
+    component: ArticleList
+  }, {
+    path: 'article/:id',
     name: 'Article',
     component: Article
   }, {
-    path: 'article/:id',
-    name: 'OneArticle',
-    component: Article
+    path: 'search',
+    name: 'Search',
+    component: Search
+  }, {
+    path: 'link',
+    name: 'Link',
+    component: Link
+  }, {
+    path: 'user',
+    name: 'User',
+    component: User
   }]
 }]

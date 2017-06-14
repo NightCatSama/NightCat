@@ -15,7 +15,7 @@ let tagSchema = new Schema({
 
 tagSchema.index({ name: 1 })
 
-tagSchema.virtual('length').get(function () {
+tagSchema.virtual('count').get(function () {
   return this.article.length
 })
 
