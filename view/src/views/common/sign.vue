@@ -207,7 +207,7 @@ export default {
       })
       .then((res) => {
         this.$store.commit('setSignStatus', res)
-        this.$toast('登录成功')
+        this.$toast('登录成功', 'success')
         .then(() => this.$router.replace(this.targetPath))
       })
       .catch((err) => this.$toast(err.message, 'error'))
@@ -227,12 +227,8 @@ export default {
       })
       .then((res) => {
         this.$store.commit('setSignStatus', res)
-        this.$toast('登录成功', {
-          type: 'success',
-          callback: () => {
-            this.$router.replace(this.targetPath)
-          }
-        })
+        this.$toast('登录成功', 'success')
+        .then(() => this.$router.replace(this.targetPath))
       })
       .catch((err) => this.$toast(err.message, 'error'))
     },
@@ -255,12 +251,8 @@ export default {
       })
       .then((res) => {
         this.$store.commit('setSignStatus', res)
-        this.$toast('注册成功', {
-          type: 'success',
-          callback: () => {
-            this.$router.replace(this.targetPath)
-          }
-        })
+        this.$toast('注册成功', 'success')
+        .then(() => this.$router.replace(this.targetPath))
       })
       .catch((err) => {
         this.$toast(err.message, 'error')

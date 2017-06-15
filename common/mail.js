@@ -26,7 +26,7 @@ export const sendMail = async(data, link) => {
 }
 
 /*  发送激活通知邮件  */
-export const sendActiveMail = async(link,who, account) => {
+export const sendActiveMail = async(link, who, account) => {
 	let from = config.mail_opts.auth.user
 	let to = who
 	let subject = config.name + '账号激活'

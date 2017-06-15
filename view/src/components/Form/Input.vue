@@ -55,6 +55,8 @@
         this.$emit('input', val)
       },
       value (val) {
+        console.log(val)
+        console.log(this.val)
         this.val = val
       }
     },
@@ -92,7 +94,7 @@
     methods: {
       inputHandle (e) {
         let val = e.target.value
-        this.val = e.target.value = this.filter ? this.filter(val) : val
+        this.val = this.filter ? this.filter(val) : val
       },
       is_complete () {
         if (this.verify) {
