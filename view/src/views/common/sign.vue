@@ -77,8 +77,8 @@
 
       <!-- 导航 -->
       <ul class="type-nav">
-        <li :class="{ active: type === 'login' }" @click="type = 'login'">Login</li>
-        <li :class="{ active: type === 'register' }" @click="type = 'register'">Register</li>
+        <li :class="{ active: type === 'login' }" @click="type = 'login'; sonType = ''">Login</li>
+        <li :class="{ active: type === 'register' }" @click="type = 'register'; sonType = ''">Register</li>
       </ul>
     </div>
   </div>
