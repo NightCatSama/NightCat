@@ -26,14 +26,11 @@
             <h3 class="title">
               {{ article.title }}
             </h3>
-            <time>
-              {{ article.created_at }}
-            </time>
             <small>
-              by {{ article.author }}
+              {{ article.created_at }} by {{ article.author }}
             </small>
             <br />
-            <span v-for="tag in article.tags" class="admin-badge">{{ tag }}</span>
+            <span v-for="tag in article.tags" class="tag">{{ tag }}</span>
           </div>
         </li>
         <Btn class="next-btn" v-show="hasNextPage" @click="getArticleList">Loadmore</Btn>
@@ -223,18 +220,13 @@
           z-index: 9;
 
           .title {
-            font-size: 24px;
+            font-size: 18px;
           }
 
           small {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: normal;
-          }
-
-          time {
-            display: block;
-            font-size: 14px;
-            margin-top: 5px;
+            white-space: nowrap;
           }
         }
 
@@ -268,6 +260,50 @@
       .markdown-body {
         margin: 20px;
         width: 100%;
+      }
+    }
+
+    .tag {
+      position: relative;
+      display: inline-block;
+      text-decoration: none;
+      white-space: nowrap;
+      font-weight: 400;
+      color: $white;
+      height: 18px;
+      line-height: 18px;
+      padding: 0 5px 0 8px;
+      border-radius: 0 3px 3px 0;
+      margin: 0 10px 0 5px;
+      font-size: 12px;
+      background-color: $brown;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background-color: $white;
+        transform: translateY(-50%);
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: -18px;
+        top: 0;
+        @include triangle (18px, $brown, left);
+      }
+
+      &.blue {
+        background-color: $blue_d2;
+
+        &::after {
+          border-right-color: $blue_d2;
+        }
       }
     }
 

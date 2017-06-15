@@ -47,6 +47,8 @@ function responseHandle (res, hook) {
 function graphqlResponseHandle (res, hook) {
   if (res.data.errors) {
     hook.error && hook.error()
+
+    config.debug && console.log(res.data.errors[0].message)
     return Promise.reject(res.data.errors[0])
   }
 
@@ -58,7 +60,9 @@ function errorHandle (err, hook) {
   hook.error && hook.error()
 
   try {
-    return err.response.data.errors ? Promise.reject(err.response.data.errors[0]) : Promise.reject(err.response.data)
+    err = err.response.data.errors ? err.response.data.errors[0] : err.response.data
+    config.debug && console.log(err)
+    return Promise.reject(err)
   }
   catch (err) {
     return Promise.reject({

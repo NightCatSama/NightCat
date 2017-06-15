@@ -85,7 +85,7 @@ let ArticleMutation = {
     }
   },
 
-  
+
   releaseArticle: {
     type: ArticleType,
     description: '发布或下架文章',
@@ -97,7 +97,7 @@ let ArticleMutation = {
     },
     resolve: async(root, { id }) => {
       if (!root.user) throw Error('请先登录')
-      if (!root.user.admin) throw Error('你没有权限')
+      if (!root.user.superAdmin) throw Error('你没有权限')
 
       let article = await Article.getArticleById(id)
 

@@ -9,7 +9,12 @@
             <span :style="{ backgroundImage: `url(${article.cover})`}"></span>
           </div>
           <div class="content">
-            <h1 class="title">{{ article.title }}</h1>
+            <router-link :to="{
+              name: 'Article',
+              params: {
+                id: article._id
+              }
+            }" class="title" tag="h1">{{ article.title }}</router-link>
             <p class="digest">{{ digest(article.content) }}</p>
             <p class="info">
             - by {{ article.author }}
@@ -95,7 +100,7 @@
     name: 'article-list',
     data () {
       return {
-        tag: '',
+        tag: undefined,
         count: 5,
         list: [],
         tags: [],
@@ -113,7 +118,7 @@
       getArticleList () {
         let page = +this.$route.query.page
         this.page = Number.isNaN(page) ? 0 : page
-        this.tag = this.$route.query.tag || ''
+        this.tag = this.$route.query.tag
 
         let query = this.tag ? 'getTagQuery' : 'getArticleQuery'
 
@@ -287,8 +292,15 @@
           padding: 20px;
 
           .title {
+            display: inline-block;
             font-size: 28px;
             margin-bottom: 10px;
+            cursor: pointer;
+            transition: color .3s;
+
+            &:hover {
+              color: $blue_d3;
+            }
           }
 
           .digest {

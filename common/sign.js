@@ -31,7 +31,6 @@ export const returnUserData = (user) => {
 	return {
 		account: user.account,
 		email: user.email,
-		name: user.name,
 		location: user.location,
 		github: user.github,
 		website: user.website,

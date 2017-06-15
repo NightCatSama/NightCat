@@ -55,8 +55,6 @@
         this.$emit('input', val)
       },
       value (val) {
-        console.log(val)
-        console.log(this.val)
         this.val = val
       }
     },

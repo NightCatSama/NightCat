@@ -3,7 +3,7 @@ var config
 
 if (process.env.NODE_ENV === 'development') {
   config = {
-    debug: false,
+    debug: true,
 
     /*  http 配置 */
     withCredentials: true,
@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 else {
   config = {
-    debug: true,
+    debug: false,
 
     /*  http 配置 */
     host: '',

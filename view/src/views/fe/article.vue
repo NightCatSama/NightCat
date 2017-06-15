@@ -9,6 +9,7 @@
       </p>
       <div class="markdown-body" v-html="view"></div>
     </article>
+    <section class="comment"></section>
   </div>
 </template>
 
@@ -73,10 +74,7 @@
     article {
       margin: 30px auto;
       width: 860px;
-      padding: 40px 40px;
-      // background-color: $white;
-      // border-radius: 3px;
-      // box-shadow: $paper-shadow;
+      padding: 40px;
 
       .title {
         font-size: 44px;

@@ -65,6 +65,7 @@
       top: 0;
       left: 0;
       height: 100vh;
+      z-index: 1;
       transform: translateX(-100%);
       transition: transform .4s ease;
 
@@ -79,6 +80,7 @@
       left: 20px;
       cursor: pointer;
       padding: 5px 12px;
+      z-index: 1;
       transition: transform .4s ease;
 
       &.open-sidebar {

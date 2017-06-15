@@ -34,7 +34,6 @@ export default {
 				query {
 					viewer {
 						login,
-						name,
 						email,
 						bio,
 						url,
@@ -64,7 +63,6 @@ export default {
 		}
 
 		let userInfo = {
-			name: userData.name,
 			account: userData.email,
 			email: userData.email,
 			password: randomPassword(),

@@ -6,7 +6,7 @@
         <div class="user-info">
           <span class="account">{{ user.account }}</span>
           <div class="login-group">
-            <router-link to="user">个人信息</router-link>
+            <router-link to="/user">个人信息</router-link>
             /
             <a href="javascript:;" @click="logout" class="logout-btn">退出登录</a>
           </div>
@@ -61,7 +61,7 @@
       logout () {
         this.$graphql.mutation(`
           logout {
-            name
+            account
           }
         `)
         .then((res) => {

@@ -3,10 +3,6 @@ import mongoose from 'mongoose'
 let Schema = mongoose.Schema
 
 let userSchema = new Schema({
-	// 昵称
-  name: {
-     type: String
-  },
 	// 账号
 	account: {
 		type: String
@@ -57,11 +53,6 @@ let userSchema = new Schema({
 	active: {
 		type: Boolean,
 		default: false
-	},
-	// 激活链接
-	active_url: {
-		type: String,
-		default: ''
 	},
 	// 令牌
 	access_token: {

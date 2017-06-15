@@ -23,7 +23,6 @@
           <img :src="userInfo.avatar + '?size=200'" alt="avatar" />
           <div class="user-info">
             <div class="user-info-item">账号：{{ userInfo.account }}</div>
-            <div class="user-info-item">昵称：{{ userInfo.name }}</div>
             <div class="user-info-item">邮箱：{{ userInfo.email }}</div>
             <div class="user-info-item">概况：{{ userInfo.profile }}</div>
             <div class="user-info-item">位置：{{ userInfo.location }}</div>
@@ -73,7 +72,6 @@
         this.$graphql.query(`
           user (account: "${account}") {
             account,
-            name,
             email,
             avatar,
             profile,
@@ -134,7 +132,6 @@
             edges {
               node {
                 account,
-                name,
                 email,
                 avatar,
                 admin,

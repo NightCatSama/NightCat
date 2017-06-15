@@ -45,7 +45,7 @@
       logout () {
         this.$graphql.mutation(`
           logout {
-            name
+            account
           }
         `)
         .then((res) => {

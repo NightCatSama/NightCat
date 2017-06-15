@@ -12,11 +12,6 @@ export const getQueryUsers = async() => {
 	return await user.find().skip().limit()
 }
 
- /*  根据用户名查找用户  */
-export const getUserByNames = async(name) => {
-	return await user.findOne({ name })
-}
-
  /*  根据账号查找用户  */
 export const getUserByAccount = async(account) => {
 	return await user.findOne({ account })
@@ -35,7 +30,6 @@ export const getUserByAccessToken = async(access_token) => {
  /*  生成新用户  */
 export const newAndSave = async(data) => {
 	let u = new user()
-	u.name = data.name || data.account
 	u.account = data.account
 	u.password = data.password
 	u.resetPwd = !!data.resetPwd
@@ -52,7 +46,6 @@ export const newAndSave = async(data) => {
 
 export default {
 	getUsers,
-	getUserByNames,
 	getUserByAccount,
 	getUserByEmail,
 	getUserByAccessToken,
