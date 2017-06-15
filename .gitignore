@@ -2,7 +2,7 @@
 .vscode
 .nuxt
 .DS_Store
-views/
+./views/
 node_modules/
 config/config.prod.js
 npm-debug.log*
