@@ -6,43 +6,30 @@ import logger from './logger'
 import opn from 'opn'
 
 let transporter = mailer.createTransport(smtpTransport(config.mail_opts))
-let SITE_ROOT_URL = `http://${config.host}`
 
 /**
  * Send an email
  * @param {Object} data 邮件对象
  */
-export const sendMail = (data, link) => {
-	if (config.debug) {
-		opn(link)
-		return
-	}
-
-	async.retry({
-		times: 5
-	}, function(done) {
-		transporter.sendMail(data, function(err, res) {
-			if (err) {
-				// 写为日志
-				logger.error('发送验证邮件错误', err, data)
-				return done(err)
-			}
-			return done()
-		})
-	},	function(err) {
-		if (err) {
-			return logger.error('发送验证邮件失败', err, data);
-		}
-		logger.info('send mail success', data)
+export const sendMail = async(data, link) => {
+	let success = false
+	await	transporter.sendMail(data)
+	.then((res) => {
+		success = true
+		logger.info('发送邮件成功', data)
 	})
+	.catch((err) => {
+		logger.error('发送邮件失败', err, data);
+	})
+
+	return success
 }
 
 /*  发送激活通知邮件  */
-export const sendActiveMail = (who, token, account) => {
+export const sendActiveMail = async(link,who, account) => {
 	let from = config.mail_opts.auth.user
 	let to = who
 	let subject = config.name + '账号激活'
-	let link = `${SITE_ROOT_URL}/active_account?key=${token}&account=${account}`
 	let html = `
 	<style>
 		.my-article {
@@ -60,6 +47,10 @@ export const sendActiveMail = (who, token, account) => {
 			color: #fff;
 			text-align: center;
 		}
+		.my-article h1 a {
+			text-decoration: none;
+			color: #fff;
+		}
 		.my-article p {
 			padding: 20px;
 			font-size: 14px;
@@ -70,6 +61,8 @@ export const sendActiveMail = (who, token, account) => {
 			text-align: center;
 			height: 420px;
 			display: block;
+	    text-indent: 10000px;
+	    white-space: nowrap;
 		}
 		.miao::after {
 			content: '';
@@ -83,12 +76,12 @@ export const sendActiveMail = (who, token, account) => {
 	</style>
 	<article class="my-article">
 		<h1>Hello, ${account}</h1>
-		<p>请点击下方的彩虹喵，完成账号激活ヽ(≧Д≦)ノ</p>
-		<a href="${link}" class="miao"></a>
+		<p>请点击下方的链接，完成账号激活ヽ(≧Д≦)ノ</p>
+		<a href="${link}" class="miao">激活链接</a>
 	</article>
 	`
 
-	sendMail({
+	return await sendMail({
 		from: from,
 		to: to,
 		subject: subject,

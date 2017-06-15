@@ -58,6 +58,11 @@ let userSchema = new Schema({
 		type: Boolean,
 		default: false
 	},
+	// 激活链接
+	active_url: {
+		type: String,
+		default: ''
+	},
 	// 令牌
 	access_token: {
 		type: String

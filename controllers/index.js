@@ -1,11 +1,11 @@
-import sign from './sign'
 import site from './site'
 import user from './user'
 import github from './github'
+import email from './email'
 
 export default {
-	sign,
 	site,
 	user,
-	github
+	github,
+  email
 }

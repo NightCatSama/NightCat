@@ -7,6 +7,7 @@ import Link from '@/views/fe/link'
 import User from '@/views/fe/user'
 
 import SetPassword from '@/views/common/setPassword'
+import ActiveEmail from '@/views/common/activeEmail'
 import Sign from '@/views/common/sign'
 
 export default [{
@@ -37,6 +38,10 @@ export default [{
   path: '/setPassword',
   name: 'SetPassword',
   component: SetPassword
+}, {
+  path: '/activeEmail',
+  name: 'ActiveEmail',
+  component: ActiveEmail
 }, {
   path: '/',
   name: 'Page',

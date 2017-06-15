@@ -19,18 +19,6 @@
               <Icon name="tags"></Icon>
               <router-link
                 class="tag"
-                :to="{
-                  name: 'ArticleList',
-                  query: {
-                    tag: undefined,
-                    page: undefined
-                  }
-                }"
-              >
-                全部文章
-              </router-link>
-              <router-link
-                class="tag"
                 v-for="(tag, index) in article.tags"
                 :key="index"
                 :to="{
@@ -66,6 +54,18 @@
       <!-- Tag 区块 -->
       <aside class="tags-list">
         <h1>Tags</h1>
+        <router-link
+          class="tag blue"
+          :to="{
+            name: 'ArticleList',
+            query: {
+              tag: undefined,
+              page: undefined
+            }
+          }"
+        >
+          全部文章
+        </router-link>
         <router-link
           class="tag blue"
           v-for="(tag, i) in tags"

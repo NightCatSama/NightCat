@@ -1,6 +1,6 @@
 module.exports = {
 	debug: true,
-	host: 'localhost:2333',
+	host: 'localhost:3000',
 
 	/*  端口信息  */
 	port: 3000,
@@ -24,7 +24,7 @@ module.exports = {
 		port: 25,
 		auth: {
 			user: 'nightcatsama@126.com',
-			pass: '******'
+			pass: 'qq642163903'
 		}
 	},
 

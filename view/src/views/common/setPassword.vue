@@ -40,9 +40,7 @@ export default {
       })
       .then((res) => {
         this.$toast('设置成功', 'success')
-        this.$router.replace({
-          name: 'Admin-User'
-        })
+        .then(() => this.$router.replace('/'))
       })
       .catch((err) => this.$toast(err.message, 'error'))
     },
@@ -56,7 +54,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import '~style';
 
   .set-password-view {

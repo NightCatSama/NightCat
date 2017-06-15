@@ -9,6 +9,7 @@ const Link = r => require.ensure([], () => r(require('@/views/fe/link')), 'link'
 const User = r => require.ensure([], () => r(require('@/views/fe/user')), 'user')
 
 const SetPassword = r => require.ensure([], () => r(require('@/views/common/setPassword')), 'setPassword')
+const ActiveEmail = r => require.ensure([], () => r(require('@/views/common/activeEmail')), 'activeEmail')
 const Sign = r => require.ensure([], () => r(require('@/views/common/sign')), 'sign')
 
 export default [{
@@ -39,6 +40,10 @@ export default [{
   path: '/setPassword',
   name: 'SetPassword',
   component: SetPassword
+}, {
+  path: '/activeEmail',
+  name: 'ActiveEmail',
+  component: ActiveEmail
 }, {
   path: '/',
   name: 'Page',

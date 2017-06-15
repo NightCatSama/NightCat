@@ -14,6 +14,17 @@ export const formatDate = (date, fmt) => {
 	return fmt;
 }
 
+export const randomPassword = (count = 6) => {
+	let str = ''
+
+	for (let i = 0; i < count; i++) {
+		str += ~~(Math.random()*10)
+	}
+
+	return str
+}
+
 export default {
-	formatDate
+	formatDate,
+	randomPassword
 }

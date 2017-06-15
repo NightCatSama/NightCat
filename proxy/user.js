@@ -12,7 +12,6 @@ export const getQueryUsers = async() => {
 	return await user.find().skip().limit()
 }
 
-
  /*  根据用户名查找用户  */
 export const getUserByNames = async(name) => {
 	return await user.findOne({ name })
@@ -46,6 +45,7 @@ export const newAndSave = async(data) => {
 	u.github = data.github
 	u.avatar = data.avatar || getGravatar(data.email || '')
 	u.active = !!data.active
+	u.active_url = data.active_url
 	u.access_token = data.access_token
 	return await u.save()
 }

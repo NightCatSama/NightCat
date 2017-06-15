@@ -58,6 +58,10 @@ let UserType = new GraphQLObjectType({
     active: {
       type: GraphQLBoolean,
       description: '邮箱是否已激活'
+    },
+    active_url: {
+      type: GraphQLString,
+      description: '激活链接'
     }
   })
 })

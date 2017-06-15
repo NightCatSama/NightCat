@@ -85,17 +85,11 @@
   $width: 280px;
 
   .#{$prefixCls} {
-    position: fixed;
-    left: 0;
-    right: 0;
     display: flex;
     flex-direction: column;
     width: $width;
-    height: 100vh;
     background-color: $grey;
     box-shadow: 0 5px 15px 2px rgba(0, 0, 0, .16);
-    transform: translateX(-100%);
-    transition: transform .5s;
 
     .account-info {
       display: flex;

@@ -2,9 +2,9 @@
   <div class="login-view">
     <div class="form-wrap">
       <!-- Login form -->
-      <form v-if="type !== 'login'" @submit.prevent="submit" class="form">
+      <form v-if="sonType !== ''" @submit.prevent="submit" class="form">
         <Input
-          v-if="type === 'account'"
+          v-if="type === 'login'"
           ref="account"
           class="form-item"
           v-model="account"
@@ -14,7 +14,7 @@
           >
         </Input>
         <Input
-          v-if="type === 'register'"
+          v-if="type === 'register' && sonType === 'account'"
           ref="account"
           class="form-item"
           v-model="account"
@@ -25,6 +25,17 @@
           >
         </Input>
         <Input
+          v-if="type === 'register' && sonType === 'email'"
+          ref="email"
+          class="form-item"
+          v-model="email"
+          label="Email"
+          :complete.sync="emailPass"
+          :verify="emailIsRight"
+          >
+        </Input>
+        <Input
+          v-if="sonType === 'account'"
           ref="password"
           class="form-item"
           v-model="password"
@@ -35,7 +46,7 @@
           >
         </Input>
         <Input
-          v-if="type === 'register'"
+          v-if="type === 'register' && sonType === 'account'"
           ref="repassword"
           class="form-item"
           v-model="repassword"
@@ -45,20 +56,28 @@
           :verify="passwordIsEqual"
           >
         </Input>
-        <Btn v-if="type === 'account'" class="sign-btn" :disabled="!accountPass || !pwdPass" type="submit">Login</Btn>
-        <Btn v-if="type === 'register'" class="sign-btn" :disabled="!accountPass || !pwdPass || !pwdAgainPass" type="submit">Register</Btn>
-        <div v-if="type === 'account'" class="other-btn" @click="type = 'login'">Other</div>
+        <Btn v-if="type === 'login'" class="sign-btn" :disabled="accountLogin" type="submit">Login</Btn>
+        <Btn v-if="type === 'register'" class="sign-btn" :disabled="sonType === 'account' ? accountRegister : emailRegister" type="submit">Register</Btn>
+        <div class="other-btn" @click="sonType = ''">Other</div>
       </form>
 
       <!-- Other -->
-      <div v-if="type === 'login'" class="form">
-        <Btn class="sign-btn" @click="type = 'account'">Account</Btn>
+      <div v-if="type === 'login' && sonType === ''" class="form">
+        <h1>Login</h1>
+        <Btn class="sign-btn" @click="sonType = 'account'">Account</Btn>
         <Btn class="sign-btn" @click="loginByGithub">Github</Btn>
+      </div>
+
+      <!-- Other -->
+      <div v-if="type === 'register' && sonType === ''" class="form">
+        <h1>Register</h1>
+        <Btn class="sign-btn" @click="sonType = 'account'">Account</Btn>
+        <Btn class="sign-btn" @click="sonType = 'email'">Email</Btn>
       </div>
 
       <!-- 导航 -->
       <ul class="type-nav">
-        <li :class="{ active: type !== 'register' }" @click="type = 'login'">Login</li>
+        <li :class="{ active: type === 'login' }" @click="type = 'login'">Login</li>
         <li :class="{ active: type === 'register' }" @click="type = 'register'">Register</li>
       </ul>
     </div>
@@ -75,6 +94,7 @@ export default {
   name: 'admin-login11',
   data () {
     return {
+      email: '',
       account: '',
       password: '',
       repassword: '',
@@ -82,9 +102,11 @@ export default {
       loginName: this.$route.meta.login,
       registerName: this.$route.meta.register,
       toName: this.$route.meta.to,
+      emailPass: false,
       pwdPass: false,
       pwdAgainPass: false,
       type: this.$route.meta.type,
+      sonType: '',
       targetPath: ''
     }
   },
@@ -100,6 +122,17 @@ export default {
           name: this.loginName
         })
       }
+    }
+  },
+  computed: {
+    accountLogin () {
+      return !this.accountPass || !this.pwdPass
+    },
+    accountRegister () {
+      return !this.accountPass || !this.pwdPass || !this.pwdAgainPass
+    },
+    emailRegister () {
+      return !this.emailPass
     }
   },
   methods: {
@@ -123,6 +156,13 @@ export default {
 
       return isByteLength(val, { min: 6, max: 20 }) && isAlphanumeric(val)
     },
+    // 验证邮箱是否正确
+    emailIsRight (val, vm) {
+      vm.status = isEmail(val) ? 'normal' : 'error'
+      vm.process = val.length ? 100 : 0
+
+      return vm.status === 'normal'
+    },
     // 验证密码是否正确
     passwordIsRight (val, vm) {
       vm.status = val.length >= 6 ? 'normal' : 'error'
@@ -140,7 +180,7 @@ export default {
     },
     // 提交表单
     submit () {
-      if (this.type === 'account') {
+      if (this.type === 'login') {
         this.login()
       }
       else if (this.type === 'register') {
@@ -167,12 +207,8 @@ export default {
       })
       .then((res) => {
         this.$store.commit('setSignStatus', res)
-        this.$toast('登录成功', {
-          type: 'success',
-          callback: () => {
-            this.$router.replace(this.targetPath)
-          }
-        })
+        this.$toast('登录成功')
+        .then(() => this.$router.replace(this.targetPath))
       })
       .catch((err) => this.$toast(err.message, 'error'))
     },
@@ -202,6 +238,9 @@ export default {
     },
     // 注册
     register () {
+      this.sonType === 'email' ? this.registerByEmail() : this.registerByAccount()
+    },
+    registerByAccount () {
       let { account, password, repassword } = this
       this.$graphql.mutation(`
         register ($account, $password, $repassword) {
@@ -222,6 +261,20 @@ export default {
             this.$router.replace(this.targetPath)
           }
         })
+      })
+      .catch((err) => {
+        this.$toast(err.message, 'error')
+      })
+    },
+    // 通过邮箱注册
+    registerByEmail () {
+      let { email } = this
+      this.$http.post('/sendSignupEmail', {
+        email
+      })
+      .then((res) => {
+        console.log(res)
+        this.$toast('已向注册邮箱发送激活邮件', 'success')
       })
       .catch((err) => {
         this.$toast(err.message, 'error')
@@ -259,7 +312,7 @@ export default {
   .form-wrap {
     position: relative;
     width: 400px;
-    height: 320px
+    height: 360px
   }
 
   .form {

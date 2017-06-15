@@ -29,18 +29,17 @@ export const verifyToken = (token) => {
 /*  返回用户信息  */
 export const returnUserData = (user) => {
 	return {
-		is_admin: user.admin,
-		user_info: {
-			account: user.account,
-			email: user.email,
-			name: user.name,
-			location: user.location,
-			github: user.github,
-			website: user.website,
-			profile: user.profile,
-			gameData: user.gameData,
-			avatar: user.avatar
-		}
+		account: user.account,
+		email: user.email,
+		name: user.name,
+		location: user.location,
+		github: user.github,
+		website: user.website,
+		profile: user.profile,
+		gameData: user.gameData,
+		admin: user.admin,
+		active: user.active,
+		avatar: user.avatar
 	}
 }
 

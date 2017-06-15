@@ -1,11 +1,20 @@
 <template>
   <div class="view">
-    <div :class="['wrap', { 'open-sidebar': open }]">
-      <Sidebar ref="sidebar" :user="user"></Sidebar>
-      <div ref="openBtn" class="open-btn" @click="open = !open">夜喵！</div>
-      <div class="main">
-        <router-view></router-view>
-      </div>
+    <Sidebar
+      ref="sidebar"
+      :user="user"
+      :class="['sidebar', { 'open-sidebar': open }]"
+    >
+    </Sidebar>
+    <div
+      ref="openBtn"
+      :class="['open-btn', { 'open-sidebar': open }]"
+      @click="open = !open"
+    >
+      夜喵！
+    </div>
+    <div :class="['main', { 'open-sidebar': open }]">
+      <router-view></router-view>
     </div>
   </div>
 </template>
@@ -51,13 +60,16 @@
     min-height: 100vh;
     overflow-x: hidden;
 
-    .wrap {
-      display: flex;
-      width: 100%;
-      transition: transform .5s ease;
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      transform: translateX(-100%);
+      transition: transform .4s ease;
 
       &.open-sidebar {
-        transform: translateX(280px);
+        transform: translateX(0);
       }
     }
 
@@ -67,10 +79,20 @@
       left: 20px;
       cursor: pointer;
       padding: 5px 12px;
+      transition: transform .4s ease;
+
+      &.open-sidebar {
+        transform: translateX(280px);
+      }
     }
 
     .main {
       flex: 1;
+      transition: transform .4s ease;
+
+      &.open-sidebar {
+        transform: translateX(280px);
+      }
     }
   }
 </style>

@@ -28,11 +28,12 @@ const install = (Vue) => {
     vm = instance.$mount()
     vm.show = true
 
-    vm.$on('destroyed', () => {
-      vm = null
+    return new Promise((resolve) => {
+      vm.$on('destroyed', () => {
+        vm = null
+        resolve()
+      })
     })
-
-    return vm
   }
 }
 

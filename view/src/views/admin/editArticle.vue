@@ -115,14 +115,9 @@
         })
         .then((res) => {
           this.clearDraft()
-          this.$toast('添加成功', {
-            type: 'success',
-            callback: () => {
-              this.$router.replace({
-                name: 'Admin-Article'
-              })
-            }
-          })
+
+          this.$toast('添加成功', 'success')
+          .then(() => this.$router.replace({ name: 'Admin-Article' }))
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
@@ -141,14 +136,9 @@
         })
         .then((res) => {
           this.clearDraft()
-          this.$toast('保存成功', {
-            type: 'success',
-            callback: () => {
-              this.$router.replace({
-                name: 'Admin-Article'
-              })
-            }
-          })
+
+          this.$toast('保存成功', 'success')
+          .then(() => this.$router.replace({ name: 'Admin-Article' }))
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },

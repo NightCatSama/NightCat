@@ -3,6 +3,7 @@ import { updateToken } from '../common/sign'
 import uuid from 'uuid'
 import axios from 'axios'
 import config from '../config'
+import { randomPassword } from '../common/utils'
 
 export default {
 	signinByGithub: async(req, res, next) => {
@@ -66,7 +67,7 @@ export default {
 			name: userData.name,
 			account: userData.email,
 			email: userData.email,
-			password: '123456',
+			password: randomPassword(),
 			resetPwd: true,
 			active: true,
 			profile: userData.bio,

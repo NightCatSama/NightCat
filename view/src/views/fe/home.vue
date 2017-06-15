@@ -6,6 +6,7 @@
         <a href="https://github.com/NightCatSama/NightCat/blob/master/view/src/assets/bg_canvas.js" target="_blank">source code</a>
       </aside>
     </section>
+    <aside class="records">NightCat 2017 @ 粤ICP备17068584号-1</aside>
   </div>
 </template>
 
@@ -70,6 +71,14 @@ export default {
           color: $yellow;
         }
       }
+    }
+
+    .records {
+      position: absolute;
+      left: 20px;
+      bottom: 20px;
+      font-size: 13px;
+      color: $font1;
     }
   }
 </style>

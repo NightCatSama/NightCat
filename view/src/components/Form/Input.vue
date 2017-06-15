@@ -133,6 +133,7 @@
     font-size: 14px;
     transform: translate3d(0, -50%, 0);
     color: $font1;
+    z-index: 1;
     transition: all .3s;
 
     &-shrink {
