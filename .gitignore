@@ -3,6 +3,7 @@
 .nuxt
 .DS_Store
 ./views/
+./logs/*
 node_modules/
 config/config.prod.js
 npm-debug.log*
