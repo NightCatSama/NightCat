@@ -59,8 +59,8 @@ export default {
 
     .source_link {
       position: absolute;
-      right: 8px;
-      bottom: 8px;
+      right: 20px;
+      bottom: 20px;
       font-size: 13px;
       z-index: 5;
 

@@ -2,14 +2,41 @@
   <div class="article-view">
     <div class="cover" :style="{ backgroundImage: `url(${cover})`}"></div>
     <article>
+      <!-- 文章头部 -->
       <h1 class="title">{{ title }}</h1>
       <p class="meta">
         by {{ author }}
         <time>{{ created_at }}</time>
       </p>
+
+      <!-- 文章主体 -->
       <div class="markdown-body" v-html="view"></div>
+
+      <!-- 标签区块 -->
+      <div class="tag-list">
+        <small>Tag: </small>
+        <router-link
+          class="tag"
+          v-for="(tag, index) in tags"
+          :key="index"
+          :to="{
+            name: 'ArticleList',
+            query: {
+              tag: tag,
+              page: undefined
+            }
+          }"
+        >
+          {{ tag }}
+        </router-link>
+      </div>
     </article>
-    <section class="comment"></section>
+    <section class="comment">
+      此处应有评论框
+    </section>
+    <section class="comment-list">
+      此处应有评论列表
+    </section>
   </div>
 </template>
 
@@ -60,11 +87,14 @@
 <style lang="scss">
   @import '~style';
 
+  $width: 860px;
+
   .article-view {
     background-color: $white;
-    @include flex-main-center(flex, column);
+    @include flex-cross-center(flex, column);
 
     .cover {
+      width: 100%;
       height: 60vh;
       background-repeat: no-repeat;
       background-size: cover;
@@ -73,7 +103,7 @@
 
     article {
       margin: 30px auto;
-      width: 860px;
+      width: $width;
       padding: 40px;
 
       .title {
@@ -91,6 +121,79 @@
           color: $blue_l3;
         }
       }
+    }
+    .tag-list {
+      margin-top: 80px;
+      display: flex;
+      @include flex-cross-center;
+
+      small {
+        margin-right: 10px;
+      }
+    }
+
+    .tag {
+      position: relative;
+      display: inline-block;
+      text-decoration: none;
+      white-space: nowrap;
+      font-weight: 400;
+      color: $white;
+      height: 18px;
+      line-height: 18px;
+      padding: 0 5px 0 8px;
+      border-radius: 0 3px 3px 0;
+      margin: 0 10px 0 5px;
+      font-size: 12px;
+      background-color: $brown;
+
+      &::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background-color: $white;
+        transform: translateY(-50%);
+      }
+
+      &::after {
+        content: '';
+        position: absolute;
+        left: -18px;
+        top: 0;
+        @include triangle (18px, $brown, left);
+      }
+
+      &.blue {
+        background-color: $blue_d2;
+
+        &::after {
+          border-right-color: $blue_d2;
+        }
+      }
+    }
+
+    .comment {
+      width: $width;
+      height: 160px;
+      @include flex-center;
+      background-color: #ccc;
+      color: $font1;
+      font-size: 40px;
+      margin-bottom: 30px;
+    }
+
+    .comment-list {
+      width: $width;
+      height: 400px;
+      @include flex-center;
+      background-color: #ccc;
+      color: $font1;
+      font-size: 40px;
+      margin-bottom: 30px;
     }
   }
 </style>
