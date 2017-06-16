@@ -29,6 +29,16 @@ export default {
       })
     }
 
+    if (req.session.email_cd && Date.now() - req.session.email_cd <= 60 * 1000) {
+      res.status(403)
+      return res.json({
+        success: false,
+        message: '一分钟内只可发送一次邮箱激活邮件'
+      })
+    }
+
+    req.session.email_cd = Date.now()
+
     let key = md5(email + config.session_secret)
     let SITE_ROOT_URL = `http://${config.host}`
     let active_url = `${SITE_ROOT_URL}/activeEmail?key=${key}&account=${email}`

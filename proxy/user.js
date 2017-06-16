@@ -27,6 +27,11 @@ export const getUserByAccessToken = async(access_token) => {
 	return await user.findOne({ access_token })
 }
 
+ /*  根据id查找用户  */
+export const getUserById = async(_id) => {
+	return await user.findOne({ _id })
+}
+
  /*  生成新用户  */
 export const newAndSave = async(data) => {
 	let u = new user()
@@ -49,5 +54,6 @@ export default {
 	getUserByAccount,
 	getUserByEmail,
 	getUserByAccessToken,
+	getUserById,
 	newAndSave
 }

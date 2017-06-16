@@ -1,13 +1,15 @@
 import {
-  GraphQLString,
+  GraphQLObjectType,
   GraphQLList,
   GraphQLBoolean,
+  GraphQLString,
+  GraphQLInt,
+  GraphQLID,
   GraphQLNonNull
 } from 'graphql'
 
 import TagType from './TagType'
-import Tag from '../../proxy/tag'
-import Article from '../../proxy/article'
+import { Tag, Article } from '../../proxy'
 
 let TagMutation = {
   addTag: {

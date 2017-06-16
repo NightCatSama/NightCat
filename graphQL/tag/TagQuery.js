@@ -1,9 +1,10 @@
-// GraphQL
 import {
+  GraphQLObjectType,
+  GraphQLList,
   GraphQLBoolean,
   GraphQLString,
   GraphQLInt,
-  GraphQLList,
+  GraphQLID,
   GraphQLNonNull
 } from 'graphql'
 
@@ -33,7 +34,8 @@ let TagQuery = {
     descriptions: '该标签下的所有文章的数据，支持分页',
     args: {
       name: {
-        type: new GraphQLNonNull(GraphQLString)
+        type: new GraphQLNonNull(GraphQLString),
+        descriptions: '标签名字'
       },
       release: {
         type: GraphQLBoolean,

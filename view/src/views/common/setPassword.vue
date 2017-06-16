@@ -33,7 +33,7 @@ export default {
     setPwd () {
       this.$graphql.mutation(`
         setPassword ($password) {
-          name
+          account
         }
       `, {
         password: this.password

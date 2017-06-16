@@ -4,7 +4,8 @@ import {
   GraphQLBoolean,
   GraphQLString,
   GraphQLInt,
-  GraphQLID
+  GraphQLID,
+  GraphQLNonNull
 } from 'graphql'
 
 let TagType = new GraphQLObjectType({

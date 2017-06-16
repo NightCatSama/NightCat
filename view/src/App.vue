@@ -11,9 +11,65 @@ export default {
 </script>
 
 <style lang="scss">
-@import './style/core/index';
+  @import './style/core/index';
 
-#app {
-  overflow-x: hidden;
-}
+  .comment-form {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 60px;
+
+
+    .comment-wrap {
+      position: relative;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 3px;
+      margin-right: 10px;
+      flex-shrink: 0;
+    }
+
+    textarea {
+      flex: 1;
+      width: 100%!important;
+      border: none;
+      outline: none;
+      padding: 10px;
+      font-size: 14px;
+      color: $font1;
+      box-shadow: $shadow;
+    }
+
+    aside {
+      position: absolute;
+      left: 0;
+      bottom: -20px;
+      font-size: 12px;
+      color: $font2;
+    }
+
+    .word-limit {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      font-size: 12px;
+      color: $font2;
+
+      &.red {
+        color: $red;
+      }
+    }
+
+    .send-btn {
+      position: absolute;
+      right: 0;
+      bottom: -40px;
+      width: 80px;
+    }
+  }
 </style>

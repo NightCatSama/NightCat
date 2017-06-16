@@ -17,9 +17,9 @@
         <div class="user-info">
           登录后方可评论
           <div class="login-group">
-            <router-link to="login">登录</router-link>
+            <router-link to="/login">登录</router-link>
             /
-            <router-link to="register">注册</router-link>
+            <router-link to="/register">注册</router-link>
           </div>
         </div>
       </template>

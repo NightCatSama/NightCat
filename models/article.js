@@ -28,6 +28,10 @@ let airicleSchema = new Schema({
   release: {
     type: Boolean
   },
+  // 评论数目
+  comment_count: {
+    type: Number
+  },
   // 注册时间
   created_at: {
     type: Date,

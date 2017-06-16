@@ -21,16 +21,9 @@
         cb: null
       }
     },
-    watch: {
-      show (val) {
-        if (!val) {
-          this.$destroy()
-        }
-      }
-    },
     methods: {
       remove () {
-        document.body.removeChild(this.$el)
+        this.$destroy(true)
       },
       checked () {
         this.show = false
@@ -50,7 +43,7 @@
       off(document, 'keyup', this.handleEnter)
     },
     destroyed () {
-      this.remove()
+      document.body.removeChild(this.$el)
     }
   }
 </script>

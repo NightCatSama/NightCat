@@ -1,8 +1,6 @@
 import { User } from '../proxy'
 import validator from 'validator'
 import eventproxy from 'eventproxy'
-// import { formatDate } from '../common/utils'
-// import express from 'express'
 
 export default {
 	/*  根据AccessToken得到用户信息  */

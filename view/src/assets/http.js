@@ -33,20 +33,20 @@ export const createGraphQLInstance = (store, hook) => {
 
 // 处理请求
 function requestHandle (req, hook) {
-  hook.start && hook.start()
+  hook.start && hook.start(req)
   return req
 }
 
 // 处理响应
 function responseHandle (res, hook) {
-  hook.success && hook.success()
+  hook.success && hook.success(res)
   return res.data
 }
 
 // 处理 graphql 的响应
 function graphqlResponseHandle (res, hook) {
   if (res.data.errors) {
-    hook.error && hook.error()
+    hook.error && hook.error(res.data.errors)
 
     config.debug && console.log(res.data.errors[0].message)
     return Promise.reject(res.data.errors[0])
@@ -57,7 +57,7 @@ function graphqlResponseHandle (res, hook) {
 
 // 错误处理
 function errorHandle (err, hook) {
-  hook.error && hook.error()
+  hook.error && hook.error(err)
 
   try {
     err = err.response.data.errors ? err.response.data.errors[0] : err.response.data

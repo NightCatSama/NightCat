@@ -16,10 +16,10 @@ export const sendMail = async(data, link) => {
 	await	transporter.sendMail(data)
 	.then((res) => {
 		success = true
-		logger.info('发送邮件成功', data)
+		logger.info('发送邮件成功')
 	})
 	.catch((err) => {
-		logger.error('发送邮件失败', err, data);
+		logger.error('发送邮件失败', err);
 	})
 
 	return success

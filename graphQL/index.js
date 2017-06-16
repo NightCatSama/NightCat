@@ -13,6 +13,11 @@ import ArticleMutation from './article/ArticleMutation.js'
 import TagQuery from './tag/TagQuery.js'
 import TagMutation from './tag/TagMutation.js'
 
+import CommentQuery from './comment/CommentQuery.js'
+import CommentMutation from './comment/CommentMutation.js'
+
+import replyMutation from './reply/replyMutation.js'
+
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType',
@@ -24,7 +29,9 @@ const schema = new GraphQLSchema({
       getArticleById: ArticleQuery.getArticleById,
 
       tags: TagQuery.tags,
-      articleByTag: TagQuery.articleByTag
+      articleByTag: TagQuery.articleByTag,
+
+      comments: CommentQuery.comments
     }
   }),
   mutation: new GraphQLObjectType({
@@ -45,7 +52,11 @@ const schema = new GraphQLSchema({
       releaseArticle: ArticleMutation.releaseArticle,
 
       addTag: TagMutation.addTag,
-      removeTag: TagMutation.removeTag
+      removeTag: TagMutation.removeTag,
+
+      addComment: CommentMutation.addComment,
+
+      addReply: replyMutation.addReply
     }
   })
 })
