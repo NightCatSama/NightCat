@@ -12,8 +12,6 @@ import ArticleType from './ArticleType'
 import Article from '../../proxy/article'
 import Tag from '../../proxy/tag'
 
-const parseArray = (str) => str ? JSON.parse(str) : []
-
 let ArticleMutation = {
   addArticle: {
     type: ArticleType,
@@ -32,15 +30,13 @@ let ArticleMutation = {
         description: '文章封面'
       },
       tags: {
-        type: GraphQLString,
+        type: new GraphQLList(GraphQLID),
         description: '标签'
       }
     },
     resolve: async(root, { title, content, cover, tags }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
-
-      tags = parseArray(tags)
 
       let newArticle = await Article.newAndSave({
         author: root.user.account,
@@ -134,7 +130,7 @@ let ArticleMutation = {
         description: '文章封面'
       },
       tags: {
-        type: GraphQLString,
+        type: new GraphQLList(GraphQLID),
         description: '标签'
       }
     },
@@ -146,8 +142,7 @@ let ArticleMutation = {
 
       if (!article) throw Error('未找到文章')
 
-      tags = parseArray(tags)
-
+      article.depopulate('tags')
       await Tag.patchesTag(id, tags, article.tags)
 
       Object.assign(article, {

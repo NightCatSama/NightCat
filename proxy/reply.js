@@ -1,21 +1,33 @@
 import { reply } from '../models'
+import Comment from './comment'
 
- /*  获取全部标签  */
+ /*  获取全部回复  */
 export const getReplys = async(query = {}) => {
-  return await reply.find(query).sort({ 'created_at': 1 })
+  return await reply.find(query).populate('target_user user').sort({ 'created_at': 1 })
 }
 
- /*  生成新文章  */
+ /*  获取单个回复  */
+export const getReplyById = async(id) => {
+  return await reply.findById(id).populate('target_user user')
+}
+
+
+ /*  生成新回复  */
 export const newAndSave = async(data) => {
   let r = new reply()
   r.comment_id = data.comment_id
-  r.target_account = data.target_account
-  r.account = data.account
+  r.target_user = data.target_user
+  r.user = data.user
   r.content = data.content
-  return await r.save()
+  await r.save()
+
+  await Comment.setCommentAddReply(r.comment_id, r._id)
+
+  return await getReplyById(r._id)
 }
 
 export default {
   getReplys,
+  getReplyById,
   newAndSave
 }

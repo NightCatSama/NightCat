@@ -22,18 +22,18 @@
           :to="{
             name: 'ArticleList',
             query: {
-              tag: tag,
+              tag: tag.name,
               page: undefined
             }
           }"
         >
-          {{ tag }}
+          {{ tag.name }}
         </router-link>
       </div>
     </article>
 
     <!-- 评论区分割线 -->
-    <div class="line" data-title="评论区"></div>
+    <div class="line" :data-title="comment_count ? `${comment_count} 条评论` : '评论区'"></div>
 
     <!-- 评论区块 -->
     <section class="comment">
@@ -43,7 +43,7 @@
           <textarea
             v-model="comment"
             name="comment"
-            id="comment" r
+            id="comment"
             rows="6"
             placeholder="球球你，说点什么吧 ~"
             @keydown.tab.prevent="onTab($event, 'comment')"
@@ -64,10 +64,11 @@
     <!-- 评论列表区块 -->
     <section class="comment-list">
       <div v-for="(comment, i) in comments" class="comment-item">
-        <img :src="comment.avatar" alt="avatar" class="avatar">
+        <aside class="floor">#{{ i + 1 }}</aside>
+        <img :src="comment.user.avatar" alt="avatar" class="avatar">
         <div class="comment-main">
           <div class="meta">
-            <span class="comment-account">{{ comment.account }}</span>
+            <span class="comment-account">{{ comment.user.account }}</span>
             <time>{{ comment.created_at }}</time>
           </div>
           <div class="content markdown-body" v-html="comment.view"></div>
@@ -75,20 +76,20 @@
           <!-- 回复列表区块 -->
           <section class="reply-list">
             <div v-for="(reply, j) in comment.reply" class="comment-item">
-              <img :src="reply.avatar" alt="avatar" class="avatar">
+              <img :src="reply.user.avatar" alt="avatar" class="avatar">
               <div class="comment-main">
                 <div class="meta">
                   <span class="comment-account">
-                    {{ reply.account }}
+                    {{ reply.user.account }}
                     <span class="target-account">
-                      回复 {{ reply.target_account }}：
+                      回复 {{ reply.target_user.account }}：
                     </span>
                   </span>
                   <time>{{ reply.created_at }}</time>
                 </div>
                 <div class="content markdown-body" v-html="reply.view"></div>
               </div>
-              <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, reply.account)">回复</span>
+              <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, reply.user)">回复</span>
             </div>
 
             <!-- 回复区块 -->
@@ -101,7 +102,7 @@
                     name="reply"
                     id="reply"
                     rows="6"
-                    :placeholder="`回复 ${target_account} ：`"
+                    :placeholder="`回复 ${target_user_account} ：`"
                     @keydown.tab.prevent="onTab($event, 'reply_contnt')"
                   >
                   </textarea>
@@ -115,7 +116,7 @@
             </template>
 
           </section>
-          <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, comment.account)">回复</span>
+          <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, comment.user)">回复</span>
           <span v-else-if="user" class="reply-btn" @click="reply_index = null">取消回复</span>
         </div>
       </div>
@@ -136,13 +137,15 @@
         author: '',
         cover: '',
         view: '',
+        comment_count: 0,
         created_at: null,
         tags: [],
         comment: '',
         comments: [],
         comment_cursor: '',
         reply_content: '',
-        target_account: '',
+        target_user: '',
+        target_user_account: '',
         reply_index: null,
         comment_limit: 200,
         hasNextPage: false
@@ -171,8 +174,12 @@
             content,
             view,
             cover,
+            comment_count,
             created_at,
-            tags
+            tags {
+              _id,
+              name
+            }
           }
         `, {
           id: this.$route.params.id
@@ -188,16 +195,26 @@
             edges {
               node {
                 _id,
-                account,
-                avatar,
                 view,
                 created_at,
-                reply {
-                  target_account,
+                user {
+                  _id,
                   account,
-                  avatar,
+                  avatar
+                },
+                reply {
                   view,
-                  created_at
+                  created_at,
+                  target_user {
+                    _id,
+                    account,
+                    avatar
+                  },
+                  user {
+                    _id,
+                    account,
+                    avatar
+                  }
                 }
               }
               cursor
@@ -209,7 +226,7 @@
           }
         `, {
           article_id: this.$route.params.id,
-          first: 5,
+          first: 10,
           after: this.comment_cursor
         })
         .then((res) => {
@@ -224,10 +241,28 @@
 
         this.$graphql.mutation(`
           addComment ($article_id, $content) {
-            account,
-            avatar,
+            _id,
             view,
-            created_at
+            created_at,
+            reply {
+              view,
+              created_at,
+              target_user {
+                _id,
+                account,
+                avatar
+              },
+              user {
+                _id,
+                account,
+                avatar
+              }
+            },
+            user {
+              _id,
+              account,
+              avatar
+            }
           }
         `, {
           article_id: this.$route.params.id,
@@ -238,10 +273,12 @@
           this.comment = ''
           this.comments.unshift(res)
         })
+        .catch((err) => this.$toast(err.message, 'error'))
       },
-      openReply (index, account) {
+      openReply (index, obj) {
         this.reply_index = index
-        this.target_account = account
+        this.target_user = obj._id
+        this.target_user_account = obj.account
       },
       addReply (id) {
         if (!this.reply_content) return this.$toast('回复不能为空', 'warning')
@@ -249,16 +286,24 @@
         let index = this.reply_index
 
         this.$graphql.mutation(`
-          addReply ($comment_id, $content, $target_account) {
-            target_account,
-            account,
-            avatar,
+          addReply ($comment_id, $content, $target_user) {
+            _id,
             view,
-            created_at
+            created_at,
+            target_user {
+              _id,
+              account,
+              avatar
+            },
+            user {
+              _id,
+              account,
+              avatar
+            }
           }
         `, {
           comment_id: id,
-          target_account: this.target_account,
+          target_user: this.target_user,
           content: this.reply_content
         })
         .then((res) => {
@@ -292,6 +337,7 @@
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
+      background-color: $grey1;
     }
 
     article {
@@ -424,7 +470,7 @@
         margin-bottom: 20px;
         background-color: #fefefe;
         padding: 20px;
-        box-shadow: 0 0 2px 0 rgba(0, 0, 0, .1);
+        box-shadow: 0 0 2px 0 rgba(0, 0, 0, .16);
 
         .avatar {
           width: 64px;
@@ -472,7 +518,7 @@
           position: absolute;
           right: 10px;
           bottom: 10px;
-          font-size: 13px;
+          font-size: 12px;
           color: $blue;
           opacity: 1;
           cursor: pointer;
@@ -486,6 +532,16 @@
       margin: 50px 0 40px;
       cursor: pointer;
       font-size: 18px;
+    }
+
+    .floor {
+      position: absolute;
+      left: -5px;
+      top: 0;
+      font-size: 12px;
+      color: $font2;
+      white-space: nowrap;
+      transform: translateX(-100%);
     }
   }
 </style>

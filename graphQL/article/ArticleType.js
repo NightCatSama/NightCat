@@ -9,6 +9,8 @@ import {
 } from 'graphql'
 
 import { formatDate } from '../../common/utils'
+import { Comment } from '../../proxy'
+import TagType from '../tag/TagType'
 
 let ArticleType = new GraphQLObjectType({
   name: 'Article',
@@ -27,7 +29,7 @@ let ArticleType = new GraphQLObjectType({
       description: '作者'
     },
     tags: {
-      type: new GraphQLList(GraphQLString),
+      type: new GraphQLList(TagType),
       description: '标签'
     },
     content: {
@@ -43,22 +45,19 @@ let ArticleType = new GraphQLObjectType({
       description: '是否发布'
     },
     comment_count: {
-      type: GraphQLBoolean,
-      description: '评论数目'
+      type: GraphQLInt,
+      description: '评论数目',
+      resolve: async(root) => await Comment.getCommentCount(root._id)
     },
     created_at: {
       type: GraphQLString,
       description: '注册时间',
-      resolve: (root) => {
-        return formatDate(root.created_at)
-      }
+      resolve: (root) => formatDate(root.created_at)
     },
     update_at: {
       type: GraphQLString,
       description: '更新时间',
-      resolve: (root) => {
-        return formatDate(root.update_at)
-      }
+      resolve: (root) => formatDate(root.update_at)
     },
     view: {
       type: GraphQLString,

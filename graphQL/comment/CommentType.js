@@ -12,6 +12,7 @@ import { formatDate } from '../../common/utils'
 import { getGravatar } from '../../common/sign'
 import { Reply, User } from '../../proxy'
 import replyType from '../reply/replyType'
+import UserType from '../user/UserType'
 
 let CommentType = new GraphQLObjectType({
   name: 'Comment',
@@ -25,9 +26,9 @@ let CommentType = new GraphQLObjectType({
       type: GraphQLID,
       description: '文章id'
     },
-    account: {
-      type: new GraphQLNonNull(GraphQLString),
-      description: '评论人账号'
+    user: {
+      type: UserType,
+      description: '评论人'
     },
     content: {
       type: new GraphQLNonNull(GraphQLString),
@@ -36,29 +37,11 @@ let CommentType = new GraphQLObjectType({
     created_at: {
       type: GraphQLString,
       description: '评论时间',
-      resolve: (root) => {
-        return formatDate(root.created_at)
-      }
-    },
-    avatar: {
-      type: new GraphQLNonNull(GraphQLString),
-      description: '评论人头像',
-      resolve: async(root) => {
-        let user = await User.getUserByAccount(root.account)
-
-        if (!user) return getGravatar(root.account)
-
-        return user.avatar
-      }
+      resolve: (root) => formatDate(root.created_at)
     },
     reply: {
       type: new GraphQLList(replyType),
-      description: '回复列表',
-      resolve: async(root) => {
-        return await Reply.getReplys({
-          comment_id: root._id
-        })
-      }
+      description: '回复列表'
     },
     view: {
       type: GraphQLString,

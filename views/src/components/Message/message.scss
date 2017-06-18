@@ -1,0 +1,69 @@
+@import '~stylesheets/common/util';
+
+.message {
+	position: fixed;
+	top: 30px;
+	left: 50%;
+	color: $font-color;
+	padding: 10px 15px;
+	font-size: 15px;
+	background-color: #eee;
+	border-radius: 20px;
+	@include flex-center;
+	max-width: 80%;
+	z-index: 9999;
+	opacity: 0;
+	visibility: hidden;
+	transform: translateX(-50%) scale(0.8);
+	transition: all .3s;
+
+	&.show {
+		opacity: 1;
+		visibility: visible;
+		transform: translateX(-50%) scale(1);
+	}
+
+	.iconfont {
+		width: 16px;
+		height: 16px;
+	}
+
+	&.loading .icon-loading {
+		display: inline-block;
+		animation: rotate 1s infinite linear;
+	}
+
+	&.primary {
+		color: $white;
+		background-color: $blue;
+	}
+
+	&.error {
+		color: $white;
+		background-color: $red;
+	}
+
+	&.success {
+		color: $white;
+		background-color: $dark-green;
+	}
+
+	&.warning {
+		color: $white;
+		background-color: $yellow;
+	}
+
+	.iconfont {
+		vertical-align: middle;
+		margin-right: 5px;
+	}
+}
+
+@keyframes rotate {
+	0% {
+		transform: rotate(0);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
+}

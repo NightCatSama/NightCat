@@ -1,0 +1,28 @@
+@import './common/util';
+
+@font-face {
+	font-family: 'iconfont';  /* project id 211074 */
+	src: url('//at.alicdn.com/t/font_a5hnyvn7wtvjkyb9.eot');
+	src: url('//at.alicdn.com/t/font_a5hnyvn7wtvjkyb9.eot?#iefix') format('embedded-opentype'),
+	url('//at.alicdn.com/t/font_a5hnyvn7wtvjkyb9.woff') format('woff'),
+	url('//at.alicdn.com/t/font_a5hnyvn7wtvjkyb9.ttf') format('truetype'),
+	url('//at.alicdn.com/t/font_a5hnyvn7wtvjkyb9.svg#iconfont') format('svg');
+}
+
+body {
+	overflow-x: hidden;
+}
+
+.container {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	min-height: 100vh;
+	will-change: transform;
+	transition: transform $slider-time;
+
+	&.offset {
+		transform: translate3d(-$side-width, 0, 0);
+	}
+}

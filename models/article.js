@@ -13,9 +13,10 @@ let airicleSchema = new Schema({
     type: String
   },
   // 标签
-  tags: {
-    type: Array
-  },
+  tags: [{ 
+    type: Schema.Types.ObjectId, 
+    ref: 'tag' 
+  }],
   // 文章内容
   content: {
     type: String

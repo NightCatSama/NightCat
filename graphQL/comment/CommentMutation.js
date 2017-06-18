@@ -30,11 +30,10 @@ let CommentMutation = {
       if (!content) throw Error('评论内容不能为空')
       if (content.length > 200) throw Error('评论内容太长了')
 
-      let { account } = root.user
       return await Comment.newAndSave({
         article_id,
         content,
-        account
+        user: root.user._id
       })
     }
   }

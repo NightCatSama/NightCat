@@ -28,8 +28,8 @@ export const getUserByAccessToken = async(access_token) => {
 }
 
  /*  根据id查找用户  */
-export const getUserById = async(_id) => {
-	return await user.findOne({ _id })
+export const getUserById = async(id) => {
+	return await user.findById(id)
 }
 
  /*  生成新用户  */

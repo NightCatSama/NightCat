@@ -54,6 +54,11 @@ let UserType = new GraphQLObjectType({
     active: {
       type: GraphQLBoolean,
       description: '邮箱是否已激活'
+    },
+    created_at: {
+      type: GraphQLString,
+      description: '回复时间',
+      resolve: (root) => formatDate(root.created_at)
     }
   })
 })

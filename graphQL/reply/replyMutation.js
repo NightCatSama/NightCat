@@ -9,7 +9,7 @@ import {
 } from 'graphql'
 
 import replyType from './replyType'
-import { Reply } from '../../proxy'
+import { Reply, Comment } from '../../proxy'
 
 let replyMutation = {
   addReply: {
@@ -20,8 +20,8 @@ let replyMutation = {
         type: GraphQLID,
         description: '评论id'
       },
-      target_account: {
-        type: GraphQLString,
+      target_user: {
+        type: GraphQLID,
         description: '回复人'
       },
       content: {
@@ -29,18 +29,20 @@ let replyMutation = {
         description: '评论内容'
       }
     },
-    resolve: async(root, { comment_id, target_account, content }) => {
+    resolve: async(root, { comment_id, target_user, content }) => {
       if (!root.user) throw Error('请先登录')
       if (!content) throw Error('回复内容不能为空')
       if (content.length > 200) throw Error('回复内容太长了')
 
       let { account } = root.user
-      return await Reply.newAndSave({
+      let reply = await Reply.newAndSave({
         comment_id,
-        target_account,
+        target_user,
         content,
-        account
+        user: root.user._id
       })
+      
+      return await Reply.getReplyById(reply._id)
     }
   }
 }

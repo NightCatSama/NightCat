@@ -19,6 +19,7 @@
             <p class="info">
             - by {{ article.author }}
             <time>{{ article.created_at }}</time>
+            <span class="comment-count">{{ article.comment_count ? `${article.comment_count} 条评论` : '暂无评论' }}</span>
             </p>
             <div class="tag-list">
               <Icon name="tags"></Icon>
@@ -29,12 +30,12 @@
                 :to="{
                   name: 'ArticleList',
                   query: {
-                    tag: tag,
+                    tag: tag.name,
                     page: undefined
                   }
                 }"
               >
-                {{ tag }}
+                {{ tag.name }}
               </router-link>
             </div>
           </div>
@@ -133,7 +134,7 @@
       },
       getTagQuery () {
         return this.$graphql.query(`
-          articleByTag ($name, $first, $offset, $release) {
+          articleByTagName ($name, $first, $offset, $release) {
             totalCount,
             edges {
               node {
@@ -142,9 +143,12 @@
                 content,
                 author,
                 cover,
-                tags,
-                release,
-                created_at
+                comment_count,
+                created_at,
+                tags {
+                  _id,
+                  name
+                }
               }
               cursor
             }
@@ -173,9 +177,12 @@
                 content,
                 author,
                 cover,
-                tags,
-                release,
-                created_at
+                comment_count,
+                created_at,
+                tags {
+                  _id,
+                  name
+                }
               }
               cursor
             }
@@ -306,21 +313,27 @@
           .digest {
             color: $font1;
             font-size: 14px;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
+            word-break: break-word;
             line-height: 1.4;
           }
 
           .info {
             font-size: 14px;
             color: $font;
-            font-style: italic;
+            // font-style: italic;
             margin-bottom: 10px;
           }
 
           time {
-            font-size: 12px;
-            color: $blue_l3;
+            font-size: 13px;
             margin-left: 10px;
+          }
+
+          .comment-count {
+            font-size: 13px;
+            margin-left: 10px;
+            color: $red_d3;
           }
 
           .tag-list {

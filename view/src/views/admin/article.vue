@@ -19,7 +19,7 @@
         <li v-if="!list.length" class="no-article">
           Nothing
         </li>
-        <li v-for="(article, i) in list" :class="{ active: active === i }" @click="active = i">
+        <li v-for="(article, i) in list" :class="{ active: active === i }" @click="active = i" @dblclick="openArticle(article._id)">
           <div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>
           <div :class="['release-tag', { released: article.release }]" @click.stop="modifyRelease(i)"></div>
           <div class="info">
@@ -30,7 +30,7 @@
               {{ article.created_at }} by {{ article.author }}
             </small>
             <br />
-            <span v-for="tag in article.tags" class="tag">{{ tag }}</span>
+            <span v-for="tag in article.tags" class="tag">{{ tag.name }}</span>
           </div>
         </li>
         <Btn class="next-btn" v-show="hasNextPage" @click="getArticleList">Loadmore</Btn>
@@ -78,9 +78,11 @@
                 author,
                 view,
                 cover,
-                tags,
                 release,
-                created_at
+                created_at,
+                tags {
+                  name
+                }
               }
               cursor
             }
@@ -162,6 +164,9 @@
             type: 'add'
           }
         })
+      },
+      openArticle (id) {
+        window.open(`/article/${id}`)
       }
     },
     mounted () {
@@ -260,6 +265,8 @@
       .markdown-body {
         margin: 20px;
         width: 100%;
+        word-break: break-word;
+        white-space: pre-wrap;
       }
     }
 

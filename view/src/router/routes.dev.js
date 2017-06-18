@@ -66,5 +66,9 @@ export default [{
     path: 'user',
     name: 'User',
     component: User
+  }, {
+    path: 'user/:id',
+    name: 'UserDetail',
+    component: User
   }]
 }]

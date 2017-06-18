@@ -12,8 +12,12 @@
       }
     },
     methods: {
+      getUser () {
+        console.log(this.$route.params.id)
+      }
     },
     mounted () {
+      this.getUser()
     }
   }
 </script>

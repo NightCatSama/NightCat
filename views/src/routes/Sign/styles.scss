@@ -1,0 +1,245 @@
+@import '~stylesheets/common/util';
+$signin: $blue;
+$signup: $green;
+$sign-bg-color: #1b1b1b;
+$switch-time: 0.4s;
+
+.sign-view {
+	position: relative;
+	flex: 1;
+	min-height: 100vh;
+	background-image: url('../../images/bg.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+	@include flex-center;
+	will-change: transform;
+	transition: transform $slider-time;
+
+	&.offset {
+		transform: translate3d(-$side-width, 0, 0);
+	}
+
+	.sign-wrap {
+		width: 350px;
+		height: 400px;
+		display: flex;
+		position: relative;
+		flex-direction: column;
+		border-radius: 8px;
+		overflow: hidden;
+		padding: 30px 40px;
+		background-color: $sign-bg-color;
+		transition: height .3s;
+		opacity: 0.95;
+
+		@include max-screen(768px) {
+			width: 90%;
+		}
+
+		&.reset-wrap {
+			border-radius: 0;
+		}
+
+		.form-wrap {
+			flex: 1;
+		}
+
+		h3 {
+			color: $signup;
+			font-size: 20px;
+			transition: color .3s;
+
+			&::before {
+				content: '';
+				position: absolute;
+				left: 0;
+				width: 5px;
+				height: 30px;
+				background-color: $signup;
+				transition: background-color .3s;
+			}
+
+		}
+
+		&.signin {
+			height: 280px;
+
+			h3 {
+				color: $signin;
+
+				&::before {
+					background-color: $signin;
+				}
+
+			}
+
+			.sign-form button {
+				background-color: $signin;
+
+				&:hover {
+					background-color: lighten($signin, 5%);
+				}
+
+				&:active {
+					background-color: darken($signin, 5%);
+				}
+
+			}
+
+			.switch-type-btn {
+				border-top-color: $signin;
+				border-right-color: $signin;
+			}
+
+			.input-progress.success {
+				background-color: $signin;
+			}
+
+		}
+
+	}
+
+	.sign-form {
+		margin-top: 10px;
+
+		button {
+			color: $white;
+			width: 100%;
+			padding: 8px 0;
+			border: none;
+			background-color: $signup;
+			border-radius: 20px;
+			margin-top: 15px;
+			text-align: center;
+			box-shadow: $shadow;
+			font-size: 16px;
+			transition: background-color .2s;
+
+			&:hover {
+				background-color: lighten($signup, 5%);
+			}
+
+			&:active {
+				background-color: darken($signup, 5%);
+				box-shadow: inset 2px 2px 2px rgba(0, 0, 0, .36);
+			}
+
+		}
+
+	}
+
+	.form-item {
+		margin: 24px 0;
+		position: relative;
+
+		label {
+			position: absolute;
+			top: 50%;
+			left: 0px;
+			font-size: 14px;
+			transform: translate3d(0, -50%, 0);
+			color: #868686;
+			transition: all .3s;
+
+			&.shrink {
+				font-size: 12px;
+				top: -15px;
+				transform: translate3d(0, 0, 0);
+			}
+
+		}
+
+		input {
+			width: 100%;
+			position: relative;
+			padding: 8px 0;
+			color: $white;
+			background-color: $tr;
+			border: none;
+
+			&:-webkit-autofill {
+				-webkit-text-fill-color: $white;
+				-webkit-box-shadow: 0 0 0px 1000px $sign-bg-color inset;
+			}
+
+		}
+
+		&::after {
+			content: '';
+			height: 2px;
+			width: 100%;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			background-color: rgba(255, 255, 255, .16);
+		}
+
+		.input-progress {
+			height: 2px;
+			width: 0;
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			transition: width .3s;
+
+			&.error {
+				background-color: $red;
+			}
+
+			&.success {
+				background-color: $signup;
+			}
+
+		}
+
+	}
+
+	.switch-type-btn {
+		position: absolute;
+		right: 0;
+		top: 0;
+		width: 0;
+		height: 0;
+		cursor: pointer;
+		@include triangle(28px, $signup, top-right);
+		transition: all $switch-time;
+		z-index: 9;
+
+		&.cover {
+			@include triangle(800px, $signup, top-right);
+		}
+
+		&.full-cover {
+			border: none;
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			background-color: $blue;
+			border-radius: 0;
+		}
+
+	}
+
+	.success-cover {
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		top: 0;
+		color: #fff;
+		left: 0;
+		padding: 0 30px;
+		text-align: center;
+		font-size: 18px;
+		@include flex-center;
+		flex-direction: column;
+		z-index: 11;
+
+		.iconfont {
+			font-size: 80px;
+			margin-bottom: 20px;
+		}
+
+	}
+
+}

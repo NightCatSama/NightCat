@@ -8,6 +8,8 @@ import {
   GraphQLNonNull
 } from 'graphql'
 
+import ArticleType from '../article/ArticleType'
+
 let TagType = new GraphQLObjectType({
   name: 'Tag',
   description: '标签',
@@ -21,7 +23,7 @@ let TagType = new GraphQLObjectType({
       description: '标签名字'
     },
     article: {
-      type: new GraphQLList(GraphQLString),
+      type: new GraphQLList(ArticleType),
       description: '该标签下的文章'
     },
     count: {

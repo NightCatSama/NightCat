@@ -47,7 +47,10 @@
         this.$graphql.query(`
           tags {
             name,
-            count
+            count,
+            article {
+              title
+            }
           }
         `)
         .then((res) => {

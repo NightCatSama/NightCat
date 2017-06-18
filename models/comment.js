@@ -8,10 +8,15 @@ let commentSchema = new Schema({
   article_id: {
     type: Schema.Types.ObjectId
   },
-  // 评论人账号
-  account: {
-    type: String
+  // 发表者
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
+  reply: [{
+    type: Schema.Types.ObjectId,
+    ref: 'reply'
+  }],
   // 评论内容
   content: {
     type: String

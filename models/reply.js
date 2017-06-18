@@ -8,13 +8,15 @@ let replySchema = new Schema({
   comment_id: {
     type: Schema.Types.ObjectId
   },
-  // 回复人账号
-  target_account: {
-    type: String
+  // 回复者
+  target_user: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
-  // 账号
-  account: {
-    type: String
+  // 发表者
+  user: {
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   // 回复内容
   content: {

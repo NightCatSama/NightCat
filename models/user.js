@@ -22,7 +22,7 @@ let userSchema = new Schema({
 	},
 	// 头像
   avatar: {
-      type: String
+    type: String
   },
 	// 注册时间
 	created_at: {

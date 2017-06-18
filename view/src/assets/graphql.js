@@ -11,7 +11,7 @@ export default class Graphql {
       if (variable) {
         for (let key in variable) {
           let reg = new RegExp(`\\$${key}`)
-          main = main.replace(reg, `${key}: ${typeof variable[key] === 'object' ? JSON.stringify(JSON.stringify(variable[key])) : JSON.stringify(variable[key])}`)
+          main = main.replace(reg, `${key}: ${JSON.stringify(variable[key])}`)
         }
       }
 

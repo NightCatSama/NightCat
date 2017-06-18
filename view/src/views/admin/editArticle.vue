@@ -24,8 +24,8 @@
         </label>
         <label for="tag">
           Tag:
-          <span v-for="name in tags" class="tag">
-            {{ name }}
+          <span v-for="tag in tags" class="tag">
+            {{ tag.name }}
           </span>
           <Icon name="plus-circle-o" @click.native="modalShow = true"></Icon>
         </label>
@@ -50,8 +50,8 @@
       <div v-else>
         <h1>Tag</h1>
         <hr />
-        <div v-for="(tag, i) in allTags" :class="['tag-badge', { active: tags.indexOf(tag) > -1 }]" @click="clickTag(tag)">
-          {{ tag }}
+        <div v-for="(tag, i) in allTags" :class="['tag-badge', { active: isActive(tag) }]" @click="clickTag(tag)">
+          {{ tag.name }}
         </div>
       </div>
     </Modal>
@@ -102,7 +102,8 @@
         })
       },
       addArticle () {
-        let { title, content, cover, tags } = this
+        let { title, content, cover } = this
+        let tags = this.tags.map((tag) => tag._id)
         this.$graphql.mutation(`
           addArticle ($title, $content, $cover, $tags) {
             author
@@ -122,7 +123,8 @@
         .catch((err) => this.$toast(err.message, 'error'))
       },
       updateArticle () {
-        let { title, content, cover, tags } = this
+        let { title, content, cover } = this
+        let tags = this.tags.map((tag) => tag._id)
         this.$graphql.mutation(`
           updateArticle ($id, $title, $content, $cover, $tags) {
             author
@@ -154,21 +156,27 @@
       getTags () {
         this.$graphql.query(`
           tags {
+            _id,
             name
           }
         `)
         .then((res) => {
-          this.allTags = Array.from(res, (tag) => tag.name)
+          this.allTags = res
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
-      clickTag (tag) {
-        let index = this.tags.indexOf(tag)
+      clickTag (obj) {
+        let index = -1
+        Array.from(this.tags, (t, i) => {
+          if (t._id === obj._id) {
+            index = i
+          }
+        })
         if (index > -1) {
           this.tags.splice(index, 1)
         }
         else {
-          this.tags.push(tag)
+          this.tags.push(obj)
         }
       },
       getDraft () {
@@ -212,7 +220,10 @@
             title,
             content,
             cover,
-            tags
+            tags {
+              _id,
+              name
+            }
           }
         `, {
           id: this.$route.params.id
@@ -222,6 +233,9 @@
           this.view = md.render(this.content)
         })
         .catch((err) => this.$toast(err.message, 'error'))
+      },
+      isActive (obj) {
+        return this.tags.some((t, i) => t._id === obj._id)
       }
     },
     mounted () {
@@ -325,7 +339,9 @@
         position: relative;
         width: 100%;
         height: 100%;
-        overflow: auto;
+        overflow: auto;;
+        word-break: break-word;
+        white-space: pre-wrap;
         padding: 20px;
         z-index: 1;
       }
