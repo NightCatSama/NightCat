@@ -3,19 +3,19 @@
 ------
 
 ## 目的
-通过建站来深入学习各种技术，并搭建一个能展示自己的平台。
+学习从前端到后端的一条龙建站过程（Graphql大法好
 
 ## 技术栈
-后端：NodeJS + Express + Graphql + MongoDb<br>
+后端：Node.js + Express + Graphql + MongoDB<br>
 前端：Vue 全家桶<br>
 
 ## 进度
-- [ ] 后端
-  - [ ] Graphql
+- [x] 后端
+  - [x] [Graphql](https://github.com/NightCatSama/NightCat/blob/master/graphQL/index.js)
     - [x] User
     - [x] Article
     - [x] Tag
-    - [ ] Comment
+    - [x] Comment
   - [x] 自动登录
   - [x] Github Oauth
 - [x] [后台管理系统](https://nightcat.win/admin)

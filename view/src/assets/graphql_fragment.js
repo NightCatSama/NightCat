@@ -32,6 +32,7 @@ export default {
       content
       cover
       view
+      release
       comment_count
       created_at
       author {
