@@ -25,10 +25,9 @@ export const sendMail = async(data, link) => {
 }
 
 /*  发送激活通知邮件  */
-export const sendActiveMail = async(link, who, account) => {
+export const sendActiveMail = async(to, link, account) => {
 	let from = config.mail_opts.auth.user
-	let to = who
-	let subject = config.name + '账号激活'
+	let subject = `${config.name} 账号激活`
 	let html = `
 	<style>
 		.my-article {
@@ -74,21 +73,74 @@ export const sendActiveMail = async(link, who, account) => {
 		}
 	</style>
 	<article class="my-article">
-		<h1>Hello, ${account}</h1>
-		<p>请点击下方的链接，完成账号激活ヽ(≧Д≦)ノ</p>
+		<h1>你好, ${account}</h1>
+		<p>请点击下方的链接，完成账号激活ヽ(≧Д≦)ノ <small>(如果您未听说过什么 nightcat.win 网站，那可能是有人使用恶意使用你的邮箱)</small></p>
 		<a href="${link}" class="miao">激活链接</a>
 	</article>
 	`
 
 	return await sendMail({
-		from: from,
-		to: to,
-		subject: subject,
-		html: html
+		from,
+		to,
+		subject,
+		html
+	}, link)
+}
+
+// 发送消息通知邮件
+export const sendEmailNotification = async(to, article_id, account, floor) => {
+	if (config.debug) {
+		return false
+	}
+
+	let from = config.mail_opts.auth.user
+	let subject = `${config.name} 消息通知`
+  let SITE_ROOT_URL = `http://${config.host}`
+  let link = `${SITE_ROOT_URL}/article/${article_id}?floor=${floor}`
+	let html = `
+	<style>
+		.my-article {
+			font-family: 'Montserrat', 'Segoe UI', 'Microsoft Yahei', Helvetica, Arial;
+			border: 1px solid #f05b72;
+			margin: 0;
+			padding: 0;
+		}
+
+		.my-article h1 {
+			width: 100%;
+			padding: 10px 0;
+			margin: 0;
+			background-color: #f05b72;
+			color: #fff;
+			text-align: center;
+		}
+		.my-article h1 a {
+			text-decoration: none;
+			color: #fff;
+		}
+		.my-article p {
+			padding: 20px;
+			font-size: 14px;
+			color: #3498db;
+		}
+	</style>
+	<article class="my-article">
+		<h1>你好, ${account}</h1>
+		<p>你在 nightcat.win 的评论有一条最新回复 (≧Д≦)ノ，请点击下方的链接查看，谢谢</p>
+		<a href="${link}">${link}</a>
+	</article>
+	`
+
+	return await sendMail({
+		from,
+		to,
+		subject,
+		html
 	}, link)
 }
 
 export default {
 	sendMail,
 	sendActiveMail,
+	sendEmailNotification
 }

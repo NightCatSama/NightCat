@@ -10,12 +10,13 @@ let airicleSchema = new Schema({
   },
   // 作者
   author: {
-    type: String
+    type: Schema.Types.ObjectId,
+    ref: 'user'
   },
   // 标签
-  tags: [{ 
-    type: Schema.Types.ObjectId, 
-    ref: 'tag' 
+  tags: [{
+    type: Schema.Types.ObjectId,
+    ref: 'tag'
   }],
   // 文章内容
   content: {

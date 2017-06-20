@@ -3,12 +3,12 @@ import { article, comment } from '../models'
  /*  获取全部文章  */
 export const getArticle = async(condition) => {
 	condition = condition || {}
-	return await article.find(condition).populate('tags').sort({ 'created_at': -1 })
+	return await article.find(condition).populate('author tags').sort({ 'created_at': -1 })
 }
 
  /*  根据id查找文章  */
 export const getArticleById = async(id) => {
-	return await article.findById(id).populate('tags')
+	return await article.findById(id).populate('author tags')
 }
 
  /*  生成新文章  */

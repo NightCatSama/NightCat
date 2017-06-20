@@ -43,6 +43,10 @@ let CommentType = new GraphQLObjectType({
       type: new GraphQLList(replyType),
       description: '回复列表'
     },
+    floor: {
+      type: GraphQLInt,
+      description: '楼层数'
+    },
     view: {
       type: GraphQLString,
       description: '解析后的内容'

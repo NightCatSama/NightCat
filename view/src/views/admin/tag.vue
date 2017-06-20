@@ -1,5 +1,5 @@
 <template>
-  <div class="admin-tag">
+  <div class="admin-tag-view">
     <!--侧边按钮组-->
     <aside class="aside">
       <div class="radius-btn blue" @click="addModalShow = true">
@@ -12,10 +12,25 @@
 
     <div class="admin-main">
       <div v-if="!list.length">暂无标签</div>
-      <div v-for="(tag, i) in list" :class="['tag-badge', { active: active === i }]" @click="clickTag(i)">
-        {{ tag.name }}
-        {{ tag.count }}
-      </div>
+      <template v-else>
+       <div class="tag-wrap">
+          <h1>所有标签</h1>
+          <div class="tag-group">
+            <div v-for="(tag, i) in list" :class="['tag-badge', { active: active === i }]" @click="clickTag(i)">
+              {{ tag.name }}
+              {{ tag.count }}
+            </div>
+          </div>
+        </div>
+        <div class="article-wrap">
+          <h1>该标签下的文章</h1>
+          <div class="tag-group">
+            <a v-for="(article, i) in articles" :key="i" :href="`/article/${article._id}`" target="_blank">
+              # {{ article.title }} ({{ article.release ? '已发布' : '未发布'}})
+            </a>
+          </div>
+        </div>
+      </template>
     </div>
 
     <!--添加模态框-->
@@ -40,19 +55,18 @@
     computed: {
       activeTag () {
         return this.list.length && this.active !== null ? this.list[this.active].name : ''
+      },
+      articles () {
+        return this.active !== null ? this.list[this.active].article : null
       }
     },
     methods: {
       getTags () {
         this.$graphql.query(`
           tags {
-            name,
-            count,
-            article {
-              title
-            }
+            ...tag
           }
-        `)
+        `, ['tag'])
         .then((res) => {
           this.list = res
         })
@@ -104,10 +118,10 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   @import '~style';
 
-  .admin-tag {
+  .admin-tag-view {
     position: relative;
     flex: 1;
     margin: 20px 0;
@@ -133,20 +147,31 @@
     }
 
     .admin-main {
+      flex-direction: column;
       align-items: baseline;
     }
-  }
-</style>
 
-<style lang="scss">
-  @import '../../style/index';
+    .tag-modal {
+      @include flex-center(flex, column);
 
-  .tag-modal {
-    @include flex-center(flex, column);
+      button {
+        margin-top: 20px;
+        align-self: stretch;
+      }
+    }
 
-    button {
-      margin-top: 20px;
-      align-self: stretch;
+    .tag-wrap, .article-wrap {
+      padding: 20px;
+      width: 100%;
+      flex: 1;
+
+      h1 {
+        margin-bottom: 10px;
+      }
+    }
+
+    .article-wrap {
+      background-color: $grey4;
     }
   }
 </style>

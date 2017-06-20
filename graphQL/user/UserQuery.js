@@ -43,11 +43,11 @@ let UserQuery = {
       if (account) {
         return await User.getUserByAccount(account)
       }
-      else {
-        if (!root.user) throw Error('身份认证失败')
-
-        return root.user
+      else if (!root.user) {
+        throw Error('请先登录')
       }
+
+      return root.user
     }
   }
 }

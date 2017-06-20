@@ -5,12 +5,12 @@
       <!-- 文章头部 -->
       <h1 class="title">{{ title }}</h1>
       <p class="meta">
-        by {{ author }}
-        <time>{{ created_at }}</time>
+        by {{ author.account }}
+        <time>发表于 {{ created_at }}</time>
       </p>
 
       <!-- 文章主体 -->
-      <div class="markdown-body" v-html="view"></div>
+      <div class="markdown-body content" v-html="view"></div>
 
       <!-- 标签区块 -->
       <div class="tag-list">
@@ -45,7 +45,7 @@
             name="comment"
             id="comment"
             rows="6"
-            placeholder="球球你，说点什么吧 ~"
+            placeholder="说点什么吧 ~"
             @keydown.tab.prevent="onTab($event, 'comment')"
           >
           </textarea>
@@ -63,64 +63,66 @@
 
     <!-- 评论列表区块 -->
     <section class="comment-list">
-      <div v-for="(comment, i) in comments" class="comment-item">
-        <aside class="floor">#{{ i + 1 }}</aside>
-        <img :src="comment.user.avatar" alt="avatar" class="avatar">
-        <div class="comment-main">
-          <div class="meta">
-            <span class="comment-account">{{ comment.user.account }}</span>
-            <time>{{ comment.created_at }}</time>
-          </div>
-          <div class="content markdown-body" v-html="comment.view"></div>
-
-          <!-- 回复列表区块 -->
-          <section class="reply-list">
-            <div v-for="(reply, j) in comment.reply" class="comment-item">
-              <img :src="reply.user.avatar" alt="avatar" class="avatar">
-              <div class="comment-main">
-                <div class="meta">
-                  <span class="comment-account">
-                    {{ reply.user.account }}
-                    <span class="target-account">
-                      回复 {{ reply.target_user.account }}：
-                    </span>
-                  </span>
-                  <time>{{ reply.created_at }}</time>
-                </div>
-                <div class="content markdown-body" v-html="reply.view"></div>
-              </div>
-              <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, reply.user)">回复</span>
+      <Loadmore @load-method="getComments" :done="!hasNextPage">
+        <div v-for="(comment, i) in comments" class="comment-item">
+          <aside class="floor">#{{ comment.floor }}</aside>
+          <img :src="comment.user.avatar" alt="avatar" class="avatar">
+          <div class="comment-main">
+            <div class="meta">
+              <span class="comment-account">{{ comment.user.account }}</span>
+              <time>评论于 {{ comment.created_at }}</time>
             </div>
+            <div class="content markdown-body" v-html="comment.view"></div>
 
-            <!-- 回复区块 -->
-            <template v-if="user && reply_index === i">
-              <div class="comment-form">
-                <img :src="user.avatar" alt="avatar" class="avatar">
-                <div class="comment-wrap">
-                  <textarea
-                    v-model="reply_content"
-                    name="reply"
-                    id="reply"
-                    rows="6"
-                    :placeholder="`回复 ${target_user_account} ：`"
-                    @keydown.tab.prevent="onTab($event, 'reply_contnt')"
-                  >
-                  </textarea>
-                  <span :class="['word-limit', { red: reply_content.length > comment_limit }]">{{ reply_content.length }} / {{ comment_limit }}</span>
-                  <aside>温馨提示：只有绑定邮箱的用户会受到回复提示邮件</aside>
-                  <Btn class="send-btn" @click="addReply(comment._id)" suffix="send">
-                    发送
-                  </Btn>
+            <!-- 回复列表区块 -->
+            <section class="reply-list">
+              <div v-for="(reply, j) in comment.reply" class="comment-item">
+                <img :src="reply.user.avatar" alt="avatar" class="avatar">
+                <div class="comment-main">
+                  <div class="meta">
+                    <span class="comment-account">
+                      {{ reply.user.account }}
+                      <span class="target-account">
+                        回复 {{ reply.target_user.account }}：
+                      </span>
+                    </span>
+                    <time>回复于 {{ reply.created_at }}</time>
+                  </div>
+                  <div class="content markdown-body" v-html="reply.view"></div>
                 </div>
+                <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, reply.user)">回复</span>
               </div>
-            </template>
 
-          </section>
-          <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, comment.user)">回复</span>
-          <span v-else-if="user" class="reply-btn" @click="reply_index = null">取消回复</span>
+              <!-- 回复区块 -->
+              <template v-if="user && reply_index === i">
+                <div class="comment-form">
+                  <img :src="user.avatar" alt="avatar" class="avatar">
+                  <div class="comment-wrap">
+                    <textarea
+                      v-model="reply_content"
+                      name="reply"
+                      id="reply"
+                      rows="6"
+                      :placeholder="`回复 ${target_user_account} ：`"
+                      @keydown.tab.prevent="onTab($event, 'reply_contnt')"
+                    >
+                    </textarea>
+                    <span :class="['word-limit', { red: reply_content.length > comment_limit }]">{{ reply_content.length }} / {{ comment_limit }}</span>
+                    <aside>温馨提示：只有绑定邮箱的用户会受到回复提示邮件</aside>
+                    <Btn class="send-btn" @click="addReply(comment._id)" suffix="send">
+                      发送
+                    </Btn>
+                  </div>
+                </div>
+              </template>
+
+            </section>
+            <span v-if="user && reply_index !== i" class="reply-btn" @click="openReply(i, comment.user)">回复</span>
+            <span v-else-if="user" class="reply-btn" @click="reply_index = null">取消回复</span>
+          </div>
         </div>
-      </div>
-      <div class="loadmore-btn" v-if="hasNextPage" @click="getComments">加载更多</div>
+      </Loadmore>
+      <div class="loadmore-btn" v-if="oneFloor" @click="checkAllComment">查看全部评论</div>
     </section>
   </div>
 </template>
@@ -148,12 +150,16 @@
         target_user_account: '',
         reply_index: null,
         comment_limit: 200,
+        offset: this.$route.query.floor ? (+this.$route.query.floor - 1) : null,
         hasNextPage: false
       }
     },
     computed: {
       user () {
         return this.$store.state.user
+      },
+      oneFloor () {
+        return typeof this.offset === 'number' && !Number.isNaN(this.offset)
       }
     },
     methods: {
@@ -169,53 +175,22 @@
       getArticleContent () {
         this.$graphql.query(`
           getArticleById ($id) {
-            title,
-            author,
-            content,
-            view,
-            cover,
-            comment_count,
-            created_at,
-            tags {
-              _id,
-              name
-            }
+            ...article
           }
         `, {
           id: this.$route.params.id
-        })
+        }, ['article'])
         .then((res) => {
           Object.assign(this, res)
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
-      getComments () {
+      getComments (next, error) {
         this.$graphql.query(`
-          comments ($article_id, $first, $after) {
+          comments ($article_id, $first, $after, $offset) {
             edges {
               node {
-                _id,
-                view,
-                created_at,
-                user {
-                  _id,
-                  account,
-                  avatar
-                },
-                reply {
-                  view,
-                  created_at,
-                  target_user {
-                    _id,
-                    account,
-                    avatar
-                  },
-                  user {
-                    _id,
-                    account,
-                    avatar
-                  }
-                }
+                ...comment
               }
               cursor
             }
@@ -226,52 +201,37 @@
           }
         `, {
           article_id: this.$route.params.id,
-          first: 10,
+          first: this.oneFloor ? 1 : 10,
+          offset: this.offset || 0,
           after: this.comment_cursor
-        })
+        }, ['comment'])
         .then((res) => {
-          this.hasNextPage = res.pageInfo.hasNextPage
+          next && next()
+          this.hasNextPage = this.oneFloor ? false : res.pageInfo.hasNextPage
           this.comment_cursor = res.pageInfo.endCursor
           this.comments = this.comments.concat(res.edges.map((edge) => edge.node))
         })
-        .catch((err) => this.$toast(err.message, 'error'))
+        .catch((err) => {
+          this.$toast(err.message, 'error')
+          error && error(err.message)
+        })
       },
       addComment () {
         if (!this.comment) return this.$toast('评论不能为空', 'warning')
 
         this.$graphql.mutation(`
           addComment ($article_id, $content) {
-            _id,
-            view,
-            created_at,
-            reply {
-              view,
-              created_at,
-              target_user {
-                _id,
-                account,
-                avatar
-              },
-              user {
-                _id,
-                account,
-                avatar
-              }
-            },
-            user {
-              _id,
-              account,
-              avatar
-            }
+            ...comment
           }
         `, {
           article_id: this.$route.params.id,
           content: this.comment
-        })
+        }, ['comment'])
         .then((res) => {
           this.$toast('发送成功', 'success')
           this.comment = ''
-          this.comments.unshift(res)
+          this.comments.push(res)
+          this.comment_count++
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
@@ -287,25 +247,13 @@
 
         this.$graphql.mutation(`
           addReply ($comment_id, $content, $target_user) {
-            _id,
-            view,
-            created_at,
-            target_user {
-              _id,
-              account,
-              avatar
-            },
-            user {
-              _id,
-              account,
-              avatar
-            }
+            ...reply
           }
         `, {
           comment_id: id,
           target_user: this.target_user,
           content: this.reply_content
-        })
+        }, ['reply'])
         .then((res) => {
           this.$toast('回复成功', 'success')
           this.reply_content = ''
@@ -313,6 +261,12 @@
           this.comments[index].reply.push(res)
         })
         .catch((err) => this.$toast(err.message, 'error'))
+      },
+      checkAllComment () {
+        this.comments = []
+        this.offset = null
+        this.comment_cursor = ''
+        this.getComments()
       }
     },
     mounted () {
@@ -333,7 +287,7 @@
 
     .cover {
       width: 100%;
-      height: 60vh;
+      height: 80vh;
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -357,6 +311,7 @@
         time {
           font-size: 12px;
           color: $blue_d3;
+          margin-left: 10px;
         }
       }
     }
@@ -510,8 +465,6 @@
           font-size: 14px;
           margin: 10px 0;
           min-height: 60px;
-          white-space: pre-line;
-          word-break: break-word;
         }
 
         .reply-btn {

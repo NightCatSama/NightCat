@@ -13,6 +13,7 @@ export default {
 <style lang="scss">
   @import './style/core/index';
 
+  // 评论区
   .comment-form {
     display: flex;
     align-items: flex-start;
@@ -71,5 +72,10 @@ export default {
       bottom: -40px;
       width: 80px;
     }
+  }
+
+  // markdown
+  .markdown-body {
+    word-break: break-all;
   }
 </style>

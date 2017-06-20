@@ -71,18 +71,11 @@
       getUserInfo (account) {
         this.$graphql.query(`
           user (account: "${account}") {
-            account,
-            email,
-            avatar,
-            profile,
-            location,
-            github,
-            website,
-            active,
-            admin,
-            superAdmin
+            ...user
           }
-        `)
+        `, {
+          account
+        }, ['user'])
         .then((res) => {
           this.updateData({ [account]: res })
         })

@@ -9,7 +9,8 @@ import {
 } from 'graphql'
 
 import replyType from './replyType'
-import { Reply, Comment } from '../../proxy'
+import { User, Reply, Comment } from '../../proxy'
+import { sendEmailNotification } from '../../common/mail'
 
 let replyMutation = {
   addReply: {
@@ -41,7 +42,12 @@ let replyMutation = {
         content,
         user: root.user._id
       })
-      
+
+      let comment = await Comment.getCommentById(comment_id)
+      let user = await User.getUserById(target_user)
+
+      if (user.email && user.active) sendEmailNotification(user.email, comment.article_id, user.account, comment.floor)
+
       return await Reply.getReplyById(reply._id)
     }
   }

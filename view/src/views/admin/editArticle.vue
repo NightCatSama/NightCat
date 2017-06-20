@@ -106,7 +106,7 @@
         let tags = this.tags.map((tag) => tag._id)
         this.$graphql.mutation(`
           addArticle ($title, $content, $cover, $tags) {
-            author
+            title
           }
         `, {
           title,
@@ -127,7 +127,7 @@
         let tags = this.tags.map((tag) => tag._id)
         this.$graphql.mutation(`
           updateArticle ($id, $title, $content, $cover, $tags) {
-            author
+            title
           }
         `, {
           id: this.$route.params.id,
@@ -156,10 +156,9 @@
       getTags () {
         this.$graphql.query(`
           tags {
-            _id,
-            name
+            ...tag
           }
-        `)
+        `, ['tag'])
         .then((res) => {
           this.allTags = res
         })
@@ -217,20 +216,13 @@
       getArticleContent () {
         this.$graphql.query(`
           getArticleById ($id) {
-            title,
-            content,
-            cover,
-            tags {
-              _id,
-              name
-            }
+            ...article
           }
         `, {
           id: this.$route.params.id
-        })
+        }, ['article'])
         .then((res) => {
           Object.assign(this, res)
-          this.view = md.render(this.content)
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
@@ -339,9 +331,6 @@
         position: relative;
         width: 100%;
         height: 100%;
-        overflow: auto;;
-        word-break: break-word;
-        white-space: pre-wrap;
         padding: 20px;
         z-index: 1;
       }

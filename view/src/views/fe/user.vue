@@ -1,6 +1,54 @@
 <template>
   <div class="user-view">
-    user
+    <div v-if="userInfo" class="user-group">
+      <div class="user-info">
+        <h1 class="title">个人资料</h1>
+        <div class="user-info-item">
+          <label for="account">账号：</label>
+          <input id="account" disabled v-model="userInfo.account"></input>
+        </div>
+        <div v-if="!isSelf" class="user-info-item">
+          <label for="email">邮箱：</label>
+          <input id="email" disabled v-model="userInfo.email"></input>
+        </div>
+        <div class="user-info-item">
+          <label for="profile">概况：</label>
+          <input id="profile" :disabled="!isSelf" v-model="userInfo.profile"></input>
+        </div>
+        <div class="user-info-item">
+          <label for="location">位置：</label>
+          <input id="location" :disabled="!isSelf" v-model="userInfo.location"></input>
+        </div>
+        <div class="user-info-item">
+          <label for="github">Github：</label>
+          <input id="github" :disabled="!isSelf" v-model="userInfo.github"></input>
+        </div>
+        <div class="user-info-item">
+          <label for="website">网站：</label>
+          <input id="website" :disabled="!isSelf" v-model="userInfo.website"></input>
+        </div>
+        <Btn v-if="isSelf" class="save-btn">保存修改</Btn>
+
+        <template v-if="isSelf">
+          <h1 class="title">绑定邮箱</h1>
+          <div class="user-info-item">
+            <div v-if="isSelf" class="has-btn-item">
+              <input id="email" v-model="userInfo.email"></input>
+              <Btn class="user-btn" @click="bindEmail">绑定邮箱</Btn>
+            </div>
+            <input v-else id="email" disabled v-model="userInfo.email"></input>
+          </div>
+        </template>
+      </div>
+      <div class="user-avatar">
+        <h1 class="title">头像</h1>
+        <img :src="userInfo.avatar + '?size=200'" alt="avatar" class="avatar" />
+        <Btn v-if="isSelf" class="user-btn upload-btn">上传新头像</Btn>
+      </div>
+    </div>
+    <div v-else class="no-user">
+      没有这个人
+    </div>
   </div>
 </template>
 
@@ -9,11 +57,39 @@
     name: 'user',
     data () {
       return {
+        userInfo: null
+      }
+    },
+    computed: {
+      user () {
+        return this.$store.state.user
+      },
+      account () {
+        return this.$route.params.account || ''
+      },
+      isSelf () {
+        return this.account ? this.account === this.user.account : true
       }
     },
     methods: {
       getUser () {
-        console.log(this.$route.params.id)
+        this.$graphql.query(`
+          user ($account) {
+            ...user
+          }
+        `, {
+          account: this.account
+        }, ['user'])
+        .then((res) => {
+          if (!res) {
+            return this.$toast('未找到该用户', 'error')
+          }
+          this.userInfo = res
+        })
+        .catch((err) => this.$toast(err.message, 'error'))
+      },
+      bindEmail () {
+
       }
     },
     mounted () {
@@ -27,7 +103,118 @@
 
   .user-view {
     height: 100vh;
-    @include flex-center;
+    @include flex-main-center;
     overflow: hidden;
+
+    .user-group {
+      display: flex;
+      width: 800px;
+      padding: 20px;
+      margin-top: 200px;
+
+      .title {
+        margin-bottom: 12px;
+      }
+    }
+
+    .user-info {
+      flex: 1;
+      margin-right: 120px;
+      display: flex;
+      flex-direction: column;
+
+      .user-info-item {
+        position: relative;
+        margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+
+        label {
+          width: 70px;
+          font-size: 14px;
+          margin-bottom: 5px;
+        }
+
+        input {
+          width: 100%;
+          height: 34px;
+          padding: 6px 8px;
+          font-size: 14px;
+          color: #333;
+          line-height: 20px;
+          vertical-align: middle;
+          background-color: #fafafa;
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          box-shadow: inset 0 1px 2px rgba(0,0,0,0.075);
+
+          &:focus {
+            border-color: #51a7e8;
+            outline: none;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.075),0 0 5px rgba(81,167,232,0.5);
+          }
+
+          &[disabled] {
+            opacity: .75;
+            background-color: #f1f1f1;
+          }
+        }
+
+        .has-btn-item {
+          display: flex;
+
+          input {
+            border-radius: 3px 0 0 3px;
+          }
+
+          button {
+            border-radius: 0 3px 3px 0;
+          }
+        }
+      }
+    }
+
+    .user-avatar {
+      width: 168px;
+      display: flex;
+      flex-direction: column;
+
+      .avatar {
+        width: 168px;
+        height: 168px;
+        border-radius: 3px;
+        margin-bottom: 10px;
+      }
+    }
+
+    .save-btn {
+      align-self: flex-start;
+      padding: 0 20px;
+      margin-bottom: 40px;
+      border: none;
+      color: $white;
+      background-color: #eee;
+      background-image: linear-gradient(-180deg, $green_l2 0%, $green_d1 100%);
+
+      &:active {
+        box-shadow: inset 0 4px 10px rgba(0, 0, 0, .25);
+      }
+    }
+
+    .user-btn {
+      padding: 0 20px;
+      color: #333;
+      background-color: #eff3f6;
+      background-image: linear-gradient(-180deg, #fafbfc 0%, #eff3f6 90%);
+
+      &:active {
+        box-shadow: inset 0 2px 5px rgba(0, 0, 0, .15);
+      }
+    }
+
+    .no-user {
+      @include flex-center;
+      font-size: 40px;
+    }
   }
 </style>

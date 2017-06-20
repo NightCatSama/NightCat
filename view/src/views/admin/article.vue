@@ -27,7 +27,7 @@
               {{ article.title }}
             </h3>
             <small>
-              {{ article.created_at }} by {{ article.author }}
+              {{ article.created_at }} by {{ article.author.account }}
             </small>
             <br />
             <span v-for="tag in article.tags" class="tag">{{ tag.name }}</span>
@@ -72,29 +72,19 @@
           article ($first, $after) {
             edges {
               node {
-                _id,
-                title,
-                content,
-                author,
-                view,
-                cover,
-                release,
-                created_at,
-                tags {
-                  name
-                }
+                ...article
               }
               cursor
             }
             pageInfo {
-              hasNextPage,
+              hasNextPage
               endCursor
             }
           }
         `, {
           first: 5,
           after: this.cursor
-        })
+        }, ['article'])
         .then((res) => {
           this.hasNextPage = res.pageInfo.hasNextPage
           this.list = this.list.concat(res.edges.map((obj) => obj.node))
@@ -265,8 +255,6 @@
       .markdown-body {
         margin: 20px;
         width: 100%;
-        word-break: break-word;
-        white-space: pre-wrap;
       }
     }
 

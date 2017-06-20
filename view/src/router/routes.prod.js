@@ -69,7 +69,7 @@ export default [{
     name: 'User',
     component: User
   }, {
-    path: 'user/:id',
+    path: 'user/:account',
     name: 'UserDetail',
     component: User
   }]

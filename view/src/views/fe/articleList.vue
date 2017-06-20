@@ -17,7 +17,7 @@
             }" class="title" tag="h1">{{ article.title }}</router-link>
             <p class="digest">{{ digest(article.content) }}</p>
             <p class="info">
-            - by {{ article.author }}
+            - by {{ article.author.account }}
             <time>{{ article.created_at }}</time>
             <span class="comment-count">{{ article.comment_count ? `${article.comment_count} 条评论` : '暂无评论' }}</span>
             </p>
@@ -135,27 +135,17 @@
       getTagQuery () {
         return this.$graphql.query(`
           articleByTagName ($name, $first, $offset, $release) {
-            totalCount,
+            totalCount
             edges {
               node {
-                _id,
-                title,
-                content,
-                author,
-                cover,
-                comment_count,
-                created_at,
-                tags {
-                  _id,
-                  name
-                }
+                ...article
               }
               cursor
-            }
+            },
             pageInfo {
-              hasPrevPage,
-              hasNextPage,
-              startCursor,
+              hasPrevPage
+              hasNextPage
+              startCursor
               endCursor
             }
           }
@@ -164,32 +154,22 @@
           offset: this.page * this.count,
           name: this.tag,
           release: true
-        })
+        }, ['article'])
       },
       getArticleQuery () {
         return this.$graphql.query(`
           article ($first, $offset, $release) {
-            totalCount,
+            totalCount
             edges {
               node {
-                _id,
-                title,
-                content,
-                author,
-                cover,
-                comment_count,
-                created_at,
-                tags {
-                  _id,
-                  name
-                }
+                ...article
               }
               cursor
             }
             pageInfo {
-              hasPrevPage,
-              hasNextPage,
-              startCursor,
+              hasPrevPage
+              hasNextPage
+              startCursor
               endCursor
             }
           }
@@ -197,7 +177,7 @@
           first: this.count,
           offset: this.page * this.count,
           release: true
-        })
+        }, ['article'])
       },
       prevPage () {
         if (!this.hasPrevPage) return false
@@ -224,7 +204,7 @@
       getTags () {
         this.$graphql.query(`
           tags {
-            name,
+            name
             count
           }
         `)

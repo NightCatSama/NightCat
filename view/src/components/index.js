@@ -8,6 +8,7 @@ import Popover from './View/Popover'
 import Prompt from './View/Prompt'
 import Modal from './View/Modal'
 import Loading from './View/Loading'
+import Loadmore from './View/Loadmore'
 
 import Sidebar from './UI/Sidebar'
 
@@ -17,6 +18,7 @@ const install = (Vue) => {
   Vue.component(Icon.name, Icon)
   Vue.component(Btn.name, Btn)
   Vue.component(Modal.name, Modal)
+  Vue.component(Loadmore.name, Loadmore)
 
   Vue.component(Sidebar.name, Sidebar)
 

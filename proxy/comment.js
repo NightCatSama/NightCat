@@ -8,7 +8,7 @@ export const getComments = async(query = {}) => {
       path: 'user target_user'
     }
   }).sort({ 'created_at': 1 })
-} 
+}
 
  /*  通过文章id获取评论  */
 export const getCommentById = async(id) => {
@@ -37,12 +37,13 @@ export const setCommentAddReply = async(id, reply_id) => {
   })
 }
 
- /*  生成新文章  */
+ /*  生成新评论  */
 export const newAndSave = async(data) => {
   let c = new comment()
   c.article_id = data.article_id
   c.user = data.user
   c.content = data.content
+  c.floor = await comment.count({ article_id: data.article_id }) + 1
   c = await c.save()
 
   return await getCommentById(c._id)

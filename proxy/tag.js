@@ -20,8 +20,6 @@ export const patchesTag = async(id, newTags, oldTags = []) => {
 	const deleteArr = oldTags.filter((tag_id) => newTags.indexOf(`${tag_id}`) === -1)
 	const addArr = newTags.filter((tag_id) => oldTags.indexOf(`${tag_id}`) === -1)
 
-	console.log(deleteArr)
-
 	Array.from(deleteArr, async(_id) => {
 		let t = await getTagById(_id)
 		if (!t) return false

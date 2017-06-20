@@ -39,7 +39,7 @@ let ArticleMutation = {
       if (!root.user.admin) throw Error('你没有权限')
 
       let newArticle = await Article.newAndSave({
-        author: root.user.account,
+        author: root.user._id,
         title,
         content,
         cover,

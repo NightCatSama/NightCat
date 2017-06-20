@@ -11,6 +11,7 @@ import {
 import { formatDate } from '../../common/utils'
 import { Comment } from '../../proxy'
 import TagType from '../tag/TagType'
+import UserType from '../user/UserType'
 
 let ArticleType = new GraphQLObjectType({
   name: 'Article',
@@ -25,7 +26,7 @@ let ArticleType = new GraphQLObjectType({
       description: '文章标题'
     },
     author: {
-      type: GraphQLString,
+      type: UserType,
       description: '作者'
     },
     tags: {

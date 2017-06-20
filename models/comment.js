@@ -21,6 +21,10 @@ let commentSchema = new Schema({
   content: {
     type: String
   },
+  // 楼层
+  floor: {
+    type: Number
+  },
   // 评论时间
   created_at: {
     type: Date,

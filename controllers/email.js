@@ -43,7 +43,7 @@ export default {
     let SITE_ROOT_URL = `http://${config.host}`
     let active_url = `${SITE_ROOT_URL}/activeEmail?key=${key}&account=${email}`
 
-    if (!await sendActiveMail(active_url, email, email)) {
+    if (!await sendActiveMail(email, active_url, email)) {
       res.status(500)
       return res.json({
         success: false,
