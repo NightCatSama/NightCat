@@ -51,10 +51,6 @@ let UserType = new GraphQLObjectType({
       type: GraphQLBoolean,
       description: '是否超级管理员'
     },
-    active: {
-      type: GraphQLBoolean,
-      description: '邮箱是否已激活'
-    },
     created_at: {
       type: GraphQLString,
       description: '回复时间',

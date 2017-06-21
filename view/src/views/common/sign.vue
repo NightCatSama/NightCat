@@ -265,7 +265,6 @@ export default {
         email
       })
       .then((res) => {
-        console.log(res)
         this.$toast('已向注册邮箱发送激活邮件', 'success')
       })
       .catch((err) => {

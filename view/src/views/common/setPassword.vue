@@ -9,6 +9,7 @@
           label="Password"
           :verify="passwordIsRight"
           :complete.sync="pwdPass"
+          @enter="setPwd"
           >
         </Input>
         <Icon name="right-circle" :size="18" class="next-icon" @click.native="setPwd"></Icon>

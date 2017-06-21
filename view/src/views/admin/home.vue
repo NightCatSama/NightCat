@@ -12,6 +12,9 @@
         <router-link class="radius-btn" to="/admin/tag">
           <Icon name="tag" :size="24"></Icon>
         </router-link>
+        <router-link class="radius-btn" to="/admin/links">
+          <Icon name="link" :size="24"></Icon>
+        </router-link>
       </nav>
       <router-view></router-view>
     </main>

@@ -35,7 +35,7 @@
 
     <!--添加模态框-->
     <Modal v-model="addModalShow" class-name="tag-modal">
-      <Input label="name" v-model="name" @enter="addTag"></Input>
+      <Input label="标签名字" v-model="name" @enter="addTag"></Input>
       <Btn @click="addTag">OK</Btn>
     </Modal>
   </div>

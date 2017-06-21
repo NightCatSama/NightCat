@@ -19,7 +19,13 @@
             <p class="info">
             - by {{ article.author.account }}
             <time>{{ article.created_at }}</time>
-            <span class="comment-count">{{ article.comment_count ? `${article.comment_count} 条评论` : '暂无评论' }}</span>
+            <router-link :to="{
+              name: 'Article',
+              params: {
+                id: article._id
+              },
+              hash: '#comment'
+            }" class="comment-count">{{ article.comment_count ? `${article.comment_count} 条评论` : '暂无评论' }}</router-link>
             </p>
             <div class="tag-list">
               <Icon name="tags"></Icon>

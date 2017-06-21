@@ -6,6 +6,7 @@ import article from './article'
 import tag from './tag'
 import comment from './comment'
 import reply from './reply'
+import link from './link'
 
 mongoose.Promise = global.Promise
 
@@ -24,5 +25,6 @@ export {
   article,
   tag,
   comment,
-  reply
+  reply,
+  link
 }

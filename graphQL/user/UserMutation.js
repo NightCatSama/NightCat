@@ -199,6 +199,49 @@ let UserMutation = {
 
       return await user.remove()
     }
+  },
+
+
+  updateUser: {
+    type: UserType,
+    description: '更新用户资料',
+    args: {
+      avatar: {
+        type: GraphQLString,
+        description: '头像'
+      },
+      profile: {
+        type: GraphQLString,
+        description: '简介'
+      },
+      website: {
+        type: GraphQLString,
+        description: '个人网站'
+      },
+      github: {
+        type: GraphQLString,
+        description: 'github'
+      },
+      location: {
+        type: GraphQLString,
+        description: '地点'
+      }
+    },
+    resolve: async(root, { avatar, profile, website, github, location }, req) => {
+      if (!root.user) throw Error('请先登录')
+      if (!validator.isByteLength(profile, { max: 200 })) throw Error('简介不能大于 200 个字符')
+      if (website && !validator.isURL(website, { allow_underscores: true })) throw Error('请输入正确的URL')
+      if (github && !validator.isURL(github, { allow_underscores: true })) throw Error('请输入正确的 Github 地址')
+      if (!validator.isByteLength(location, { max: 99 })) throw Error('地点不能大于 99 个字符')
+
+      root.user.avatar = avatar
+      root.user.profile = profile
+      root.user.website = website
+      root.user.github = github
+      root.user.location = location
+
+      return await root.user.save()
+    }
   }
 }
 

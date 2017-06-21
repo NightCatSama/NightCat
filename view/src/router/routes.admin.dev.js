@@ -4,6 +4,7 @@ import User from '@/views/admin/user'
 import Article from '@/views/admin/article'
 import EditArticle from '@/views/admin/editArticle'
 import Tag from '@/views/admin/tag'
+import Links from '@/views/admin/links'
 
 import Sign from '@/views/common/sign'
 
@@ -24,6 +25,10 @@ export default {
       path: 'tag',
       name: 'Admin-Tag',
       component: Tag
+    }, {
+      path: 'links',
+      name: 'Admin-Links',
+      component: Links
     }, {
       path: 'article',
       name: 'Admin-Article',

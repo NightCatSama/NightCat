@@ -19,7 +19,7 @@ export const userRequired = (req, res, next) => {
 	next()
 }
 
-/*  需要管理员权限  */
+/*  需要管理员权限( 开发游客模式后弃用了 )  */
 export const userAdminRequired = (req, res, next) => {
 	// if (req.path === '/login' || req.path === '/register') {
 	// 	return next()

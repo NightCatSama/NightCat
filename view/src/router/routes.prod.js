@@ -5,7 +5,7 @@ const Home = r => require.ensure([], () => r(require('@/views/fe/home')), 'home'
 const ArticleList = r => require.ensure([], () => r(require('@/views/fe/articleList')), 'home')
 const Article = r => require.ensure([], () => r(require('@/views/fe/article')), 'article')
 const Search = r => require.ensure([], () => r(require('@/views/fe/search')), 'search')
-const Link = r => require.ensure([], () => r(require('@/views/fe/link')), 'link')
+const Links = r => require.ensure([], () => r(require('@/views/fe/links')), 'links')
 const User = r => require.ensure([], () => r(require('@/views/fe/user')), 'user')
 
 const SetPassword = r => require.ensure([], () => r(require('@/views/common/setPassword')), 'setPassword')
@@ -61,9 +61,9 @@ export default [{
     name: 'Search',
     component: Search
   }, {
-    path: 'link',
-    name: 'Link',
-    component: Link
+    path: 'links',
+    name: 'Links',
+    component: Links
   }, {
     path: 'user',
     name: 'User',

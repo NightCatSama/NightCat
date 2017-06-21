@@ -12,6 +12,15 @@ export default {
   // 发送注册邮件
   sendSignupEmail: async(req, res, next) => {
     let { email } = req.body
+    let account = ''
+    let password = ''
+    let access_token = req.session.token
+
+    if (access_token) {
+      let user = await User.getUserByAccessToken(access_token)
+      account = user.account
+      password = user.password
+    }
 
     if (!validator.isEmail(email)) {
       res.status(403)
@@ -25,7 +34,7 @@ export default {
       res.status(403)
       return res.json({
         success: false,
-        message: '该邮箱已被注册'
+        message: '该邮箱已被绑定'
       })
     }
 
@@ -39,9 +48,9 @@ export default {
 
     req.session.email_cd = Date.now()
 
-    let key = md5(email + config.session_secret)
+    let key = account ? md5(account + password + email + config.session_secret) : md5(email + config.session_secret)
     let SITE_ROOT_URL = `http://${config.host}`
-    let active_url = `${SITE_ROOT_URL}/activeEmail?key=${key}&account=${email}`
+    let active_url = `${SITE_ROOT_URL}/activeEmail?key=${key}&email=${email}${account ? '&account=' + account : ''}`
 
     if (!await sendActiveMail(email, active_url, email)) {
       res.status(500)
@@ -61,7 +70,8 @@ export default {
 
   // 激活邮箱
   activeEmail: async(req, res, next) => {
-    let { key, email } = req.body
+    let { key, email, account } = req.body
+    let md5Key, user
 
     if (!validator.isEmail(email)) {
       res.status(403)
@@ -71,7 +81,24 @@ export default {
       })
     }
 
-    if (md5(email + config.session_secret) !== key) {
+    if (account) {
+      user = await User.getUserByAccount(account)
+
+      if (!user) {
+        res.status(403)
+        return res.json({
+          success: false,
+          message: '账号不存在'
+        })
+      }
+
+      md5Key = md5(account + user.password + email + config.session_secret)
+    }
+    else {
+      md5Key = md5(email + config.session_secret)
+    }
+
+    if (md5Key !== key) {
       res.status(403)
       return res.json({
         success: false,
@@ -79,25 +106,15 @@ export default {
       })
     }
 
-    let user = await User.getUserByEmail(email)
-
     // 当用户已存在时，则为激活邮箱
-    if (user) {
-      if (user.active) {
-        res.status(403)
-        return res.json({
-          success: false,
-          message: '账号已激活'
-        })
-      }
-
-      user.active = true
+    if (account) {
+      user.email = email
       await user.save()
 
       res.status(200)
       return res.json({
         success: true,
-        message: '激活成功',
+        message: '绑定成功',
         data: returnUserData(user)
       })
     }
@@ -107,8 +124,7 @@ export default {
       account: email,
       email: email,
       password: randomPassword(),
-      resetPwd: true,
-      active: true
+      resetPwd: true
     }
 
     user = await User.newAndSave(userInfo)

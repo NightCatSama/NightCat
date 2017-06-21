@@ -4,6 +4,7 @@
       ref="sidebar"
       :user="user"
       :class="['sidebar', { 'open-sidebar': open }]"
+      @close="open = false"
     >
     </Sidebar>
     <div

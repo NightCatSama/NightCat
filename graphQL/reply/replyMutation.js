@@ -46,7 +46,7 @@ let replyMutation = {
       let comment = await Comment.getCommentById(comment_id)
       let user = await User.getUserById(target_user)
 
-      if (user.email && user.active) sendEmailNotification(user.email, comment.article_id, user.account, comment.floor)
+      if (user.email) sendEmailNotification(user.email, comment.article_id, user.account, comment.floor)
 
       return await Reply.getReplyById(reply._id)
     }

@@ -49,11 +49,6 @@ let userSchema = new Schema({
 		type: String,
 		default: ''
 	},
-	// 是否已激活
-	active: {
-		type: Boolean,
-		default: false
-	},
 	// 令牌
 	access_token: {
 		type: String

@@ -15,10 +15,10 @@ export const sendMail = async(data, link) => {
 	await	transporter.sendMail(data)
 	.then((res) => {
 		success = true
-		logger.info('发送邮件成功')
+		logger.info('发送邮件成功', data.to)
 	})
 	.catch((err) => {
-		logger.error('发送邮件失败', err);
+		logger.error('发送邮件失败', data.to);
 	})
 
 	return success
@@ -30,9 +30,16 @@ export const sendActiveMail = async(to, link, account) => {
 	let subject = `${config.name} 账号激活`
 	let html = `
 	<article style="font-family: 'Montserrat', 'Segoe UI', 'Microsoft Yahei', Helvetica, Arial; border: 1px solid #f05b72;">
-		<h1 style="width: 100%; padding: 10px 0; margin: 0; background-color: #f05b72; color: #fff; text-align: center;">你好, ${account}</h1>
-		<p style="padding: 20px; font-size: 14px; color: #3498db;">请点击下方的链接，完成账号激活ヽ(≧Д≦)ノ <small style="color: #d71345;">(如果您未听说过什么 nightcat.win 网站，那可能是有人使用恶意使用你的邮箱)</small></p>
-		<a href="${link}" style="color: #3da8f5;">激活链接</a>
+		<h1 style="width: 100%; padding: 10px 0; margin: 0; background-color: #f05b72; color: #fff; text-align: center;">
+			你好, ${account}
+		</h1>
+		<p style="padding: 20px; font-size: 14px; color: #3498db; text-align: center;">
+			请点击下方的链接，完成账号激活ヽ(≧Д≦)ノ <br />
+			<small style="color: #d71345;">(如果您未听说过什么 nightcat.win 网站，那无视这份邮件，谢谢)</small>
+		</p>
+		<a href="${link}" style="display: block; padding: 0 20px 20px; color: #3da8f5; text-align: center;">
+			激活链接
+		</a>
 	</article>
 	`
 
@@ -51,7 +58,7 @@ export const sendEmailNotification = async(to, article_id, account, floor) => {
 	}
 
 	let from = config.mail_opts.auth.user
-	let subject = `${config.name} 消息通知`
+	let subject = `${config.name} 有人回复你!`
   let SITE_ROOT_URL = `http://${config.host}`
   let link = `${SITE_ROOT_URL}/article/${article_id}?floor=${floor}`
 	let html = `
@@ -59,10 +66,11 @@ export const sendEmailNotification = async(to, article_id, account, floor) => {
 		<h1 style="width: 100%; padding: 10px 0; margin: 0; background-color: #f05b72; color: #fff; text-align: center;">
 			你好, ${account}
 		</h1>
-		<p style="padding: 20px; font-size: 14px; color: #3498db;">
-			你在 nightcat.win 的评论有一条最新回复 (≧Д≦)ノ，请点击下方的链接查看
+		<p style="padding: 20px; font-size: 14px; color: #3498db; text-align: center;">
+			你的评论有一条最新回复 (≧Д≦)ノ，请点击下方的链接查看<br />
+			<small style="color: #d71345;">(如果您未听说过什么 nightcat.win 网站，那无视这份邮件，谢谢)</small>
 		</p>
-		<a href="${link}" style="color: #3da8f5;">
+		<a href="${link}" style="display: block; padding: 0 20px 20px; color: #3da8f5; text-align: center;">
 			${link}
 		</a>
 	</article>

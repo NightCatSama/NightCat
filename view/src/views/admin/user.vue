@@ -20,7 +20,7 @@
     <div class="admin-main">
       <template v-if="userInfo">
         <div class="user-group">
-          <img :src="userInfo.avatar + '?size=200'" alt="avatar" />
+          <img :src="userInfo.avatar" alt="avatar" />
           <div class="user-info">
             <div class="user-info-item">账号：{{ userInfo.account }}</div>
             <div class="user-info-item">邮箱：{{ userInfo.email }}</div>
@@ -200,8 +200,8 @@
       display: flex;
 
       img {
-        width: 208px;
-        height: 208px;
+        width: 168px;
+        height: 168px;
         border-radius: 8px;
         margin-right: 20px;
       }

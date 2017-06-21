@@ -42,7 +42,7 @@ let CommentMutation = {
       let art = await Article.getArticleById(article_id)
       let floor = await Comment.getCommentCount(article_id)
 
-      if (art.author.email && art.author.active) sendEmailNotification(art.author.email, article_id, art.author.account, floor)
+      if (art.author.email) sendEmailNotification(art.author.email, article_id, art.author.account, floor)
 
       return comment
     }

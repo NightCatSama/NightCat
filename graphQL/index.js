@@ -18,6 +18,9 @@ import CommentMutation from './comment/CommentMutation.js'
 
 import replyMutation from './reply/replyMutation.js'
 
+import LinkQuery from './link/LinkQuery.js'
+import LinkMutation from './link/LinkMutation.js'
+
 const schema = new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType',
@@ -32,7 +35,9 @@ const schema = new GraphQLSchema({
       articleByTagId: TagQuery.articleByTagId,
       articleByTagName: TagQuery.articleByTagName,
 
-      comments: CommentQuery.comments
+      comments: CommentQuery.comments,
+
+      links: LinkQuery.links
     }
   }),
   mutation: new GraphQLObjectType({
@@ -46,6 +51,7 @@ const schema = new GraphQLSchema({
       setAdmin: UserMutation.setAdmin,
       setPassword: UserMutation.setPassword,
       removeUser: UserMutation.removeUser,
+      updateUser: UserMutation.updateUser,
 
       addArticle: ArticleMutation.addArticle,
       deleteArticle: ArticleMutation.deleteArticle,
@@ -57,7 +63,11 @@ const schema = new GraphQLSchema({
 
       addComment: CommentMutation.addComment,
 
-      addReply: replyMutation.addReply
+      addReply: replyMutation.addReply,
+
+      addLink: LinkMutation.addLink,
+      updateLink: LinkMutation.updateLink,
+      removeLink: LinkMutation.removeLink
     }
   })
 })

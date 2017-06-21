@@ -152,6 +152,7 @@
     border: none;
     outline: none;
     width: 230px;
+    font-size: 14px;
     border-bottom: 2px solid $font2;
 
     @include placeholder($placeholder, 13px);

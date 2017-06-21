@@ -6,7 +6,7 @@
         <div class="user-info">
           <span class="account">{{ user.account }}</span>
           <div class="login-group">
-            <router-link to="/user">个人信息</router-link>
+            <router-link to="/user" @click.native="close">个人信息</router-link>
             /
             <a href="javascript:;" @click="logout" class="logout-btn">退出登录</a>
           </div>
@@ -25,10 +25,9 @@
       </template>
     </div>
     <nav class="nav">
-      <router-link to="/article">Home</router-link>
-      <router-link to="/search">Search</router-link>
-      <router-link to="/admin">Admin</router-link>
-      <router-link to="/link">Link</router-link>
+      <router-link to="/article" @click.native="close">Article</router-link>
+      <router-link to="/links" @click.native="close">Links</router-link>
+      <router-link to="/admin" @click.native="close">Admin</router-link>
     </nav>
   </div>
 </template>
@@ -44,7 +43,6 @@
     },
     data () {
       return {
-        show: false
       }
     },
     computed: {
@@ -73,6 +71,9 @@
         this.$router.replace({
           name: 'Admin-Login'
         })
+      },
+      close () {
+        this.$emit('close')
       }
     }
   }

@@ -13,6 +13,12 @@ export const mutations = {
     state.is_login = true
     state.signin_time = new Date()
   },
+  updateAvatar (state, avatar) {
+    state.user = {
+      account: state.user.account,
+      avatar
+    }
+  },
   logout (state) {
     state.user = null
     state.is_login = false

@@ -43,8 +43,6 @@ export const newAndSave = async(data) => {
 	u.email = data.email
 	u.github = data.github
 	u.avatar = data.avatar || getGravatar(data.email || '')
-	u.active = !!data.active
-	u.active_url = data.active_url
 	u.access_token = data.access_token
 	return await u.save()
 }

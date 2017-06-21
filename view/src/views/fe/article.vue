@@ -33,7 +33,7 @@
     </article>
 
     <!-- 评论区分割线 -->
-    <div class="line" :data-title="comment_count ? `${comment_count} 条评论` : '评论区'"></div>
+    <div ref="comment" class="line" :data-title="comment_count ? `${comment_count} 条评论` : '评论区'"></div>
 
     <!-- 评论区块 -->
     <section class="comment">
@@ -56,9 +56,9 @@
           </Btn>
         </div>
       </div>
-      <div v-else class="no-sign">
+      <router-link v-else to="/login" tag="div" class="no-sign">
         登录后方可评论
-      </div>
+      </router-link>
     </section>
 
     <!-- 评论列表区块 -->
@@ -69,7 +69,14 @@
           <img :src="comment.user.avatar" alt="avatar" class="avatar">
           <div class="comment-main">
             <div class="meta">
-              <span class="comment-account">{{ comment.user.account }}</span>
+              <router-link :to="{
+                name: 'User',
+                params: {
+                  id: comment.user._id
+                }
+              }" tag="span" class="comment-account">
+              {{ comment.user.account }}
+              </router-link>
               <time>评论于 {{ comment.created_at }}</time>
             </div>
             <div class="content markdown-body" v-html="comment.view"></div>
@@ -81,9 +88,25 @@
                 <div class="comment-main">
                   <div class="meta">
                     <span class="comment-account">
+                      <router-link :to="{
+                        name: 'User',
+                        params: {
+                          id: reply.user._id
+                        }
+                      }" tag="span">
                       {{ reply.user.account }}
+                      </router-link>
                       <span class="target-account">
-                        回复 {{ reply.target_user.account }}：
+                        回复
+                        <router-link :to="{
+                          name: 'User',
+                          params: {
+                            id: reply.target_user._id
+                          }
+                        }" tag="span">
+                        {{ reply.target_user.account }}
+                        </router-link>
+                        ：
                       </span>
                     </span>
                     <time>回复于 {{ reply.created_at }}</time>
@@ -129,6 +152,7 @@
 
 <script>
   import 'github-markdown-css'
+  import { scrollToElem } from '@/assets/smooth_scroll'
 
   export default {
     name: 'article',
@@ -182,6 +206,9 @@
         }, ['article'])
         .then((res) => {
           Object.assign(this, res)
+          if (this.$route.hash) {
+            scrollToElem(this.$refs[this.$route.hash.slice(1)])
+          }
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },

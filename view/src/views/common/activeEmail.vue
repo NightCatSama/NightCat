@@ -12,10 +12,11 @@
     },
     methods: {
       activeEmail () {
-        let { account, key } = this.$route.query
+        let { account, email, key } = this.$route.query
 
         this.$http.post('/activeEmail', {
-          email: account,
+          account: account || '',
+          email: email,
           key: key
         })
         .then((res) => {

@@ -27,7 +27,7 @@
           <label for="website">网站：</label>
           <input id="website" :disabled="!isSelf" v-model="userInfo.website"></input>
         </div>
-        <Btn v-if="isSelf" class="save-btn">保存修改</Btn>
+        <Btn v-if="isSelf" class="save-btn" @click="updateUser">保存修改</Btn>
 
         <template v-if="isSelf">
           <h1 class="title">绑定邮箱</h1>
@@ -42,8 +42,11 @@
       </div>
       <div class="user-avatar">
         <h1 class="title">头像</h1>
-        <img :src="userInfo.avatar + '?size=200'" alt="avatar" class="avatar" />
-        <Btn v-if="isSelf" class="user-btn upload-btn">上传新头像</Btn>
+        <img :src="userInfo.avatar" alt="avatar" class="avatar" />
+        <span class="upload-avatar">
+          <Btn v-if="isSelf" class="user-btn upload-btn">上传新头像</Btn>
+          <input class="avatar-input" type="file" accept="image/*" @change="uploadAvatar" />
+        </span>
       </div>
     </div>
     <div v-else class="no-user">
@@ -88,8 +91,89 @@
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
+      updateUser () {
+        let { profile, website, github, location, avatar } = this.userInfo
+        this.$graphql.mutation(`
+          updateUser ($profile, $website, $github, $location, $avatar) {
+            ...user
+          }
+        `, {
+          avatar,
+          profile,
+          website,
+          github,
+          location
+        }, ['user'])
+        .then((res) => {
+          this.$toast('保存成功', 'success')
+          this.$store.commit('updateAvatar', res.avatar)
+        })
+        .catch((err) => this.$toast(err.message, 'error'))
+      },
       bindEmail () {
+        let { account, email } = this.userInfo
+        this.$http.post('/sendSignupEmail', {
+          account,
+          email
+        })
+        .then((res) => {
+          this.$toast('已向注册邮箱发送激活邮件', 'success')
+        })
+        .catch((err) => {
+          this.$toast(err.message, 'error')
+        })
+      },
+      uploadAvatar (e) {
+        let file = e.target.files[0]
 
+        if (!file) {
+          return false
+        }
+
+        let reader = new FileReader()
+        reader.onload = (e) => {
+          this.compress(e.target.result).then((avatar) => {
+            this.userInfo.avatar = avatar
+          })
+        }
+
+        reader.readAsDataURL(file)
+      },
+      compress (src) {
+        return new Promise((resolve) => {
+          /*  压缩配置  */
+          let opt = {
+            width: 168,
+            height: 168,
+            quality: 0.92
+          }
+
+          let img = new Image()
+          let canvas = document.createElement('CANVAS')
+          canvas.width = opt.width
+          canvas.height = opt.height
+          let cxt = canvas.getContext('2d')
+
+          img.onload = () => {
+            let size = [img.width, img.height]
+            /*  将长的方向进行裁剪  */
+            let x, y, base
+            if (size[0] > size[1]) {
+              y = 0
+              x = (size[0] - size[1]) / 2
+              base = size[1]
+            }
+            else {
+              x = 0
+              y = (size[1] - size[0]) / 2
+              base = size[0]
+            }
+            cxt.drawImage(img, x, y, base, base, 0, 0, opt.width, opt.height)
+            resolve(canvas.toDataURL('image/jpeg', opt.quality))
+          }
+
+          img.src = src
+        })
       }
     },
     mounted () {
@@ -110,7 +194,7 @@
       display: flex;
       width: 800px;
       padding: 20px;
-      margin-top: 200px;
+      margin: 200px 0;
 
       .title {
         margin-bottom: 12px;
@@ -215,6 +299,23 @@
     .no-user {
       @include flex-center;
       font-size: 40px;
+    }
+
+    .upload-avatar {
+      position: relative;
+
+      button {
+        width: 100%;
+      }
+
+      .avatar-input {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+      }
     }
   }
 </style>

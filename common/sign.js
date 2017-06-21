@@ -37,7 +37,6 @@ export const returnUserData = (user) => {
 		profile: user.profile,
 		gameData: user.gameData,
 		admin: user.admin,
-		active: user.active,
 		avatar: user.avatar
 	}
 }

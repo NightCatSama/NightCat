@@ -8,7 +8,6 @@ export default {
       location
       github
       website
-      active
       admin
       superAdmin
     }
@@ -86,6 +85,15 @@ export default {
         account
         avatar
       }
+    }
+  `,
+  link: `
+    fragment link on Link {
+      _id
+      name
+      bio
+      link
+      avatar
     }
   `
 }
