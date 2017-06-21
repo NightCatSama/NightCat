@@ -138,7 +138,7 @@
             }
           }
         `, {
-          first: 5,
+          first: 10,
           after: this.cursor
         })
         .then((res) => {

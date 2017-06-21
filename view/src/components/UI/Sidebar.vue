@@ -28,7 +28,6 @@
       <router-link to="/article" @click.native="close">文章</router-link>
       <router-link to="/links" @click.native="close">友联</router-link>
       <router-link to="/admin" @click.native="close">管理</router-link>
-      <router-link to="/admin" @click.native="close">留言板</router-link>
     </nav>
   </div>
 </template>
