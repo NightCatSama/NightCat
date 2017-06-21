@@ -62,6 +62,13 @@ export default {
 				.redirect(`${state}`)
 		}
 
+		// 如果没有邮箱只能拜拜了
+		if (!userData.email) {
+			res.writeHead(200, { 'Content-Type': 'text/plain' })
+			res.write('请先在 github 中设置公开邮箱')
+			return res.end()
+		}
+
 		let userInfo = {
 			account: userData.email,
 			email: userData.email,
