@@ -1,4 +1,0 @@
-export const SET_STATUS = 'SET_STATUS'
-export const SET_ACCESSTOKEN = 'SET_ACCESSTOKEN'
-export const SET_USERINFO = 'SET_USERINFO'
-export const CLEAR_STATUS = 'CLEAR_STATUS'
