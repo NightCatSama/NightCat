@@ -186,7 +186,7 @@
   @import '~style';
 
   .user-view {
-    height: 100vh;
+    min-height: 100vh;
     @include flex-main-center;
     overflow: hidden;
 

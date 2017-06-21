@@ -47,7 +47,6 @@ const schema = new GraphQLSchema({
       loginByEmail: UserMutation.loginByEmail,
       register: UserMutation.register,
       logout: UserMutation.logout,
-      setEmail: UserMutation.setEmail,
       setAdmin: UserMutation.setAdmin,
       setPassword: UserMutation.setPassword,
       removeUser: UserMutation.removeUser,

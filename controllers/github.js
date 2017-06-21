@@ -67,7 +67,6 @@ export default {
 			email: userData.email,
 			password: randomPassword(),
 			resetPwd: true,
-			active: true,
 			profile: userData.bio,
 			github: userData.url,
 			avatar: userData.avatarUrl,

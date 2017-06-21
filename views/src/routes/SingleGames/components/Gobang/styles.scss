@@ -1,0 +1,33 @@
+@import '~stylesheets/common/util';
+
+.template-view {
+	min-height: 100vh;
+	@include flex-center;
+
+	.main {
+		width: 60%;
+		max-width: 600px;
+		user-select: none;
+		position: relative;
+
+		@include max-screen(768px) {
+			width: 95%;
+			min-width: auto;
+		}
+	}
+
+	.msg {
+		position: absolute;
+		left: 50%;
+		top: -30px;
+		transform: translateX(-50%);
+		font-size: 20px;
+		font-weight: bold;
+	}
+
+	canvas {
+		width: 100%;
+		border: 1px solid #ccc;
+		box-shadow: 10px 10px 20px 0 rgba(0, 0, 0, .2);
+	}
+}

@@ -118,25 +118,6 @@ let UserMutation = {
   },
 
 
-  setEmail: {
-    type: UserType,
-    description: '设置邮箱',
-    args: {
-      email: {
-        type: new GraphQLNonNull(GraphQLString),
-        description: '邮箱'
-      }
-    },
-    resolve: async(root, { email }, req) => {
-      if (!root.user) throw Error('账号未登录')
-
-      root.user.email = email
-
-      return await root.user.save()
-    }
-  },
-
-
   setAdmin: {
     type: UserType,
     description: '设置/取消 管理员',

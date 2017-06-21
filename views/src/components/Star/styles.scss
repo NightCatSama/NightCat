@@ -1,0 +1,9 @@
+@import '~stylesheets/common/util';
+
+.star-component {
+	display: inline-block;
+
+	.icon-star {
+		color: $dark-yellow;
+	}
+}
