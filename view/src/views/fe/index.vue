@@ -12,7 +12,7 @@
       :class="['open-btn', { 'open-sidebar': open }]"
       @click="open = !open"
     >
-      夜喵！
+      夜喵
     </div>
     <div :class="['main', { 'open-sidebar': open }]">
       <router-view></router-view>
@@ -81,6 +81,7 @@
       left: 20px;
       cursor: pointer;
       padding: 5px 12px;
+      border-radius: 20px;
       z-index: 1;
       color: $white;
       background-color: rgba(0, 0, 0, .3);

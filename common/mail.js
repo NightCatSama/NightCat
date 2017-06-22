@@ -58,7 +58,7 @@ export const sendEmailNotification = async(to, article_id, account, floor) => {
 	}
 
 	let from = config.mail_opts.auth.user
-	let subject = `${config.name} 有人回复你!`
+	let subject = `${config.name} 消息`
   let SITE_ROOT_URL = `http://${config.host}`
   let link = `${SITE_ROOT_URL}/article/${article_id}?floor=${floor}`
 	let html = `
@@ -67,11 +67,11 @@ export const sendEmailNotification = async(to, article_id, account, floor) => {
 			你好, ${account}
 		</h1>
 		<p style="padding: 20px; font-size: 14px; color: #3498db; text-align: center;">
-			你的评论有一条最新回复 (≧Д≦)ノ，请点击下方的链接查看<br />
+			有人翻你牌子 (≧Д≦)ノ，请点击下方的链接查看<br />
 			<small style="color: #d71345;">(如果您未听说过什么 nightcat.win 网站，那无视这份邮件，谢谢)</small>
 		</p>
 		<a href="${link}" style="display: block; padding: 0 20px 20px; color: #3da8f5; text-align: center;">
-			${link}
+			网站链接
 		</a>
 	</article>
 	`
