@@ -31,7 +31,7 @@ export const sendActiveMail = async(to, link, account) => {
 	let html = `
 	<h1>您好，${account}</h1>
 	<p>我们收到了您在${config.name}的注册信息，请点击下方的链接激活账号</p>
-	<a href="${link}">${link}</a>
+	<a href="${link}">激活链接</a>
 	<p>如果您未在${config.name}申请过账号注册，说明有人在滥用你的邮箱，请删除此封邮件，给您造成困扰真是抱歉</p>
 	`
 

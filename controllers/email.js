@@ -49,7 +49,6 @@ export default {
     req.session.email_cd = Date.now()
 
     let key = account ? md5(account + password + email + config.session_secret) : md5(email + config.session_secret)
-    console.log(config)
     let SITE_ROOT_URL = `${config.protocol}://${config.host}`
     let active_url = `${SITE_ROOT_URL}/activeEmail?key=${key}&email=${email}${account ? '&account=' + account : ''}`
 
