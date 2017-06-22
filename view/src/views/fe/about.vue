@@ -42,6 +42,8 @@
 </template>
 
 <script>
+  import 'github-markdown-css'
+
   import Comment from '@/components/UI/Comment'
   export default {
     name: 'about',

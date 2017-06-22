@@ -40,9 +40,9 @@
 </template>
 
 <script>
-  import 'github-markdown-css'
   import { scrollToElem } from '@/assets/smooth_scroll'
   import Comment from '@/components/UI/Comment'
+  import 'github-markdown-css'
 
   export default {
     name: 'article',

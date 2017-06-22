@@ -78,5 +78,9 @@ export default {
   #app .markdown-body {
     word-break: break-all;
     font-size: 14px;
+
+    img {
+      width: 100%;
+    }
   }
 </style>
