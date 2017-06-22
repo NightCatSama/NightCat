@@ -1,5 +1,6 @@
 module.exports = {
 	debug: true,
+	protocol: 'http',
 	host: 'localhost:3000',
 
 	/*  端口信息  */
