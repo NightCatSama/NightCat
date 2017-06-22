@@ -2,8 +2,11 @@
   <div class="admin-tag-view">
     <!--侧边按钮组-->
     <aside class="aside">
-      <div class="radius-btn blue" @click="addModalShow = true">
+      <div class="radius-btn blue" @click="openModal('add')">
         <Icon name="plus" :size="24"></Icon>
+      </div>
+      <div class="radius-btn yellow" @click="openModal('edit')">
+        <Icon name="post" :size="24"></Icon>
       </div>
       <div class="radius-btn red" @click="minusClick">
         <Icon name="delete" :size="24"></Icon>
@@ -35,8 +38,9 @@
 
     <!--添加模态框-->
     <Modal v-model="addModalShow" class-name="tag-modal">
-      <Input label="标签名字" v-model="name" @enter="addTag"></Input>
-      <Btn @click="addTag">OK</Btn>
+      <Input label="标签名字" v-model="name"></Input>
+      <Btn v-if="type === 'add'" @click="addTag">OK</Btn>
+      <Btn v-if="type === 'edit'" @click="editTag">OK</Btn>
     </Modal>
   </div>
 </template>
@@ -46,6 +50,7 @@
     name: 'admin-tag',
     data () {
       return {
+        type: 'add',
         addModalShow: false,
         active: null,
         list: [],
@@ -75,11 +80,11 @@
       addTag () {
         this.$graphql.mutation(`
           addTag ($name) {
-            name
+            ...tag
           }
         `, {
           name: this.name
-        })
+        }, ['tag'])
         .then((res) => {
           this.$toast('添加成功', 'success')
           this.addModalShow = false
@@ -87,18 +92,34 @@
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
+      editTag () {
+        this.$graphql.mutation(`
+          updateTag ($id, $name) {
+            ...tag
+          }
+        `, {
+          id: this.list[this.active]._id,
+          name: this.name
+        }, ['tag'])
+        .then((res) => {
+          this.$toast('添加成功', 'success')
+          this.addModalShow = false
+          this.list = res
+        })
+        .catch((err) => this.$toast(err.message, 'error'))
+      },
       removeTag () {
         this.$graphql.mutation(`
           removeTag ($name) {
-            name
+            ...tag
           }
         `, {
           name: this.activeTag
-        })
+        }, ['tag'])
         .then((res) => {
           this.$toast('删除成功', 'success')
           this.active = null
-          this.getTags()
+          this.list = res
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
@@ -110,6 +131,21 @@
           return this.$toast('请先选中一个标签', 'warning')
         }
         this.$prompt('确定删除该标签吗？', this.removeTag)
+      },
+      openModal (type) {
+        if (type === 'edit') {
+          if (this.active === null) {
+            return this.$toast('请选中一个需要编辑的标签', 'warning')
+          }
+          let { name } = this.list[this.active]
+          this.name = name
+        }
+        else {
+          this.name = ''
+        }
+
+        this.type = type
+        this.addModalShow = true
       }
     },
     mounted () {

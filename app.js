@@ -1,4 +1,5 @@
 import express from 'express'
+import helmet from 'helmet'
 import path from 'path'
 import favicon from 'serve-favicon'
 import morgan from 'morgan'
@@ -21,6 +22,9 @@ import { getRootValue } from './middlewares/graphql'
 import schema from './graphQL'
 
 const app = express()
+
+/*  使用 Helmet  */
+app.use(helmet())
 
 /*  开启Gzip压缩  */
 app.use(compression())

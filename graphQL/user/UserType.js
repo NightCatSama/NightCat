@@ -23,6 +23,10 @@ let UserType = new GraphQLObjectType({
       type: GraphQLString,
       description: '邮箱'
     },
+    subscribe: {
+      type: GraphQLBoolean,
+      description: '是否订阅消息邮件'
+    },
     avatar: {
       type: GraphQLString,
       description: '头像'

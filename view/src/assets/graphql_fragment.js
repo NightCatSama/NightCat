@@ -3,6 +3,7 @@ export default {
     fragment user on User {
       account
       email
+      subscribe
       avatar
       profile
       location

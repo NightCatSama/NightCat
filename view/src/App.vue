@@ -75,7 +75,8 @@ export default {
   }
 
   // markdown
-  .markdown-body {
+  #app .markdown-body {
     word-break: break-all;
+    font-size: 14px;
   }
 </style>

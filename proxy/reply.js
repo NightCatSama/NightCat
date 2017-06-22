@@ -11,6 +11,12 @@ export const getReplyById = async(id) => {
   return await reply.findById(id).populate('target_user user')
 }
 
+ /*  删除某条评论下的所有回复  */
+export const deleteReplies = async(id) => {
+  return await reply.remove({
+    comment_id: id
+  })
+}
 
  /*  生成新回复  */
 export const newAndSave = async(data) => {
@@ -29,5 +35,6 @@ export const newAndSave = async(data) => {
 export default {
   getReplys,
   getReplyById,
+  deleteReplies,
   newAndSave
 }

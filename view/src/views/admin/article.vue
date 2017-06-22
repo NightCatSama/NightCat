@@ -2,11 +2,11 @@
   <div class="admin-article-view">
     <!--侧边按钮组-->
     <aside class="aside">
-      <div class="radius-btn yellow" @click="gotoEditArticle">
-        <Icon name="post" :size="24"></Icon>
-      </div>
       <div class="radius-btn blue" @click="gotoAddArticle">
         <Icon name="plus" :size="24"></Icon>
+      </div>
+      <div class="radius-btn yellow" @click="gotoEditArticle">
+        <Icon name="post" :size="24"></Icon>
       </div>
       <div class="radius-btn red" @click="deleteArticle">
         <Icon name="delete" :size="24"></Icon>

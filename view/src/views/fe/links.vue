@@ -1,6 +1,6 @@
 <template>
   <div class="links-view">
-    <div class="links-main">
+    <section class="links-main">
       <h1 class="title">Links</h1>
       <div class="links-wrap">
         <a v-for="(link, i) in list" class="link-item" :href="link.link" target="_blank">
@@ -11,7 +11,7 @@
           </div>
         </a>
       </div>
-    </div>
+    </section>
   </div>
 </template>
 
@@ -68,7 +68,7 @@
       display: inline-flex;
       box-shadow: $paper-shadow;
       padding: 10px;
-      margin: 20px 20px 0 0;
+      margin: 0 20px 20px 0;
       text-decoration: none;
       color: $font;
       transition: all .3s;

@@ -8,6 +8,11 @@ let commentSchema = new Schema({
   article_id: {
     type: Schema.Types.ObjectId
   },
+  // 评论类型
+  type: {
+    type: String,
+    default: 'article'
+  },
   // 发表者
   user: {
     type: Schema.Types.ObjectId,

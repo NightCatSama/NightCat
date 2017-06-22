@@ -37,6 +37,10 @@
               <Btn class="user-btn" @click="bindEmail">绑定邮箱</Btn>
             </div>
             <input v-else id="email" disabled v-model="userInfo.email"></input>
+            <label for="subscribe" class="subscribe-wrap">
+              <input type="checkbox" id="subscribe" v-model="userInfo.subscribe" name="subscribe" @change="setSubscribe"></input>
+              订阅消息邮件
+            </label>
           </div>
         </template>
       </div>
@@ -174,6 +178,20 @@
 
           img.src = src
         })
+      },
+      setSubscribe (e) {
+        let { subscribe } = this.userInfo
+        this.$graphql.mutation(`
+          setSubscribe ($subscribe) {
+            ...user
+          }
+        `, {
+          subscribe
+        }, ['user'])
+        .then((res) => {
+          this.$toast('设置成功', 'success')
+        })
+        .catch((err) => this.$toast(err.message, 'error'))
       }
     },
     mounted () {
@@ -241,6 +259,19 @@
           &[disabled] {
             opacity: .75;
             background-color: #f1f1f1;
+          }
+        }
+
+        .subscribe-wrap {
+          width: 100%;
+          white-space: nowrap;
+
+          input {
+            width: auto;
+
+            &:focus {
+              box-shadow: none;
+            }
           }
         }
 

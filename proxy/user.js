@@ -38,6 +38,7 @@ export const newAndSave = async(data) => {
 	u.account = data.account
 	u.password = data.password
 	u.resetPwd = !!data.resetPwd
+	u.subscribe = !!data.subscribe
 	u.profile = data.profile
 	u.location = data.location,
 	u.email = data.email

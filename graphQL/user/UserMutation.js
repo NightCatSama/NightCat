@@ -223,6 +223,26 @@ let UserMutation = {
 
       return await root.user.save()
     }
+  },
+
+
+  setSubscribe: {
+    type: UserType,
+    description: '更新用户资料',
+    args: {
+      subscribe: {
+        type: GraphQLBoolean,
+        description: '是否订阅消息邮件'
+      }
+    },
+    resolve: async(root, { subscribe }, req) => {
+      if (!root.user) throw Error('请先登录')
+
+      root.user.subscribe = subscribe
+
+      return await root.user.save()
+
+    }
   }
 }
 

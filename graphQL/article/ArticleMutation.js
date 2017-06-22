@@ -10,7 +10,7 @@ import {
 
 import ArticleType from './ArticleType'
 import Article from '../../proxy/article'
-import Tag from '../../proxy/tag'
+import { Tag, Comment } from '../../proxy'
 
 let ArticleMutation = {
   addArticle: {
@@ -80,6 +80,8 @@ let ArticleMutation = {
         }
       })
 
+      await Comment.deleteComments(id)
+
       return await article.remove()
     }
   },
@@ -96,7 +98,7 @@ let ArticleMutation = {
     },
     resolve: async(root, { id }) => {
       if (!root.user) throw Error('请先登录')
-      if (!root.user.superAdmin) throw Error('你没有权限')
+      if (!root.user.superAdmin) throw Error('发布/下架 需要超级管理员权限')
 
       let article = await Article.getArticleById(id)
 

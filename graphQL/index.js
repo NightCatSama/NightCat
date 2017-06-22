@@ -36,6 +36,7 @@ const schema = new GraphQLSchema({
       articleByTagName: TagQuery.articleByTagName,
 
       comments: CommentQuery.comments,
+      indieComments: CommentQuery.indieComments,
 
       links: LinkQuery.links
     }
@@ -51,6 +52,7 @@ const schema = new GraphQLSchema({
       setPassword: UserMutation.setPassword,
       removeUser: UserMutation.removeUser,
       updateUser: UserMutation.updateUser,
+      setSubscribe: UserMutation.setSubscribe,
 
       addArticle: ArticleMutation.addArticle,
       deleteArticle: ArticleMutation.deleteArticle,
@@ -58,9 +60,11 @@ const schema = new GraphQLSchema({
       releaseArticle: ArticleMutation.releaseArticle,
 
       addTag: TagMutation.addTag,
+      updateTag: TagMutation.updateTag,
       removeTag: TagMutation.removeTag,
 
       addComment: CommentMutation.addComment,
+      addIndieComment: CommentMutation.addIndieComment,
 
       addReply: replyMutation.addReply,
 

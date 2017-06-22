@@ -4,8 +4,8 @@ import Page from '@/views/fe/index'
 const Home = r => require.ensure([], () => r(require('@/views/fe/home')), 'home')
 const ArticleList = r => require.ensure([], () => r(require('@/views/fe/articleList')), 'home')
 const Article = r => require.ensure([], () => r(require('@/views/fe/article')), 'article')
-const Search = r => require.ensure([], () => r(require('@/views/fe/search')), 'search')
 const Links = r => require.ensure([], () => r(require('@/views/fe/links')), 'links')
+const About = r => require.ensure([], () => r(require('@/views/fe/about')), 'about')
 const User = r => require.ensure([], () => r(require('@/views/fe/user')), 'user')
 
 const SetPassword = r => require.ensure([], () => r(require('@/views/common/setPassword')), 'setPassword')
@@ -57,13 +57,13 @@ export default [{
     name: 'Article',
     component: Article
   }, {
-    path: 'search',
-    name: 'Search',
-    component: Search
-  }, {
     path: 'links',
     name: 'Links',
     component: Links
+  }, {
+    path: 'about',
+    name: 'About',
+    component: About
   }, {
     path: 'user',
     name: 'User',

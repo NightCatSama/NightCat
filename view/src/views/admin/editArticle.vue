@@ -308,6 +308,7 @@
         transform: translate(-50%, -50%);
         font-size: 60px;
         color: $grey4;
+        opacity: .6;
       }
     }
 
@@ -315,13 +316,16 @@
       border-right: 1px dashed $grey2;
 
       textarea {
+        position: relative;
+        z-index: 2;
         width: 100%;
         height: 100%;
-       padding: 20px;
+        padding: 20px;
         border: none;
         resize: none;
         outline: none;
         overflow: auto;
+        background-color: $tr;
       }
     }
 
@@ -332,6 +336,7 @@
         width: 100%;
         height: 100%;
         padding: 20px;
+        overflow: auto;
         z-index: 1;
       }
     }

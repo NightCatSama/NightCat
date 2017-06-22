@@ -15,6 +15,11 @@ let userSchema = new Schema({
 	email: {
 		type: String
 	},
+	// 是否订阅消息回复
+	subscribe: {
+		type: Boolean,
+		default: false
+	},
 	// 签名描述
 	profile: {
 		type: String,

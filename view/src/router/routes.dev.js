@@ -2,8 +2,8 @@ import Page from '@/views/fe/index'
 import Home from '@/views/fe/home'
 import ArticleList from '@/views/fe/articleList'
 import Article from '@/views/fe/article'
-import Search from '@/views/fe/search'
 import Links from '@/views/fe/links'
+import About from '@/views/fe/about'
 import User from '@/views/fe/user'
 
 import SetPassword from '@/views/common/setPassword'
@@ -55,13 +55,13 @@ export default [{
     name: 'Article',
     component: Article
   }, {
-    path: 'search',
-    name: 'Search',
-    component: Search
-  }, {
     path: 'links',
     name: 'Links',
     component: Links
+  }, {
+    path: 'about',
+    name: 'About',
+    component: About
   }, {
     path: 'user',
     name: 'User',

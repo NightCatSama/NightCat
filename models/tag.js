@@ -8,9 +8,9 @@ let tagSchema = new Schema({
     type: String
   },
   // 该标签下的文章
-  article: [{ 
-    type: Schema.Types.ObjectId, 
-    ref: 'article' 
+  article: [{
+    type: Schema.Types.ObjectId,
+    ref: 'article'
   }]
 })
 
