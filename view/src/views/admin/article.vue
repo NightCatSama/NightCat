@@ -195,6 +195,7 @@
           background-color: $grey3;
           background-repeat: no-repeat;
           background-size: cover;
+          background-position: center;
           transition: all .3s;
         }
 
@@ -250,10 +251,11 @@
     }
 
     .admin-main {
+      display: block;
       overflow: auto;
 
       .markdown-body {
-        margin: 20px;
+        padding: 20px;
         width: 100%;
       }
     }

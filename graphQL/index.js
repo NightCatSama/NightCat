@@ -21,7 +21,7 @@ import replyMutation from './reply/replyMutation.js'
 import LinkQuery from './link/LinkQuery.js'
 import LinkMutation from './link/LinkMutation.js'
 
-const schema = new GraphQLSchema({
+export default new GraphQLSchema({
   query: new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
@@ -74,5 +74,3 @@ const schema = new GraphQLSchema({
     }
   })
 })
-
-export default schema

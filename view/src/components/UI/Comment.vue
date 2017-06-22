@@ -370,9 +370,9 @@
         }
 
         .content {
-          font-size: 14px;
           margin: 10px 0;
           min-height: 60px;
+          white-space: pre-wrap;
         }
 
         .reply-btn {

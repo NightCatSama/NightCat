@@ -29,6 +29,7 @@
         >
           {{ tag.name }}
         </router-link>
+        <small v-if="!tags.length">暂无标签</small>
       </div>
     </article>
 
@@ -108,11 +109,15 @@
       background-size: cover;
       background-position: center;
       background-color: $grey1;
+      box-shadow: $shadow;
     }
 
     article {
-      margin: 80px auto 20px;
-      width: $width;
+      margin: 80px auto;
+      padding: 60px;
+      width: $width + 60px * 2;
+      background-color: $white;
+      box-shadow: $shadow;
 
       .title {
         font-size: 44px;
