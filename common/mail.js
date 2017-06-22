@@ -28,7 +28,6 @@ export const sendMail = async(data, link) => {
 export const sendActiveMail = async(to, link, account) => {
 	let from = config.mail_opts.auth.user
 	let subject = `${config.name}账号激活`
-	console.log(link)
 	let html = `
 	<h1>您好，${account}</h1>
 	<p>我们收到了您在${config.name}的注册信息，请点击下方的链接激活账号</p>
