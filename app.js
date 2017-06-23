@@ -42,24 +42,25 @@ app.use(morgan('dev'))
 app.use(bodyParser.json())
 
 app.use(bodyParser.text({
-	type: 'application/graphql'
+  type: 'application/graphql'
 }))
 
 app.use(bodyParser.urlencoded({
-	extended: true
+  extended: true
 }))
+
 app.use(cookieParser(config.session_secret))
 
 app.use(session({
-	secret: config.session_secret,
-	resave: false,
-	saveUninitialized: false,
-	store: new MongoStore({
-		url: `mongodb://${process.env.NODE_ENV === 'production' ? `${config.database.username}:${config.database.password}@` : ''}${config.db_host}:${config.db_port}/${config.db}`,
-	}),
-	cookie: {
-		maxAge: 30 * 24 * 60 * 60 * 1000
-	}
+  secret: config.session_secret,
+  resave: false,
+  saveUninitialized: false,
+  store: new MongoStore({
+    url: `mongodb://${process.env.NODE_ENV === 'production' ? `${config.database.username}:${config.database.password}@` : ''}${config.db_host}:${config.db_port}/${config.db}`,
+  }),
+  cookie: {
+    maxAge: 30 * 24 * 60 * 60 * 1000
+  }
 }))
 
 /* front end */
@@ -69,33 +70,33 @@ app.use('/', router)
 
 /* graphQL */
 app.post('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
-	schema: schema,
-	pretty: true,
-	rootValue: await getRootValue(request),
-	graphql: true,
-	formatError: (error) => ({
-	  name: error.path,
-	  message: error.message,
-	  locations: error.locations
-	})
+  schema: schema,
+  pretty: true,
+  rootValue: await getRootValue(request),
+  graphql: true,
+  formatError: (error) => ({
+    name: error.path,
+    message: error.message,
+    locations: error.locations
+  })
 })))
 
 // error handler
 if (config.debug) {
-	app.use(errorhandler())
+  app.use(errorhandler())
 }
 else {
-	app.use(function(err, req, res, next) {
-		logger.error(err)
-		return res.status(500).json({
-			success: false,
-			message: err
-		})
-	})
+  app.use(function(err, req, res, next) {
+    logger.error(err)
+    return res.status(500).json({
+      success: false,
+      message: err
+    })
+  })
 }
 
 const server = app.listen(config.port, function() {
-	console.log(`The server is already started, Listen on port ${config.port}!`)
+  console.log(`The server is already started, Listen on port ${config.port}!`)
 })
 
 socket(server)

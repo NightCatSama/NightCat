@@ -7,10 +7,10 @@ import Reply from './reply'
 import Link from './link'
 
 export {
-	User,
-	Game,
-	Article,
-	Tag,
+  User,
+  Game,
+  Article,
+  Tag,
   Comment,
   Reply,
   Link

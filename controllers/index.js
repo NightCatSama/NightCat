@@ -3,7 +3,7 @@ import github from './github'
 import email from './email'
 
 export default {
-	site,
-	github,
+  site,
+  github,
   email
 }

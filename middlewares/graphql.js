@@ -1,7 +1,7 @@
 import { User } from '../proxy'
 
-/*  GraphQl 身份  */
-const getRootValue = async(req) => {
+/*  设置 GraphQl rootValue  */
+export const getRootValue = async(req) => {
   let access_token = req.session.token
   let root = {}
 
@@ -10,8 +10,4 @@ const getRootValue = async(req) => {
   }
 
   return root
-}
-
-export {
-  getRootValue
 }

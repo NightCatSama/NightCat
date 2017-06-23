@@ -120,7 +120,7 @@
       box-shadow: $shadow;
 
       .title {
-        font-size: 44px;
+        font-size: 32px;
         margin-bottom: 20px;
       }
 

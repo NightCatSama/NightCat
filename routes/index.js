@@ -10,10 +10,10 @@ const { sendSignupEmail, activeEmail } = ctr.email
 const { site } = ctr.site
 
 router
-	.use(allowCrossDomain)
-	.get('/github', signinByGithub) // 账号激活
+  .use(allowCrossDomain)
+  .get('/github', signinByGithub) // 账号激活
   .post('/sendSignupEmail', sendSignupEmail) // 发送注册邮件
   .post('/activeEmail', activeEmail) // 通过 email 注册
-	.get('*', site) //  跳转页面
+  .get('*', site) //  跳转页面
 
 export default router
