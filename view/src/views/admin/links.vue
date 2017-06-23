@@ -171,7 +171,7 @@
     }
 
     .admin-main {
-      display: block;
+      display: block!important;
     }
 
     .link-item {
