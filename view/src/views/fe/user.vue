@@ -75,8 +75,11 @@
         return this.$route.params.account || ''
       },
       isSelf () {
-        return this.account ? this.account === this.user.account : true
+        return this.user ? this.account ? this.account === this.user.account : true : false
       }
+    },
+    watch: {
+      '$route': 'getUser'
     },
     methods: {
       getUser () {

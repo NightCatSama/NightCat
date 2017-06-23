@@ -79,6 +79,7 @@
       position: fixed;
       top: 20px;
       left: 20px;
+      font-size: 14px;
       cursor: pointer;
       padding: 5px 12px;
       border-radius: 20px;
