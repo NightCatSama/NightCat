@@ -18,6 +18,7 @@ let commentSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'user'
   },
+  // 回复者
   reply: [{
     type: Schema.Types.ObjectId,
     ref: 'reply'

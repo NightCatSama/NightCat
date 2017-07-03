@@ -40,12 +40,8 @@ let UserQuery = {
       }
     },
     resolve: async(root, { account }) => {
-      if (account) {
-        return await User.getUserByAccount(account)
-      }
-      else if (!root.user) {
-        throw Error('请先登录')
-      }
+      if (account) return await User.getUserByAccount(account)
+      else if (!root.user) throw Error('请先登录')
 
       return root.user
     }

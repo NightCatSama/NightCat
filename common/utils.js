@@ -1,3 +1,4 @@
+/*  格式化 Date  */
 export const formatDate = (date, fmt = 'yyyy-MM-dd hh:mm:ss') => {
   let o = {
     "M+": date.getMonth() + 1, //月份
@@ -14,6 +15,7 @@ export const formatDate = (date, fmt = 'yyyy-MM-dd hh:mm:ss') => {
   return fmt;
 }
 
+/*  生成随机密码  */
 export const randomPassword = (count = 6) => {
   let str = ''
 

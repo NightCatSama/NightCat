@@ -24,7 +24,7 @@ export default class Pagination {
     this.args = this.getArgs()
   }
 
-
+  /*  得到 PageInfo 的Type  */
   getPageInfoType () {
     return new GraphQLObjectType({
       name: `${this._name}PageInfo`,
@@ -51,6 +51,7 @@ export default class Pagination {
   }
 
 
+  /*  得到 Edges 的Type  */
   getEdgesType () {
     return new GraphQLList(new GraphQLObjectType({
       name: `${this._name}Edges`,
@@ -69,6 +70,7 @@ export default class Pagination {
   }
 
 
+  /*  All Type  */
   getType () {
     return new GraphQLObjectType({
       name: `${this._name}`,
@@ -88,6 +90,7 @@ export default class Pagination {
   }
 
 
+  /*  可传参数  */
   getArgs () {
     return {
       first: {
@@ -114,6 +117,7 @@ export default class Pagination {
   }
 
 
+  /*  处理返回数据  */
   async resolve (node, { first, last, before, after, offset = 0 }) {
     const len = node.length
     const beforeOffset = this.getOffset(before, len)

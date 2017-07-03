@@ -81,6 +81,7 @@ export default {
       })
     }
 
+    // 账号存在时，则为邮箱激活，否则为邮箱注册
     if (account) {
       user = await User.getUserByAccount(account)
 

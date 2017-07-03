@@ -7,11 +7,6 @@ export const getUsers = async() => {
   return await user.find({}).sort({ 'superAdmin': -1 }).sort({ 'admin': -1 })
 }
 
- /*  获取完整的用户列表  */
-export const getQueryUsers = async() => {
-  return await user.find().skip().limit()
-}
-
  /*  根据账号查找用户  */
 export const getUserByAccount = async(account) => {
   return await user.findOne({ account })
