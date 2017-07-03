@@ -6,10 +6,7 @@ import opn from 'opn'
 
 let transporter = mailer.createTransport(smtpTransport(config.mail_opts))
 
-/**
- * Send an email
- * @param {Object} data 邮件对象
- */
+/*  发送邮件  */
 export const sendMail = async(data, link) => {
   let success = false
   await transporter.sendMail(data)
@@ -43,7 +40,7 @@ export const sendActiveMail = async(to, link, account) => {
   }, link)
 }
 
-// 发送消息通知邮件
+/*  发送消息通知邮件  */
 export const sendEmailNotification = async(to, article_id, account, floor) => {
   if (config.debug) {
     return false

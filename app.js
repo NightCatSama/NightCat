@@ -22,6 +22,7 @@ import { getRootValue } from './middlewares/graphql'
 import schema from './graphQL'
 
 const app = express()
+const relative = (_path) => path.relative(__dirname, _path)
 
 /*  使用 Helmet  */
 app.use(helmet())
@@ -29,28 +30,24 @@ app.use(helmet())
 /*  开启Gzip压缩  */
 app.use(compression())
 
-const MongoStore = connect(session)
-
-const relative = (_path) => path.relative(__dirname, _path)
-
- /*  静态文件路径  */
+/*  静态文件路径  */
 app.set('frone_views', relative('./view/dist/'))
 
+/*  网站图标  */
 app.use(favicon(relative('favicon.ico')))
 
+/*  打印请求日志  */
 app.use(morgan('dev'))
+
+/*  请求解析中间件  */
 app.use(bodyParser.json())
+app.use(bodyParser.text({ type: 'application/graphql' }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
-app.use(bodyParser.text({
-  type: 'application/graphql'
-}))
-
-app.use(bodyParser.urlencoded({
-  extended: true
-}))
-
+/*  cookie 解析中间件  */
 app.use(cookieParser(config.session_secret))
 
+const MongoStore = connect(session)
 app.use(session({
   secret: config.session_secret,
   resave: false,
@@ -63,12 +60,12 @@ app.use(session({
   }
 }))
 
-/* front end */
+/*  前端代码  */
 app.use(express.static(app.get('frone_views')))
 app.use('/admin', admin_router)
 app.use('/', router)
 
-/* graphQL */
+/*  graphQL  */
 app.post('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
   schema: schema,
   pretty: true,
@@ -81,7 +78,7 @@ app.post('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
   })
 })))
 
-// error handler
+/*  Error Handle  */
 if (config.debug) {
   app.use(errorhandler())
 }
@@ -99,4 +96,5 @@ const server = app.listen(config.port, function() {
   console.log(`The server is already started, Listen on port ${config.port}!`)
 })
 
-socket(server)
+/*  socket (暂时没用上)  */
+// socket(server)

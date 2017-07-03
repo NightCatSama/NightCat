@@ -1,6 +1,5 @@
 import { User } from '../proxy'
 import { updateToken } from '../common/sign'
-import uuid from 'uuid'
 import axios from 'axios'
 import config from '../config'
 import { randomPassword } from '../common/utils'

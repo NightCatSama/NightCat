@@ -1,6 +1,4 @@
 import { User } from '../proxy'
-import uuid from 'uuid'
-import axios from 'axios'
 import md5 from 'md5'
 import validator from 'validator'
 import config from '../config'
