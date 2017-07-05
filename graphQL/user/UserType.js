@@ -57,7 +57,7 @@ let UserType = new GraphQLObjectType({
     },
     created_at: {
       type: GraphQLString,
-      description: '回复时间',
+      description: '注册时间',
       resolve: (root) => formatDate(root.created_at)
     }
   })

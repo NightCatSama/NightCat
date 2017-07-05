@@ -5,6 +5,7 @@ import config from '../config'
 import { randomPassword } from '../common/utils'
 
 export default {
+  /*  通过 Github 第三方登录  */
   signinByGithub: async(req, res, next) => {
     let { code, state } = req.query
     let { clientId, clientSecret } = config.github

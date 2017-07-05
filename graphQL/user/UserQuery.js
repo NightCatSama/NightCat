@@ -1,4 +1,3 @@
-// GraphQL
 import {
   GraphQLString,
   GraphQLInt,

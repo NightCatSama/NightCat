@@ -7,7 +7,7 @@ import { randomPassword } from '../common/utils'
 import { updateToken, returnUserData } from '../common/sign'
 
 export default {
-  // 发送注册邮件
+  /*  发送注册邮件  */
   sendSignupEmail: async(req, res, next) => {
     let { email } = req.body
     let account = ''
@@ -66,7 +66,7 @@ export default {
   },
 
 
-  // 激活邮箱
+  /*  激活邮箱  */
   activeEmail: async(req, res, next) => {
     let { key, email, account } = req.body
     let md5Key, user

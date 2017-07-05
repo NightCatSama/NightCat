@@ -1,9 +1,8 @@
-import { signinRequire } from '../middlewares/auth'
 import { allowCrossDomain } from '../middlewares/response'
-import { setStaticOnFront } from '../middlewares/request'
 import ctr from '../controllers'
 import express from 'express'
 import path from 'path'
+
 let router = express.Router()
 const { signinByGithub } = ctr.github
 const { sendSignupEmail, activeEmail } = ctr.email
