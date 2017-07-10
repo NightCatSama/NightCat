@@ -158,7 +158,7 @@
     methods: {
       getArticle () {
         return this.$graphql.query(`
-          comments ($article_id, $first, $after, $offset) {
+          comments ($article_id, $last, $after, $offset) {
             totalCount
             edges {
               node {
@@ -173,7 +173,7 @@
           }
         `, {
           article_id: this.id,
-          first: this.oneFloor ? 1 : 10,
+          last: this.oneFloor ? 1 : 10,
           offset: this.offset || 0,
           after: this.comment_cursor
         }, ['comment'])

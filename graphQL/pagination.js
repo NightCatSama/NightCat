@@ -139,7 +139,8 @@ export default class Pagination {
       endOffset = Math.min(
         startOffset + first,
         endOffset
-      )
+      ) + offset
+      startOffset += offset
     }
 
     if (typeof last === 'number') {
@@ -148,12 +149,13 @@ export default class Pagination {
       startOffset = Math.max(
         startOffset,
         endOffset - last
-      )
+      ) - offset
+      endOffset -= offset
     }
 
     let range = [
-      Math.max(startOffset + offset, 0),
-      Math.min(endOffset + offset, len)
+      Math.max(startOffset, 0),
+      Math.min(endOffset, len)
     ]
 
     const slice = node.slice(...range)
