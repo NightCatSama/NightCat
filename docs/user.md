@@ -1,6 +1,6 @@
 # Fragment
 
-```
+```graphql
 user_fragment {
   _id: <ObjectId> 用户 id
   account: <String> 账号
@@ -34,7 +34,7 @@ pageInfo_fragment {
 
 ### Arguments
 
-```
+```graphql
 first: {
   type: GraphQLInt,
   description: '从列表前面获取的个数'
@@ -59,7 +59,7 @@ offset: {
 
 ### Response
 
-```
+```graphql
 {
   totalCount,
   pageInfo {
@@ -81,7 +81,7 @@ offset: {
 
 ### Arguments
 
-```
+```graphql
 account: {
   type: GraphQLString,
   description: '账号'
@@ -90,7 +90,7 @@ account: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -105,7 +105,7 @@ account: {
 
 ### Arguments
 
-```
+```graphql
 account: {
   type: new GraphQLNonNull(GraphQLString),
   description: '账号'
@@ -118,7 +118,7 @@ password: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -130,7 +130,7 @@ password: {
 
 ### Arguments
 
-```
+```graphql
 email: {
   type: new GraphQLNonNull(GraphQLString),
   description: '邮箱'
@@ -143,7 +143,7 @@ password: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -155,7 +155,7 @@ password: {
 
 ### Arguments
 
-```
+```graphql
 account: {
   type: new GraphQLNonNull(GraphQLString),
   description: '账号'
@@ -172,7 +172,7 @@ repassword: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -184,7 +184,7 @@ repassword: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -196,7 +196,7 @@ repassword: {
 
 ### Arguments
 
-```
+```graphql
 account: {
   type: new GraphQLNonNull(GraphQLString),
   description: '账号'
@@ -205,7 +205,7 @@ account: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -217,7 +217,7 @@ account: {
 
 ### Arguments
 
-```
+```graphql
 password: {
   type: new GraphQLNonNull(GraphQLString),
   description: '新密码'
@@ -226,7 +226,7 @@ password: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -238,7 +238,7 @@ password: {
 
 ### Arguments
 
-```
+```graphql
 account: {
   type: new GraphQLNonNull(GraphQLString),
   description: '账号'
@@ -247,7 +247,7 @@ account: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -259,7 +259,7 @@ account: {
 
 ### Arguments
 
-```
+```graphql
 avatar: {
   type: GraphQLString,
   description: '头像'
@@ -284,7 +284,7 @@ location: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -296,7 +296,7 @@ location: {
 
 ### Arguments
 
-```
+```graphql
 subscribe: {
   type: GraphQLBoolean,
   description: '是否订阅消息邮件'
@@ -305,7 +305,7 @@ subscribe: {
 
 ### Response
 
-```
+```graphql
 {
   ...user_fragment
 }
@@ -319,7 +319,7 @@ subscribe: {
 
 ### Params
 
-```
+```graphql
 {
   email: <String> 注册邮箱
 }
@@ -331,7 +331,7 @@ subscribe: {
 
 ### Params
 
-```
+```graphql
 {
   key: <String> 加密后字符串
   email: <String> 注册邮箱

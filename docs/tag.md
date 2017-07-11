@@ -1,6 +1,6 @@
 # Fragment
 
-```
+```graphql
 tag_fragment {
   _id: <ObjectId> 标签id
   name: <String> 标签名字
@@ -55,7 +55,7 @@ pageInfo_fragment {
 
 ### Response
 
-```
+```graphql
 {
   ...tag_fragment
 }
@@ -67,7 +67,7 @@ pageInfo_fragment {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: new GraphQLNonNull(GraphQLString),
   descriptions: '标签id'
@@ -100,7 +100,7 @@ offset: {
 
 ### Response
 
-```
+```graphql
 {
   totalCount,
   pageInfo {
@@ -121,7 +121,7 @@ offset: {
 
 ### Arguments
 
-```
+```graphql
 name: {
   type: new GraphQLNonNull(GraphQLString),
   descriptions: '标签名字'
@@ -154,7 +154,7 @@ offset: {
 
 ### Response
 
-```
+```graphql
 {
   totalCount,
   pageInfo {
@@ -177,7 +177,7 @@ offset: {
 
 ### Arguments
 
-```
+```graphql
 name: {
   type: GraphQLString,
   description: '标签名字'
@@ -186,7 +186,7 @@ name: {
 
 ### Response
 
-```
+```graphql
 {
   ...tag_fragment
 }
@@ -198,7 +198,7 @@ name: {
 
 ### Arguments
 
-```
+```graphql
 name: {
   type: GraphQLString,
   description: '标签名字'
@@ -207,7 +207,7 @@ name: {
 
 ### Response
 
-```
+```graphql
 {
   ...tag_fragment
 }
@@ -219,7 +219,7 @@ name: {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: GraphQLID,
   description: 'id'
@@ -232,7 +232,7 @@ name: {
 
 ### Response
 
-```
+```graphql
 {
   ...tag_fragment
 }

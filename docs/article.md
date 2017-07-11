@@ -1,6 +1,6 @@
 # Fragment
 
-```
+```graphql
 article_fragment {
   _id: <ObjectId> 文章id
   title: <String> 文章标题
@@ -55,7 +55,7 @@ pageInfo_fragment {
 
 ### Arguments
 
-```
+```graphql
 release: {
   type: GraphQLBoolean,
   descriptions: '是否发布过的文章'
@@ -84,7 +84,7 @@ offset: {
 
 ### Response
 
-```
+```graphql
 {
   totalCount,
   pageInfo {
@@ -105,7 +105,7 @@ offset: {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: GraphQLID,
   descriptions: '文章 ID'
@@ -114,7 +114,7 @@ id: {
 
 ### Response
 
-```
+```graphql
 {
   ...article_fragment
 }
@@ -128,7 +128,7 @@ id: {
 
 ### Arguments
 
-```
+```graphql
 title: {
   type: new GraphQLNonNull(GraphQLString),
   description: '文章标题'
@@ -149,7 +149,7 @@ tags: {
 
 ### Response
 
-```
+```graphql
 {
   ...article_fragment
 }
@@ -161,7 +161,7 @@ tags: {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: new GraphQLNonNull(GraphQLString),
   description: '文章id'
@@ -170,7 +170,7 @@ id: {
 
 ### Response
 
-```
+```graphql
 {
   ...article_fragment
 }
@@ -182,7 +182,7 @@ id: {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: new GraphQLNonNull(GraphQLString),
   description: '文章id'
@@ -191,7 +191,7 @@ id: {
 
 ### Response
 
-```
+```graphql
 {
   ...article_fragment
 }
@@ -203,7 +203,7 @@ id: {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: new GraphQLNonNull(GraphQLString),
   description: '文章id'
@@ -228,7 +228,7 @@ tags: {
 
 ### Response
 
-```
+```graphql
 {
   ...article_fragment
 }

@@ -1,6 +1,6 @@
 # Fragment
 
-```
+```grqphql
 comment_fragment {
   _id: <ObjectId> id
   article_id: <ObjectId> 文章id
@@ -55,7 +55,7 @@ pageInfo_fragment {
 
 ### Arguments
 
-```
+```grqphql
 article_id: {
   type: GraphQLID,
   description: '文章 id'
@@ -84,7 +84,7 @@ offset: {
 
 ### Response
 
-```
+```grqphql
 {
   totalCount,
   pageInfo {
@@ -105,7 +105,7 @@ offset: {
 
 ### Arguments
 
-```
+```grqphql
 type: {
   type: GraphQLString,
   description: '类型名称'
@@ -134,7 +134,7 @@ offset: {
 
 ### Response
 
-```
+```grqphql
 {
   totalCount,
   pageInfo {
@@ -158,7 +158,7 @@ offset: {
 
 ### Arguments
 
-```
+```grqphql
 article_id: {
   type: GraphQLID,
   description: '文章id'
@@ -171,7 +171,7 @@ content: {
 
 ### Response
 
-```
+```grqphql
 {
   ...comment_fragment
 }
@@ -183,7 +183,7 @@ content: {
 
 ### Arguments
 
-```
+```grqphql
 type: {
   type: GraphQLString,
   description: '评论类型'
@@ -196,7 +196,7 @@ content: {
 
 ### Response
 
-```
+```grqphql
 {
   ...comment_fragment
 }

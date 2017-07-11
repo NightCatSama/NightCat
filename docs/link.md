@@ -1,6 +1,6 @@
 # Fragment
 
-```
+```graphql
 link_fragment {
   _id: <ObjectId>  友链 id
   name: <String> 名字
@@ -18,7 +18,7 @@ link_fragment {
 
 ### Response
 
-```
+```graphql
 {
   ...link_fragment
 }
@@ -32,7 +32,7 @@ link_fragment {
 
 ### Arguments
 
-```
+```graphql
 name: {
   type: GraphQLString,
   description: '名字'
@@ -53,7 +53,7 @@ link: {
 
 ### Response
 
-```
+```graphql
 {
   ...link_fragment
 }
@@ -65,7 +65,7 @@ link: {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: GraphQLID,
   description: 'id'
@@ -74,7 +74,7 @@ id: {
 
 ### Response
 
-```
+```graphql
 {
   ...link_fragment
 }
@@ -86,7 +86,7 @@ id: {
 
 ### Arguments
 
-```
+```graphql
 id: {
   type: GraphQLID,
   description: 'id'
@@ -111,7 +111,7 @@ link: {
 
 ### Response
 
-```
+```graphql
 {
   ...link_fragment
 }

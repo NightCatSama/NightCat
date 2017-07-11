@@ -1,6 +1,6 @@
 # Fragment
 
-```
+```graphql
 comment_fragment {
   _id: <ObjectId> id
   article_id: <ObjectId> 文章id
@@ -48,7 +48,7 @@ user_fragment {
 
 ### Arguments
 
-```
+```graphql
 comment_id: {
   type: GraphQLID,
   description: '评论id'
@@ -65,7 +65,7 @@ content: {
 
 ### Response
 
-```
+```graphql
 {
   ...reply_fragment
 }
