@@ -1,17 +1,6 @@
 # Fragment
 
 ```graphql
-comment_fragment {
-  _id: <ObjectId> id
-  article_id: <ObjectId> 文章id
-  user: <Object> 评论人 {user_fragment}
-  content: <String> 评论内容,
-  created_at: <String> 评论时间
-  reply: <Array> 回复数据 {reply_fragment}
-  floor: <Int> 楼层数
-  view: <String> 解析后的评论内容
-}
-
 reply_fragment {
   _id: <ObjectId> id
   comment_id: <ObjectId> 评论id
