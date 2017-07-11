@@ -45,7 +45,7 @@ let UserMutation = {
     args: {
       email: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '账号'
+        description: '邮箱'
       },
       password: {
         type: new GraphQLNonNull(GraphQLString),

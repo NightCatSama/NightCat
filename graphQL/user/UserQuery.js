@@ -35,7 +35,8 @@ let UserQuery = {
     descriptions: '获得单个用户的数据，查询条件为空时则获取自己的数据',
     args: {
       account: {
-        type: GraphQLString
+        type: GraphQLString,
+        description: '账号'
       }
     },
     resolve: async(root, { account }) => {

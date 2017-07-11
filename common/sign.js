@@ -15,15 +15,7 @@ export const signToken = (payload) => {
 
 /*  jwt验证  */
 export const verifyToken = (token) => {
-  return new Promise((res, rej) => {
-    try {
-      let decoded = jwt.verify(token, config.session_secret)
-      res(decoded)
-    }
-    catch (err) {
-      rej(err)
-    }
-  })
+  return jwt.verify(token, config.session_secret)
 }
 
 /*  返回用户信息  */

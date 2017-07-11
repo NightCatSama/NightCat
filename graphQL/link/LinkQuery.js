@@ -14,7 +14,7 @@ import { Link } from '../../proxy'
 let LinkQuery = {
   links: {
     type: new GraphQLList(LinkType),
-    descriptions: '所有友联',
+    descriptions: '所有友链',
     resolve: async(root, args) => {
       return await Link.getLinks()
     }

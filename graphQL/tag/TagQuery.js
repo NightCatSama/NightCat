@@ -35,7 +35,7 @@ let TagQuery = {
     args: {
       id: {
         type: new GraphQLNonNull(GraphQLString),
-        descriptions: '标签名字'
+        descriptions: '标签id'
       },
       release: {
         type: GraphQLBoolean,

@@ -14,7 +14,7 @@ import { Link } from '../../proxy'
 let LinkMutation = {
   addLink: {
     type: new GraphQLList(LinkType),
-    description: '添加友联',
+    description: '添加友链',
     args: {
       name: {
         type: GraphQLString,
@@ -51,7 +51,7 @@ let LinkMutation = {
 
   updateLink: {
     type: new GraphQLList(LinkType),
-    description: '更新友联',
+    description: '更新友链',
     args: {
       id: {
         type: GraphQLID,
@@ -80,7 +80,7 @@ let LinkMutation = {
 
       let data = await Link.getLinkById(id)
 
-      if (!data) throw Error('未找到该友联')
+      if (!data) throw Error('未找到该友链')
 
       data.name = name
       data.bio = bio
@@ -96,7 +96,7 @@ let LinkMutation = {
 
   removeLink: {
     type: new GraphQLList(LinkType),
-    description: '删除友联',
+    description: '删除友链',
     args: {
       id: {
         type: GraphQLID,
@@ -109,7 +109,7 @@ let LinkMutation = {
 
       let data = await Link.getLinkById(id)
 
-      if (!data) throw Error('未找到该友联')
+      if (!data) throw Error('未找到该友链')
 
       await data.remove()
 

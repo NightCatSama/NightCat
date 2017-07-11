@@ -29,7 +29,8 @@ let CommentQuery = {
     descriptions: '该文章下的评论',
     args: {
       article_id: {
-        type: GraphQLID
+        type: GraphQLID,
+        description: '文章 id'
       },
       ...commentPagination.args
     },
@@ -48,7 +49,8 @@ let CommentQuery = {
     descriptions: '单独类型下的评论',
     args: {
       type: {
-        type: GraphQLString
+        type: GraphQLString,
+        description: '类型名称'
       },
       ...indieCommentPagination.args
     },

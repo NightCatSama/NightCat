@@ -49,7 +49,7 @@ let CommentType = new GraphQLObjectType({
     },
     view: {
       type: GraphQLString,
-      description: '解析后的内容'
+      description: '解析后的评论内容'
     }
   })
 })
