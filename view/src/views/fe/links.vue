@@ -52,8 +52,14 @@
     flex-direction: column;
 
     .links-main {
-      width: 800px;
+      width: 1200px;
       margin: 200px 0;
+
+      @include max-screen(1400px) {
+        & {
+          width: 800px;
+        }
+      }
 
       .title {
         margin-bottom: 20px;

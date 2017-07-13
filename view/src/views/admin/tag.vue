@@ -28,7 +28,7 @@
         <div class="article-wrap">
           <h1>该标签下的文章</h1>
           <div class="tag-group">
-            <a v-for="(article, i) in articles" :key="i" :href="`/article/${article._id}`" target="_blank">
+            <a v-for="(article, i) in articles" :class="['article-link', { release: article.release }]" :key="i" :href="`/article/${article._id}`" target="_blank">
               # {{ article.title }} ({{ article.release ? '已发布' : '未发布'}})
             </a>
           </div>
@@ -203,6 +203,15 @@
 
       h1 {
         margin-bottom: 10px;
+      }
+
+      .article-link {
+        display: block;
+        margin-bottom: 10px;
+
+        &.release {
+          color: $green;
+        }
       }
     }
 

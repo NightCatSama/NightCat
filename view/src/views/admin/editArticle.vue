@@ -37,7 +37,7 @@
         </div>
         <!--展示区域-->
         <div class="display-area" data-area="Display">
-          <div class="markdown-body" v-html="view"></div>
+          <div ref="view" class="markdown-body" v-html="view"></div>
         </div>
       </div>
     </div>
@@ -91,7 +91,12 @@
         this.timer = setTimeout(() => {
           this.setDraft()
           this.view = md.render(this.content)
-        }, 300)
+          this.$nextTick(() => this.syncScrollTop())
+        }, 200)
+      },
+      syncScrollTop () {
+        let { scrollTop, scrollHeight, clientHeight } = this.$refs.edit
+        this.$refs.view.scrollTop = ((scrollTop + clientHeight) / scrollHeight) * this.$refs.view.scrollHeight - clientHeight
       },
       editArticle () {
         if (!this.title) return this.$toast('标题不能为空', 'warning')
