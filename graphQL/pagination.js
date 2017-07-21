@@ -28,7 +28,6 @@ export default class Pagination {
   getPageInfoType () {
     return new GraphQLObjectType({
       name: `${this._name}PageInfo`,
-      descriptions: '保存分页相关数据的对象',
       fields: () => ({
         startCursor: {
           type: GraphQLString,
@@ -55,7 +54,6 @@ export default class Pagination {
   getEdgesType () {
     return new GraphQLList(new GraphQLObjectType({
       name: `${this._name}Edges`,
-      descriptions: 'Edges',
       fields: () => ({
         node: {
           type: this._type,
@@ -77,13 +75,16 @@ export default class Pagination {
       description: '包装后的类型',
       fields: () => ({
         totalCount: {
-          type: GraphQLInt
+          type: GraphQLInt,
+          descriptions: '总页数'
         },
         pageInfo: {
-          type: this.getPageInfoType()
+          type: this.getPageInfoType(),
+          descriptions: '保存分页相关数据的对象'
         },
         edges: {
-          type: this.getEdgesType()
+          type: this.getEdgesType(),
+          descriptions: '保存数据的数组'
         }
       })
     })

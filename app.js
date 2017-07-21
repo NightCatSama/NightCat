@@ -17,7 +17,8 @@ import router from './routes'
 import admin_router from './routes/admin'
 
 import socket from './socket'
-import { graphql } from 'graphql'
+import { graphql, buildSchema } from 'graphql'
+import graphqlMan from './graphql-man'
 import { getRootValue } from './middlewares/graphql'
 import schema from './graphQL'
 
@@ -59,6 +60,13 @@ app.use(session({
     maxAge: 30 * 24 * 60 * 60 * 1000
   }
 }))
+
+app.use('/api', graphqlMan(schema))
+// app.use('/api', graphqlMan(buildSchema(`
+//   type Query {
+//     hello: String
+//   }
+// `)))
 
 /*  前端代码  */
 app.use(express.static(app.get('frone_views')))
