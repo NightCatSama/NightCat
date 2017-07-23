@@ -40,7 +40,8 @@ const graphqlMan = (schema, options = {}) => {
 
   return (req, res, next) => {
     res.header('Content-Type', 'text/html; charset=utf-8')
-    var compiledFunction = pug.compileFile(path.resolve(__dirname, './lib/index.pug'))
+    var compiledFunction = pug.compileFile(path.resolve(__dirname, './view/index.pug'))
+    console.log(Query)
     res.end(compiledFunction({
       title: options.title,
       name: 'nightcat',

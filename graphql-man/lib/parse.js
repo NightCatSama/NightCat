@@ -28,7 +28,6 @@ function parseSchema (schema) {
  * @return {Object} Query|Mutation
  */
 function parseType (schemaType, rootType = []) {
-  const { schemaName, description } = schemaType
   const fields = Array.from(Object.keys(schemaType._fields), (name) => {
     let obj = schemaType._fields[name]
     let Type = obj.type.constructor.name === 'GraphQLList' ? obj.type.ofType : obj.type
@@ -52,8 +51,8 @@ function parseType (schemaType, rootType = []) {
   })
 
   return {
-    schemaName,
-    description,
+    name: schemaType.name,
+    description: schemaType.description,
     fields
   }
 }

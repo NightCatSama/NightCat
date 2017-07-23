@@ -1,0 +1,11 @@
+extend layout.pug
+
+block content
+  div.container
+    div.doc-tree
+      p #{query.name}
+
+block main
+  script.
+    let query = JSON.stringify(#{query})
+    console.log(query)

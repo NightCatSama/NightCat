@@ -11,3 +11,7 @@
   color: #fff;
   font-size: 24px;
 }
+
+p {
+  white-space: pre-line;
+}
