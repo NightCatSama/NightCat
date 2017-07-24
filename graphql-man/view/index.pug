@@ -2,10 +2,18 @@ extend layout.pug
 
 block content
   div.container
-    div.doc-tree
-      p #{query.name}
+    div.left-slide(style="display: none;")
+      ul
+        each item in query.fields
+          li
+            div #{item.name}
+            div #{item.descriptions}
+
+    div.main
+      textarea#edit(name="edit", cols="30", rows="10")
+
+  footer footer
 
 block main
   script.
-    let query = JSON.stringify(#{query})
-    console.log(query)
+    //- console.log(locals)
