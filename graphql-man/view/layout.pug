@@ -3,13 +3,20 @@ doctype html
 html
   head
     title #{title}
+    link(rel="stylesheet", href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css")
     style
       include style.css
-    block script
+    block style
+    block common-script
       script(src="//unpkg.com/axios/dist/axios.min.js")
+      script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js")
   body
     block header
       header.header #{title}
+
     block content
 
-    block main
+    block footer
+      footer · Powered by Graphql-Man ·
+
+    block script

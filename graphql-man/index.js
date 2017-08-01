@@ -13,7 +13,7 @@ import { parseSchema } from './lib/parse'
  */
 
 const DEFAULT_OPTIONS = {
-  title: 'graphql-man',
+  title: 'GraphQL-Man',
   rules: ['all', 'query', 'mutation']
 }
 

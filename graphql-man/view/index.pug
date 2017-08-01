@@ -1,19 +1,65 @@
 extend layout.pug
 
 block content
+  span#data(style="display: none", data-query=`${JSON.stringify(query)}`, data-mutation=`${JSON.stringify(mutation)}`)
   div.container
-    div.left-slide(style="display: none;")
-      ul
-        each item in query.fields
-          li
-            div #{item.name}
-            div #{item.descriptions}
-
     div.main
-      textarea#edit(name="edit", cols="30", rows="10")
+      //- 接口列表
+      div.field-list
+        //- 定义列表的 mixin
+        mixin fields(name, list)
+          div.fields
+            h2.title
+              |#{name.slice(0, 1).toLocaleUpperCase() + name.slice(1)}
+              span #{list.name}
+            each item, index in list.fields
+              div.field-item
+                a(href=`#${item.name}`, onclick=`checkItem('${name}', '${index}')`) #{item.name}
+                div.description #{item.descriptions}
 
-  footer footer
+        +fields('query', query)
+        +fields('mutation', mutation)
 
-block main
+      //- 内容区
+      div.content
+        div.edit-content.js(contenteditable="true")
+        div.display-content
+        div.fetch-btn(role="button")
+
+block script
+  script
+    include parse.js
   script.
-    //- console.log(locals)
+    var data_elem = document.getElementById('data')
+    var query = JSON.parse(data_elem.getAttribute('data-query'))
+    var mutation = JSON.parse(data_elem.getAttribute('data-mutation'))
+    data_elem.parentElement.removeChild(data_elem)
+
+    function checkItem (type, index) {
+      var editContent = document.querySelector('.edit-content')
+
+      editContent.innerHTML = parseGraphqlObject(window[type].fields[index], type)
+      hljs.highlightBlock(editContent)
+    }
+
+block style
+  style.
+    .container { flex: 1; display: flex; }
+    .main { display: flex; width: 100%; }
+
+    .field-list { width: 300px; padding: 10px 20px; background-color: #fff; border-right: 1px solid #ddd; overflow-y: auto; flex-shrink: 0; }
+    .field-list .fields { margin-bottom: 20px; }
+    .field-list .title span { font-size: 13px; color: #666; margin-left: 10px; }
+
+    .field-item { padding: 2px 0; }
+    .field-item .description { font-size: 13px; color: #666; }
+
+    .content { position: relative; flex: 1; display: flex; flex-direction: column; background-color: #fefefe; overflow-x: auto; }
+    .edit-content, .display-content { flex: 1; padding: 15px; height: 100%; overflow: auto; }
+    .edit-content { font-size: 14px; border: none; white-space: pre; background-color: #fff; }
+    .edit-content:focus { box-shadow: none; outline: none; }
+    .display-content { background-color: #f3f3f3; }
+
+    .fetch-btn { position: absolute; z-index: 999; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 60px; height: 60px; border-radius: 50%; background: #666; box-shadow: 0 0 5px 1px rgba(0, 0, 0, .36); transition: all .3s; }
+    .fetch-btn:active { box-shadow: 0 0 5px 1px rgba(0, 0, 0, .1); }
+    .fetch-btn::after { content: ''; display: block; width: 0; height: 0; border-left: 24px solid #fff; border-top: 16px solid transparent; border-bottom: 16px solid transparent; border-right: 0px solid transparent; position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); margin-left: 4px; }
