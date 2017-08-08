@@ -25,7 +25,7 @@ let ArticleQuery = {
     args: {
       release: {
         type: GraphQLBoolean,
-        descriptions: '是否发布过的文章'
+        description: '是否发布过的文章'
       },
       ...articlePagination.args
     },

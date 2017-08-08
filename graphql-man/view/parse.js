@@ -1,12 +1,23 @@
+'use strict'
+
 ;(function (w, d, undefined) {
+
   function parseGraphqlObject (obj, type) {
     console.log(obj)
     var topAnnotation = `
-${type}${obj.arg.map((arg) => `${arg.name}: ${arg.type}`)} {
-
+${type} {
+  ${obj}
 }
     `
     return topAnnotation.trim()
   }
-  window['parseGraphqlObject'] = parseGraphqlObject
+
+  function getQuery (obj) {
+    return `
+
+`
+  }
+
+  w['parseGraphqlObject'] = parseGraphqlObject
+
 })(window, document)

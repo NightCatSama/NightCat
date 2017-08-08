@@ -61,7 +61,7 @@ app.use(session({
   }
 }))
 
-app.use('/api', graphqlMan(schema))
+app.use('/api/:type?/:name?', graphqlMan(schema))
 // app.use('/api', graphqlMan(buildSchema(`
 //   type Query {
 //     hello: String

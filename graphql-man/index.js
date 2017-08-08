@@ -41,10 +41,24 @@ const graphqlMan = (schema, options = {}) => {
   return (req, res, next) => {
     res.header('Content-Type', 'text/html; charset=utf-8')
     var compiledFunction = pug.compileFile(path.resolve(__dirname, './view/index.pug'))
-    console.log(Query)
+
+    let { type, name } = req.params
+    let data
+
+    if (name) {
+      let arr = type === 'query' ? Query.fields : Mutation.fields
+      arr.map(item => {
+        if (item.name === name) {
+          data = item
+        }
+      })
+    }
+
     res.end(compiledFunction({
       title: options.title,
-      name: 'nightcat',
+      type,
+      name,
+      data,
       query: Query,
       mutation: Mutation
     }))

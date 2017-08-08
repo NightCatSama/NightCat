@@ -6,7 +6,7 @@ block content
     div.main
       //- 接口列表
       div.field-list
-        //- 定义列表的 mixin
+        //- 定义api列表的 mixin
         mixin fields(name, list)
           div.fields
             h2.title
@@ -14,11 +14,50 @@ block content
               span #{list.name}
             each item, index in list.fields
               div.field-item
-                a(href=`#${item.name}`, onclick=`checkItem('${name}', '${index}')`) #{item.name}
+                a(href=`/api/${name}/${item.name}`) #{item.name}
                 div.description #{item.descriptions}
 
-        +fields('query', query)
-        +fields('mutation', mutation)
+        //- 定义api的 mixin
+        mixin api(name, list, collapse)
+          div.fields
+            div.title(class=collapse ? "trigger" : "" onclick="openCollapse(event)")
+              |#{name}
+            div.description #{list.descriptions}
+
+            section(class=collapse ? "collapse" : "")
+              if list.args.length
+                h3.sub-title Args
+                each item, index in list.args
+                  div.field-item
+                    div
+                      |#{item.name}
+                      span.type &lt;#{item.type}&gt;
+                    div.description #{item.description}
+
+              if list.resolve.fields.length
+                h3.sub-title Resolves
+                each item, index in list.resolve.fields
+                  div.field-item
+                    if item.resolve
+                      +api(item.name, item, true)
+                    else
+                      div
+                        |#{item.name}
+                      div.description #{item.descriptions}
+
+
+        case type
+          when 'query'
+            if data
+              +api(name, data)
+          when 'mutation'
+            if data
+              +api(name, data)
+          default
+            if query
+              +fields('query', query)
+            if mutation
+              +fields('mutation', mutation)
 
       //- 内容区
       div.content
@@ -35,11 +74,18 @@ block script
     var mutation = JSON.parse(data_elem.getAttribute('data-mutation'))
     data_elem.parentElement.removeChild(data_elem)
 
-    function checkItem (type, index) {
-      var editContent = document.querySelector('.edit-content')
+    function openCollapse (e) {
+      let target = e.target
+      if (target.classList.contains('trigger')) {
+        e.target.parentElement.querySelector('.collapse').classList.toggle('open')
+      }
+    }
 
-      editContent.innerHTML = parseGraphqlObject(window[type].fields[index], type)
-      hljs.highlightBlock(editContent)
+    function checkItem (type, index) {
+      //- var editContent = document.querySelector('.edit-content')
+
+      //- editContent.innerHTML = parseGraphqlObject(window[type].fields[index], type)
+      //- hljs.highlightBlock(editContent)
     }
 
 block style
@@ -48,11 +94,17 @@ block style
     .main { display: flex; width: 100%; }
 
     .field-list { width: 300px; padding: 10px 20px; background-color: #fff; border-right: 1px solid #ddd; overflow-y: auto; flex-shrink: 0; }
-    .field-list .fields { margin-bottom: 20px; }
+    .field-list .fields { }
+    .field-list .trigger { color: #488fff; text-decoration: underline; cursor: pointer; }
+    .field-list section { padding-left: 20px; }
+    .field-list section.collapse { display: none; }
+    .field-list section.collapse.open { display: block; }
     .field-list .title span { font-size: 13px; color: #666; margin-left: 10px; }
+    .field-list .type { font-size: 13px; color: #487dff; margin-left: 5px; }
+    .field-list .sub-title { margin-top: 10px; font-size: 18px; }
 
-    .field-item { padding: 2px 0; }
-    .field-item .description { font-size: 13px; color: #666; }
+    .field-item { padding: 5px 0 5px 10px; margin-bottom: 2px; border-bottom: 1px solid #ccc; }
+    .field-item .description { font-size: 12px; color: #999; }
 
     .content { position: relative; flex: 1; display: flex; flex-direction: column; background-color: #fefefe; overflow-x: auto; }
     .edit-content, .display-content { flex: 1; padding: 15px; height: 100%; overflow: auto; }
