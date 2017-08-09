@@ -18,7 +18,8 @@
     - [x] Comment
   - [x] 自动登录
   - [x] Github Oauth
-  - [x] [API](https://github.com/NightCatSama/NightCat/blob/master/docs/user.md)
+  - [x] [Doc](https://github.com/NightCatSama/NightCat/blob/master/docs/user.md)
+  - [x] [API](https://nightcat.win/api)
 - [x] [后台管理系统](https://nightcat.win/admin)
   - [x] 登录/注册
   - [x] 用户管理
