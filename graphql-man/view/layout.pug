@@ -12,7 +12,15 @@ html
       script(src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js")
   body
     block header
-      header.header #{title}
+      header.header
+        h3.left-content #{title}
+        div.right-content
+          if auth
+            |Signed in as
+            span.account  #{auth.account}
+            button.signout-btn(onclick="signout()") Sign out
+          else
+            a.login-btn(href="/login") Sign in
 
     block content
 
@@ -20,3 +28,23 @@ html
       footer · Powered by Graphql-Man ·
 
     block script
+
+    script.
+      function signout () {
+        axios.post('/graphql', `
+          mutation {
+            logout {
+              account
+            }
+          }
+        `, {
+          headers: { 'Content-Type': 'application/graphql' }
+        })
+        .then((res) => {
+          location.reload()
+        })
+      }
+
+      function gotoLogin () {
+        location.href = '/login'
+      }

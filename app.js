@@ -22,6 +22,8 @@ import graphqlMan from './graphql-man'
 import { getRootValue } from './middlewares/graphql'
 import schema from './graphQL'
 
+import { User } from './proxy'
+
 const app = express()
 const relative = (_path) => path.relative(__dirname, _path)
 
@@ -61,7 +63,16 @@ app.use(session({
   }
 }))
 
-app.use('/api/:type?/:name?', graphqlMan(schema))
+app.use('/api/:type?/:name?', graphqlMan(schema, {
+  auth: async (req, res, next) => {
+    let access_token = req.session.token
+    if (!access_token)
+      return null
+
+    return await User.getUserByAccessToken(access_token)
+  }
+}))
+
 // app.use('/api', graphqlMan(buildSchema(`
 //   type Query {
 //     hello: String

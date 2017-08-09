@@ -13,8 +13,7 @@ import { parseSchema } from './lib/parse'
  */
 
 const DEFAULT_OPTIONS = {
-  title: 'GraphQL-Man',
-  rules: ['all', 'query', 'mutation']
+  title: 'GraphQL-Man'
 }
 
 
@@ -38,7 +37,7 @@ const graphqlMan = (schema, options = {}) => {
   // parse the schema structure
   let { Query, Mutation } = parseSchema(schema)
 
-  return (req, res, next) => {
+  return async (req, res, next) => {
     res.header('Content-Type', 'text/html; charset=utf-8')
     var compiledFunction = pug.compileFile(path.resolve(__dirname, './view/index.pug'))
 
@@ -56,6 +55,7 @@ const graphqlMan = (schema, options = {}) => {
 
     res.end(compiledFunction({
       title: options.title,
+      auth: await options.auth(req, res, next),
       type,
       name,
       data,

@@ -20,6 +20,29 @@ body {
   font-size: 24px;
 }
 
+.header .left-content {
+  float: left;
+}
+
+.header .right-content {
+  float: right;
+  font-size: 14px;
+}
+
+.header .right-content .account {
+  color: #ffa900;
+}
+
+.header .right-content .signout-btn {
+  margin-left: 5px;
+  padding: 3px 5px;
+  color: #333;
+}
+
+.header .login-btn {
+  color: #63b1f9;
+}
+
 footer {
   height: 40px;
   line-height: 40px;

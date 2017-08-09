@@ -1,7 +1,7 @@
 extend layout.pug
 
 block content
-  span#data(style="display: none", data-query=`${JSON.stringify(query)}`, data-mutation=`${JSON.stringify(mutation)}`)
+  span#data(style="display: none", data-data=data ? `${JSON.stringify(data)}` : "" data-type=type ? `${JSON.stringify(type)}` : "")
   div.container
     div.main
       //- 接口列表
@@ -11,7 +11,6 @@ block content
           div.fields
             h2.title
               |#{name.slice(0, 1).toLocaleUpperCase() + name.slice(1)}
-              span #{list.name}
             each item, index in list.fields
               div.field-item
                 a(href=`/api/${name}/${item.name}`) #{item.name}
@@ -62,17 +61,33 @@ block content
       //- 内容区
       div.content
         div.edit-content.js(contenteditable="true")
-        div.display-content
-        div.fetch-btn(role="button")
+        pre.display-content
+        div.fetch-btn(role="button" onclick="fetch()")
 
 block script
   script
     include parse.js
   script.
     var data_elem = document.getElementById('data')
-    var query = JSON.parse(data_elem.getAttribute('data-query'))
-    var mutation = JSON.parse(data_elem.getAttribute('data-mutation'))
-    data_elem.parentElement.removeChild(data_elem)
+    var editContent = document.querySelector('.edit-content')
+    var displayContent = document.querySelector('.display-content')
+    var data = data_elem.getAttribute('data-data')
+    var type = data_elem.getAttribute('data-type')
+
+    loadEditContent(data, type)
+
+    function loadEditContent (data, type) {
+      if (!data) {
+        return false
+      }
+
+      data = JSON.parse(data)
+      type = JSON.parse(type)
+
+      data_elem.parentElement.removeChild(data_elem)
+      editContent.innerHTML = parseGraphqlObject(data, type)
+      hljs.highlightBlock(editContent)
+    }
 
     function openCollapse (e) {
       let target = e.target
@@ -81,11 +96,19 @@ block script
       }
     }
 
-    function checkItem (type, index) {
-      //- var editContent = document.querySelector('.edit-content')
-
-      //- editContent.innerHTML = parseGraphqlObject(window[type].fields[index], type)
-      //- hljs.highlightBlock(editContent)
+    function fetch () {
+      axios.post('/graphql', editContent.textContent, {
+        headers: { 'Content-Type': 'application/graphql' }
+      })
+      .then((res) => {
+        let data = res.data.errors ? res.data.errors : res.data.data
+        displayContent.innerHTML = JSON.stringify(data, null, 4)
+        hljs.highlightBlock(displayContent)
+      })
+      .catch((err) => {
+        displayContent.innerHTML = JSON.stringify(err.response.data.errors, null, 4)
+        hljs.highlightBlock(displayContent)
+      })
     }
 
 block style
@@ -99,7 +122,8 @@ block style
     .field-list section { padding-left: 20px; }
     .field-list section.collapse { display: none; }
     .field-list section.collapse.open { display: block; }
-    .field-list .title span { font-size: 13px; color: #666; margin-left: 10px; }
+    .field-list .title { font-size: 18px; font-weight: 500; }
+    .field-list .description { font-size: 13px; color: #666; }
     .field-list .type { font-size: 13px; color: #487dff; margin-left: 5px; }
     .field-list .sub-title { margin-top: 10px; font-size: 18px; }
 
@@ -107,7 +131,7 @@ block style
     .field-item .description { font-size: 12px; color: #999; }
 
     .content { position: relative; flex: 1; display: flex; flex-direction: column; background-color: #fefefe; overflow-x: auto; }
-    .edit-content, .display-content { flex: 1; padding: 15px; height: 100%; overflow: auto; }
+    .edit-content, .display-content { flex: 1; padding: 15px; height: 100%; overflow: auto; white-space: pre; }
     .edit-content { font-size: 14px; border: none; white-space: pre; background-color: #fff; }
     .edit-content:focus { box-shadow: none; outline: none; }
     .display-content { background-color: #f3f3f3; }

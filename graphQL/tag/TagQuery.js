@@ -35,11 +35,11 @@ let TagQuery = {
     args: {
       id: {
         type: new GraphQLNonNull(GraphQLString),
-        descriptions: '标签id'
+        description: '标签id'
       },
       release: {
         type: GraphQLBoolean,
-        descriptions: '是否发布过的文章'
+        description: '是否发布过的文章'
       },
       ...articlePagination.args
     },
@@ -68,11 +68,11 @@ let TagQuery = {
     args: {
       name: {
         type: new GraphQLNonNull(GraphQLString),
-        descriptions: '标签名字'
+        description: '标签名字'
       },
       release: {
         type: GraphQLBoolean,
-        descriptions: '是否发布过的文章'
+        description: '是否发布过的文章'
       },
       ...articlePagination.args
     },

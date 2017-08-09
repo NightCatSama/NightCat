@@ -45,7 +45,7 @@ let ArticleQuery = {
     args: {
       id: {
         type: GraphQLID,
-        descriptions: '文章 ID'
+        description: '文章 ID'
       }
     },
     resolve: async(root, { id }) => {

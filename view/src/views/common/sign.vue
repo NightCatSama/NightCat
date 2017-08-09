@@ -91,7 +91,7 @@ import isEmail from 'validator/lib/isEmail'
 import config from '@/config'
 
 export default {
-  name: 'admin-login11',
+  name: 'admin-login',
   data () {
     return {
       email: '',
