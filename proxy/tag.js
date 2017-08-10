@@ -2,17 +2,32 @@ import { tag } from '../models'
 
 /*  获取全部标签  */
 export const getTags = async() => {
-  return await tag.find({}).populate('article').sort({ 'count': -1 })
+  return await tag.find({}).populate({
+    path: 'article',
+    populate: {
+      path: 'author tags'
+    }
+  }).sort({ 'count': -1 })
 }
 
 /*  根据名字查找标签  */
 export const getTagByName = async(name) => {
-  return await tag.findOne({ name }).populate('article')
+  return await tag.findOne({ name }).populate({
+    path: 'article',
+    populate: {
+      path: 'author tags'
+    }
+  })
 }
 
 /*  根据id查找标签  */
 export const getTagById = async(id) => {
-  return await tag.findById(id).populate('article')
+  return await tag.findById(id).populate({
+    path: 'article',
+    populate: {
+      path: 'author tags'
+    }
+  })
 }
 
 /*  修改Tag  */

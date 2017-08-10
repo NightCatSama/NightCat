@@ -64,6 +64,7 @@ app.use(session({
 }))
 
 app.use('/api/:type?/:name?', graphqlMan(schema, {
+  title: 'GraphQL',
   auth: async (req, res, next) => {
     let access_token = req.session.token
     if (!access_token)
@@ -72,12 +73,6 @@ app.use('/api/:type?/:name?', graphqlMan(schema, {
     return await User.getUserByAccessToken(access_token)
   }
 }))
-
-// app.use('/api', graphqlMan(buildSchema(`
-//   type Query {
-//     hello: String
-//   }
-// `)))
 
 /*  前端代码  */
 app.use(express.static(app.get('frone_views')))

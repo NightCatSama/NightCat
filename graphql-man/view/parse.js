@@ -6,23 +6,22 @@
   function parseGraphqlObject (obj, type) {
     var topAnnotation = `
 ${type} {
-  ${getDataType(obj)}
+  ${getDataType(obj, 4, [obj.name])}
 }
     `
-    return topAnnotation.trim().replace(/  /g, '    ')
+    return topAnnotation.trim()
   }
 
-  function getDataType (obj, indent = 2) {
+  function getDataType (obj, indent, parent) {
+    console.log(parent)
     return `
 ${' '.repeat(indent)}${obj.name}${getArgs(obj.args)} {
-${obj.resolve.fields.map((o) => {
-    if (o.resolve) {
-      return ' '.repeat(indent + 2) + getDataType(o, indent + 2)
-    }
-    else {
-      return ' '.repeat(indent + 2) + o.name
-    }
-  }).join('\n')}
+${
+  obj.resolve.fields
+  .filter((o) => parent.indexOf(o.name) === -1)
+  .map((o) => ' '.repeat(indent + 4) + (o.resolve ? getDataType(o, indent + 4, parent.concat([o.name])) : o.name))
+  .join('\n')
+}
 ${' '.repeat(indent)}}
 `.trim()
   }
