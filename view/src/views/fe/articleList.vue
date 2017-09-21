@@ -81,6 +81,7 @@
         <router-link
           class="tag blue"
           v-for="(tag, i) in tags"
+          v-if="tag.count > 0"
           :key="i"
           :style="{
             opacity: 1 - (tags[0].count - tag.count) / (tags[0].count - tags[tags.length - 1].count) * 0.5

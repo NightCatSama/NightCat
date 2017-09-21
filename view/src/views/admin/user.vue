@@ -166,9 +166,11 @@
     .user-list {
       display: flex;
       flex-direction: column;
+      overflow: auto;
 
       li {
         height: 120px;
+        flex-shrink: 0;
         @include flex-cross-center;
         padding: 20px;
         border-bottom: 1px solid #eee;

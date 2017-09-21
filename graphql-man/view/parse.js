@@ -13,7 +13,6 @@ ${type} {
   }
 
   function getDataType (obj, indent, parent) {
-    console.log(parent)
     return `
 ${' '.repeat(indent)}${obj.name}${getArgs(obj.args)} {
 ${
