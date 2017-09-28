@@ -24,8 +24,8 @@ module.exports = {
     host: 'smtp.126.com',
     port: 25,
     auth: {
-      user: 'nightcatsama@126.com',
-      pass: 'qq642163903'
+      user: '***@126.com',
+      pass: '******'
     }
   },
 
@@ -37,7 +37,7 @@ module.exports = {
 
   /*  数据库账号密码  */
   database: {
-    username: 'username',
-    password: 'password'
+    username: '',
+    password: ''
   }
 }
