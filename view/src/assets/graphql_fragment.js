@@ -47,7 +47,8 @@ export default {
   comment: `
     fragment comment on Comment {
       _id
-      floor,
+      type
+      floor
       view
       created_at
       user {

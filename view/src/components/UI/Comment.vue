@@ -156,28 +156,6 @@
       }
     },
     methods: {
-      getArticle () {
-        return this.$graphql.query(`
-          comments ($article_id, $last, $after, $offset) {
-            totalCount
-            edges {
-              node {
-                ...comment
-              }
-              cursor
-            }
-            pageInfo {
-              hasNextPage,
-              endCursor
-            }
-          }
-        `, {
-          article_id: this.id,
-          last: this.oneFloor ? 1 : 10,
-          offset: this.offset || 0,
-          after: this.comment_cursor
-        }, ['comment'])
-      },
       getIndieComments () {
         return this.$graphql.query(`
           indieComments ($type, $first, $after, $offset) {
@@ -201,10 +179,27 @@
         }, ['comment'])
       },
       getComments (next, error) {
-        let query = this.type === 'article' ? 'getArticle' : 'getIndieComments'
-
-        this[query]()
-        .then((res) => {
+        this.$graphql.query(`
+          comments ($article_id, $type, $last, $after, $offset) {
+            totalCount
+            edges {
+              node {
+                ...comment
+              }
+              cursor
+            }
+            pageInfo {
+              hasNextPage,
+              endCursor
+            }
+          }
+        `, {
+          article_id: this.id,
+          type: this.type,
+          last: this.oneFloor ? 1 : 10,
+          offset: this.offset || 0,
+          after: this.comment_cursor
+        }, ['comment']).then((res) => {
           next && next()
           this.hasNextPage = this.oneFloor ? false : res.pageInfo.hasNextPage
           this.comment_cursor = res.pageInfo.endCursor
@@ -216,32 +211,18 @@
           error && error(err.message)
         })
       },
-      addArticleComment () {
-        return this.$graphql.mutation(`
-          addComment ($article_id, $content) {
+      addComment () {
+        if (!this.comment) return this.$toast('评论不能为空', 'warning')
+
+        this.$graphql.mutation(`
+          addComment ($article_id, $type, $content) {
             ...comment
           }
         `, {
           article_id: this.id,
-          content: this.comment
-        }, ['comment'])
-      },
-      addIndieComment () {
-        return this.$graphql.mutation(`
-          addIndieComment ($type, $content) {
-            ...comment
-          }
-        `, {
           type: this.type,
           content: this.comment
-        }, ['comment'])
-      },
-      addComment () {
-        if (!this.comment) return this.$toast('评论不能为空', 'warning')
-
-        let query = this.type === 'article' ? 'addArticleComment' : 'addIndieComment'
-        this[query]()
-        .then((res) => {
+        }, ['comment']).then((res) => {
           this.$toast('发送成功', 'success')
           this.comment = ''
           this.comments.unshift(res)

@@ -57,12 +57,13 @@ export const setCommentAddReply = async(id, reply_id) => {
 }
 
 /*  生成新文章评论  */
-export const newAndSave = async(data) => {
+export const newAndSave = async({ article_id, type, user, content }) => {
   let c = new comment()
-  c.article_id = data.article_id
-  c.user = data.user
-  c.content = data.content
-  c.floor = await comment.count({ article_id: data.article_id }) + 1
+  c.article_id = article_id
+  c.type = type
+  c.user = user
+  c.content = content
+  c.floor = await comment.count({ article_id, type }) + 1
   c = await c.save()
 
   return await getCommentById(c._id)

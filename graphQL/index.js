@@ -36,7 +36,6 @@ export default new GraphQLSchema({
       articleByTagName: TagQuery.articleByTagName,
 
       comments: CommentQuery.comments,
-      indieComments: CommentQuery.indieComments,
 
       links: LinkQuery.links
     }
@@ -64,7 +63,6 @@ export default new GraphQLSchema({
       removeTag: TagMutation.removeTag,
 
       addComment: CommentMutation.addComment,
-      addIndieComment: CommentMutation.addIndieComment,
 
       addReply: replyMutation.addReply,
 

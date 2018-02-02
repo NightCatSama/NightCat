@@ -26,6 +26,10 @@ let CommentType = new GraphQLObjectType({
       type: GraphQLID,
       description: '文章id'
     },
+    type: {
+      type: GraphQLString,
+      description: '评论类型'
+    },
     user: {
       type: UserType,
       description: '评论人'

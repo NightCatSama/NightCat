@@ -10,8 +10,7 @@ let commentSchema = new Schema({
   },
   // 评论类型
   type: {
-    type: String,
-    default: 'article'
+    type: String
   },
   // 发表者
   user: {

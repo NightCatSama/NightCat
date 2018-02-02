@@ -1,5 +1,9 @@
 import fragments from './graphql_fragment'
 
+function isset (data) {
+  return !(data === undefined || data === null)
+}
+
 export default class Graphql {
   constructor (axios) {
     this.axios = axios
@@ -18,7 +22,9 @@ export default class Graphql {
       else if (variable) {
         for (let key in variable) {
           let reg = new RegExp(`\\$${key}`)
-          main = main.replace(reg, `${key}: ${JSON.stringify(variable[key])}`)
+          main = main.replace(reg, () => {
+            return isset(variable[key]) ? `${key}: ${JSON.stringify(variable[key])}` : ''
+          })
         }
       }
 

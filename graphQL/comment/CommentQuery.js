@@ -18,11 +18,6 @@ let commentPagination = new Pagination({
   type: CommentType,
 })
 
-let indieCommentPagination = new Pagination({
-  name: 'indieCommentQuery',
-  type: CommentType,
-})
-
 let CommentQuery = {
   comments: {
     type: commentPagination.type,
@@ -32,34 +27,19 @@ let CommentQuery = {
         type: GraphQLID,
         description: '文章 id'
       },
-      ...commentPagination.args
-    },
-    resolve: async(root, args) => {
-      let data = await Comment.getComments({
-        article_id: args.article_id
-      })
-
-      return await commentPagination.resolve(data, args)
-    }
-  },
-
-
-  indieComments: {
-    type: indieCommentPagination.type,
-    descriptions: '单独类型下的评论',
-    args: {
       type: {
         type: GraphQLString,
         description: '类型名称'
       },
-      ...indieCommentPagination.args
+      ...commentPagination.args
     },
     resolve: async(root, args) => {
       let data = await Comment.getComments({
+        article_id: args.article_id,
         type: args.type
       })
 
-      return await indieCommentPagination.resolve(data, args)
+      return await commentPagination.resolve(data, args)
     }
   }
 }

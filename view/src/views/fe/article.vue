@@ -1,23 +1,23 @@
 <template>
-  <div class="article-view">
-    <div class="cover" :style="{ backgroundImage: `url(${cover})`}"></div>
+  <div class="article-view" v-if="article">
+    <div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>
     <article>
       <!-- 文章头部 -->
-      <h1 class="title">{{ title }}</h1>
+      <h1 class="title">{{ article.title }}</h1>
       <p class="meta">
-        by {{ author.account }}
-        <time>发表于 {{ created_at }}</time>
+        by {{ article.author.account }}
+        <time>发表于 {{ article.created_at }}</time>
       </p>
 
       <!-- 文章主体 -->
-      <div class="markdown-body content" v-html="view"></div>
+      <div class="markdown-body content" v-html="article.view"></div>
 
       <!-- 标签区块 -->
       <div class="tag-list">
         <small>Tag: </small>
         <router-link
           class="tag"
-          v-for="(tag, index) in tags"
+          v-for="(tag, index) in article.tags"
           :key="index"
           :to="{
             name: 'ArticleList',
@@ -29,14 +29,14 @@
         >
           {{ tag.name }}
         </router-link>
-        <small v-if="!tags.length">暂无标签</small>
+        <small v-if="!article.tags.length">暂无标签</small>
       </div>
     </article>
 
     <!-- 评论区分割线 -->
-    <div ref="comment" class="line" :data-title="comment_count ? `${comment_count} 条评论` : '评论区'"></div>
+    <div ref="comment" class="line" :data-title="article.comment_count ? `${article.comment_count} 条评论` : '评论区'"></div>
 
-    <Comment @addComment="comment_count++" :id="$route.params.id"></Comment>
+    <Comment @addComment="article.comment_count++" :id="$route.params.id"></Comment>
   </div>
 </template>
 
@@ -52,14 +52,7 @@
     },
     data () {
       return {
-        content: '',
-        title: '',
-        author: '',
-        cover: '',
-        view: '',
-        comment_count: 0,
-        created_at: null,
-        tags: []
+        article: null
       }
     },
     computed: {
@@ -80,7 +73,7 @@
           id: this.$route.params.id
         }, ['article'])
         .then((res) => {
-          Object.assign(this, res)
+          this.article = res
           if (this.$route.hash) {
             scrollToElem(this.$refs[this.$route.hash.slice(1)])
           }
