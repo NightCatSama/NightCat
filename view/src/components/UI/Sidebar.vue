@@ -29,7 +29,7 @@
       <router-link to="/links" @click.native="close">友链</router-link>
       <router-link to="/about" @click.native="close">关于</router-link>
       <router-link to="/admin" @click.native="close">管理</router-link>
-      <a href="/api">GraphQL</a>
+      <a href="/graphiql">GraphQL</a>
     </nav>
   </div>
 </template>

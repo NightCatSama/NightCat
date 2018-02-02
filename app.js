@@ -18,8 +18,8 @@ import admin_router from './routes/admin'
 
 import socket from './socket'
 import { graphql, buildSchema } from 'graphql'
-import graphqlMan from './graphql-man'
 import { getRootValue } from './middlewares/graphql'
+import { graphqlConnect, graphiqlExpress } from 'apollo-server-express';
 import schema from './graphQL'
 
 import { User } from './proxy'
@@ -63,16 +63,7 @@ app.use(session({
   }
 }))
 
-app.use('/api/:type?/:name?', graphqlMan(schema, {
-  title: 'GraphQL',
-  auth: async (req, res, next) => {
-    let access_token = req.session.token
-    if (!access_token)
-      return null
-
-    return await User.getUserByAccessToken(access_token)
-  }
-}))
+app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
 
 /*  前端代码  */
 app.use(express.static(app.get('frone_views')))
