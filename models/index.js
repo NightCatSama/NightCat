@@ -10,7 +10,9 @@ import link from './link'
 
 mongoose.Promise = global.Promise
 
-let uri = `mongodb://${config.database.password ? `${config.database.username}:${config.database.password}@` : ''}${config.db_host}:${config.db_port}/${config.db}`
+let uri = `mongodb://${config.database.password ? 
+    `${config.database.username}:${config.database.password}@` : 
+    ''}${config.db_host}:${config.db_port}/${config.db}`
 
 mongoose.connect(uri)
 

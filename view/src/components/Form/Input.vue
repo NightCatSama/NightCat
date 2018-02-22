@@ -129,7 +129,7 @@
   .#{$prefixCls}-label {
     position: absolute;
     top: 50%;
-    left: 0px;
+    left: 0;
     font-size: 14px;
     transform: translate3d(0, -50%, 0);
     color: $font1;
@@ -144,7 +144,6 @@
   }
 
   .#{$prefixCls} {
-    width: 100%;
     position: relative;
     padding: 8px 0 4px 0;
     color: $font;
@@ -164,13 +163,13 @@
 
     &:-webkit-autofill {
       -webkit-text-fill-color: $font;
-      -webkit-box-shadow: 0 0 0px 1000px $white inset;
+      -webkit-box-shadow: 0 0 0 1000px $white inset;
     }
   }
 
   .#{$prefixCls}-progress {
     height: 2px;
-    width: 0%;
+    width: 0;
     position: absolute;
     bottom: 0;
     left: 0;

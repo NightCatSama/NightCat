@@ -12,6 +12,7 @@ export default class Graphql {
   }
   create (type) {
     return (main, variable, fragmentArr) => {
+      // 字母，数字，下划线
       let name = main.match(/\w+\b/)
       let fragment = ''
 

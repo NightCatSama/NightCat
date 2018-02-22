@@ -16,8 +16,8 @@ let hook = {
   error
 }
 
-let axios = createInstance(store, hook)
-let graphql = new GraphQL(createGraphQLInstance(store, hook))
+let axios = createInstance(hook)
+let graphql = new GraphQL(createGraphQLInstance(hook))
 let router = createRouter(store, graphql)
 
 Vue.prototype.$http = axios

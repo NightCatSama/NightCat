@@ -2,7 +2,7 @@ import axios from 'axios'
 import config from '@/config'
 
 // 普通请求
-export const createInstance = (store, hook) => {
+export const createInstance = (hook) => {
   let instance = axios.create({
     baseURL: config.host,
     timeout: 30000,
@@ -17,7 +17,7 @@ export const createInstance = (store, hook) => {
 }
 
 // Graphql 请求
-export const createGraphQLInstance = (store, hook) => {
+export const createGraphQLInstance = (hook) => {
   let instance = axios.create({
     baseURL: config.host,
     timeout: 30000,

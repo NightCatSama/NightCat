@@ -1,4 +1,5 @@
 import express from 'express'
+// https://helmetjs.github.io/
 import helmet from 'helmet'
 import path from 'path'
 import favicon from 'serve-favicon'
@@ -9,6 +10,8 @@ import session from 'express-session'
 import graphqlHTTP from 'express-graphql'
 import config from './config'
 import errorhandler from 'errorhandler'
+// https://github.com/jdesboeufs/connect-mongo
+// MongoDB session store for Express and Connect
 import connect from 'connect-mongo'
 import logger from './common/logger'
 import compression from 'compression'
@@ -16,13 +19,9 @@ import compression from 'compression'
 import router from './routes'
 import admin_router from './routes/admin'
 
-import socket from './socket'
-import { graphql, buildSchema } from 'graphql'
 import { getRootValue } from './middlewares/graphql'
 import { graphqlConnect, graphiqlExpress } from 'apollo-server-express';
 import schema from './graphQL'
-
-import { User } from './proxy'
 
 const app = express()
 const relative = (_path) => path.relative(__dirname, _path)
@@ -56,7 +55,9 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: new MongoStore({
-    url: `mongodb://${process.env.NODE_ENV === 'production' ? `${config.database.username}:${config.database.password}@` : ''}${config.db_host}:${config.db_port}/${config.db}`,
+    url: `mongodb://${process.env.NODE_ENV === 'production' ? 
+        `${config.database.username}:${config.database.password}@` : 
+        ''}${config.db_host}:${config.db_port}/${config.db}`,
   }),
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000
@@ -100,6 +101,3 @@ else {
 const server = app.listen(config.port, function() {
   console.log(`The server is already started, Listen on port ${config.port}!`)
 })
-
-/*  socket (暂时没用上)  */
-// socket(server)
