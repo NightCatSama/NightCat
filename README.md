@@ -3,11 +3,11 @@
 ------
 
 ## 目的
-学习从前端到后端的一条龙建站过程（Graphql大法好
+学习从前端到后端的一条龙建站过程(Graphql大法好)
 
 ## 技术栈
-后端：Node.js + Express + Graphql + MongoDB<br>
-前端：Vue 全家桶<br>
+后端：Node.js + Express + Graphql + MongoDB
+前端：Vue 全家桶
 
 ## 进度
 - [x] 后端
@@ -31,3 +31,10 @@
   - [x] 文章
   - [x] 个人信息
 
+## 本地运行
+* 启动 MongoDB
+* yarn 安装依赖
+* 浏览器 打开http://localhost:3000
+
+## 注意
+创建用户后需手动修改superAdmin权限为true

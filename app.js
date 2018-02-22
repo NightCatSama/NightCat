@@ -22,6 +22,7 @@ import admin_router from './routes/admin'
 import { getRootValue } from './middlewares/graphql'
 import { graphqlConnect, graphiqlExpress } from 'apollo-server-express';
 import schema from './graphQL'
+import opn from 'opn';
 
 const app = express()
 const relative = (_path) => path.relative(__dirname, _path)
@@ -100,4 +101,6 @@ else {
 
 const server = app.listen(config.port, function() {
   console.log(`The server is already started, Listen on port ${config.port}!`)
+  // 自动打开浏览器
+  // opn(`${config.protocol}://${config.host}`)
 })
