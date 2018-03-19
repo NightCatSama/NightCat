@@ -19,7 +19,6 @@ import admin_router from './routes/admin'
 import socket from './socket'
 import { graphql, buildSchema } from 'graphql'
 import { getRootValue } from './middlewares/graphql'
-import { graphqlConnect, graphiqlExpress } from 'apollo-server-express';
 import schema from './graphQL'
 
 import { User } from './proxy'
@@ -63,25 +62,23 @@ app.use(session({
   }
 }))
 
-app.get('/graphiql', graphiqlExpress({ endpointURL: '/graphql' }));
-
-/*  前端代码  */
-app.use(express.static(app.get('frone_views')))
-app.use('/admin', admin_router)
-app.use('/', router)
-
 /*  graphQL  */
-app.post('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
-  schema: schema,
+app.use('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
+  schema,
   pretty: true,
+  graphiql: true,
   rootValue: await getRootValue(request),
-  graphql: true,
   formatError: (error) => ({
     name: error.path,
     message: error.message,
     locations: error.locations
   })
 })))
+
+/*  前端代码  */
+app.use(express.static(app.get('frone_views')))
+app.use('/admin', admin_router)
+app.use('/', router)
 
 /*  Error Handle  */
 if (config.debug) {

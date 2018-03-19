@@ -19,7 +19,7 @@
   - [x] 自动登录
   - [x] Github Oauth
   - [x] [Doc](https://github.com/NightCatSama/NightCat/blob/master/docs/user.md)
-  - [x] [API](https://nightcat.win/api)
+  - [x] [Graphiql](https://nightcat.win/graphql)
 - [x] [后台管理系统](https://nightcat.win/admin)
   - [x] 登录/注册
   - [x] 用户管理
