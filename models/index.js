@@ -15,7 +15,11 @@ let uri = `mongodb://${config.database.password ? `${config.database.username}:$
 mongoose.connect(uri)
 
 let db = mongoose.connection
-db.on('error', console.error.bind(console, '【 connection error 】:'))
+db.on('error', (err) => {
+  if (err) {
+    return console.error('【 MongoDB connection error 】:', err)
+  }
+})
 db.once('open', () => {
   console.log(' =========== MongoDB is Opened! ===========')
 })
