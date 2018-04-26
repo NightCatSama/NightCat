@@ -24,7 +24,9 @@
               params: {
                 id: article._id
               },
-              hash: '#comment'
+              query: {
+                comment: 1
+              }
             }" class="comment-count">{{ article.comment_count ? `${article.comment_count} 条评论` : '暂无评论' }}</router-link>
             </p>
             <div class="tag-list">

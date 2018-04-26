@@ -34,14 +34,13 @@
     </article>
 
     <!-- 评论区分割线 -->
-    <div ref="comment" class="line" :data-title="article.comment_count ? `${article.comment_count} 条评论` : '评论区'"></div>
+    <div ref="comment_bar" class="line" :data-title="article.comment_count ? `${article.comment_count} 条评论` : '评论区'"></div>
 
     <Comment @addComment="article.comment_count++" :id="$route.params.id"></Comment>
   </div>
 </template>
 
 <script>
-  import { scrollToElem } from '@/assets/smooth_scroll'
   import Comment from '@/components/UI/Comment'
   import 'github-markdown-css'
 
@@ -74,8 +73,10 @@
         }, ['article'])
         .then((res) => {
           this.article = res
-          if (this.$route.hash) {
-            scrollToElem(this.$refs[this.$route.hash.slice(1)])
+          if (this.$route.query.comment) {
+            this.$nextTick(() => {
+              this.$refs.comment_bar && this.$refs.comment_bar.scrollIntoView()
+            })
           }
         })
         .catch((err) => this.$toast(err.message, 'error'))
