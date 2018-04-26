@@ -1,27 +1,25 @@
+import bodyParser from 'body-parser'
+import compression from 'compression'
+import connect from 'connect-mongo'
+import cookieParser from 'cookie-parser'
+import errorhandler from 'errorhandler'
 import express from 'express'
+import graphqlHTTP from 'express-graphql'
+import session from 'express-session'
+import { buildSchema, graphql } from 'graphql'
 import helmet from 'helmet'
+import morgan from 'morgan'
 import path from 'path'
 import favicon from 'serve-favicon'
-import morgan from 'morgan'
-import cookieParser from 'cookie-parser'
-import bodyParser from 'body-parser'
-import session from 'express-session'
-import graphqlHTTP from 'express-graphql'
-import config from './config'
-import errorhandler from 'errorhandler'
-import connect from 'connect-mongo'
 import logger from './common/logger'
-import compression from 'compression'
-
+import config from './config'
+import schema from './graphQL'
+import { getRootValue } from './middlewares/graphql'
+import { allowCrossDomain } from './middlewares/response'
+import { User } from './proxy'
 import router from './routes'
 import admin_router from './routes/admin'
-
 import socket from './socket'
-import { graphql, buildSchema } from 'graphql'
-import { getRootValue } from './middlewares/graphql'
-import schema from './graphQL'
-
-import { User } from './proxy'
 
 const app = express()
 const relative = (_path) => path.relative(__dirname, _path)
@@ -63,6 +61,7 @@ app.use(session({
 }))
 
 /*  graphQL  */
+app.use('/graphql', allowCrossDomain)
 app.use('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
   schema,
   pretty: true,
