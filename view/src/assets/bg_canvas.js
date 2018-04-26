@@ -1,15 +1,30 @@
+// 默认颜色变化数组
 const _defaultColors = [[240, 91, 114, 3000], [49, 105, 146, 3000], [153, 47, 37, 3000], [120, 115, 201, 3000], [153, 105, 33, 3000], [70, 120, 33, 3000], [28, 110, 110, 3000], [75, 75, 120]]
+// 设备像素比
+const DPR = window.devicePixelRatio || 1
+// 鼠标类型
+const MOUSE_TYPE = -1
+// 小球类型
+const BALL_TYPES = {
+  SOLID: 0, // 实心球
+  RING: 1, // 圆环
+  DOUBLE_RING: 2 // 双圆环
+}
+// 鼠标与小球的距离关系
+const WITH_MOUSE = {
+  OUTSIDE: 0, // 范围外
+  INSIDE: 1, // 范围内
+  OVERLAP: 2 // 球中
+}
 
+// 默认设置
 const _default = {
   txt: 'NightCat',      // 文本
   font: 'normal normal 120px Nothing You Could Do', // 文本样式
   bottomTxt: ' - press any key to enter - ',  // 底部文本
   bottomFont: 'normal normal 24px Nothing You Could Do', // 底部文本样式
-  fontFamily: {
-    name: 'Nothing You Could Do',
-    url: 'https://fonts.gstatic.com/s/nothingyoucoulddo/v6/jpk1K3jbJoyoK0XKaSyQAZXIiu60FL2bNvn8mktkB5z3rGVtsTkPsbDajuO5ueQw.woff2'
-  },  // 字体
   ballCount: 30,       // 总个数
+  lineWidth: 1,        // 连线的粗度
   lineRange: 200,      // 连线范围
   radiusRange: [10, 20],    // 半径范围
   color: _defaultColors, // 小球颜色组 [[r, g, b, time]...] *time: 在该颜色停留的时间
@@ -31,6 +46,12 @@ export default class Canvas {
 
     Object.assign(this, _default, option)
 
+    this.font = this.font.replace(/\d+(?=px)/, (size) => parseFloat(size) * DPR)
+    this.lineWidth = this.lineWidth * DPR
+    this.lineRange = this.lineRange * DPR
+    this.radiusRange = this.radiusRange.map(radius => radius * DPR)
+    this.speed = this.speed.map(speed => speed * DPR)
+
     this.fontLoaded = false
     this.vballs = []
     this.balls = []
@@ -38,7 +59,7 @@ export default class Canvas {
       x: 0,
       y: 0,
       r: 0,
-      type: -1,
+      type: MOUSE_TYPE,
       catchBall: false,
       onLine: false
     }
@@ -50,28 +71,23 @@ export default class Canvas {
     this.mouseHandle = this.mouseHandle.bind(this)
     this.init = this.init.bind(this)
     this.bindEvent()
-    this.loadFont()
     this.init()
     this.start()
   }
   // 初始化canvas
   init () {
-    this.width = this.canvas.width = this.canvas.offsetWidth
-    this.height = this.canvas.height = this.canvas.offsetHeight
+    this.width = this.canvas.width = this.canvas.offsetWidth * DPR
+    this.height = this.canvas.height = this.canvas.offsetHeight * DPR
     this.bounds = this.canvas.getBoundingClientRect()
     this.mirrorRange = Math.max(this.radiusRange[1] * 2, this.lineRange)
   }
-  loadFont () {
-    if (!this.fontFamily || typeof FontFace === 'undefined') {
+  // 判断字体是否加载完成
+  isLoadFont () {
+    if (document.fonts.check(this.font)) {
       this.fontLoaded = true
-      return false
+    } else if (document.fonts.status !== 'loading') {
+      document.fonts.load(this.font)
     }
-
-    let font = new FontFace(this.fontFamily.name, `url(${this.fontFamily.url})`)
-    font.load().then((font) => {
-      document.fonts.add(font)
-      this.fontLoaded = true
-    })
   }
   // 绑定事件
   bindEvent () {
@@ -94,8 +110,8 @@ export default class Canvas {
     let mx = e.clientX - this.bounds.left
     let my = e.clientY - this.bounds.top
 
-    this.mouse.x = mx
-    this.mouse.y = my
+    this.mouse.x = mx * DPR
+    this.mouse.y = my * DPR
   }
   // 动画开始
   start () {
@@ -113,6 +129,7 @@ export default class Canvas {
       if (!this.isAnimate) return false
 
       this.cxt.clearRect(0, 0, this.width, this.height)
+      !this.fontLoaded && this.isLoadFont()
       this.fontLoaded && this.renderBackground()
       this.render()
       this.fontLoaded && this.renderText()
@@ -154,12 +171,13 @@ export default class Canvas {
   }
   // 增加一个球
   addBall () {
+    let types = Object.keys(BALL_TYPES)
     let ball = {
       vx: this.getRandomNumber(this.speed),  // 水平方向加速度
       vy: this.getRandomNumber(this.speed),  // 垂直方向加速度
       opacity: this.getRandomNumber(this.opacity), // 透明度
       is_infect: false,  // 是否进入鼠标范围
-      type: ~~this.getRandomNumber([0, 3]),  // 小球类型[-1:鼠标, 0:实心球, 1:圆环, 2:双环]
+      type: BALL_TYPES[types[~~(Math.random() * types.length)]],  // 小球类型
       reverse: false, // 是否反向颜色渐变
       withMouse: 0  // 与鼠标位置的关系  [0:范围外, 1:范围内, 2:球中]
     }
@@ -177,11 +195,11 @@ export default class Canvas {
     Object.assign(ball, this.initGradientData(this.period, this.color))
 
     switch (ball.type) {
-      case 0: break
-      case 1:
+      case BALL_TYPES.SOLID: break
+      case BALL_TYPES.RING:
         ball.emptyR = this.getRandomNumber([ball.r / 2, ball.r / 4 * 3])
         break
-      case 2:
+      case BALL_TYPES.DOUBLE_RING:
         ball.emptyR = this.getRandomNumber([ball.r / 2, ball.r / 4 * 3])
         ball.sonR = this.getRandomNumber([ball.emptyR / 2, ball.emptyR / 4 * 3])
         break
@@ -285,8 +303,8 @@ export default class Canvas {
 
       // 在范围内且没有碰撞时
       if (d < this.lineRange && d > (ball.r + b.r)) {
-        if (b.type === -1) {
-          ball.withMouse = 1
+        if (b.type === MOUSE_TYPE) {
+          ball.withMouse = WITH_MOUSE.INSIDE
           ball.is_infect = true
 
           if (this.mouse.noLine) {
@@ -301,12 +319,12 @@ export default class Canvas {
 
         let g = this.cxt.createLinearGradient(x, y, b.x, b.y)
 
-        if (ball.type === 1) {
+        if (ball.type === BALL_TYPES.RING) {
           g.addColorStop(0, ballColor)
           g.addColorStop(ball.emptyR / d, ballColor)
           g.addColorStop(ball.emptyR / d, 'transparent')
         }
-        else if (ball.type === 2) {
+        else if (ball.type === BALL_TYPES.DOUBLE_RING) {
           g.addColorStop(0, 'transparent')
           g.addColorStop(ball.sonR / d, 'transparent')
           g.addColorStop(ball.sonR / d, ballColor)
@@ -323,14 +341,15 @@ export default class Canvas {
         g.addColorStop(1, 'transparent')
 
         this.cxt.strokeStyle = g
+        this.cxt.lineWidth = this.lineWidth
         this.renderLine(x, y, b.x, b.y)
 
         this.cxt.restore()
       }
       // 碰撞
       else if (d < (ball.r + b.r) && !b.isCrash && !ball.isCrash) {
-        if (b.type === -1) {
-          ball.withMouse = 2
+        if (b.type === MOUSE_TYPE) {
+          ball.withMouse = WITH_MOUSE.OVERLAP
           ball.is_infect = true
           this.mouse.catchBall = true
         }
@@ -349,20 +368,20 @@ export default class Canvas {
         }
       }
       // 范围外
-      else if (b.type === -1) {
-        ball.withMouse = 0
+      else if (b.type === MOUSE_TYPE) {
+        ball.withMouse = WITH_MOUSE.OUTSIDE
         ball.is_infect = false
       }
     })
 
     // 画球【三种类型】
-    if (ball.type === 0) {
+    if (ball.type === BALL_TYPES.SOLID) {
       this.renderTypeArc(x, y, ball.r, this.getRGBA(color, ball.opacity))
     }
-    else if (ball.type === 1) {
+    else if (ball.type === BALL_TYPES.RING) {
       this.renderTypeArc(x, y, ball.r, this.getRGBA(color, ball.opacity), ball.emptyR)
     }
-    else if (ball.type === 2) {
+    else if (ball.type === BALL_TYPES.DOUBLE_RING) {
       this.renderTypeArc(x, y, ball.r, this.getRGBA(color, ball.opacity), ball.emptyR, ball.sonR)
     }
   }
@@ -417,7 +436,7 @@ export default class Canvas {
       }
 
       // 在鼠标范围内（排斥）
-      if (ball.withMouse === 1) {
+      if (ball.withMouse === WITH_MOUSE.INSIDE) {
         let g = Math.random() * 0.02
 
         if (ball.y > this.mouse.y) {
@@ -434,7 +453,7 @@ export default class Canvas {
       }
 
       // 如果鼠标停留在球上则不运动
-      if (ball.withMouse !== 2) {
+      if (ball.withMouse !== WITH_MOUSE.OVERLAP) {
         ball.x += ball.vx
         ball.y += ball.vy
       }
@@ -507,8 +526,8 @@ export default class Canvas {
   getRGBA (color, opacity = 1) {
     return color === 'transparent' ? color : `rgba(${~~color[0]}, ${~~color[1]}, ${~~color[2]}, ${opacity})`
   }
-  // 根据范围得到一个随机数[[范围], 小数位]
-  getRandomNumber ([min, max], decimal) {
+  // 根据范围得到一个随机数 args: [范围]
+  getRandomNumber ([min, max]) {
     return (Math.random() * (max - min)) + min
   }
   // 画各种类型的圆
