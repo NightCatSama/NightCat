@@ -123,6 +123,7 @@
       padding: 20px;
       box-shadow: $shadow;
       font-size: 14px;
+      overflow: auto;
     }
 
     .aside {
