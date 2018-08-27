@@ -34,7 +34,7 @@ export const newAndSave = async(data) => {
   u.resetPwd = !!data.resetPwd
   u.subscribe = !!data.subscribe
   u.profile = data.profile
-  u.location = data.location,
+  u.location = data.location
   u.email = data.email
   u.github = data.github
   u.avatar = data.avatar || getGravatar(data.email || '')

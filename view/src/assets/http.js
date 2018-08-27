@@ -1,5 +1,5 @@
 import axios from 'axios'
-import config from '@/config'
+import config from '../config'
 
 // 普通请求
 export const createInstance = (hook) => {

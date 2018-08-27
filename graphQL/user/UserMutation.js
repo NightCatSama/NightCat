@@ -32,6 +32,7 @@ let UserMutation = {
       let user = await User.getUserByAccount(account)
 
       if (!user) throw Error('账号不存在')
+      console.log(user);
       if (user.password !== password) throw Error('密码错误')
 
       return await updateToken(user, req)
@@ -58,7 +59,8 @@ let UserMutation = {
       if (!validator.isEmail(email)) throw Error('邮箱格式不对')
 
       let user = await User.getUserByEmail(email)
-
+        console.log(user);
+        console.log(password);
       if (!user) throw Error('账号不存在')
       if (user.password !== password) throw Error('密码错误')
 

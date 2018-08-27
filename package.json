@@ -1,13 +1,13 @@
 {
-  "name": "server",
-  "version": "0.0.0",
+  "name": "personal-blog",
+  "version": "0.0.1",
   "private": true,
   "description": "A personal website",
   "scripts": {
     "start": "nodemon es/",
     "deploy": "pm2 start es/index.prod.js"
   },
-  "author": "NightCatSama (642163903@qq.com)",
+  "author": "mafeifan (mafeifan@qq.com)",
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "~1.13.2",

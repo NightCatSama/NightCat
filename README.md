@@ -1,9 +1,6 @@
-# [NightCat](https://nightcat.win/)
+# 个人博客
 
 ------
-
-## 目的
-学习从前端到后端的一条龙建站过程(Graphql大法好)
 
 ## 技术栈
 后端：Node.js + Express + Graphql + MongoDB
@@ -34,7 +31,16 @@
 ## 本地运行
 * 启动 MongoDB
 * yarn 安装依赖
-* 浏览器 打开http://localhost:3000
+* 浏览器打开 http://localhost:3000
 
 ## 注意
 创建用户后需手动修改superAdmin权限为true
+
+## TODO
+* 密码是明文，并没有运用jwt
+* 后台http://localhost:3000/admin 需要将数据库中user表的superAdmin和admin设置为true
+* 测试markdown
+* 编辑器剪切上传图片到青云
+
+## 目录介绍
+

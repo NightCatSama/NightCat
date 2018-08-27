@@ -31,8 +31,6 @@ else {
       clientId: serverConfig.github.clientId
     },
 
-    /*  socket.io  */
-    socket_host: 'https://nightcat.win'
   }
 }
 

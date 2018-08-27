@@ -8,6 +8,7 @@ config/config.prod.js
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+view/dist/
 
 mongodb.cmd
 mongodb.conf
