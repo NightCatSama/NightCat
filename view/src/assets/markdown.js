@@ -1,6 +1,6 @@
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
-import 'github-markdown-css'
+// import 'github-markdown-css'
 
 let md = new MarkdownIt({
   highlight: function (str, lang) {

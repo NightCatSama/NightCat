@@ -31,14 +31,15 @@
         </label>
       </div>
       <div class="content-area">
+        <mavon-editor v-model="content"/>
         <!--编辑区域-->
-        <div class="edit-area" data-area="Edit">
-          <textarea ref="edit" v-model="content" @input="updateDisplay" @keydown.tab.prevent="onTab"></textarea>
-        </div>
+        <!--<div class="edit-area" data-area="Edit">-->
+          <!--<textarea ref="edit" v-model="content" @input="updateDisplay" @keydown.tab.prevent="onTab"></textarea>-->
+        <!--</div>-->
         <!--展示区域-->
-        <div class="display-area" data-area="Display">
-          <div ref="view" class="markdown-body" v-html="view"></div>
-        </div>
+        <!--<div class="display-area" data-area="Display">-->
+          <!--<div ref="view" class="markdown-body" v-html="view"></div>-->
+        <!--</div>-->
       </div>
     </div>
 
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-  import md from '@/assets/markdown'
+  // import md from '@/assets/markdown'
 
   export default {
     name: 'admin-add-article',
@@ -75,6 +76,10 @@
         tags: [],
         timer: null
       }
+    },
+    mounted () {
+      this.getTags()
+      this.type === 'edit' ? this.getArticleContent() : this.getDraft()
     },
     computed: {
       typeWord () {
@@ -235,13 +240,8 @@
         return this.tags.some((t, i) => t._id === obj._id)
       }
     },
-    mounted () {
-      this.getTags()
-      this.type === 'edit' ? this.getArticleContent() : this.getDraft()
-    }
   }
 </script>
-
 <style lang="scss">
   @import '~style';
 
@@ -334,16 +334,8 @@
       }
     }
 
-    .display-area {
-
-      .markdown-body {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        padding: 20px;
-        overflow: auto;
-        z-index: 1;
-      }
+    .markdown-body {
+      width: 100%;
     }
 
     .tag-badge {
