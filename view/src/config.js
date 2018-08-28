@@ -13,9 +13,6 @@ if (process.env.NODE_ENV === 'development') {
     github: {
       clientId: serverConfig.github.clientId
     },
-
-    /*  socket.io  */
-    socket_host: 'http://localhost:3000'
   }
 }
 else {

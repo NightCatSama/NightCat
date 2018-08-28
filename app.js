@@ -20,12 +20,16 @@ import router from './routes'
 import admin_router from './routes/admin'
 
 import { getRootValue } from './middlewares/graphql'
+import { allowCrossDomain } from './middlewares/response'
 import { graphql, buildSchema } from 'graphql'
 import schema from './graphQL'
 
 const app = express()
 const relative = (_path) => path.relative(__dirname, _path)
 
+if (process.env.NODE_ENV === 'development') {
+    app.use(allowCrossDomain)
+}
 /*  使用 Helmet  */
 app.use(helmet())
 
