@@ -31,7 +31,7 @@
         </label>
       </div>
       <div class="content-area">
-        <mavon-editor v-model="content"/>
+        <mavon-editor ref="md" v-model="content" :ishljs="true" @imgAdd="$imgAdd" />
         <!--编辑区域-->
         <!--<div class="edit-area" data-area="Edit">-->
           <!--<textarea ref="edit" v-model="content" @input="updateDisplay" @keydown.tab.prevent="onTab"></textarea>-->
@@ -87,6 +87,21 @@
       }
     },
     methods: {
+      $imgAdd(pos, $file){
+        // 第一步.将图片上传到服务器.
+        let formdata = new FormData();
+        formdata.append('image', $file);
+        this.$http({
+          url: '/uploadImg',
+          method: 'post',
+          data: formdata,
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }).then((url) => {
+          // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+          // $vm.$img2Url 详情见本页末尾
+          this.$refs.md.$img2Url(pos, url);
+        })
+      },
       updateDisplay () {
         if (this.timer) {
           clearTimeout(this.timer)
@@ -106,10 +121,11 @@
       editArticle () {
         if (!this.title) return this.$toast('标题不能为空', 'warning')
         if (!this.content) return this.$toast('内容不能为空', 'warning')
-
-        this.$prompt(this.typeWord, () => {
-          this.type === 'add' ? this.addArticle() : this.updateArticle()
-        })
+        // TODO
+        // this.$prompt(this.typeWord, () => {
+        //   this.type === 'add' ? this.addArticle() : this.updateArticle()
+        // })
+        this.type === 'add' ? this.addArticle() : this.updateArticle()
       },
       addArticle () {
         let { title, content, cover } = this
@@ -148,7 +164,6 @@
         })
         .then((res) => {
           this.clearDraft()
-
           this.$toast('保存成功', 'success')
           .then(() => this.$router.replace({ name: 'Admin-Article' }))
         })
