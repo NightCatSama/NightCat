@@ -1,8 +1,8 @@
 import ctr from '../controllers'
 import express from 'express'
 import multiparty from 'multiparty'
-import qingstor from '../common/qingstor'
-import path from 'path'
+import qingstor from 'qingstor'
+import config from '../config'
 
 let router = express.Router()
 const { signinByGithub } = ctr.github
@@ -10,19 +10,18 @@ const { sendSignupEmail, activeEmail } = ctr.email
 const { site } = ctr.site
 router
     .post('/uploadImg', (req, res, next) => {
+        const q = new qingstor(config.qingstor);
         const form = new multiparty.Form();
         form.parse(req, function (err, fields, files) {
             console.log(files)
             let file = files.image[0].originalFilename
-            qingstor.uploadObject(files.image[0].path, `tmp/${Date.now()}.jpg`)
+            q.uploadObject(files.image[0].path, `tmp/${Date.now()}.jpg`)
                 .then(result => {
                     return res.send(result.url)
                 })
                 .catch(err => {
-                    console.log('errr')
-                       // console.log(err)
-                    }
-                )
+                    console.log('err')
+                })
         });
     })
 

@@ -31,7 +31,7 @@
         </label>
       </div>
       <div class="content-area">
-        <mavon-editor ref="md" v-model="content" :ishljs="true" @imgAdd="$imgAdd" />
+        <mavon-editor ref="md" v-model="content" :ishljs="true" @change="updateDisplay" @imgAdd="$imgAdd" />
         <!--编辑区域-->
         <!--<div class="edit-area" data-area="Edit">-->
           <!--<textarea ref="edit" v-model="content" @input="updateDisplay" @keydown.tab.prevent="onTab"></textarea>-->
@@ -98,7 +98,6 @@
           headers: { 'Content-Type': 'multipart/form-data' },
         }).then((url) => {
           // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
-          // $vm.$img2Url 详情见本页末尾
           this.$refs.md.$img2Url(pos, url);
         })
       },
@@ -110,8 +109,8 @@
 
         this.timer = setTimeout(() => {
           this.setDraft()
-          this.view = md.render(this.content)
-          this.$nextTick(() => this.syncScrollTop())
+          // this.view = md.render(this.content)
+          // this.$nextTick(() => this.syncScrollTop())
         }, 200)
       },
       syncScrollTop () {
@@ -142,7 +141,6 @@
         })
         .then((res) => {
           this.clearDraft()
-
           this.$toast('添加成功', 'success')
           .then(() => this.$router.replace({ name: 'Admin-Article' }))
         })
@@ -211,7 +209,7 @@
 
         if (content) {
           this.content = content
-          this.view = md.render(this.content)
+          // this.view = md.render(this.content)
         }
 
         if (title) {
@@ -351,6 +349,7 @@
 
     .markdown-body {
       width: 100%;
+      z-index: 990;
     }
 
     .tag-badge {
