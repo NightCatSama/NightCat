@@ -10,8 +10,8 @@ import link from './link'
 
 mongoose.Promise = global.Promise
 
-let uri = `mongodb://${config.database.password ? 
-    `${config.database.username}:${config.database.password}@` : 
+let uri = `mongodb://${config.database.password ?
+    `${config.database.username}:${config.database.password}@` :
     ''}${config.db_host}:${config.db_port}/${config.db}`
 
 mongoose.connect(uri)
@@ -19,7 +19,7 @@ mongoose.connect(uri)
 let db = mongoose.connection
 db.on('error', console.error.bind(console, '【 connection error 】:'))
 db.once('open', () => {
-  console.log(' =========== MongoDB is Opened! ===========')
+  console.log('=========== MongoDB is Opened! ===========')
 })
 
 export {

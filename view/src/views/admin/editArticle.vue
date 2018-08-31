@@ -31,14 +31,15 @@
         </label>
       </div>
       <div class="content-area">
+        <mavon-editor ref="md" v-model="content" :ishljs="true" @change="updateDisplay" @imgAdd="$imgAdd" />
         <!--编辑区域-->
-        <div class="edit-area" data-area="Edit">
-          <textarea ref="edit" v-model="content" @input="updateDisplay" @keydown.tab.prevent="onTab"></textarea>
-        </div>
+        <!--<div class="edit-area" data-area="Edit">-->
+          <!--<textarea ref="edit" v-model="content" @input="updateDisplay" @keydown.tab.prevent="onTab"></textarea>-->
+        <!--</div>-->
         <!--展示区域-->
-        <div class="display-area" data-area="Display">
-          <div ref="view" class="markdown-body" v-html="view"></div>
-        </div>
+        <!--<div class="display-area" data-area="Display">-->
+          <!--<div ref="view" class="markdown-body" v-html="view"></div>-->
+        <!--</div>-->
       </div>
     </div>
 
@@ -59,7 +60,7 @@
 </template>
 
 <script>
-  import md from '@/assets/markdown'
+  // import md from '@/assets/markdown'
 
   export default {
     name: 'admin-add-article',
@@ -76,12 +77,30 @@
         timer: null
       }
     },
+    mounted () {
+      this.getTags()
+      this.type === 'edit' ? this.getArticleContent() : this.getDraft()
+    },
     computed: {
       typeWord () {
         return this.type === 'add' ? '确定添加文章吗？' : '确定保存文章吗？'
       }
     },
     methods: {
+      $imgAdd(pos, $file){
+        // 第一步.将图片上传到服务器.
+        let formdata = new FormData();
+        formdata.append('image', $file);
+        this.$http({
+          url: '/uploadImg',
+          method: 'post',
+          data: formdata,
+          headers: { 'Content-Type': 'multipart/form-data' },
+        }).then((url) => {
+          // 第二步.将返回的url替换到文本原位置![...](0) -> ![...](url)
+          this.$refs.md.$img2Url(pos, url);
+        })
+      },
       updateDisplay () {
         if (this.timer) {
           clearTimeout(this.timer)
@@ -90,8 +109,8 @@
 
         this.timer = setTimeout(() => {
           this.setDraft()
-          this.view = md.render(this.content)
-          this.$nextTick(() => this.syncScrollTop())
+          // this.view = md.render(this.content)
+          // this.$nextTick(() => this.syncScrollTop())
         }, 200)
       },
       syncScrollTop () {
@@ -101,10 +120,11 @@
       editArticle () {
         if (!this.title) return this.$toast('标题不能为空', 'warning')
         if (!this.content) return this.$toast('内容不能为空', 'warning')
-
-        this.$prompt(this.typeWord, () => {
-          this.type === 'add' ? this.addArticle() : this.updateArticle()
-        })
+        // TODO
+        // this.$prompt(this.typeWord, () => {
+        //   this.type === 'add' ? this.addArticle() : this.updateArticle()
+        // })
+        this.type === 'add' ? this.addArticle() : this.updateArticle()
       },
       addArticle () {
         let { title, content, cover } = this
@@ -121,7 +141,6 @@
         })
         .then((res) => {
           this.clearDraft()
-
           this.$toast('添加成功', 'success')
           .then(() => this.$router.replace({ name: 'Admin-Article' }))
         })
@@ -143,7 +162,6 @@
         })
         .then((res) => {
           this.clearDraft()
-
           this.$toast('保存成功', 'success')
           .then(() => this.$router.replace({ name: 'Admin-Article' }))
         })
@@ -191,7 +209,7 @@
 
         if (content) {
           this.content = content
-          this.view = md.render(this.content)
+          // this.view = md.render(this.content)
         }
 
         if (title) {
@@ -235,13 +253,8 @@
         return this.tags.some((t, i) => t._id === obj._id)
       }
     },
-    mounted () {
-      this.getTags()
-      this.type === 'edit' ? this.getArticleContent() : this.getDraft()
-    }
   }
 </script>
-
 <style lang="scss">
   @import '~style';
 
@@ -334,16 +347,9 @@
       }
     }
 
-    .display-area {
-
-      .markdown-body {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        padding: 20px;
-        overflow: auto;
-        z-index: 1;
-      }
+    .markdown-body {
+      width: 100%;
+      z-index: 990;
     }
 
     .tag-badge {

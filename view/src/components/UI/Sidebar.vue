@@ -29,7 +29,8 @@
       <router-link to="/links" @click.native="close">友链</router-link>
       <router-link to="/about" @click.native="close">关于</router-link>
       <router-link to="/admin" @click.native="close">管理</router-link>
-      <a href="/graphql">GraphQL</a>
+      <!-- 管理员 -->
+      <a href="/graphql" v-if="user">GraphQL</a>
     </nav>
   </div>
 </template>

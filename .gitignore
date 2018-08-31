@@ -4,6 +4,7 @@
 .DS_Store
 logs/*.log
 node_modules/
+config/config.dev.js
 config/config.prod.js
 npm-debug.log*
 yarn-debug.log*
