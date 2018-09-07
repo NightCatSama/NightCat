@@ -17,7 +17,7 @@ proxy 可以理解为service层，提供model层调用的方法
 ## 本地运行
 * 启动 MongoDB
 * 编译前台vue文件 cd view, npm install, npm run build
-* 启动后台，项目根目录执行 yarn start
+* 启动后台，项目根目录执行 npm start
 * 浏览器打开 http://localhost:3000
 
 ## 注意
