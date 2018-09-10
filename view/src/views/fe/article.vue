@@ -1,6 +1,6 @@
 <template>
   <div class="article-view" v-if="article">
-    <div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>
+    <!--<div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>-->
     <article>
       <!-- 文章头部 -->
       <h1 class="title">{{ article.title }}</h1>

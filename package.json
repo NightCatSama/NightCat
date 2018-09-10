@@ -24,6 +24,7 @@
     "jsonwebtoken": "^7.2.1",
     "log4js": "^1.1.0",
     "markdown-it": "^8.3.1",
+    "markdown-it-linkscheme": "^1.0.2",
     "md5": "^2.2.1",
     "mongoose": "^4.7.6",
     "morgan": "^1.9.0",

@@ -28,6 +28,8 @@ Vue.prototype.$graphql = graphql
 
 Vue.config.productionTip = false
 
+mavonEditor.markdownIt.set({ linkify : true })
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
