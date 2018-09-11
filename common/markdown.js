@@ -1,7 +1,9 @@
 import MarkdownIt from 'markdown-it'
 import hljs from 'highlight.js'
+import linkify from 'markdown-it-linkscheme/dist/markdown-it-linkscheme.min'
 
 let md = new MarkdownIt({
+  linkify  : true,
   highlight: function (str, lang) {
     if (lang && hljs.getLanguage(lang)) {
       try {

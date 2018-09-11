@@ -1,5 +1,6 @@
 import { user } from '../models'
 import { getGravatar } from '../common/sign'
+import { encryptPassword } from '../common/sign'
 
 /*  获取完整的用户列表  */
 export const getUsers = async() => {
@@ -30,7 +31,7 @@ export const getUserById = async(id) => {
 export const newAndSave = async(data) => {
   let u = new user()
   u.account = data.account
-  u.password = data.password
+  u.password = encryptPassword(data.password)
   u.resetPwd = !!data.resetPwd
   u.subscribe = !!data.subscribe
   u.profile = data.profile

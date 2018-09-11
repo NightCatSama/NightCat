@@ -2,6 +2,8 @@ import md5 from 'md5'
 import jwt from 'jsonwebtoken'
 import uuid from 'uuid'
 import config from '../config'
+const bcrypt = require('bcrypt-nodejs')
+const SALT_ROUNDS = 10
 
 /*  生成默认头像  */
 export const getGravatar = (email) => {
@@ -16,6 +18,16 @@ export const signToken = (payload) => {
 /*  jwt验证  */
 export const verifyToken = (token) => {
   return jwt.verify(token, config.session_secret)
+}
+
+/*  密码加密  */
+export const encryptPassword = (password) => {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(SALT_ROUNDS));
+}
+
+/* 密码验证 */
+export const checkPassword = (password, hash) => {
+  return bcrypt.compareSync(password, hash)
 }
 
 /*  返回用户信息  */
@@ -47,5 +59,7 @@ export default {
   updateToken,
   signToken,
   verifyToken,
+  encryptPassword,
+  checkPassword,
   returnUserData
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="article-view" v-if="article">
-    <div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>
+    <!--<div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>-->
     <article>
       <!-- 文章头部 -->
       <h1 class="title">{{ article.title }}</h1>
@@ -10,7 +10,7 @@
       </p>
 
       <!-- 文章主体 -->
-      <div class="markdown-body content" v-html="article.view"></div>
+      <article-content :content="article.view"></article-content>
 
       <!-- 标签区块 -->
       <div class="tag-list">
@@ -43,12 +43,14 @@
 <script>
   import { scrollToElem } from '@/assets/smooth_scroll'
   import Comment from '@/components/UI/Comment'
+  import articleContent from '@/components/UI/ArticleContent'
   import 'github-markdown-css'
 
   export default {
     name: 'article',
     components: {
-      Comment
+      Comment,
+      articleContent
     },
     data () {
       return {
