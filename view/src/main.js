@@ -8,9 +8,16 @@ import 'mavon-editor/dist/css/index.css'
 import { createInstance, createGraphQLInstance } from './assets/http'
 import store from './store'
 import Components from './components'
+import preview from 'vue-photo-preview'
+import 'vue-photo-preview/dist/skin.css'
+
 // use
 Vue.use(mavonEditor)
 Vue.use(Components)
+let options = {
+  fullscreenEl: false
+};
+Vue.use(preview, options)
 
 let { start, success, error } = Vue.prototype.$loading
 let hook = {
