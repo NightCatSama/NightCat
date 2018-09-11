@@ -1,4 +1,5 @@
 import { article, comment } from '../models'
+import { getDefaultCover } from '../common/article'
 
 /*  获取全部文章  */
 export const getArticle = async(condition) => {
@@ -18,7 +19,7 @@ export const newAndSave = async(data) => {
   a.author = data.author
   a.tags = data.tags
   a.content = data.content
-  a.cover = data.cover
+  a.cover = data.cover || getDefaultCover()
   a.release = false
   await a.save()
 

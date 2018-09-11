@@ -25,6 +25,7 @@ export const encryptPassword = (password) => {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(SALT_ROUNDS));
 }
 
+/* 密码验证 */
 export const checkPassword = (password, hash) => {
   return bcrypt.compareSync(password, hash)
 }
