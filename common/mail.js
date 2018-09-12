@@ -10,7 +10,7 @@ let transporter = mailer.createTransport(smtpTransport(config.mail_opts))
 export const sendMail = async(data, link) => {
   if (config.debug) {
     console.log('发送邮件！')
-    return false
+    // return false
   }
 
   let success = false

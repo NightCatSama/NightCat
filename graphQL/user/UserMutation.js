@@ -8,6 +8,7 @@ import {
 import validator from 'validator'
 import { updateToken } from '../../common/sign'
 import { checkPassword } from '../../common/sign'
+import { encryptPassword } from '../../common/sign'
 
 import UserType from './UserType'
 import User from '../../proxy/user'
@@ -156,7 +157,7 @@ let UserMutation = {
       if (!root.user.resetPwd) throw Error('无法修改密码')
 
       root.user.resetPwd = false
-      root.user.password = password
+      root.user.password = encryptPassword(password)
 
       return await root.user.save()
     }
