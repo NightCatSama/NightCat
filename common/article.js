@@ -1,6 +1,7 @@
 /*  默认封面  */
+import config from '../config'
 export const getDefaultCover = () => {
-  return `https://my-house.pek3b.qingstor.com/153562339963314.jpg`
+  return config.defaultCover
 }
 
 export default {
