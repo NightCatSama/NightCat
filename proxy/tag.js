@@ -1,19 +1,19 @@
-import { tag } from '../models'
+import {tag} from '../models'
 
 /*  获取全部标签  */
-export const getTags = async() => {
+export const getTags = async () => {
   return await tag.find({}).populate({
-    path: 'article',
+    path    : 'article',
     populate: {
       path: 'author tags'
     }
-  }).sort({ 'count': -1 })
+  }).sort({'count': -1})
 }
 
 /*  根据名字查找标签  */
-export const getTagByName = async(name) => {
-  return await tag.findOne({ name }).populate({
-    path: 'article',
+export const getTagByName = async (name) => {
+  return await tag.findOne({name}).populate({
+    path    : 'article',
     populate: {
       path: 'author tags'
     }
@@ -21,9 +21,9 @@ export const getTagByName = async(name) => {
 }
 
 /*  根据id查找标签  */
-export const getTagById = async(id) => {
+export const getTagById = async (id) => {
   return await tag.findById(id).populate({
-    path: 'article',
+    path    : 'article',
     populate: {
       path: 'author tags'
     }
@@ -31,11 +31,11 @@ export const getTagById = async(id) => {
 }
 
 /*  修改Tag  */
-export const patchesTag = async(id, newTags, oldTags = []) => {
+export const patchesTag = async (id, newTags, oldTags = []) => {
   const deleteArr = oldTags.filter((tag_id) => newTags.indexOf(`${tag_id}`) === -1)
   const addArr = newTags.filter((tag_id) => oldTags.indexOf(`${tag_id}`) === -1)
 
-  Array.from(deleteArr, async(_id) => {
+  Array.from(deleteArr, async (_id) => {
     let t = await getTagById(_id)
     if (!t) return false
 
@@ -46,20 +46,25 @@ export const patchesTag = async(id, newTags, oldTags = []) => {
     await t.save()
   })
 
-  Array.from(addArr, async(_id) => {
-    let t = await getTagById(_id)
-    if (!t) return false
+  Array.from(addArr, async (_id) => {
+    try {
+      let t = await getTagById(_id)
+      if (!t) return false
 
-    t.depopulate('article')
-    let index = t.article.indexOf(id)
+      t.depopulate('article')
+      let index = t.article.indexOf(id)
+      index === -1 && t.article.push(id)
 
-    index === -1 && t.article.push(id)
-    await t.save()
+      await t.save()
+    } catch (e) {
+      console.log('patchesTag Array.from', e);
+    }
+
   })
 }
 
 /*  生成新标签  */
-export const newAndSave = async(data) => {
+export const newAndSave = async (data) => {
   let t = new tag()
   t.name = data.name
   t.article = []

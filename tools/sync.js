@@ -7,6 +7,7 @@ const rootPath = path.join(__dirname, '../jianshu');
 
 const tagData = {};
 const postData = {};
+postData.release = true;  //是否发布文章
 
 // 作者账号
 let email = "371262808@qq.com";
@@ -18,7 +19,7 @@ User.getUserByAccount(email).then(res => {
 });
 
 const saveTag = async(data) => {
-  await Tag.newAndSave(data)
+  return await Tag.newAndSave(data)
 }
 
 const savePost = async(data) => {
@@ -37,13 +38,11 @@ const readDirSync = async(rootPath) => {
   for (let tagName of files) {
     postData.tags = [];
     tagData.name = tagName;
-    await saveTag(tagData);
+    const obj = await saveTag(tagData);
     let subFilePath = path.join(rootPath, tagName);
     let subFiles = fs.statSync(subFilePath);
     if (subFiles.isDirectory()) {
-      await Tag.getTagByName(tagName).then(res => {
-        postData.tags.push(res._id)
-      });
+      postData.tags.push(obj._id);
       let endFiles = fs.readdirSync(subFilePath);
       for (let posts of endFiles) {
         postData.title = getPostTitle(posts);
@@ -52,7 +51,7 @@ const readDirSync = async(rootPath) => {
         if (endFiles.isFile()) {
           let content = fs.readFileSync(endFilePath, 'utf-8');
           postData.content = content;
-          savePost(postData)
+          await savePost(postData);
         }
       }
     }

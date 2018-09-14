@@ -20,7 +20,7 @@ export const newAndSave = async(data) => {
   a.tags = data.tags
   a.content = data.content
   a.cover = data.cover || getDefaultCover()
-  a.release = false
+  a.release = false || data.release
   await a.save()
 
   return await getArticleById(a._id)
