@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon es/",
     "deploy": "pm2 start es/index.prod.js",
-    "sync-posts": "nodemon es/index.sync.js"
+    "sync-posts": "node tools/jianshu-importer.js"
   },
   "author": "mafeifan (mafeifan@qq.com)",
   "dependencies": {
@@ -33,7 +33,6 @@
     "multiparty": "^4.2.1",
     "nodemailer": "^2.7.0",
     "nodemailer-smtp-transport": "^2.7.2",
-    "pug": "^2.0.3",
     "qingstor": "^1.0.2",
     "qingstor-sdk": "^2.2.13",
     "serve-favicon": "^2.5.0",
