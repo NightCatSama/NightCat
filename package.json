@@ -5,7 +5,8 @@
   "description": "A personal website",
   "scripts": {
     "start": "nodemon es/",
-    "deploy": "pm2 start es/index.prod.js"
+    "deploy": "pm2 start es/index.prod.js",
+    "sync-posts": "nodemon es/index.sync.js"
   },
   "author": "mafeifan (mafeifan@qq.com)",
   "dependencies": {

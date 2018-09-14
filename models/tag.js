@@ -12,6 +12,8 @@ let tagSchema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'article'
   }]
+}, {
+  usePushEach: true
 })
 
 tagSchema.index({ name: 1 })

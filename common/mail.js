@@ -10,7 +10,7 @@ let transporter = mailer.createTransport(smtpTransport(config.mail_opts))
 export const sendMail = async(data, link) => {
   if (config.debug) {
     console.log('发送邮件！')
-    return false
+    // return false
   }
 
   let success = false
@@ -48,7 +48,7 @@ export const sendActiveMail = async(to, link, account) => {
 /*  发送消息通知邮件  */
 export const sendEmailNotification = async(to, article_id, account, floor) => {
   if (config.debug) {
-    return false
+    // return false
   }
 
   let from = config.mail_opts.auth.user

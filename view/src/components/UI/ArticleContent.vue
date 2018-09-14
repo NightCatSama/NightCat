@@ -13,22 +13,16 @@
       }
     },
     methods: {
-      getImages() {
-        let children = this.$refs.content.children;
-        for (let i = 0; i < children.length; i++) {
-          let subChildren = children[i].children;
-          if (subChildren.length > 0) {
-            for (let j = 0; j < subChildren.length; j++) {
-              if (subChildren[j].hasAttribute("src")) {
-                subChildren[j].setAttribute('preview', 1)
-              }
-            }
-          }
+      // https://github.com/826327700/vue-photo-preview
+      addPreviewAttrForAllImgs() {
+        let imgDOMs = this.$refs.content.querySelectorAll('img');
+        for (let i = 0; i< imgDOMs.length; i++) {
+          imgDOMs[i].setAttribute('preview', 1);
         }
       }
     },
     mounted () {
-      this.getImages();
+      this.addPreviewAttrForAllImgs();
     }
   }
 </script>

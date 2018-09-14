@@ -48,4 +48,5 @@ module.exports = {
         location: 'pek3b',
         bucket_name: 'blog',
     },
+    defaultCover: 'https://my-house.pek3b.qingstor.com/500_300.jpg'
 }

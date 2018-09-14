@@ -321,6 +321,7 @@
             font-size: 13px;
             margin-left: 10px;
             color: $red_d3;
+            text-decoration: none;
           }
 
           .tag-list {
@@ -342,6 +343,7 @@
           font-size: 13px;
           color: $blue;
           transition: all .3s;
+          text-decoration: none;
 
           &:hover {
             color: $yellow;
