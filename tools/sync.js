@@ -1,76 +1,63 @@
-import { article, tag } from '../models';
-import { User, Tag } from '../proxy'
-import { getDefaultCover } from "../common/article";
-
+import { User, Tag, Article } from '../proxy'
 const fs = require("fs")
 const path = require("path")
 
-const rootPath = path.join(__dirname, '../user-71414-1536659474');
-const title = [];
-const posts = [];
+// 要导入的文件路径
+const rootPath = path.join(__dirname, '../jianshu');
 
-const readDir = (rootPath) => {
-  fs.readdir(rootPath, (err,files) => {
-    if(err) {
-      console.log(err)
-    } else {
-      for (let filename of files) {
-        title.push(filename);
-        let subFilePath = path.join(rootPath, filename);
-        fs.stat(subFilePath, (err, info) => {
-          if (err) {
-            console.log(err)
-          } else {
-            if(info.isDirectory()) {
-              readDir(subFilePath);
-            }
-            if (info.isFile()) {
-              fs.readFile(subFilePath, 'utf-8', (err, data) => {
-                posts.push(data);
-              })
-            }
-          }
-        })
-      }
-    }
-  })
-}
+const tagData = {};
+const postData = {};
 
-readDir(rootPath)
-
-
-
-
+// 作者账号
 let email = "371262808@qq.com";
 let author = '';
 
- User.getUserByEmail(email).then(res => {
-   author = res._id;
- });
+User.getUserByAccount(email).then(res => {
+  author = res._id;
+  postData.author = author;
+});
 
-// fs.readFile('./tools/Redis-摘抄.md', 'utf-8', (err, data) => {
-//   if (err) {
-//     console.log(err)
-//   } else {
-//     let a = new article();
-//     a.content = data;
-//     a.title = "Redis-摘抄"
-//     a.author = author;
-//     a.cover = getDefaultCover();
-//     a.save();
-//   }
-// })
+const saveTag = async(data) => {
+  await Tag.newAndSave(data)
+}
 
+const savePost = async(data) => {
+  let newArticle = await Article.newAndSave(data)
+  await Tag.patchesTag(newArticle._id, data.tags)
+}
 
-// 写入标签
-// fs.readdir('user-71414-1536659474', (err, data) => {
-//   data.forEach(item => {
-//     let t = new tag();
-//     t.name = item;
-//     t.article = [];
-//     t.save();
-//   })
-// })
+const getPostTitle = (data) => {
+  data = data.replace('.md', '')
+  data = data.replace('.html', '')
+  return data;
+}
 
+const readDirSync = async(rootPath) => {
+  let files = fs.readdirSync(rootPath);
+  for (let tagName of files) {
+    postData.tags = [];
+    tagData.name = tagName;
+    await saveTag(tagData);
+    let subFilePath = path.join(rootPath, tagName);
+    let subFiles = fs.statSync(subFilePath);
+    if (subFiles.isDirectory()) {
+      await Tag.getTagByName(tagName).then(res => {
+        postData.tags.push(res._id)
+      });
+      let endFiles = fs.readdirSync(subFilePath);
+      for (let posts of endFiles) {
+        postData.title = getPostTitle(posts);
+        let endFilePath = path.join(subFilePath, posts)
+        let endFiles = fs.statSync(endFilePath);
+        if (endFiles.isFile()) {
+          let content = fs.readFileSync(endFilePath, 'utf-8');
+          postData.content = content;
+          savePost(postData)
+        }
+      }
+    }
+  }
+}
 
+readDirSync(rootPath)
 
