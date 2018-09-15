@@ -1,0 +1,22 @@
+version: "3"
+services:
+  app:
+    build: .
+    container_name: app
+    restart: always
+    ports:
+      - "3001:3000"
+    volumes:
+      - .:/app
+    links:
+      - "mongo"
+    depends_on:
+      - "mongo"
+  mongo:
+    image: mongo:3.6-stretch
+    container_name: mongo
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DOCKER_MONGO_ROOT_USERNAME-admin}
+      MONGO_INITDB_ROOT_PASSWORD: ${DOCKER_MONGO_ROOT_PASSWORD-secret}
