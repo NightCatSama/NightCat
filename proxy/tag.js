@@ -51,7 +51,7 @@ export const patchesTag = async (id, newTags, oldTags = []) => {
       let t = await getTagById(_id)
       if (!t) return false
 
-      t.depopulate('article')
+      t.populate('article')
       let index = t.article.indexOf(id)
       index === -1 && t.article.push(id)
 
