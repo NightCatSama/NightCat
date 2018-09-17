@@ -15,7 +15,7 @@
           >
           </textarea>
           <span :class="['word-limit', { red: comment.length > comment_limit }]">{{ comment.length }} / {{ comment_limit }}</span>
-          <aside>温馨提示：只有绑定邮箱的用户会受到回复提示邮件</aside>
+          <aside>温馨提示：只有绑定邮箱的用户会收到回复提示邮件</aside>
           <Btn class="send-btn" @click="addComment" suffix="send">
             发送
           </Btn>
@@ -96,7 +96,7 @@
                     >
                     </textarea>
                     <span :class="['word-limit', { red: reply_content.length > comment_limit }]">{{ reply_content.length }} / {{ comment_limit }}</span>
-                    <aside>温馨提示：只有绑定邮箱的用户会受到回复提示邮件</aside>
+                    <aside>温馨提示：只有绑定邮箱的用户会收到回复提示邮件</aside>
                     <Btn class="send-btn" @click="addReply(comment._id)" suffix="send">
                       发送
                     </Btn>
