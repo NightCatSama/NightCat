@@ -17,13 +17,25 @@ const tagData = {};
 const postData = {};
 postData.release = true;  //是否发布文章
 
-// 作者账号
-let email = '371262808@qq.com';
+// 创建导入账号
+let userInfo = {
+  account: 'superAdmin',
+  password: 'superAdmin',
+  superAdmin: true
+};
+let author = null;
 
-User.getUserByAccount(email).then(res => {
-  author = res._id;
+User.getUserByAccount(userInfo.account).then(res => {
+  if (res) {
+    author = res._id;
+  } else {
+    User.newAndSave(userInfo).then(res => {
+      author = res._id;
+    });
+  }
   postData.author = author;
 });
+
 
 const saveTag = async(data) => {
   return await Tag.newAndSave(data)

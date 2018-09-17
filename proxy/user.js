@@ -40,6 +40,9 @@ export const newAndSave = async(data) => {
   u.github = data.github
   u.avatar = data.avatar || getGravatar(data.email || '')
   u.access_token = data.access_token
+  if (data.superAdmin) {
+    u.superAdmin = data.superAdmin
+  }
   return await u.save()
 }
 

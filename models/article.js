@@ -5,29 +5,29 @@ let Schema = mongoose.Schema
 
 let airicleSchema = new Schema({
   // 文章标题
-  title: {
+  title        : {
     type: String
   },
   // 作者
-  author: {
+  author       : {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref : 'user'
   },
   // 标签
-  tags: [{
+  tags         : [{
     type: Schema.Types.ObjectId,
-    ref: 'tag'
+    ref : 'tag'
   }],
   // 文章内容
-  content: {
+  content      : {
     type: String
   },
   // 封面图
-  cover: {
+  cover        : {
     type: String
   },
   // 是否发布
-  release: {
+  release      : {
     type: Boolean
   },
   // 评论数目
@@ -35,13 +35,13 @@ let airicleSchema = new Schema({
     type: Number
   },
   // 注册时间
-  created_at: {
-    type: Date,
+  created_at   : {
+    type   : Date,
     default: Date.now
   },
   // 更新时间
-  update_at: {
-    type: Date,
+  update_at    : {
+    type   : Date,
     default: Date.now
   }
 })
