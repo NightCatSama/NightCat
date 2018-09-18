@@ -8,6 +8,14 @@ let router = express.Router()
 const { signinByGithub } = ctr.github
 const { sendSignupEmail, activeEmail } = ctr.email
 const { site } = ctr.site
+
+const reFileName = (file) => {
+  let image =  file.substring(file.lastIndexOf('.') + 1)
+  let currentYear = (new Date()).getFullYear()
+  let currentMonth = (new Date()).getMonth() + 1
+  return `tmp/${currentYear}/${currentMonth}/${Date.now()}.${image}`
+}
+
 router
     .post('/uploadImg', (req, res, next) => {
         const q = new qingstor(config.qingstor);
@@ -15,7 +23,7 @@ router
         form.parse(req, function (err, fields, files) {
             console.log(files)
             let file = files.image[0].originalFilename
-            q.uploadObject(files.image[0].path, `tmp/${Date.now()}.jpg`)
+            q.uploadObject(files.image[0].path, reFileName(file))
                 .then(result => {
                     return res.send(result.url)
                 })
