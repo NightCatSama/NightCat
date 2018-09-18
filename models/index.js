@@ -10,11 +10,8 @@ import link from './link'
 
 mongoose.Promise = global.Promise
 
-let uri = `mongodb://${config.database.password ?
-    `${config.database.username}:${config.database.password}@` :
-    ''}${config.db_host}:${config.db_port}/${config.db}`
-
-mongoose.connect(uri)
+mongoose.connect(config.mongodb.url)
+mongoose.set('debug', config.mongodb.debug || false);
 
 let db = mongoose.connection
 db.on('error', console.error.bind(console, '【 connection error 】:'))

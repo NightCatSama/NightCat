@@ -59,9 +59,7 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   store: new MongoStore({
-    url: `mongodb://${process.env.NODE_ENV === 'production' ? 
-        `${config.database.username}:${config.database.password}@` : 
-        ''}${config.db_host}:${config.db_port}/${config.db}`,
+    url: config.mongodb.url,
   }),
   cookie: {
     maxAge: 30 * 24 * 60 * 60 * 1000
