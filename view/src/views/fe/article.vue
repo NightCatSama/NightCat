@@ -7,7 +7,7 @@
       <p class="meta">
         by {{ article.author.account }}
         <time>发表于 {{ article.created_at }}</time>
-        <span v-if="currentUser.superAdmin" class="editArticle" @click="gotoEditArticle">编辑文章</span>
+        <span v-if="user && currentUser.superAdmin" class="editArticle" @click="gotoEditArticle">编辑文章</span>
       </p>
 
       <!-- 文章主体 -->
@@ -113,7 +113,9 @@
     },
     mounted () {
       this.getArticleContent()
-      this.getUser()
+      if (this.user) {
+        this.getUser()
+      }
     }
   }
 </script>
