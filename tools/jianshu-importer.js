@@ -12,6 +12,8 @@ const {User, Tag, Article} = require('../proxy');
 
 // 要导入的文件路径
 const rootPath = path.join(__dirname, '../jianshu');
+let tagLength = null;
+let filesLength = null;
 
 const tagData = {};
 const postData = {};
@@ -53,30 +55,50 @@ const getPostTitle = (data) => {
 }
 
 const readDirSync = async(rootPath) => {
-  let files = fs.readdirSync(rootPath);
-  for (let tagName of files) {
-    postData.tags = [];
-    tagData.name = tagName;
-    const obj = await saveTag(tagData);
-    let subFilePath = path.join(rootPath, tagName);
-    let subFiles = fs.statSync(subFilePath);
-    if (subFiles.isDirectory()) {
-      postData.tags.push(obj._id);
-      let endFiles = fs.readdirSync(subFilePath);
-      let content = '';
-      for (let posts of endFiles) {
-        postData.title = getPostTitle(posts);
-        let endFilePath = path.join(subFilePath, posts)
-        let endFiles = fs.statSync(endFilePath);
-        if (endFiles.isFile()) {
-          content = fs.readFileSync(endFilePath, 'utf-8');
-          postData.content = content;
-          await savePost(postData);
+  try {
+    let files = fs.readdirSync(rootPath);
+    tagLength = files.length;
+    for (let tagName of files) {
+      postData.tags = [];
+      tagData.name = tagName;
+      console.log(`正在导入标签：${tagName} ...`)
+      const obj = await saveTag(tagData);
+      console.log(`标签：${tagName}导入成功`)
+      let subFilePath = path.join(rootPath, tagName);
+      let subFiles = fs.statSync(subFilePath);
+      if (subFiles.isDirectory()) {
+        postData.tags.push(obj._id);
+        try {
+          let endFiles = fs.readdirSync(subFilePath);
+          filesLength += endFiles.length;
+          let content = '';
+          for (let posts of endFiles) {
+            postData.title = getPostTitle(posts);
+            let endFilePath = path.join(subFilePath, posts)
+            let endFiles = fs.statSync(endFilePath);
+            if (endFiles.isFile()) {
+              try {
+                content = fs.readFileSync(endFilePath, 'utf-8');
+                postData.content = content;
+                console.log(`正在导入 ${endFilePath} ...`)
+                await savePost(postData);
+                console.log(`${endFilePath} 导入成功`)
+              } catch(err) {
+                console.log(endFilePath, err)
+              }
+            }
+          }
+        } catch (err) {
+          console.log(subFilePath, err)
         }
       }
     }
+  } catch (err) {
+    console.log(rootPath, err)
   }
+  console.log(`导入完成，共导入${tagLength}个标签, ${filesLength}篇文章`)
 }
 
 readDirSync(rootPath)
+
 
