@@ -29,6 +29,17 @@
           </span>
           <Icon name="plus-circle-o" @click.native="modalShow = true"></Icon>
         </label>
+        <div class="auto_save">
+          <pre>{{autoSaveTime}}</pre>
+          <label for="auto-save-time">自动保存：</label>
+          <select id="auto-save-time" v-model="autoSaveTime">
+            <option :value="null">不保存</option>
+            <option :value="0">0</option>
+            <option :value="30000">30s后</option>
+            <option :value="60000">1min后</option>
+            <option :value="250000">5min后</option>
+          </select>
+        </div>
       </div>
       <div class="content-area">
         <mavon-editor ref="md" v-model="content" :ishljs="true" @change="updateDisplay" @imgAdd="$imgAdd" />
@@ -75,7 +86,11 @@
         allTags: [],
         tags: [],
         timer: null,
-        is_draft: false
+        time2: null,
+        is_draft: false,
+        editor_start: 0,
+        editor_end: 0,
+        autoSaveTime: null
       }
     },
     mounted () {
@@ -119,12 +134,28 @@
           clearTimeout(this.timer)
           this.timer = null
         }
+        if (this.timer2) {
+          clearTimeout(this.timer2)
+          this.timer2 = null
+        }
 
         this.timer = setTimeout(() => {
           this.setDraft()
           // this.view = md.render(this.content)
           // this.$nextTick(() => this.syncScrollTop())
         }, 200)
+
+        if (this.autoSaveTime || this.autoSaveTime === 0) {
+          this.timer2 = setTimeout(() => {
+            this.editor_end = document.querySelector('.auto-textarea-input').innerHTML;
+            if (this.editor_end === this.editor_start && this.content) {
+              this.is_draft = true;
+              if (!this.title) this.title = this.$moment().format('YYYY-MM-DD')
+              this.type === 'add' ? this.addArticle() : this.updateArticle()
+            }
+          }, this.autoSaveTime)
+          this.editor_start = document.querySelector('.auto-textarea-input').innerHTML;
+        }
       },
       syncScrollTop () {
         let { scrollTop, scrollHeight, clientHeight } = this.$refs.edit
@@ -335,6 +366,10 @@
         text-align: center;
         background-color: $blue;
         color: $white;
+      }
+      .auto_save {
+        display: inline-block;
+        margin-left: auto
       }
     }
 

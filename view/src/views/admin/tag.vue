@@ -28,7 +28,7 @@
         <div class="article-wrap">
           <h1>该标签下的文章</h1>
           <div class="tag-group">
-            <a v-for="(article, i) in articles" :class="['article-link', { release: article.release }]" :key="i" :href="`/article/${article._id}`" target="_blank">
+            <a v-for="(article, i) in articles" class="article-link" :class="getStatusClass(article)" :key="i" :href="`/article/${article._id}`" target="_blank">
               # {{ article.title }} ({{articleStatus(article)}})
             </a>
           </div>
@@ -153,6 +153,13 @@
         } else {
           return article.release ? '已发布' : '未发布';
         }
+      },
+      getStatusClass(article) {
+        if (article.is_draft) {
+          return 'draft'
+        } else {
+          return article.release ? 'release' : '';
+        }
       }
     },
     mounted () {
@@ -218,6 +225,9 @@
 
         &.release {
           color: $green;
+        }
+        &.draft {
+          color: $red;
         }
       }
     }
