@@ -30,7 +30,6 @@
           <Icon name="plus-circle-o" @click.native="modalShow = true"></Icon>
         </label>
         <div class="auto_save">
-          <pre>{{autoSaveTime}}</pre>
           <label for="auto-save-time">自动保存：</label>
           <select id="auto-save-time" v-model="autoSaveTime">
             <option :value="null">不保存</option>
