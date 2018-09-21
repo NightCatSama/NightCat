@@ -11,6 +11,7 @@ import {
 import ArticleType from './ArticleType'
 import Article from '../../proxy/article'
 import { Tag, Comment } from '../../proxy'
+import { getDefaultCover } from '../../common/article'
 
 let ArticleMutation = {
   addArticle: {
@@ -152,6 +153,9 @@ let ArticleMutation = {
       let article = await Article.getArticleById(id)
 
       if (!article) throw Error('未找到文章')
+      if (!is_draft) {
+        cover = cover || getDefaultCover()
+      }
 
       article.depopulate('tags')
       await Tag.patchesTag(id, tags, article.tags, is_draft)

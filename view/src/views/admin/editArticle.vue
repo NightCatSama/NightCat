@@ -171,12 +171,8 @@
         this.type === 'add' ? this.addArticle() : this.updateArticle()
       },
       addArticle () {
-        let { title, content, cover } = this
+        let { title, content, cover, is_draft } = this
         let tags = this.tags.map((tag) => tag._id)
-        let is_draft = false;
-        if (this.is_draft) {
-          is_draft = this.is_draft;
-        }
         this.$graphql.mutation(`
           addArticle ($title, $content, $cover, $tags, $is_draft) {
             title
@@ -199,12 +195,8 @@
         .catch((err) => this.$toast(err.message, 'error'))
       },
       updateArticle () {
-        let { title, content, cover } = this
+        let { title, content, cover, is_draft } = this
         let tags = this.tags.map((tag) => tag._id)
-        let is_draft = false;
-        if (this.is_draft) {
-          is_draft = this.is_draft;
-        }
         this.$graphql.mutation(`
           updateArticle ($id, $title, $content, $cover, $tags, $is_draft) {
             title
