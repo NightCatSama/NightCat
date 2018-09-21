@@ -32,9 +32,13 @@ let ArticleMutation = {
       tags: {
         type: new GraphQLList(GraphQLID),
         description: '标签'
+      },
+      is_draft: {
+        type: GraphQLBoolean,
+        description: '是否在草稿箱'
       }
     },
-    resolve: async(root, { title, content, cover, tags }) => {
+    resolve: async(root, { title, content, cover, tags, is_draft }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -43,7 +47,8 @@ let ArticleMutation = {
         title,
         content,
         cover,
-        tags
+        tags,
+        is_draft
       })
 
       await Tag.patchesTag(newArticle._id, tags)
@@ -134,9 +139,13 @@ let ArticleMutation = {
       tags: {
         type: new GraphQLList(GraphQLID),
         description: '标签'
+      },
+      is_draft: {
+        type: GraphQLBoolean,
+        description: '是否在草稿箱'
       }
     },
-    resolve: async(root, { id, title, content, cover, tags }) => {
+    resolve: async(root, { id, title, content, cover, tags, is_draft }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -145,13 +154,14 @@ let ArticleMutation = {
       if (!article) throw Error('未找到文章')
 
       article.depopulate('tags')
-      await Tag.patchesTag(id, tags, article.tags)
+      await Tag.patchesTag(id, tags, article.tags, is_draft)
 
       Object.assign(article, {
         title,
         content,
         cover,
-        tags
+        tags,
+        is_draft
       })
 
       return await article.save()

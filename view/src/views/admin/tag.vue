@@ -29,7 +29,7 @@
           <h1>该标签下的文章</h1>
           <div class="tag-group">
             <a v-for="(article, i) in articles" :class="['article-link', { release: article.release }]" :key="i" :href="`/article/${article._id}`" target="_blank">
-              # {{ article.title }} ({{ article.release ? '已发布' : '未发布'}})
+              # {{ article.title }} ({{articleStatus(article)}})
             </a>
           </div>
         </div>
@@ -146,6 +146,13 @@
 
         this.type = type
         this.addModalShow = true
+      },
+      articleStatus(article) {
+        if (article.is_draft) {
+          return '在草稿箱中'
+        } else {
+          return article.release ? '已发布' : '未发布';
+        }
       }
     },
     mounted () {

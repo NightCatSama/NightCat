@@ -17,6 +17,7 @@
     "markdown-it": "^8.3.1",
     "markdown-it-linkscheme": "^1.0.2",
     "mavon-editor": "^2.6.17",
+    "moment": "^2.22.2",
     "remove-markdown": "^0.1.0",
     "validator": "^7.0.0",
     "vue": "^2.3.3",

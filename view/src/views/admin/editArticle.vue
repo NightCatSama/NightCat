@@ -74,12 +74,25 @@
         view: '',
         allTags: [],
         tags: [],
-        timer: null
+        timer: null,
+        is_draft: false
       }
     },
     mounted () {
       this.getTags()
       this.type === 'edit' ? this.getArticleContent() : this.getDraft()
+    },
+    created() {
+      document.onkeydown = (e) => {
+        let key = window.event.keyCode;
+        let ctrlKey = window.event.ctrlKey;
+        if (key === 83 && ctrlKey && this.type) {
+          e.preventDefault();
+          this.is_draft = true;
+          if (!this.title) this.title = this.$moment().format('YYYY-MM-DD')
+          this.type === 'add' ? this.addArticle() : this.updateArticle()
+        }
+      }
     },
     computed: {
       typeWord () {
@@ -118,6 +131,7 @@
         this.$refs.view.scrollTop = ((scrollTop + clientHeight) / scrollHeight) * this.$refs.view.scrollHeight - clientHeight
       },
       editArticle () {
+        this.is_draft = false;
         if (!this.title) return this.$toast('标题不能为空', 'warning')
         if (!this.content) return this.$toast('内容不能为空', 'warning')
         // TODO
@@ -129,28 +143,40 @@
       addArticle () {
         let { title, content, cover } = this
         let tags = this.tags.map((tag) => tag._id)
+        let is_draft = false;
+        if (this.is_draft) {
+          is_draft = this.is_draft;
+        }
         this.$graphql.mutation(`
-          addArticle ($title, $content, $cover, $tags) {
+          addArticle ($title, $content, $cover, $tags, $is_draft) {
             title
           }
         `, {
           title,
           content,
           cover,
-          tags
+          tags,
+          is_draft
         })
         .then((res) => {
           this.clearDraft()
           this.$toast('添加成功', 'success')
-          .then(() => this.$router.replace({ name: 'Admin-Article' }))
+          .then(() => {
+            this.type = null;
+            this.$router.replace({ name: 'Admin-Article' })
+          })
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },
       updateArticle () {
         let { title, content, cover } = this
         let tags = this.tags.map((tag) => tag._id)
+        let is_draft = false;
+        if (this.is_draft) {
+          is_draft = this.is_draft;
+        }
         this.$graphql.mutation(`
-          updateArticle ($id, $title, $content, $cover, $tags) {
+          updateArticle ($id, $title, $content, $cover, $tags, $is_draft) {
             title
           }
         `, {
@@ -158,12 +184,16 @@
           title,
           content,
           cover,
-          tags
+          tags,
+          is_draft
         })
         .then((res) => {
           this.clearDraft()
           this.$toast('保存成功', 'success')
-          .then(() => this.$router.replace({ name: 'Admin-Article' }))
+          .then(() => {
+            this.type = null;
+            this.$router.replace({ name: 'Admin-Article' })
+          })
         })
         .catch((err) => this.$toast(err.message, 'error'))
       },

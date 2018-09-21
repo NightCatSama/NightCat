@@ -19,8 +19,13 @@ export const newAndSave = async(data) => {
   a.author = data.author
   a.tags = data.tags
   a.content = data.content
-  a.cover = data.cover || getDefaultCover()
-  a.release = false || data.release
+  if (data.is_draft) {
+    a.cover = data.cover;
+  } else {
+    a.cover = data.cover || getDefaultCover()
+  }
+  a.release = data.release ? data.release : false
+  a.is_draft = data.is_draft ? data.is_draft : false
   await a.save()
 
   return await getArticleById(a._id)

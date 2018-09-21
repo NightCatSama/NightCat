@@ -45,6 +45,10 @@ let ArticleType = new GraphQLObjectType({
       type: GraphQLBoolean,
       description: '是否发布'
     },
+    is_draft: {
+      type: GraphQLBoolean,
+      description: '是否在草稿箱'
+    },
     comment_count: {
       type: GraphQLInt,
       description: '评论数目',

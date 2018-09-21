@@ -4,6 +4,7 @@ import createRouter from './router'
 import GraphQL from './assets/graphql'
 import mavonEditor from 'mavon-editor'
 import 'mavon-editor/dist/css/index.css'
+import moment from 'moment'
 
 import { createInstance, createGraphQLInstance } from './assets/http'
 import store from './store'
@@ -18,6 +19,7 @@ let options = {
   fullscreenEl: false
 };
 Vue.use(preview, options)
+Vue.prototype.$moment = moment;
 
 let { start, success, error } = Vue.prototype.$loading
 let hook = {

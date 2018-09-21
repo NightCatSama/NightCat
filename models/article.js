@@ -30,6 +30,9 @@ let airicleSchema = new Schema({
   release      : {
     type: Boolean
   },
+  is_draft      : {
+    type: Boolean
+  },
   // 评论数目
   comment_count: {
     type: Number

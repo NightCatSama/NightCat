@@ -22,6 +22,7 @@ export default {
         _id
         title
         release
+        is_draft
       }
     }
   `,
@@ -33,6 +34,7 @@ export default {
       cover
       view
       release
+      is_draft
       comment_count
       created_at
       author {

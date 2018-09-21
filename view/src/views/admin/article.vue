@@ -21,7 +21,7 @@
         </li>
         <li v-for="(article, i) in list" :class="{ active: active === i }" @click="active = i" @dblclick="openArticle(article._id)">
           <div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>
-          <div :class="['release-tag', { released: article.release }]" @click.stop="modifyRelease(i)"></div>
+          <div v-if="!article.is_draft" :class="['release-tag', { released: article.release }]" @click.stop="modifyRelease(i)"></div>
           <div class="info">
             <h3 class="title">
               {{ article.title }}

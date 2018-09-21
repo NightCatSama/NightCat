@@ -6,7 +6,14 @@
       <ul v-if="list.length">
         <li v-for="(article, i) in list">
           <div class="cover">
-            <span :style="{ backgroundImage: `url(${article.cover})`}"></span>
+            <router-link :to="{
+              name: 'Article',
+              params: {
+                id: article._id
+              }
+            }">
+              <span :style="{ backgroundImage: `url(${article.cover})`}"></span>
+            </router-link>
           </div>
           <div class="content">
             <router-link :to="{
