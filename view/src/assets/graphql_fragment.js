@@ -35,6 +35,7 @@ export default {
       view
       release
       is_draft
+      sort_order
       comment_count
       created_at
       author {

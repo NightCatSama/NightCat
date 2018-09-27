@@ -56,6 +56,7 @@ export default new GraphQLSchema({
       addArticle: ArticleMutation.addArticle,
       deleteArticle: ArticleMutation.deleteArticle,
       updateArticle: ArticleMutation.updateArticle,
+      updateArticleSortOrder: ArticleMutation.updateArticleSortOrder,
       releaseArticle: ArticleMutation.releaseArticle,
 
       addTag: TagMutation.addTag,

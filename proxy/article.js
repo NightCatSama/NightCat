@@ -19,6 +19,7 @@ export const newAndSave = async(data) => {
   a.author = data.author
   a.tags = data.tags
   a.content = data.content
+  a.sort_order = (await getArticle()).length + 1;
   if (data.is_draft) {
     a.cover = data.cover;
   } else {
