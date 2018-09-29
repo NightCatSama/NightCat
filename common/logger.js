@@ -2,16 +2,19 @@ import config from '../config'
 import log4js from 'log4js'
 
 log4js.configure({
-  appenders: [{
-    type: 'console'
-  }, {
-    type: 'file',
-    filename: 'logs/cheese.log',
-    category: 'cheese'
-  }]
+  appenders: {
+    console: { type: 'console'},
+    cheeseLogs: {
+      type: 'file',
+      filename: 'logs/cheese.log',
+      category: 'cheese'
+    }
+  },
+  categories: {
+    default: { appenders: ['console', 'cheeseLogs'], level: 'info' }
+  }
 });
 
 var logger = log4js.getLogger('cheese');
-logger.setLevel(config.debug ? 'DEBUG' : 'ERROR')
 
 export default logger
