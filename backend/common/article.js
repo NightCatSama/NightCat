@@ -1,5 +1,6 @@
 /*  默认封面  */
-import config from '../config'
+import config from '../../config'
+
 export const getDefaultCover = () => {
   return config.defaultCover
 }

@@ -8,7 +8,7 @@ import cookieParser from 'cookie-parser'
 import bodyParser from 'body-parser'
 import session from 'express-session'
 import graphqlHTTP from 'express-graphql'
-import config from './config'
+import config from '../config'
 import errorhandler from 'errorhandler'
 // https://github.com/jdesboeufs/connect-mongo
 // MongoDB session store for Express and Connect
@@ -19,16 +19,16 @@ import compression from 'compression'
 import router from './routes'
 import admin_router from './routes/admin'
 
-import { getRootValue } from './middlewares/graphql'
-import { allowCrossDomain } from './middlewares/response'
-import { graphql, buildSchema } from 'graphql'
+import {getRootValue} from './middlewares/graphql'
+import {allowCrossDomain} from './middlewares/response'
+import {graphql, buildSchema} from 'graphql'
 import schema from './graphQL'
 
 const app = express()
 const relative = (_path) => path.relative(__dirname, _path)
 
 if (process.env.NODE_ENV === 'development') {
-    app.use(allowCrossDomain)
+  app.use(allowCrossDomain)
 }
 /*  使用 Helmet  */
 app.use(helmet())
@@ -37,18 +37,20 @@ app.use(helmet())
 app.use(compression())
 
 /*  静态文件路径  */
-app.set('fe_views', relative('./view/dist/'))
+// app.set('fe_views', relative('../view/dist/'))
+// 改为绝对路径，防止在docker中404
+app.set('fe_views', path.resolve(__dirname, '../view/dist/'))
 
 /*  网站图标  */
-app.use(favicon(relative('favicon.ico')))
+app.use(favicon(path.resolve(__dirname, './favicon.ico')))
 
 /*  打印请求日志  */
 app.use(morgan('dev'))
 
 /*  请求解析中间件  */
 app.use(bodyParser.json())
-app.use(bodyParser.text({ type: 'application/graphql' }))
-app.use(bodyParser.urlencoded({ extended: true }))
+app.use(bodyParser.text({type: 'application/graphql'}))
+app.use(bodyParser.urlencoded({extended: true}))
 
 /*  cookie 解析中间件  */
 app.use(cookieParser(config.session_secret))
@@ -68,15 +70,15 @@ app.use(session({
 
 /*  graphQL  */
 app.use('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
-    schema,
-    pretty: true,
-    graphiql: true,
-    rootValue: await getRootValue(request),
-    formatError: (error) => ({
-        name: error.path,
-        message: error.message,
-        locations: error.locations
-    })
+  schema,
+  pretty: true,
+  graphiql: true,
+  rootValue: await getRootValue(request),
+  formatError: (error) => ({
+    name: error.path,
+    message: error.message,
+    locations: error.locations
+  })
 })))
 
 /*  前端代码  */
@@ -89,7 +91,7 @@ if (config.debug) {
   app.use(errorhandler())
 }
 else {
-  app.use(function(err, req, res, next) {
+  app.use(function (err, req, res, next) {
     logger.error(err)
     return res.status(500).json({
       success: false,
@@ -98,7 +100,7 @@ else {
   })
 }
 
-const server = app.listen(config.port, function() {
+const server = app.listen(config.port, function () {
   console.log(`The server is already started, Listen on port ${config.port}!`)
   // 自动打开浏览器
   // opn(`${config.protocol}://${config.host}`)

@@ -1,7 +1,7 @@
 import md5 from 'md5'
 import jwt from 'jsonwebtoken'
 import uuid from 'uuid'
-import config from '../config'
+import config from '../../config'
 const bcrypt = require('bcrypt-nodejs')
 const SALT_ROUNDS = 10
 

@@ -1,6 +1,6 @@
 import mailer from 'nodemailer'
 import smtpTransport from 'nodemailer-smtp-transport'
-import config from '../config'
+import config from '../../config'
 import logger from './logger'
 import opn from 'opn'
 

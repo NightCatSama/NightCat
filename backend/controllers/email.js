@@ -1,7 +1,7 @@
 import { User } from '../proxy'
 import md5 from 'md5'
 import validator from 'validator'
-import config from '../config'
+import config from '../../config'
 import { sendActiveMail } from '../common/mail'
 import { randomPassword } from '../common/utils'
 import { updateToken, returnUserData } from '../common/sign'

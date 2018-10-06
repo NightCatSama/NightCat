@@ -5,20 +5,23 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    restart: always
+#   restart: always
     ports:
       - "3001:3000"
     environment:
       - NODE_ENV=production
-    volumes:
-      - .:/app
+ #  volumes:
+ #    - .:/app
     links:
       - "mongo"
     depends_on:
       - "mongo"
   mongo:
-    image: mongo:3.6-stretch
     container_name: mongo
+    image: mongo:3.6-stretch
+    restart: always
+    volumes:
+      - ./docker-build/mongo/data:/data/db
     ports:
       - "27018:27017"
     environment:

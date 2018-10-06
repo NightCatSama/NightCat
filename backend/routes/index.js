@@ -2,7 +2,7 @@ import ctr from '../controllers'
 import express from 'express'
 import multiparty from 'multiparty'
 import qingstor from 'qingstor'
-import config from '../config'
+import config from '../../config'
 
 let router = express.Router()
 const { signinByGithub } = ctr.github

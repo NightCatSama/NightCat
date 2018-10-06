@@ -1,4 +1,4 @@
-import config from '../config'
+import config from '../../config'
 import log4js from 'log4js'
 
 log4js.configure({
@@ -15,6 +15,6 @@ log4js.configure({
   }
 });
 
-var logger = log4js.getLogger('cheese');
+const logger = log4js.getLogger('cheese');
 
 export default logger

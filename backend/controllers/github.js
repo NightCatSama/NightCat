@@ -1,7 +1,7 @@
 import { User } from '../proxy'
 import { updateToken } from '../common/sign'
 import axios from 'axios'
-import config from '../config'
+import config from '../../config'
 import { randomPassword } from '../common/utils'
 
 export default {

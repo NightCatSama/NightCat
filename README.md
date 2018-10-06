@@ -23,11 +23,4 @@ proxy 可以理解为service层，提供model层调用的方法
 ## 注意
 创建用户后需手动修改superAdmin权限为true
 
-## TODO
-- [-] 密码是明文，并没有运用jwt
-- [-] 测试markdown
-- [-] 编辑器剪切上传图片到青云
-- [-] 后台http://localhost:3000/admin 需要将数据库中user表的superAdmin和admin设置为true
-
-
 
