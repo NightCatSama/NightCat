@@ -30,7 +30,7 @@ let airicleSchema = new Schema({
   release      : {
     type: Boolean
   },
-  is_draft      : {
+  is_draft     : {
     type: Boolean
   },
   // 评论数目
@@ -46,6 +46,10 @@ let airicleSchema = new Schema({
   update_at    : {
     type   : Date,
     default: Date.now
+  },
+  // 排序
+  sort_order   : {
+    type: Number
   }
 })
 

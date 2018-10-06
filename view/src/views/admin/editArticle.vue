@@ -16,11 +16,11 @@
       <div class="other-area">
         <label for="title">
           Title:
-        <input id="title" type="text" v-model="title" @input="setDraft" />
+        <input id="title" type="text" v-model="title" />
         </label>
         <label for="cover">
           Cover:
-        <input id="cover" type="text" v-model="cover" @input="setDraft" />
+        <input id="cover" type="text" v-model="cover" />
         </label>
         <label for="tag">
           Tag:
@@ -42,14 +42,6 @@
       </div>
       <div class="content-area">
         <mavon-editor ref="md" v-model="content" :ishljs="true" @change="updateDisplay" @imgAdd="$imgAdd" />
-        <!--编辑区域-->
-        <!--<div class="edit-area" data-area="Edit">-->
-          <!--<textarea ref="edit" v-model="content" @input="updateDisplay" @keydown.tab.prevent="onTab"></textarea>-->
-        <!--</div>-->
-        <!--展示区域-->
-        <!--<div class="display-area" data-area="Display">-->
-          <!--<div ref="view" class="markdown-body" v-html="view"></div>-->
-        <!--</div>-->
       </div>
     </div>
 
@@ -84,7 +76,6 @@
         view: '',
         allTags: [],
         tags: [],
-        timer: null,
         time2: null,
         is_draft: false,
         editor_start: 0,
@@ -94,7 +85,7 @@
     },
     mounted () {
       this.getTags()
-      this.type === 'edit' ? this.getArticleContent() : this.getDraft()
+      this.type === 'edit' ? this.getArticleContent() : null
     },
     created() {
       document.onkeydown = (e) => {
@@ -103,7 +94,7 @@
         if (key === 83 && ctrlKey && this.type) {
           e.preventDefault();
           this.is_draft = true;
-          if (!this.title) this.title = this.$moment().format('YYYY-MM-DD')
+          if (!this.title) this.title = this.getCurrentDate()
           this.type === 'add' ? this.addArticle() : this.updateArticle()
         }
       }
@@ -129,27 +120,17 @@
         })
       },
       updateDisplay () {
-        if (this.timer) {
-          clearTimeout(this.timer)
-          this.timer = null
-        }
         if (this.timer2) {
           clearTimeout(this.timer2)
           this.timer2 = null
         }
-
-        this.timer = setTimeout(() => {
-          this.setDraft()
-          // this.view = md.render(this.content)
-          // this.$nextTick(() => this.syncScrollTop())
-        }, 200)
 
         if (this.autoSaveTime || this.autoSaveTime === 0) {
           this.timer2 = setTimeout(() => {
             this.editor_end = document.querySelector('.auto-textarea-input').innerHTML;
             if (this.editor_end === this.editor_start && this.content) {
               this.is_draft = true;
-              if (!this.title) this.title = this.$moment().format('YYYY-MM-DD')
+              if (!this.title) this.title = this.getCurrentDate()
               this.type === 'add' ? this.addArticle() : this.updateArticle()
             }
           }, this.autoSaveTime)
@@ -185,7 +166,6 @@
           is_draft
         })
         .then((res) => {
-          this.clearDraft()
           this.$toast('添加成功', 'success')
           .then(() => {
             this.type = null;
@@ -210,7 +190,6 @@
           is_draft
         })
         .then((res) => {
-          this.clearDraft()
           this.$toast('保存成功', 'success')
           .then(() => {
             this.type = null;
@@ -253,41 +232,6 @@
           this.tags.push(obj)
         }
       },
-      getDraft () {
-        let content = window.localStorage.getItem('content')
-        let title = window.localStorage.getItem('title')
-        let cover = window.localStorage.getItem('cover')
-        let tags = window.localStorage.getItem('tags')
-
-        if (content) {
-          this.content = content
-          // this.view = md.render(this.content)
-        }
-
-        if (title) {
-          this.title = title
-        }
-
-        if (cover) {
-          this.cover = cover
-        }
-
-        if (tags) {
-          this.tags = JSON.parse(tags)
-        }
-      },
-      setDraft () {
-        window.localStorage.setItem('content', this.content)
-        window.localStorage.setItem('title', this.title)
-        window.localStorage.setItem('cover', this.cover)
-        window.localStorage.setItem('tags', JSON.stringify(this.tags))
-      },
-      clearDraft () {
-        window.localStorage.removeItem('content')
-        window.localStorage.removeItem('title')
-        window.localStorage.removeItem('cover')
-        window.localStorage.removeItem('tags')
-      },
       getArticleContent () {
         this.$graphql.query(`
           getArticleById ($id) {
@@ -303,6 +247,10 @@
       },
       isActive (obj) {
         return this.tags.some((t, i) => t._id === obj._id)
+      },
+      getCurrentDate() {
+        let date = new Date();
+        return date.toLocaleDateString().split('/').join('-')
       }
     },
   }

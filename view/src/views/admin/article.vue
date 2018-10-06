@@ -19,7 +19,7 @@
         <li v-if="!list.length" class="no-article">
           Nothing
         </li>
-        <li v-for="(article, i) in list" :class="{ active: active === i }" @click="active = i" @dblclick="openArticle(article._id)">
+        <li v-for="(article, i) in list" v-dragging="{item: article, list: list, group: 'article'}" :class="{ active: active === i }" @click="active = i" @dblclick="openArticle(article._id)">
           <div class="cover" :style="{ backgroundImage: `url(${article.cover})`}"></div>
           <div v-if="!article.is_draft" :class="['release-tag', { released: article.release }]" @click.stop="modifyRelease(i)"></div>
           <div class="info">
@@ -88,6 +88,7 @@
         .then((res) => {
           this.hasNextPage = res.pageInfo.hasNextPage
           this.list = this.list.concat(res.edges.map((obj) => obj.node))
+          this.sortKey(this.list, 'sort_order');
           this.cursor = res.pageInfo.endCursor
         })
         .catch((err) => this.$toast(err.message, 'error'))
@@ -130,6 +131,7 @@
             let active = this.active
             this.active = Math.max(active - 1, 0)
             this.list.splice(active, 1)
+            this.updateArticleSortOrder()
           })
           .catch((err) => this.$toast(err.message, 'error'))
         })
@@ -157,10 +159,33 @@
       },
       openArticle (id) {
         window.open(`/article/${id}`)
+      },
+      sortKey(arr, key) {
+        return arr.sort((a, b) => {
+          let x = a[key];
+          let y = b[key];
+          return ((x>y)? -1 : (x<y)?1:0)
+        })
+      },
+      updateArticleSortOrder() {
+        let sequence = this.list.map(l => l._id);
+        this.$graphql.mutation(`
+          updateArticleSortOrder ($sequence) {
+            _id
+          }
+        `, {
+          sequence
+        })
       }
     },
     mounted () {
-      this.getArticleList()
+      this.getArticleList();
+      this.$dragging.$on('dragged', ({ value }) => {
+        this.list = value.list;
+      })
+      this.$dragging.$on('dragend', () => {
+        this.updateArticleSortOrder();
+      })
     }
   }
 </script>

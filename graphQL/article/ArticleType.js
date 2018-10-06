@@ -67,6 +67,10 @@ let ArticleType = new GraphQLObjectType({
     view: {
       type: GraphQLString,
       description: '解析后的内容'
+    },
+    sort_order: {
+      type: GraphQLInt,
+      description: '排列顺序'
     }
   })
 })

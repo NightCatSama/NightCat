@@ -60,8 +60,12 @@
           }" class="check-content">阅读全文 ></router-link>
         </li>
       </ul>
-      <div v-else class="no-article">
-        未找到文章
+      <div v-if="!list.length && !load" class="no-article">
+        还未发布文章
+      </div>
+
+      <div v-if="load" class="no-article">
+        加载中...
       </div>
 
       <div v-if="list.length" class="pagination">
@@ -122,7 +126,8 @@
         hasPrevPage: false,
         hasNextPage: false,
         totalPage: 0,
-        page: 0
+        page: 0,
+        load: false
       }
     },
     watch: {
@@ -131,6 +136,7 @@
     methods: {
       // 得到文章列表
       getArticleList () {
+        this.load = true;
         let page = +this.$route.query.page
         this.page = Number.isNaN(page) ? 0 : page
         this.tag = this.$route.query.tag
@@ -139,6 +145,7 @@
 
         this[query]()
         .then((res) => {
+          this.load = false;
           this.totalPage = Math.ceil(res.totalCount / this.count)
           this.hasPrevPage = res.pageInfo.hasPrevPage
           this.hasNextPage = res.pageInfo.hasNextPage

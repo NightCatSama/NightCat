@@ -37,9 +37,13 @@ let ArticleMutation = {
       is_draft: {
         type: GraphQLBoolean,
         description: '是否在草稿箱'
+      },
+      sort_order: {
+        type: GraphQLInt,
+        description: '排列顺序'
       }
     },
-    resolve: async(root, { title, content, cover, tags, is_draft }) => {
+    resolve: async(root, { title, content, cover, tags, is_draft, sort_order }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -49,7 +53,8 @@ let ArticleMutation = {
         content,
         cover,
         tags,
-        is_draft
+        is_draft,
+        sort_order
       })
 
       await Tag.patchesTag(newArticle._id, tags)
@@ -158,7 +163,7 @@ let ArticleMutation = {
       }
 
       article.depopulate('tags')
-      await Tag.patchesTag(id, tags, article.tags, is_draft)
+      await Tag.patchesTag(id, tags, article.tags)
 
       Object.assign(article, {
         title,
@@ -169,6 +174,30 @@ let ArticleMutation = {
       })
 
       return await article.save()
+    }
+  },
+
+  updateArticleSortOrder: {
+    type: ArticleType,
+    description: '更新文章排序',
+    args: {
+      sequence: {
+        type: new GraphQLList(GraphQLID),
+        description: '文章列表'
+      }
+    },
+    resolve: async(root, { sequence }) => {
+      let i = sequence.length;
+      for (let id of sequence) {
+        let article = await Article.getArticleById(id);
+        article.sort_order = i;
+        await article.save()
+        if (i > 1) {
+          i --;
+        } else {
+          return;
+        }
+      }
     }
   }
 }

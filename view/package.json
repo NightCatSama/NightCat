@@ -11,13 +11,13 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "awe-dnd": "^0.3.1",
     "axios": "^0.18.0",
     "github-markdown-css": "^2.6.0",
     "highlight.js": "^9.12.0",
     "markdown-it": "^8.3.1",
     "markdown-it-linkscheme": "^1.0.2",
     "mavon-editor": "^2.6.17",
-    "moment": "^2.22.2",
     "remove-markdown": "^0.1.0",
     "validator": "^7.0.0",
     "vue": "^2.3.3",
