@@ -8,6 +8,7 @@ function resolve (dir) {
 }
 
 module.exports = {
+  mode : process.env.NODE_ENV,
   entry: {
     app: './src/main.js'
   },
