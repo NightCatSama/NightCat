@@ -1,7 +1,7 @@
 const Home = r => require.ensure([], () => r(require('@/views/admin/home')), 'admin')
 const Admin = r => require.ensure([], () => r(require('@/views/admin/')), 'admin')
 const User = r => require.ensure([], () => r(require('@/views/admin/user')), 'admin')
-const Article = r => require.ensure([], () => r(require('@/views/admin/article')), 'admin-article')
+const ArticleDetail = r => require.ensure([], () => r(require('@/views/admin/articleDetail')), 'admin-article')
 const EditArticle = r => require.ensure([], () => r(require('@/views/admin/editArticle')), 'admin-edit-article')
 const Tag = r => require.ensure([], () => r(require('@/views/admin/tag')), 'admin-tag')
 const Links = r => require.ensure([], () => r(require('@/views/admin/links')), 'admin-links')
@@ -32,7 +32,7 @@ export default {
     }, {
       path: 'article',
       name: 'Admin-Article',
-      component: Article
+      component: ArticleDetail
     }, {
       path: 'article/add',
       name: 'Admin-AddArticle',

@@ -3,7 +3,7 @@ import Page from '@/views/fe/index'
 
 const Home = r => require.ensure([], () => r(require('@/views/fe/home')), 'home')
 const ArticleList = r => require.ensure([], () => r(require('@/views/fe/articleList')), 'home')
-const Article = r => require.ensure([], () => r(require('@/views/fe/article')), 'article')
+const ArticleDetail = r => require.ensure([], () => r(require('@/views/fe/articleDetail')), 'article')
 const Links = r => require.ensure([], () => r(require('@/views/fe/links')), 'links')
 const About = r => require.ensure([], () => r(require('@/views/fe/about')), 'about')
 const User = r => require.ensure([], () => r(require('@/views/fe/user')), 'user')
@@ -54,8 +54,8 @@ export default [{
     component: ArticleList
   }, {
     path: 'article/:id',
-    name: 'Article',
-    component: Article
+    name: 'ArticleDetail',
+    component: ArticleDetail
   }, {
     path: 'links',
     name: 'Links',

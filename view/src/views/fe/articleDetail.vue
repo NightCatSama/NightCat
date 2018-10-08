@@ -48,7 +48,7 @@
   import 'github-markdown-css'
 
   export default {
-    name: 'article',
+    name: 'articleDetail',
     components: {
       Comment,
       articleContent
@@ -56,7 +56,9 @@
     data () {
       return {
         article: null,
-        currentUser: null
+        currentUser: {
+          superAdmin: false
+        }
       }
     },
     computed: {

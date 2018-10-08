@@ -7,7 +7,7 @@
         <li v-for="(article, i) in list">
           <div class="cover">
             <router-link :to="{
-              name: 'Article',
+              name: 'ArticleDetail',
               params: {
                 id: article._id
               }
@@ -17,7 +17,7 @@
           </div>
           <div class="content">
             <router-link :to="{
-              name: 'Article',
+              name: 'ArticleDetail',
               params: {
                 id: article._id
               }
@@ -27,7 +27,7 @@
             - by {{ article.author.account }}
             <time>{{ article.created_at }}</time>
             <router-link :to="{
-              name: 'Article',
+              name: 'ArticleDetail',
               params: {
                 id: article._id
               },
@@ -53,7 +53,7 @@
             </div>
           </div>
           <router-link :to="{
-            name: 'Article',
+            name: 'ArticleDetail',
             params: {
               id: article._id
             }

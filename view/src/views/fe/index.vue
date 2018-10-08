@@ -24,7 +24,7 @@
   import { on, off } from '@/assets/tools'
 
   export default {
-    name: 'article',
+    name: 'home',
     data () {
       return {
         open: false

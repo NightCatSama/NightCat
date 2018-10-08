@@ -1,7 +1,7 @@
 import Admin from '@/views/admin/'
 import Home from '@/views/admin/home'
 import User from '@/views/admin/user'
-import Article from '@/views/admin/article'
+import ArticleDetail from '@/views/admin/articleDetail'
 import EditArticle from '@/views/admin/editArticle'
 import Tag from '@/views/admin/tag'
 import Links from '@/views/admin/links'
@@ -32,7 +32,7 @@ export default {
     }, {
       path: 'article',
       name: 'Admin-Article',
-      component: Article
+      component: ArticleDetail
     }, {
       path: 'article/add',
       name: 'Admin-AddArticle',

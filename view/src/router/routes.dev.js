@@ -1,7 +1,7 @@
 import Page from '@/views/fe/index'
 import Home from '@/views/fe/home'
 import ArticleList from '@/views/fe/articleList'
-import Article from '@/views/fe/article'
+import ArticleDetail from '@/views/fe/articleDetail'
 import Links from '@/views/fe/links'
 import About from '@/views/fe/about'
 import User from '@/views/fe/user'
@@ -52,8 +52,8 @@ export default [{
     component: ArticleList
   }, {
     path: 'article/:id',
-    name: 'Article',
-    component: Article
+    name: 'ArticleDetail',
+    component: ArticleDetail
   }, {
     path: 'links',
     name: 'Links',
