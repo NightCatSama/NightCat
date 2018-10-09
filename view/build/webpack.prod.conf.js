@@ -12,42 +12,48 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
-  module: {
+  module      : {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
-      extract: true
+      extract  : true
     })
   },
-  devtool: config.build.productionSourceMap ? '#source-map' : false,
-  output: {
-    path: config.build.assetsRoot,
-    filename: utils.assetsPath('js/[name].[chunkhash].js'),
+  devtool     : config.build.productionSourceMap ? '#source-map' : false,
+  output      : {
+    path         : config.build.assetsRoot,
+    filename     : utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
   optimization: {
-    splitChunks: {
-      chunks: 'async',
-      minSize: 30000,
-      minChunks: 1,
-      maxAsyncRequests: 5,
-      maxInitialRequests: 3,
+    splitChunks : {
+      chunks                : 'async',
+      minSize               : 30000,
+      minChunks             : 1,
+      maxAsyncRequests      : 5,
+      maxInitialRequests    : 3,
       automaticNameDelimiter: '~',
-      name: false,
-      cacheGroups: {
+      name                  : false,
+      cacheGroups           : {
         vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          priority: -10
+          name              : 'vendor',
+          chunks            : 'initial',
+          reuseExistingChunk: false,
+          test              : /node_modules\/(.*)\.js/,
+          priority          : -10
         },
-        default: {
-          minChunks: 2,
-          priority: -20,
-          reuseExistingChunk: true
+        styles : {
+          name              : 'styles',
+          test              : /\.(scss|css)$/,
+          chunks            : 'all',
+          minChunks         : 1,
+          reuseExistingChunk: true,
+          enforce           : true
         }
       }
     },
-    runtimeChunk: { name: 'runtime' }
+    runtimeChunk: {name: 'runtime'}
   },
-  plugins: [
+  plugins     : [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
@@ -60,7 +66,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     // }),
     // extract css into its own file
     new MiniCssExtractPlugin({
-      filename: utils.assetsPath('css/[name].[contenthash].css'),
+      filename : utils.assetsPath('css/[name].[contenthash].css'),
       allChunks: true
     }),
     // Compress extracted CSS. We are using this plugin so that possible
@@ -74,12 +80,12 @@ var webpackConfig = merge(baseWebpackConfig, {
     // you can customize output by editing /index.html
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
-      filename: config.build.index,
-      template: 'index.html',
-      inject: true,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
+      filename      : config.build.index,
+      template      : 'index.html',
+      inject        : true,
+      minify        : {
+        removeComments       : true,
+        collapseWhitespace   : true,
         removeAttributeQuotes: true
         // more options:
         // https://github.com/kangax/html-minifier#options-quick-reference
@@ -111,8 +117,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     // copy custom static assets
     new CopyWebpackPlugin([
       {
-        from: path.resolve(__dirname, '../static'),
-        to: config.build.assetsSubDirectory,
+        from  : path.resolve(__dirname, '../static'),
+        to    : config.build.assetsSubDirectory,
         ignore: ['.*']
       }
     ])
@@ -124,15 +130,15 @@ if (config.build.productionGzip) {
 
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
-      asset: '[path].gz[query]',
+      asset    : '[path].gz[query]',
       algorithm: 'gzip',
-      test: new RegExp(
+      test     : new RegExp(
         '\\.(' +
         config.build.productionGzipExtensions.join('|') +
         ')$'
       ),
       threshold: 10240,
-      minRatio: 0.8
+      minRatio : 0.8
     })
   )
 }
