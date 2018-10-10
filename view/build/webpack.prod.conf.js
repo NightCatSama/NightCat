@@ -12,59 +12,59 @@ var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
-  module      : {
+  module : {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
       extract  : true
     })
   },
-  devtool     : config.build.productionSourceMap ? '#source-map' : false,
-  output      : {
+  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  output : {
     path         : config.build.assetsRoot,
     filename     : utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
+
+  // https://webpack.js.org/configuration/optimization/
   optimization: {
+    // Tell webpack to minimize the bundle using the UglifyjsWebpackPlugin.
+    minimize    : true,
+    // 该配置用于实现代码分割，取代了曾经的CommonsChunkPlugin插件
+    // https://webpack.js.org/plugins/split-chunks-plugin/
     splitChunks : {
       chunks                : 'async',
       minSize               : 30000,
+      maxSize               : 0,
       minChunks             : 1,
       maxAsyncRequests      : 5,
       maxInitialRequests    : 3,
       automaticNameDelimiter: '~',
-      name                  : false,
+      name                  : true,
       cacheGroups           : {
         vendors: {
-          name              : 'vendor',
-          chunks            : 'initial',
-          reuseExistingChunk: false,
-          test              : /node_modules\/(.*)\.js/,
-          priority          : -10
+          test    : /[\\/]node_modules[\\/]/,
+          priority: -10
         },
-        styles : {
-          name              : 'styles',
-          test              : /\.(scss|css)$/,
-          chunks            : 'all',
-          minChunks         : 1,
-          reuseExistingChunk: true,
-          enforce           : true
+        default: {
+          minChunks         : 2,
+          priority          : -20,
+          reuseExistingChunk: true
         }
       }
     },
-    runtimeChunk: {name: 'runtime'}
+    runtimeChunk: {name: 'runtime'},
+    // 只要在编译时出现错误，就使用noEmitOnErrors属性来跳过emit 阶段，用来替代NoEmitOnErrorsPlugin 插件
+    // noEmitOnErrors: true,
+    // 使用可读的模块标识，方便更好的调试。webpack在开发模式下默认开启，生产模式下默认关闭，用来替代 NamedModulesPlugin 插件
+    // namedModules: true,
+    // 缺省值为false, 表示每个入口块默认内嵌runtime代码
   },
   plugins     : [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
       'process.env': env
     }),
-    // new webpack.optimize.UglifyJsPlugin({
-    //   compress: {
-    //     warnings: false
-    //   },
-    //   sourceMap: true
-    // }),
-    // extract css into its own file
+    // 取代extract-text-webpack-plugin
     new MiniCssExtractPlugin({
       filename : utils.assetsPath('css/[name].[contenthash].css'),
       allChunks: true
@@ -93,26 +93,6 @@ var webpackConfig = merge(baseWebpackConfig, {
       // necessary to consistently work with multiple chunks via CommonsChunkPlugin
       chunksSortMode: 'dependency'
     }),
-    // split vendor js into its own file
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'vendor',
-    //   minChunks: function (module, count) {
-    //     // any required modules inside node_modules are extracted to vendor
-    //     return (
-    //       module.resource &&
-    //       /\.js$/.test(module.resource) &&
-    //       module.resource.indexOf(
-    //         path.join(__dirname, '../node_modules')
-    //       ) === 0
-    //     )
-    //   }
-    // }),
-    // extract webpack runtime and module manifest to its own file in order to
-    // prevent vendor hash from being updated whenever app bundle is updated
-    // new webpack.optimize.CommonsChunkPlugin({
-    //   name: 'manifest',
-    //   chunks: ['vendor']
-    // }),
 
     // copy custom static assets
     new CopyWebpackPlugin([
