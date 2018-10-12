@@ -7,6 +7,7 @@ var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+var SentryWebpackPlugin = require('@sentry/webpack-plugin');
 
 
 var webpackConfig = merge(baseWebpackConfig, {
@@ -95,7 +96,12 @@ var webpackConfig = merge(baseWebpackConfig, {
         to    : config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new SentryWebpackPlugin ({
+      release: process.env.RELEASE,
+      include: './dist',
+      ignore : ['node_modules']
+    })
   ]
 })
 

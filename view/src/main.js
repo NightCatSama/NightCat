@@ -11,7 +11,14 @@ import Components from './components'
 import preview from 'vue-photo-preview'
 import 'vue-photo-preview/dist/skin.css'
 import VueDND from 'awe-dnd'
+import Raven from 'raven-js'
+import RavenVue from 'raven-js/plugins/vue'
+import sentryConfig from '../sentry-config'
 
+Raven
+  .config(sentryConfig.DSN)
+  .addPlugin(RavenVue, Vue)
+  .install();
 // use
 Vue.use(mavonEditor)
 Vue.use(Components)
