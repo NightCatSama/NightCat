@@ -1,6 +1,5 @@
 var path = require('path')
 var utils = require('./utils')
-var webpack = require('webpack')
 var config = require('../config')
 var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
@@ -9,7 +8,6 @@ var HtmlWebpackPlugin = require('html-webpack-plugin')
 var MiniCssExtractPlugin = require('mini-css-extract-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
-var env = config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
   module : {
@@ -60,10 +58,6 @@ var webpackConfig = merge(baseWebpackConfig, {
     // 缺省值为false, 表示每个入口块默认内嵌runtime代码
   },
   plugins     : [
-    // http://vuejs.github.io/vue-loader/en/workflow/production.html
-    new webpack.DefinePlugin({
-      'process.env': env
-    }),
     // 取代extract-text-webpack-plugin
     new MiniCssExtractPlugin({
       filename : utils.assetsPath('css/[name].[contenthash].css'),
