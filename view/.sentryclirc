@@ -1,0 +1,7 @@
+[defaults]
+url = https://sentry.io/
+org = test-mb
+project = nightcat
+
+[auth]
+token = af652466124b4f1b9c2e544c82186276444081a6831a41cfa50bd435270b7641
