@@ -10,6 +10,7 @@ import link from './link'
 
 mongoose.Promise = global.Promise
 
+console.log(config.mongodb.url);
 mongoose.connect(config.mongodb.url)
 mongoose.set('debug', config.mongodb.debug || false);
 

@@ -19,9 +19,10 @@ services:
   mongo:
     container_name: mongo
     image: mongo:3.6-stretch
-    restart: always
-    volumes:
-      - ./docker-build/mongo/data:/data/db
+#    restart: always
+    command: [--auth]
+#    volumes:
+#      - ./docker-build/mongo/data:/data/db
     ports:
       - "27018:27017"
     environment:

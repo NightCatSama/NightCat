@@ -101,6 +101,7 @@ else {
 }
 
 const server = app.listen(config.port, function () {
+  console.log(config.mongodb.url);
   console.log(`The server is already started, Listen on port ${config.port}!`)
   // 自动打开浏览器
   // opn(`${config.protocol}://${config.host}`)
