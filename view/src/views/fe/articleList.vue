@@ -1,11 +1,12 @@
 <template>
   <div class="article-list-view">
     <h1 class="view-title">
-      {{ tag ? `${tag}的文章` : '所有文章' }}</h1>
+      {{ tag ? `【${tag}】分类下的文章` : '所有文章' }}<span class="tag-count">共{{totalCountInTag}}篇</span>
+    </h1>
     <section class="article-list">
       <ul v-if="list.length">
         <li v-for="(article, i) in list">
-          <div class="cover">
+          <div class="cover" v-if="article.cover">
             <router-link :to="{
               name: 'ArticleDetail',
               params: {
@@ -120,12 +121,13 @@
     data () {
       return {
         tag: undefined,
-        count: 5,
+        count: 5,  // 放到配置里
         list: [],
         tags: [],
         hasPrevPage: false,
         hasNextPage: false,
         totalPage: 0,
+        totalCountInTag: 0,
         page: 0,
         load: false
       }
@@ -146,6 +148,7 @@
         this[query]()
         .then((res) => {
           this.load = false;
+          this.totalCountInTag = res.totalCount;
           this.totalPage = Math.ceil(res.totalCount / this.count)
           this.hasPrevPage = res.pageInfo.hasPrevPage
           this.hasNextPage = res.pageInfo.hasNextPage
@@ -255,6 +258,11 @@
     .view-title {
       text-align: center;
       margin: 20px;
+      .tag-count {
+        font-size: 16px;
+        margin-left: 10px;
+        color: #ccc;
+      }
     }
 
     .article-list {

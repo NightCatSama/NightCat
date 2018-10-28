@@ -15,7 +15,7 @@ const Sign = r => require.ensure([], () => r(require('@/views/common/sign')), 's
 export default [{
   path: '/',
   name: 'Home',
-  component: Home
+  component: ArticleList
 }, {
   path: 'login',
   name: 'Login',

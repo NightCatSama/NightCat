@@ -1,8 +1,8 @@
 {
   "name": "view",
   "version": "1.0.0",
-  "description": "nightcat.win",
-  "author": "NightCatSama <642163903@qq.com>",
+  "description": "mafeifan.com",
+  "author": "mafeifan <mafeifan@qq.com>",
   "private": true,
   "scripts": {
     "dev": "node build/dev-server.js",

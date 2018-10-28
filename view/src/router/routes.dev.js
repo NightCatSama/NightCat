@@ -13,7 +13,7 @@ import Sign from '@/views/common/sign'
 export default [{
   path: '/',
   name: 'Home',
-  component: Home
+  component: ArticleList
 }, {
   path: 'login',
   name: 'Login',

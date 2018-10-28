@@ -3,34 +3,8 @@
     <section class="about-me">
       <h1 class="title">关于本网站</h1>
       <p>
-        此网站建立于2017年6月，如你所见，这是一个简单又简陋的个人网站。因为从后端到前端都是本人一手设计的，有什么让你不舒服的地方欢迎在下方评论区吐槽~
-        <br />
-        <br />
-        做博客的初衷是用于记录我的学习经历和踩过坑，还有分享我想分享的东西。
-        <br />
-        <br />
-        但是本人是个语文水平三年级的人，你可能会不可避免看到以下情况：
-        <br />
-        <br />
-        <ol>
-          <li>文字比代码少</li>
-          <li>语句不通顺</li>
-          <li>排版紊乱</li>
-        </ol>
-        <br />
-        <small>最后本博客的代码是开源的: <a href="https://github.com/NightCatSama/NightCat" target="_blank">https://github.com/NightCatSama/NightCat</a></small>
-      </p>
-      <br />
-      <br />
-      <h1 class="title">关于我</h1>
-      <p>
-        唔，我叫夜喵，性别男。是一枚兴趣使然的前端攻城狮，喜欢做有趣的特效和游戏，私下的爱好是 看番 和 打游戏。
-        <br />
-        <br />
-        欢迎关注我的 Github ⁄(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄: <a href="https://github.com/NightCatSama" target="_blank">https://github.com/NightCatSama</a>
-        <br />
-        <br />
-        如果有什么想和我聊的，可以加我的扣扣：642163903
+        点滴记录学习历程
+        <small>本博客的代码是开源的: <a href="https://github.com/mafeifan/NightCat" target="_blank">https://github.com/mafeifan/NightCat</a></small>
       </p>
     </section>
 
