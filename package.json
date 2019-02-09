@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon backend/es/",
     "deploy": "pm2 start backend/es/index.prod.js",
-    "sync-posts": "node tools/jianshu-importer.js"
+    "sync-posts": "node backend/tools/jianshu-importer.js"
   },
   "author": "mafeifan (mafeifan@qq.com)",
   "dependencies": {

@@ -1,6 +1,6 @@
 # Client App
 # 使用 Node 官方提供的镜像
-FROM node:8.12-alpine as client-app
+FROM node:10.15-alpine as client-app
 LABEL maintainer="finleyma <mafeifan@qq.com>"
 
 RUN mkdir -p /app

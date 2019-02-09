@@ -1,25 +1,24 @@
 module.exports = {
   debug: true,
-
-  /*  网站信息  */
-  name: 'NightCat',
-  description: 'A site',
-
-  // 文章默认封面图
-  defaultCover: 'https://my-house.pek3b.qingstor.com/500_300.jpg',
+  protocol: 'http',
+  host: 'localhost:3000',
 
   /*  端口信息  */
-  // 后台服务器端口
   port: 3000,
-  // 前台开发环境中的webpack server端口
   dev_port: 2333,
 
   /*  mongodb 配置  */
   // mongodb://username:password@hosts/db_name
   mongodb: {
-    url: 'mongodb://localhost/admin',
+    url: 'mongodb://admin:secret@mongo/admin',
     debug: true,
   },
+
+  /*  网站信息  */
+  name: 'NightCat',
+  description: 'A site',
+  // 文章默认封面图
+  defaultCover: 'https://my-house.pek3b.qingstor.com/500_300.jpg',
 
   /*  加密用字段  */
   session_secret: 'modify-it',
@@ -36,15 +35,15 @@ module.exports = {
 
   /*  github 配置  */
   github: {
-    clientId: 'f34a0e50609f8dc19f8b',
-    clientSecret: '4de9dc2c0c03ee1e5c603e58963662f83cc2c048'
+    clientId: '**',
+    clientSecret: '**********'
   },
 
-  /*青云对象存储 */
+  /* 青云对象存储，用于图片上传 */
   qingstor: {
-    access_id: '***',
-    access_key: '***',
+    access_id: 'TAPGMARURFICDAGMCOTV',
+    access_key: '****',
     location: 'pek3b',
-    bucket_name: 'blog',
+    bucket_name: 'hexo-blog',
   },
-}
+};

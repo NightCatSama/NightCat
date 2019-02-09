@@ -1,3 +1,12 @@
+/**
+ * 导入简书的文章到数据库中
+ * 流程：
+ * 1. 登录你的简书账号， 打开 https://www.jianshu.com/settings/misc 点击下载所有文章
+ * 2. 解压到user-xxxx的目录到 backend/jianshu 目录下，该目录底下应该包含所有的文章目录
+ * 3. 在项目根目录执行 npm run sync-posts
+ * 4. 注意配置好 MongoDB 的连接信息
+ */
+
 require('babel-core/register')(
   {
     presets: ['stage-2', 'es2015']

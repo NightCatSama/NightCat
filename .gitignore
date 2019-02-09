@@ -12,5 +12,7 @@ yarn-debug.log*
 yarn-error.log*
 view/dist/
 
+backend/jianshu/*
+
 mongodb.cmd
 mongodb.conf
