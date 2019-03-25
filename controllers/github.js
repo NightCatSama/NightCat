@@ -64,7 +64,7 @@ export default {
 
     // 如果没有邮箱只能拜拜了
     if (!userData.email) {
-      res.writeHead(200, { 'Content-Type': 'text/plain' })
+      res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8' })
       res.write('请先在 github 中设置公开邮箱')
       return res.end()
     }
