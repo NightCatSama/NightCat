@@ -1,0 +1,13 @@
+// 媒体查询 max-width
+@mixin max-screen($res) {
+  @media (max-width: $res) {
+    @content;
+  }
+}
+
+// 媒体查询 min-width
+@mixin min-screen($res) {
+  @media (min-width: $res) {
+    @content;
+  }
+}
