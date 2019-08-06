@@ -30,9 +30,6 @@ app.use(helmet())
 /*  开启Gzip压缩  */
 app.use(compression())
 
-/*  静态文件路径  */
-app.set('frone_views', relative('./view/dist/'))
-
 /*  网站图标  */
 app.use(favicon(relative('favicon.ico')))
 
@@ -75,7 +72,6 @@ app.use('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
 })))
 
 /*  前端代码  */
-app.use(express.static(app.get('frone_views')))
 app.use('/admin', admin_router)
 app.use('/', router)
 

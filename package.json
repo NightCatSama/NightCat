@@ -4,7 +4,7 @@
   "private": true,
   "description": "A personal website",
   "scripts": {
-    "start": "nodemon es/",
+    "start": "mongod -f ./mongodb.conf && nodemon es/",
     "deploy": "pm2 start es/index.prod.js"
   },
   "author": "NightCatSama (642163903@qq.com)",
