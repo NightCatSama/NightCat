@@ -5,14 +5,13 @@
   "description": "A personal website",
   "author": "NightCatSama (nightcat@hzfe.org)",
   "scripts": {
-    "precommit": "lint-staged",
     "start": "mongod -f ./mongodb.conf && npm run dev",
     "dev": "nodemon",
     "build": "tsc -p tsconfig.build.json",
     "deploy": "pm2 start dist/app.js"
   },
   "lint-staged": {
-    "*.{js,ts}": [
+    "*.ts": [
       "prettier --single-quote --no-semi --trailing-comma all --write '**/*.ts'",
       "git add"
     ]
@@ -73,5 +72,10 @@
     "tsconfig-paths": "^3.8.0",
     "tslint": "^5.18.0",
     "typescript": "^3.5.3"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
   }
 }
