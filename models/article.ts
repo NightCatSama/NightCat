@@ -1,58 +1,60 @@
 import { Schema, Document, model } from 'mongoose'
 import md from '../common/markdown'
-import { IArticle } from 'interfaces/article';
+import { IArticle } from 'interfaces/article'
 
 export interface IArticleModel extends IArticle, Document {}
 
 let articleSchema = new Schema<IArticleModel>({
   // 文章标题
   title: {
-    type: String
+    type: String,
   },
   // 作者
   author: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'user',
   },
   // 标签
-  tags: [{
-    type: Schema.Types.ObjectId,
-    ref: 'tag'
-  }],
+  tags: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'tag',
+    },
+  ],
   // 文章内容
   content: {
-    type: String
+    type: String,
   },
   // 封面图
   cover: {
-    type: String
+    type: String,
   },
   // 是否发布
   release: {
-    type: Boolean
+    type: Boolean,
   },
   // 评论数目
   comment_count: {
-    type: Number
+    type: Number,
   },
   // 注册时间
   created_at: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   // 更新时间
   update_at: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 })
 
-articleSchema.pre<IArticleModel>('save', function (next) {
+articleSchema.pre<IArticleModel>('save', function(next) {
   this.update_at = new Date()
   next()
 })
 
-articleSchema.virtual('view').get(function () {
+articleSchema.virtual('view').get(function() {
   return md.render(this.content)
 })
 

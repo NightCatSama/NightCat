@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import ArticleType from '../article/ArticleType'
@@ -16,21 +16,21 @@ let TagType = new GraphQLObjectType({
   fields: () => ({
     _id: {
       type: GraphQLID,
-      description: 'id'
+      description: 'id',
     },
     name: {
       type: GraphQLString,
-      description: '标签名字'
+      description: '标签名字',
     },
     article: {
       type: new GraphQLList(ArticleType),
-      description: '该标签下的文章'
+      description: '该标签下的文章',
     },
     count: {
       type: GraphQLInt,
-      description: '该标签下的文章数量'
-    }
-  })
+      description: '该标签下的文章数量',
+    },
+  }),
 })
 
 export default TagType

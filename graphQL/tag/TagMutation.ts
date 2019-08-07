@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import TagType from './TagType'
@@ -18,10 +18,10 @@ let TagMutation = {
     args: {
       name: {
         type: GraphQLString,
-        description: '标签名字'
-      }
+        description: '标签名字',
+      },
     },
-    resolve: async(root, { name }) => {
+    resolve: async (root, { name }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
       if (!name) throw Error('标签名字不能为空')
@@ -30,9 +30,8 @@ let TagMutation = {
       await Tag.newAndSave({ name })
 
       return await Tag.getTags()
-    }
+    },
   },
-
 
   updateTag: {
     type: new GraphQLList(TagType),
@@ -40,14 +39,14 @@ let TagMutation = {
     args: {
       id: {
         type: GraphQLID,
-        description: 'id'
+        description: 'id',
       },
       name: {
         type: GraphQLString,
-        description: '标签名字'
-      }
+        description: '标签名字',
+      },
     },
-    resolve: async(root, { id, name }) => {
+    resolve: async (root, { id, name }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
       if (!name) throw Error('标签名字不能为空')
@@ -61,9 +60,8 @@ let TagMutation = {
       await tag.save()
 
       return await Tag.getTags()
-    }
+    },
   },
-
 
   removeTag: {
     type: new GraphQLList(TagType),
@@ -71,10 +69,10 @@ let TagMutation = {
     args: {
       name: {
         type: GraphQLString,
-        description: '标签名字'
-      }
+        description: '标签名字',
+      },
     },
-    resolve: async(root, { name }) => {
+    resolve: async (root, { name }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
       if (!name) throw Error('标签名字不能为空')
@@ -83,8 +81,8 @@ let TagMutation = {
 
       if (!tag) throw Error('标签不存在')
 
-      Array.from(tag.article, async(id) => {
-        let article =  await Article.getArticleById(id)
+      Array.from(tag.article, async id => {
+        let article = await Article.getArticleById(id)
 
         let index = article.tags.indexOf(name)
         article.tags.splice(index, 1)
@@ -95,9 +93,8 @@ let TagMutation = {
       await tag.remove()
 
       return await Tag.getTags()
-    }
+    },
   },
 }
-
 
 export default TagMutation

@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import replyType from './replyType'
@@ -19,18 +19,18 @@ let replyMutation = {
     args: {
       comment_id: {
         type: GraphQLID,
-        description: '评论id'
+        description: '评论id',
       },
       target_user: {
         type: GraphQLID,
-        description: '回复人'
+        description: '回复人',
       },
       content: {
         type: GraphQLString,
-        description: '评论内容'
-      }
+        description: '评论内容',
+      },
     },
-    resolve: async(root, { comment_id, target_user, content }) => {
+    resolve: async (root, { comment_id, target_user, content }) => {
       if (!root.user) throw Error('请先登录')
       if (!content) throw Error('回复内容不能为空')
       if (content.length > 200) throw Error('回复内容太长了')
@@ -40,18 +40,23 @@ let replyMutation = {
         comment_id,
         target_user,
         content,
-        user: root.user._id
+        user: root.user._id,
       })
 
       let comment = await Comment.getCommentById(comment_id)
       let user = await User.getUserById(target_user)
 
-      if (user.email && user.subscribe) sendEmailNotification(user.email, comment.article_id, user.account, comment.floor)
+      if (user.email && user.subscribe)
+        sendEmailNotification(
+          user.email,
+          comment.article_id,
+          user.account,
+          comment.floor,
+        )
 
       return await Reply.getReplyById(reply._id)
-    }
-  }
+    },
+  },
 }
-
 
 export default replyMutation

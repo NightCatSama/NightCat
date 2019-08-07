@@ -1,5 +1,5 @@
-import { Schema } from "mongoose";
-import { IUser } from "./user";
+import { Schema } from 'mongoose'
+import { IUser } from './user'
 
 export interface IReply {
   // 评论 id

@@ -8,7 +8,7 @@ import { updateToken, returnUserData } from '../common/sign'
 
 export default {
   /*  发送注册邮件  */
-  sendSignupEmail: async(req, res, next) => {
+  sendSignupEmail: async (req, res, next) => {
     let { email } = req.body
     let account = ''
     let password = ''
@@ -24,7 +24,7 @@ export default {
       res.status(403)
       return res.json({
         success: false,
-        message: '邮箱格式不合法'
+        message: '邮箱格式不合法',
       })
     }
 
@@ -32,42 +32,49 @@ export default {
       res.status(403)
       return res.json({
         success: false,
-        message: '该邮箱已被绑定'
+        message: '该邮箱已被绑定',
       })
     }
 
-    if (req.session.email_cd && Date.now() - req.session.email_cd <= 60 * 1000) {
+    if (
+      req.session.email_cd &&
+      Date.now() - req.session.email_cd <= 60 * 1000
+    ) {
       res.status(403)
       return res.json({
         success: false,
-        message: '一分钟内只可发送一次邮箱激活邮件'
+        message: '一分钟内只可发送一次邮箱激活邮件',
       })
     }
 
     req.session.email_cd = Date.now()
 
-    let key = account ? md5(account + password + email + config.session_secret) : md5(email + config.session_secret)
+    let key = account
+      ? md5(account + password + email + config.session_secret)
+      : md5(email + config.session_secret)
     let SITE_ROOT_URL = `${config.protocol}://${config.host}`
-    let active_url = `${SITE_ROOT_URL}/activeEmail?key=${key}&email=${email}${account ? '&account=' + account : ''}`
+    let active_url = `${SITE_ROOT_URL}/activeEmail?key=${key}&email=${email}${
+      account ? '&account=' + account : ''
+    }`
 
-    if (!await sendActiveMail(email, active_url, email)) {
+    if (!(await sendActiveMail(email, active_url, email))) {
       res.status(500)
       return res.json({
         success: false,
-        message: '发送邮件失败，请重试'
+        message: '发送邮件失败，请重试',
       })
     }
 
     res.status(200)
     return res.json({
       success: true,
-      message: '已给您的注册邮箱发送了一封邮件，请点击里面的链接来激活您的帐号。'
+      message:
+        '已给您的注册邮箱发送了一封邮件，请点击里面的链接来激活您的帐号。',
     })
   },
 
-
   /*  激活邮箱  */
-  activeEmail: async(req, res, next) => {
+  activeEmail: async (req, res, next) => {
     let { key, email, account } = req.body
     let md5Key, user
 
@@ -75,7 +82,7 @@ export default {
       res.status(403)
       return res.json({
         success: false,
-        message: '邮箱格式不合法'
+        message: '邮箱格式不合法',
       })
     }
 
@@ -87,13 +94,12 @@ export default {
         res.status(403)
         return res.json({
           success: false,
-          message: '账号不存在'
+          message: '账号不存在',
         })
       }
 
       md5Key = md5(account + user.password + email + config.session_secret)
-    }
-    else {
+    } else {
       md5Key = md5(email + config.session_secret)
     }
 
@@ -101,7 +107,7 @@ export default {
       res.status(403)
       return res.json({
         success: false,
-        message: '验证失败'
+        message: '验证失败',
       })
     }
 
@@ -114,7 +120,7 @@ export default {
       return res.json({
         success: true,
         message: '绑定成功',
-        data: returnUserData(user)
+        data: returnUserData(user),
       })
     }
 
@@ -123,11 +129,10 @@ export default {
       account: email,
       email: email,
       password: randomPassword(),
-      resetPwd: true
+      resetPwd: true,
     }
 
-    user = await User.newAndSave(userInfo)
-      .catch((err) => next(err))
+    user = await User.newAndSave(userInfo).catch(err => next(err))
 
     if (user) {
       await updateToken(user, req)
@@ -136,8 +141,8 @@ export default {
       return res.json({
         success: true,
         message: '注册成功',
-        data: returnUserData(user)
+        data: returnUserData(user),
       })
     }
-  }
+  },
 }

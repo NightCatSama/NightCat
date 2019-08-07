@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import Pagination from '../pagination'
@@ -25,19 +25,22 @@ let ArticleQuery = {
     args: {
       release: {
         type: GraphQLBoolean,
-        description: '是否发布过的文章'
+        description: '是否发布过的文章',
       },
-      ...articlePagination.args
+      ...articlePagination.args,
     },
-    resolve: async(root, args) => {
-      let data = await Article.getArticle(typeof args.release === 'boolean' ? {
-        release: args.release
-      } : null)
+    resolve: async (root, args) => {
+      let data = await Article.getArticle(
+        typeof args.release === 'boolean'
+          ? {
+              release: args.release,
+            }
+          : null,
+      )
 
       return await articlePagination.resolve(data, args)
-    }
+    },
   },
-
 
   getArticleById: {
     type: ArticleType,
@@ -45,17 +48,17 @@ let ArticleQuery = {
     args: {
       id: {
         type: GraphQLID,
-        description: '文章 ID'
-      }
+        description: '文章 ID',
+      },
     },
-    resolve: async(root, { id }) => {
+    resolve: async (root, { id }) => {
       let data = await Article.getArticleById(id)
 
       if (!data) throw Error('未找到文章')
 
       return data
-    }
-  }
+    },
+  },
 }
 
 export default ArticleQuery

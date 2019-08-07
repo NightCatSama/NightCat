@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import { formatDate } from '../../common/utils'
@@ -19,34 +19,34 @@ let replyType = new GraphQLObjectType({
   fields: () => ({
     _id: {
       type: GraphQLID,
-      description: 'id'
+      description: 'id',
     },
     comment_id: {
       type: GraphQLID,
-      description: '评论id'
+      description: '评论id',
     },
     target_user: {
       type: UserType,
-      description: '回复人'
+      description: '回复人',
     },
     user: {
       type: UserType,
-      description: '发表人'
+      description: '发表人',
     },
     content: {
       type: new GraphQLNonNull(GraphQLString),
-      description: '回复内容'
+      description: '回复内容',
     },
     created_at: {
       type: GraphQLString,
       description: '回复时间',
-      resolve: (root) => formatDate(root.created_at)
+      resolve: root => formatDate(root.created_at),
     },
     view: {
       type: GraphQLString,
-      description: '解析后的内容'
-    }
-  })
+      description: '解析后的内容',
+    },
+  }),
 })
 
 export default replyType

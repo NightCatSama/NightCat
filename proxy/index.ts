@@ -5,11 +5,4 @@ import Comment from './comment'
 import Reply from './reply'
 import Link from './link'
 
-export {
-  User,
-  Article,
-  Tag,
-  Comment,
-  Reply,
-  Link
-}
+export { User, Article, Tag, Comment, Reply, Link }

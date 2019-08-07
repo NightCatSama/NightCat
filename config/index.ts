@@ -1,7 +1,7 @@
 import configProd from './config.prod'
 import configDev from './config.dev'
 
-let config: Config;
+let config: Config
 if (process.env.NODE_ENV === 'production') {
   config = configProd
 } else {

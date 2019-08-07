@@ -1,5 +1,5 @@
-import { IArticle } from "./article";
-import { IUser } from "./user";
+import { IArticle } from './article'
+import { IUser } from './user'
 
 export interface IComment {
   // 文章 id

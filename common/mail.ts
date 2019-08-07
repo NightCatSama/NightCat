@@ -7,27 +7,28 @@ import opn from 'opn'
 let transporter = mailer.createTransport(smtpTransport(config.mail_opts))
 
 /*  发送邮件  */
-export const sendMail = async(data, link) => {
+export const sendMail = async (data, link) => {
   if (config.debug) {
     console.log('发送邮件！')
     return false
   }
 
   let success = false
-  await transporter.sendMail(data)
-  .then((res) => {
-    success = true
-    logger.info('发送邮件成功', data.to)
-  })
-  .catch((err) => {
-    logger.error('发送邮件失败', data.to);
-  })
+  await transporter
+    .sendMail(data)
+    .then(res => {
+      success = true
+      logger.info('发送邮件成功', data.to)
+    })
+    .catch(err => {
+      logger.error('发送邮件失败', data.to)
+    })
 
   return success
 }
 
 /*  发送激活通知邮件  */
-export const sendActiveMail = async(to, link, account) => {
+export const sendActiveMail = async (to, link, account) => {
   let from = config.mail_opts.auth.user
   let subject = `${config.name}账号激活`
   let html = `
@@ -37,16 +38,19 @@ export const sendActiveMail = async(to, link, account) => {
   <p>如果您未在${config.name}申请过账号注册，说明有人在滥用你的邮箱，请删除此封邮件，给您造成困扰真是抱歉</p>
   `
 
-  return await sendMail({
-    from,
-    to,
-    subject,
-    html
-  }, link)
+  return await sendMail(
+    {
+      from,
+      to,
+      subject,
+      html,
+    },
+    link,
+  )
 }
 
 /*  发送消息通知邮件  */
-export const sendEmailNotification = async(to, article_id, account, floor) => {
+export const sendEmailNotification = async (to, article_id, account, floor) => {
   if (config.debug) {
     return false
   }
@@ -62,16 +66,19 @@ export const sendEmailNotification = async(to, article_id, account, floor) => {
   <p>如果您未在${config.name}发表过评论或回复，说明有人在滥用你的邮箱，请删除此封邮件，给您造成困扰真是抱歉</p>
   `
 
-  return await sendMail({
-    from,
-    to,
-    subject,
-    html
-  }, link)
+  return await sendMail(
+    {
+      from,
+      to,
+      subject,
+      html,
+    },
+    link,
+  )
 }
 
 export default {
   sendMail,
   sendActiveMail,
-  sendEmailNotification
+  sendEmailNotification,
 }

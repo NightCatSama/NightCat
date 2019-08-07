@@ -1,4 +1,4 @@
-import { IArticle } from "./article";
+import { IArticle } from './article'
 
 export interface ITag {
   // 标签名字

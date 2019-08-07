@@ -1,7 +1,4 @@
-import {
-  GraphQLObjectType,
-  GraphQLSchema
-} from 'graphql/type'
+import { GraphQLObjectType, GraphQLSchema } from 'graphql/type'
 
 // Query & Mutations
 import UserQuery from './user/UserQuery'
@@ -37,8 +34,8 @@ export default new GraphQLSchema({
 
       comments: CommentQuery.comments,
 
-      links: LinkQuery.links
-    }
+      links: LinkQuery.links,
+    },
   }),
   mutation: new GraphQLObjectType({
     name: 'RootMutationType',
@@ -68,7 +65,7 @@ export default new GraphQLSchema({
 
       addLink: LinkMutation.addLink,
       updateLink: LinkMutation.updateLink,
-      removeLink: LinkMutation.removeLink
-    }
-  })
+      removeLink: LinkMutation.removeLink,
+    },
+  }),
 })

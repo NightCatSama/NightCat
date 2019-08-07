@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import { formatDate } from '../../common/utils'
@@ -19,52 +19,52 @@ let ArticleType = new GraphQLObjectType({
   fields: () => ({
     _id: {
       type: GraphQLID,
-      description: 'id'
+      description: 'id',
     },
     title: {
       type: GraphQLString,
-      description: '文章标题'
+      description: '文章标题',
     },
     author: {
       type: UserType,
-      description: '作者'
+      description: '作者',
     },
     tags: {
       type: new GraphQLList(TagType),
-      description: '标签'
+      description: '标签',
     },
     content: {
       type: GraphQLString,
-      description: '文章内容'
+      description: '文章内容',
     },
     cover: {
       type: GraphQLString,
-      description: '封面图'
+      description: '封面图',
     },
     release: {
       type: GraphQLBoolean,
-      description: '是否发布'
+      description: '是否发布',
     },
     comment_count: {
       type: GraphQLInt,
       description: '评论数目',
-      resolve: async(root) => await Comment.getCommentCount(root._id)
+      resolve: async root => await Comment.getCommentCount(root._id),
     },
     created_at: {
       type: GraphQLString,
       description: '注册时间',
-      resolve: (root) => formatDate(root.created_at)
+      resolve: root => formatDate(root.created_at),
     },
     update_at: {
       type: GraphQLString,
       description: '更新时间',
-      resolve: (root) => formatDate(root.update_at)
+      resolve: root => formatDate(root.update_at),
     },
     view: {
       type: GraphQLString,
-      description: '解析后的内容'
-    }
-  })
+      description: '解析后的内容',
+    },
+  }),
 })
 
 export default ArticleType

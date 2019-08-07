@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import ArticleType from './ArticleType'
@@ -19,22 +19,22 @@ let ArticleMutation = {
     args: {
       title: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '文章标题'
+        description: '文章标题',
       },
       content: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '文章内容'
+        description: '文章内容',
       },
       cover: {
         type: GraphQLString,
-        description: '文章封面'
+        description: '文章封面',
       },
       tags: {
         type: new GraphQLList(GraphQLID),
-        description: '标签'
-      }
+        description: '标签',
+      },
     },
-    resolve: async(root, { title, content, cover, tags }) => {
+    resolve: async (root, { title, content, cover, tags }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -43,15 +43,14 @@ let ArticleMutation = {
         title,
         content,
         cover,
-        tags
+        tags,
       })
 
       await Tag.patchesTag(newArticle._id, tags)
 
       return newArticle
-    }
+    },
   },
-
 
   deleteArticle: {
     type: ArticleType,
@@ -59,10 +58,10 @@ let ArticleMutation = {
     args: {
       id: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '文章id'
-      }
+        description: '文章id',
+      },
     },
-    resolve: async(root, { id }) => {
+    resolve: async (root, { id }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -70,7 +69,7 @@ let ArticleMutation = {
 
       if (!article) throw Error('未找到文章')
 
-      Array.from(article.tags, async(name) => {
+      Array.from(article.tags, async name => {
         let tag = await Tag.getTagByName(name)
         let index = tag.article.indexOf(id)
 
@@ -83,9 +82,8 @@ let ArticleMutation = {
       await Comment.deleteComments(id)
 
       return await article.remove()
-    }
+    },
   },
-
 
   releaseArticle: {
     type: ArticleType,
@@ -93,10 +91,10 @@ let ArticleMutation = {
     args: {
       id: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '文章id'
-      }
+        description: '文章id',
+      },
     },
-    resolve: async(root, { id }) => {
+    resolve: async (root, { id }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.superAdmin) throw Error('发布/下架 需要超级管理员权限')
 
@@ -107,9 +105,8 @@ let ArticleMutation = {
       article.release = !article.release
 
       return await article.save()
-    }
+    },
   },
-
 
   updateArticle: {
     type: ArticleType,
@@ -117,26 +114,26 @@ let ArticleMutation = {
     args: {
       id: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '文章id'
+        description: '文章id',
       },
       title: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '文章标题'
+        description: '文章标题',
       },
       content: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '文章内容'
+        description: '文章内容',
       },
       cover: {
         type: GraphQLString,
-        description: '文章封面'
+        description: '文章封面',
       },
       tags: {
         type: new GraphQLList(GraphQLID),
-        description: '标签'
-      }
+        description: '标签',
+      },
     },
-    resolve: async(root, { id, title, content, cover, tags }) => {
+    resolve: async (root, { id, title, content, cover, tags }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -151,12 +148,12 @@ let ArticleMutation = {
         title,
         content,
         cover,
-        tags
+        tags,
       })
 
       return await article.save()
-    }
-  }
+    },
+  },
 }
 
 export default ArticleMutation

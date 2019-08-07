@@ -1,17 +1,17 @@
 import { link } from '../models'
 
 /*  获取全部链接  */
-export const getLinks = async() => {
+export const getLinks = async () => {
   return await link.find({})
 }
 
 /*  通过id获取链接  */
-export const getLinkById = async(id) => {
+export const getLinkById = async id => {
   return await link.findById(id)
 }
 
 /*  生成新链接  */
-export const newAndSave = async(data) => {
+export const newAndSave = async data => {
   let l: any = new link()
   l.name = data.name
   l.avatar = data.avatar
@@ -23,5 +23,5 @@ export const newAndSave = async(data) => {
 export default {
   getLinks,
   getLinkById,
-  newAndSave
+  newAndSave,
 }

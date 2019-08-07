@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import { formatDate } from '../../common/utils'
@@ -20,42 +20,42 @@ let CommentType = new GraphQLObjectType({
   fields: () => ({
     _id: {
       type: GraphQLID,
-      description: 'id'
+      description: 'id',
     },
     article_id: {
       type: GraphQLID,
-      description: '文章id'
+      description: '文章id',
     },
     type: {
       type: GraphQLString,
-      description: '评论类型'
+      description: '评论类型',
     },
     user: {
       type: UserType,
-      description: '评论人'
+      description: '评论人',
     },
     content: {
       type: new GraphQLNonNull(GraphQLString),
-      description: '评论内容'
+      description: '评论内容',
     },
     created_at: {
       type: GraphQLString,
       description: '评论时间',
-      resolve: (root) => formatDate(root.created_at)
+      resolve: root => formatDate(root.created_at),
     },
     reply: {
       type: new GraphQLList(replyType),
-      description: '回复列表'
+      description: '回复列表',
     },
     floor: {
       type: GraphQLInt,
-      description: '楼层数'
+      description: '楼层数',
     },
     view: {
       type: GraphQLString,
-      description: '解析后的评论内容'
-    }
-  })
+      description: '解析后的评论内容',
+    },
+  }),
 })
 
 export default CommentType

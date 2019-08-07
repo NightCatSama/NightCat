@@ -21,7 +21,7 @@ import router from './routes/index'
 import admin_router from './routes/admin'
 
 const app = express()
-const relative = (_path) => path.relative(__dirname, _path)
+const relative = _path => path.relative(__dirname, _path)
 
 /*  使用 Helmet  */
 app.use(helmet())
@@ -44,31 +44,40 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cookieParser(config.session_secret))
 
 const MongoStore = connect(session)
-app.use(session({
-  secret: config.session_secret,
-  resave: false,
-  saveUninitialized: false,
-  store: new MongoStore({
-    url: `mongodb://${process.env.NODE_ENV === 'production' ? `${config.database.username}:${config.database.password}@` : ''}${config.db_host}:${config.db_port}/${config.db}`,
+app.use(
+  session({
+    secret: config.session_secret,
+    resave: false,
+    saveUninitialized: false,
+    store: new MongoStore({
+      url: `mongodb://${
+        process.env.NODE_ENV === 'production'
+          ? `${config.database.username}:${config.database.password}@`
+          : ''
+      }${config.db_host}:${config.db_port}/${config.db}`,
+    }),
+    cookie: {
+      maxAge: 30 * 24 * 60 * 60 * 1000,
+    },
   }),
-  cookie: {
-    maxAge: 30 * 24 * 60 * 60 * 1000
-  }
-}))
+)
 
 /*  graphQL  */
 app.use('/graphql', allowCrossDomain)
-app.use('/graphql', graphqlHTTP(async (request, response, graphQLParams) => ({
-  schema,
-  pretty: true,
-  graphiql: true,
-  rootValue: await getRootValue(request),
-  formatError: (error) => ({
-    name: error.path,
-    message: error.message,
-    locations: error.locations
-  })
-})))
+app.use(
+  '/graphql',
+  graphqlHTTP(async (request, response, graphQLParams) => ({
+    schema,
+    pretty: true,
+    graphiql: true,
+    rootValue: await getRootValue(request),
+    formatError: error => ({
+      name: error.path,
+      message: error.message,
+      locations: error.locations,
+    }),
+  })),
+)
 
 /*  前端代码  */
 app.use('/admin', admin_router)
@@ -77,13 +86,12 @@ app.use('/', router)
 /*  Error Handle  */
 if (config.debug) {
   app.use(errorhandler())
-}
-else {
+} else {
   app.use(function(err, req, res, next) {
     logger.error(err)
     return res.status(500).json({
       success: false,
-      message: err
+      message: err,
     })
   })
 }

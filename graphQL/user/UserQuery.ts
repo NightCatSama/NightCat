@@ -3,7 +3,7 @@ import {
   GraphQLInt,
   GraphQLList,
   GraphQLNonNull,
-  GraphQLOutputType
+  GraphQLOutputType,
 } from 'graphql/type'
 
 import Pagination from '../pagination'
@@ -21,15 +21,14 @@ let UserQuery = {
     type: usersPagination.type,
     descriptions: '所有用户的数据，支持分页',
     args: {
-      ...usersPagination.args
+      ...usersPagination.args,
     },
-    resolve: async(root, args) => {
+    resolve: async (root, args) => {
       let users = await User.getUsers()
 
       return await usersPagination.resolve(users, args)
-    }
+    },
   },
-
 
   user: {
     type: UserType,
@@ -37,17 +36,16 @@ let UserQuery = {
     args: {
       account: {
         type: GraphQLString,
-        description: '账号'
-      }
+        description: '账号',
+      },
     },
-    resolve: async(root, { account }) => {
+    resolve: async (root, { account }) => {
       if (account) return await User.getUserByAccount(account)
       else if (!root.user) throw Error('请先登录')
 
       return root.user
-    }
-  }
+    },
+  },
 }
-
 
 export default UserQuery

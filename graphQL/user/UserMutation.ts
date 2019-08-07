@@ -2,7 +2,7 @@ import {
   GraphQLString,
   GraphQLList,
   GraphQLBoolean,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import validator from 'validator'
@@ -18,14 +18,14 @@ let UserMutation = {
     args: {
       account: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '账号'
+        description: '账号',
       },
       password: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '密码'
-      }
+        description: '密码',
+      },
     },
-    resolve: async(root, { account, password }, req) => {
+    resolve: async (root, { account, password }, req) => {
       if (!account || account === '') throw Error('账号不能为空')
       if (!password || password === '') throw Error('密码不能为空')
 
@@ -35,9 +35,8 @@ let UserMutation = {
       if (user.password !== password) throw Error('密码错误')
 
       return await updateToken(user, req)
-    }
+    },
   },
-
 
   loginByEmail: {
     type: UserType,
@@ -45,14 +44,14 @@ let UserMutation = {
     args: {
       email: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '邮箱'
+        description: '邮箱',
       },
       password: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '密码'
-      }
+        description: '密码',
+      },
     },
-    resolve: async(root, { email, password }, req) => {
+    resolve: async (root, { email, password }, req) => {
       if (!email || email === '') throw Error('邮箱不能为空')
       if (!password || password === '') throw Error('密码不能为空')
       if (!validator.isEmail(email)) throw Error('邮箱格式不对')
@@ -63,9 +62,8 @@ let UserMutation = {
       if (user.password !== password) throw Error('密码错误')
 
       return await updateToken(user, req)
-    }
+    },
   },
-
 
   register: {
     type: UserType,
@@ -73,61 +71,63 @@ let UserMutation = {
     args: {
       account: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '账号'
+        description: '账号',
       },
       password: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '密码'
+        description: '密码',
       },
       repassword: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '再次输入密码'
-      }
+        description: '再次输入密码',
+      },
     },
-    resolve: async(root, { account, password, repassword }, req) => {
-      if ([account, password, repassword].some((v) => v === '')) throw Error('信息不完整')
-      if (!validator.isByteLength(account, { min: 6, max: 20 })) throw Error('账号至少需要6个字符')
-      if (!validator.isByteLength(password, { min: 6 })) throw Error('密码至少需要6个字符')
-      if (!validator.isAlphanumeric(account)) throw Error('账号只能包含字母和数字')
+    resolve: async (root, { account, password, repassword }, req) => {
+      if ([account, password, repassword].some(v => v === ''))
+        throw Error('信息不完整')
+      if (!validator.isByteLength(account, { min: 6, max: 20 }))
+        throw Error('账号至少需要6个字符')
+      if (!validator.isByteLength(password, { min: 6 }))
+        throw Error('密码至少需要6个字符')
+      if (!validator.isAlphanumeric(account))
+        throw Error('账号只能包含字母和数字')
       if (password !== repassword) throw Error('两次密码输入不一致')
       if (await User.getUserByAccount(account)) throw Error('账号已存在')
 
       let user = await User.newAndSave({
         account,
-        password
+        password,
       })
 
       if (!user) throw Error('注册失败')
 
       return await updateToken(user, req)
-    }
+    },
   },
-
 
   logout: {
     type: UserType,
     description: '退出登录',
-    resolve: async(root, args, req) => {
+    resolve: async (root, args, req) => {
       if (!root.user) throw Error('请先登录')
 
       req.session.destroy()
       root.user.access_token = ''
 
       return await root.user.save()
-    }
+    },
   },
-
 
   setAdmin: {
     type: UserType,
     description: '设置/取消 管理员',
     args: {
-       account: {
+      account: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '账号'
-      }
+        description: '账号',
+      },
     },
-    resolve: async(root, { account }, req) => {
+    resolve: async (root, { account }, req) => {
       if (!root.user) throw Error('账号未登录')
       if (!root.user.superAdmin) throw Error('你没有超级管理员权限')
 
@@ -138,9 +138,8 @@ let UserMutation = {
       user.admin = !user.admin
 
       return await user.save()
-    }
+    },
   },
-
 
   setPassword: {
     type: UserType,
@@ -148,10 +147,10 @@ let UserMutation = {
     args: {
       password: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '新密码'
-      }
+        description: '新密码',
+      },
     },
-    resolve: async(root, { password }, req) => {
+    resolve: async (root, { password }, req) => {
       if (!root.user) throw Error('账号未登录')
       if (!root.user.resetPwd) throw Error('无法修改密码')
 
@@ -159,9 +158,8 @@ let UserMutation = {
       root.user.password = password
 
       return await root.user.save()
-    }
+    },
   },
-
 
   removeUser: {
     type: UserType,
@@ -169,19 +167,18 @@ let UserMutation = {
     args: {
       account: {
         type: new GraphQLNonNull(GraphQLString),
-        description: '账号'
-      }
+        description: '账号',
+      },
     },
-    resolve: async(root, { account }, req) => {
+    resolve: async (root, { account }, req) => {
       if (!root.user) throw Error('账号未登录')
       if (!root.user.superAdmin) throw Error('你没有超级管理员权限')
 
       let user = await User.getUserByAccount(account)
 
       return await user.remove()
-    }
+    },
   },
-
 
   updateUser: {
     type: UserType,
@@ -189,31 +186,39 @@ let UserMutation = {
     args: {
       avatar: {
         type: GraphQLString,
-        description: '头像'
+        description: '头像',
       },
       profile: {
         type: GraphQLString,
-        description: '简介'
+        description: '简介',
       },
       website: {
         type: GraphQLString,
-        description: '个人网站'
+        description: '个人网站',
       },
       github: {
         type: GraphQLString,
-        description: 'github'
+        description: 'github',
       },
       location: {
         type: GraphQLString,
-        description: '地点'
-      }
+        description: '地点',
+      },
     },
-    resolve: async(root, { avatar, profile, website, github, location }, req) => {
+    resolve: async (
+      root,
+      { avatar, profile, website, github, location },
+      req,
+    ) => {
       if (!root.user) throw Error('请先登录')
-      if (!validator.isByteLength(profile, { max: 200 })) throw Error('简介不能大于 200 个字符')
-      if (website && !validator.isURL(website, { allow_underscores: true })) throw Error('请输入正确的URL')
-      if (github && !validator.isURL(github, { allow_underscores: true })) throw Error('请输入正确的 Github 地址')
-      if (!validator.isByteLength(location, { max: 99 })) throw Error('地点不能大于 99 个字符')
+      if (!validator.isByteLength(profile, { max: 200 }))
+        throw Error('简介不能大于 200 个字符')
+      if (website && !validator.isURL(website, { allow_underscores: true }))
+        throw Error('请输入正确的URL')
+      if (github && !validator.isURL(github, { allow_underscores: true }))
+        throw Error('请输入正确的 Github 地址')
+      if (!validator.isByteLength(location, { max: 99 }))
+        throw Error('地点不能大于 99 个字符')
 
       root.user.avatar = avatar
       root.user.profile = profile
@@ -222,9 +227,8 @@ let UserMutation = {
       root.user.location = location
 
       return await root.user.save()
-    }
+    },
   },
-
 
   setSubscribe: {
     type: UserType,
@@ -232,19 +236,17 @@ let UserMutation = {
     args: {
       subscribe: {
         type: GraphQLBoolean,
-        description: '是否订阅消息邮件'
-      }
+        description: '是否订阅消息邮件',
+      },
     },
-    resolve: async(root, { subscribe }, req) => {
+    resolve: async (root, { subscribe }, req) => {
       if (!root.user) throw Error('请先登录')
 
       root.user.subscribe = subscribe
 
       return await root.user.save()
-
-    }
-  }
+    },
+  },
 }
-
 
 export default UserMutation

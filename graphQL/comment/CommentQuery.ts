@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import Pagination from '../pagination'
@@ -25,24 +25,23 @@ let CommentQuery = {
     args: {
       article_id: {
         type: GraphQLID,
-        description: '文章 id'
+        description: '文章 id',
       },
       type: {
         type: GraphQLString,
-        description: '类型名称'
+        description: '类型名称',
       },
-      ...commentPagination.args
+      ...commentPagination.args,
     },
-    resolve: async(root, args) => {
+    resolve: async (root, args) => {
       let data = await Comment.getComments({
         article_id: args.article_id,
-        type: args.type
+        type: args.type,
       })
 
       return await commentPagination.resolve(data, args)
-    }
-  }
+    },
+  },
 }
-
 
 export default CommentQuery

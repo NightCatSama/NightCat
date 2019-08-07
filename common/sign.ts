@@ -4,22 +4,24 @@ import uuid from 'uuid'
 import config from '../config'
 
 /*  生成默认头像  */
-export const getAvatar = (email) => {
-  return `https://www.gravatar.com/avatar/${md5(email)}/?d=https://www.gravatar.com/avatar/9606f9cc7e486b4cc5c118b9c0ad1d48`
+export const getAvatar = email => {
+  return `https://www.gravatar.com/avatar/${md5(
+    email,
+  )}/?d=https://www.gravatar.com/avatar/9606f9cc7e486b4cc5c118b9c0ad1d48`
 }
 
 /*  jwt加密  */
-export const signToken = (payload) => {
+export const signToken = payload => {
   return jwt.sign(payload, config.session_secret)
 }
 
 /*  jwt验证  */
-export const verifyToken = (token) => {
+export const verifyToken = token => {
   return jwt.verify(token, config.session_secret)
 }
 
 /*  返回用户信息  */
-export const returnUserData = (user) => {
+export const returnUserData = user => {
   return {
     account: user.account,
     email: user.email,
@@ -29,12 +31,12 @@ export const returnUserData = (user) => {
     profile: user.profile,
     gameData: user.gameData,
     admin: user.admin,
-    avatar: user.avatar
+    avatar: user.avatar,
   }
 }
 
 // 更新 access_token, 保持单点登录
-export const updateToken = async(user, req) => {
+export const updateToken = async (user, req) => {
   let token = uuid.v4()
   req.session.token = token
   req.session.is_admin = user.admin
@@ -47,5 +49,5 @@ export default {
   updateToken,
   signToken,
   verifyToken,
-  returnUserData
+  returnUserData,
 }

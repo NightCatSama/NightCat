@@ -1,10 +1,10 @@
 import {
-    GraphQLInt,
-    GraphQLString,
-    GraphQLObjectType,
-    GraphQLList,
-    GraphQLBoolean,
-    GraphQLNonNull,
+  GraphQLInt,
+  GraphQLString,
+  GraphQLObjectType,
+  GraphQLList,
+  GraphQLBoolean,
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import UserType from './user/UserType'
@@ -12,14 +12,14 @@ import UserType from './user/UserType'
 const PREFIX = 'arrayconnection:'
 
 export default class Pagination {
-  prefix: string;
-  type: GraphQLObjectType;
-  name: string;
-  args: { [key: string]: any };
+  prefix: string
+  type: GraphQLObjectType
+  name: string
+  args: { [key: string]: any }
 
-  constructor (params: {
-    name: string,
-    type: GraphQLObjectType,
+  constructor(params: {
+    name: string
+    type: GraphQLObjectType
     prefix?: string
   }) {
     this.name = params.name
@@ -29,152 +29,135 @@ export default class Pagination {
   }
 
   /*  得到 PageInfo 的Type  */
-  getPageInfoType () {
+  getPageInfoType() {
     return new GraphQLObjectType({
       name: `${this.name}PageInfo`,
       fields: () => ({
         startCursor: {
           type: GraphQLString,
-          description: '返回列表首项的标识'
+          description: '返回列表首项的标识',
         },
         endCursor: {
           type: GraphQLString,
-          description: '返回列表尾项的标识'
+          description: '返回列表尾项的标识',
         },
         hasNextPage: {
           type: GraphQLBoolean,
-          description: '是否有下一页'
+          description: '是否有下一页',
         },
         hasPrevPage: {
           type: GraphQLBoolean,
-          description: '是否有上一页'
-        }
-      })
+          description: '是否有上一页',
+        },
+      }),
     })
   }
 
-
   /*  得到 Edges 的Type  */
-  getEdgesType (type: GraphQLObjectType) {
-    return new GraphQLList(new GraphQLObjectType({
-      name: `${this.name}Edges`,
-      fields: () => ({
-        node: {
-          type,
-          description: '列表单项的数据'
-        },
-        cursor: {
-          type: GraphQLString,
-          description: '标识'
-        }
-      })
-    }))
+  getEdgesType(type: GraphQLObjectType) {
+    return new GraphQLList(
+      new GraphQLObjectType({
+        name: `${this.name}Edges`,
+        fields: () => ({
+          node: {
+            type,
+            description: '列表单项的数据',
+          },
+          cursor: {
+            type: GraphQLString,
+            description: '标识',
+          },
+        }),
+      }),
+    )
   }
 
-
   /*  All Type  */
-  getType (name: string, type: GraphQLObjectType) {
+  getType(name: string, type: GraphQLObjectType) {
     return new GraphQLObjectType({
       name: `${name}`,
       description: '包装后的类型',
       fields: () => ({
         totalCount: {
           type: GraphQLInt,
-          descriptions: '总页数'
+          descriptions: '总页数',
         },
         pageInfo: {
           type: this.getPageInfoType(),
-          descriptions: '保存分页相关数据的对象'
+          descriptions: '保存分页相关数据的对象',
         },
         edges: {
           type: this.getEdgesType(type),
-          descriptions: '保存数据的数组'
-        }
-      })
+          descriptions: '保存数据的数组',
+        },
+      }),
     })
   }
 
-
   /*  可传参数  */
-  getArgs () {
+  getArgs() {
     return {
       first: {
         type: GraphQLInt,
-        description: '从列表前面获取的个数'
+        description: '从列表前面获取的个数',
       },
       last: {
         type: GraphQLInt,
-        description: '从列表后面获取的个数'
+        description: '从列表后面获取的个数',
       },
       before: {
         type: GraphQLString,
-        description: '规定在此标志之前的列表'
+        description: '规定在此标志之前的列表',
       },
       after: {
         type: GraphQLString,
-        description: '规定在此标志之后的列表'
+        description: '规定在此标志之后的列表',
       },
       offset: {
         type: GraphQLInt,
-        description: '规定从该索引开始获取'
-      }
+        description: '规定从该索引开始获取',
+      },
     }
   }
 
-
   /*  处理返回数据  */
-  async resolve (node, { first, last, before, after, offset = 0 }) {
+  async resolve(node, { first, last, before, after, offset = 0 }) {
     const len = node.length
     const beforeOffset = this.getOffset(before, len)
     const afterOffset = this.getOffset(after, -1)
 
-    let startOffset = Math.max(
-      afterOffset,
-      -1
-    ) + 1
+    let startOffset = Math.max(afterOffset, -1) + 1
 
-    let endOffset = Math.min(
-      beforeOffset,
-      len
-    )
+    let endOffset = Math.min(beforeOffset, len)
 
     if (typeof first === 'number') {
       if (first < 0) throw Error('first 不能小于零')
 
-      endOffset = Math.min(
-        startOffset + first,
-        endOffset
-      ) + offset
+      endOffset = Math.min(startOffset + first, endOffset) + offset
       startOffset += offset
     }
 
     if (typeof last === 'number') {
       if (last < 0) throw Error('last 不能小于零')
 
-      startOffset = Math.max(
-        startOffset,
-        endOffset - last
-      ) - offset
+      startOffset = Math.max(startOffset, endOffset - last) - offset
       endOffset -= offset
     }
 
-    let range = [
-      Math.max(startOffset, 0),
-      Math.min(endOffset, len)
-    ]
+    let range = [Math.max(startOffset, 0), Math.min(endOffset, len)]
 
     const slice = node.slice(...range)
 
     let edges = Array.from(slice, (obj, i) => {
       return {
         node: obj,
-        cursor: this.getCursor(range[0] + i)
+        cursor: this.getCursor(range[0] + i),
       }
     })
 
     const startEdge = edges[0]
     const endEdge = edges[edges.length - 1]
-    const lowerBound = after ? (afterOffset + 1) : 0
+    const lowerBound = after ? afterOffset + 1 : 0
     const upperBound = before ? beforeOffset : len
 
     return {
@@ -184,31 +167,27 @@ export default class Pagination {
         startCursor: startEdge ? startEdge.cursor : null,
         endCursor: endEdge ? endEdge.cursor : null,
         hasPrevPage: range[0] > lowerBound,
-        hasNextPage: range[1] < upperBound
-      }
+        hasNextPage: range[1] < upperBound,
+      },
     }
   }
 
-
-  getOffset (cursor, defaultOffset) {
+  getOffset(cursor, defaultOffset) {
     if (typeof cursor !== 'string') return defaultOffset
 
     const offset = parseInt(this.unbase64(cursor).substr(this.prefix.length))
     return isNaN(offset) ? defaultOffset : offset
   }
 
-
-  getCursor (offset) {
+  getCursor(offset) {
     if (offset === -1) return null
 
     return this.base64(this.prefix + offset)
   }
 
-
   base64(str) {
     return new Buffer(str, 'utf8').toString('base64')
   }
-
 
   unbase64(str) {
     return new Buffer(str, 'base64').toString('utf8')

@@ -25,20 +25,20 @@ const config: Config = {
     port: 25,
     auth: {
       user: '***@126.com',
-      pass: '******'
-    }
+      pass: '******',
+    },
   },
 
   /*  github 配置  */
   github: {
     clientId: 'f34a0e50609f8dc19f8b',
-    clientSecret: '4de9dc2c0c03ee1e5c603e58963662f83cc2c048'
+    clientSecret: '4de9dc2c0c03ee1e5c603e58963662f83cc2c048',
   },
 
   /*  数据库账号密码  */
   database: {
     username: '',
-    password: ''
-  }
+    password: '',
+  },
 }
 export default config

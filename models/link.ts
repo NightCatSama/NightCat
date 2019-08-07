@@ -1,25 +1,25 @@
 import { Schema, Document, model } from 'mongoose'
-import { ILink } from 'interfaces/link';
+import { ILink } from 'interfaces/link'
 
 export interface ILinkModel extends ILink, Document {}
 
 let linkSchema = new Schema<ILinkModel>({
   // 名字
   name: {
-    type: String
+    type: String,
   },
   // 头像
   avatar: {
-    type: String
+    type: String,
   },
   // 简述
   bio: {
-    type: String
+    type: String,
   },
   // 名字
   link: {
-    type: String
-  }
+    type: String,
+  },
 })
 
 let link = model<ILinkModel>('link', linkSchema)

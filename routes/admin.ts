@@ -3,7 +3,6 @@ import express from 'express'
 
 let router = express.Router()
 
-router
-  .use(userAdminRequired)  // 权限管理
+router.use(userAdminRequired) // 权限管理
 
 export default router

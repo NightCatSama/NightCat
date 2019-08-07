@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import { Reply, User } from '../../proxy'
@@ -16,25 +16,25 @@ let LinkType = new GraphQLObjectType({
   fields: () => ({
     _id: {
       type: GraphQLID,
-      description: 'id'
+      description: 'id',
     },
     name: {
       type: GraphQLString,
-      description: '名字'
+      description: '名字',
     },
     avatar: {
       type: GraphQLString,
-      description: '头像'
+      description: '头像',
     },
-     bio: {
+    bio: {
       type: GraphQLString,
-      description: '简述'
+      description: '简述',
     },
     link: {
       type: GraphQLString,
-      description: '链接'
-    }
-  })
+      description: '链接',
+    },
+  }),
 })
 
 export default LinkType

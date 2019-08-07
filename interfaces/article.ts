@@ -1,5 +1,5 @@
-import { ITag } from "./tag";
-import { IUser } from "./user";
+import { ITag } from './tag'
+import { IUser } from './user'
 
 export interface IArticle {
   // 文章标题

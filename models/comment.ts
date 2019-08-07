@@ -1,6 +1,6 @@
 import { Schema, Document, model } from 'mongoose'
 import md from '../common/markdown'
-import { IComment } from 'interfaces/comment';
+import { IComment } from 'interfaces/comment'
 
 export interface ICommentModel extends IComment, Document {
   view: string
@@ -9,38 +9,40 @@ export interface ICommentModel extends IComment, Document {
 let commentSchema = new Schema<ICommentModel>({
   // 文章 id
   article_id: {
-    type: Schema.Types.ObjectId
+    type: Schema.Types.ObjectId,
   },
   // 评论类型
   type: {
-    type: String
+    type: String,
   },
   // 发表者
   user: {
     type: Schema.Types.ObjectId,
-    ref: 'user'
+    ref: 'user',
   },
   // 回复者
-  reply: [{
-    type: Schema.Types.ObjectId,
-    ref: 'reply'
-  }],
+  reply: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: 'reply',
+    },
+  ],
   // 评论内容
   content: {
-    type: String
+    type: String,
   },
   // 楼层
   floor: {
-    type: Number
+    type: Number,
   },
   // 评论时间
   created_at: {
     type: Date,
-    default: Date.now
-  }
+    default: Date.now,
+  },
 })
 
-commentSchema.virtual('view').get(function () {
+commentSchema.virtual('view').get(function() {
   return md.render(this.content)
 })
 

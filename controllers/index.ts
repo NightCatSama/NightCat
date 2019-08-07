@@ -3,5 +3,5 @@ import email from './email'
 
 export default {
   github,
-  email
+  email,
 }

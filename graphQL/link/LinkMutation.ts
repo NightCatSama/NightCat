@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import LinkType from './LinkType'
@@ -18,22 +18,22 @@ let LinkMutation = {
     args: {
       name: {
         type: GraphQLString,
-        description: '名字'
+        description: '名字',
       },
       avatar: {
         type: GraphQLString,
-        description: '头像'
+        description: '头像',
       },
       bio: {
         type: GraphQLString,
-        description: '简述'
+        description: '简述',
       },
       link: {
         type: GraphQLString,
-        description: '链接'
-      }
+        description: '链接',
+      },
     },
-    resolve: async(root, { name, bio, link, avatar }) => {
+    resolve: async (root, { name, bio, link, avatar }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -41,13 +41,12 @@ let LinkMutation = {
         name,
         bio,
         link,
-        avatar
+        avatar,
       })
 
       return await Link.getLinks()
-    }
+    },
   },
-
 
   updateLink: {
     type: new GraphQLList(LinkType),
@@ -55,26 +54,26 @@ let LinkMutation = {
     args: {
       id: {
         type: GraphQLID,
-        description: 'id'
+        description: 'id',
       },
       name: {
         type: GraphQLString,
-        description: '名字'
+        description: '名字',
       },
       avatar: {
         type: GraphQLString,
-        description: '头像'
+        description: '头像',
       },
       bio: {
         type: GraphQLString,
-        description: '简述'
+        description: '简述',
       },
       link: {
         type: GraphQLString,
-        description: '链接'
-      }
+        description: '链接',
+      },
     },
-    resolve: async(root, { id, name, bio, link, avatar }) => {
+    resolve: async (root, { id, name, bio, link, avatar }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -90,9 +89,8 @@ let LinkMutation = {
       await data.save()
 
       return await Link.getLinks()
-    }
+    },
   },
-
 
   removeLink: {
     type: new GraphQLList(LinkType),
@@ -100,10 +98,10 @@ let LinkMutation = {
     args: {
       id: {
         type: GraphQLID,
-        description: 'id'
-      }
+        description: 'id',
+      },
     },
-    resolve: async(root, { id }) => {
+    resolve: async (root, { id }) => {
       if (!root.user) throw Error('请先登录')
       if (!root.user.admin) throw Error('你没有权限')
 
@@ -114,9 +112,8 @@ let LinkMutation = {
       await data.remove()
 
       return Link.getLinks()
-    }
-  }
+    },
+  },
 }
-
 
 export default LinkMutation

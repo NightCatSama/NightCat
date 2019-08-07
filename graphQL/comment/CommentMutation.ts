@@ -5,7 +5,7 @@ import {
   GraphQLString,
   GraphQLInt,
   GraphQLID,
-  GraphQLNonNull
+  GraphQLNonNull,
 } from 'graphql/type'
 
 import CommentType from './CommentType'
@@ -19,18 +19,18 @@ let CommentMutation = {
     args: {
       article_id: {
         type: GraphQLID,
-        description: '文章id'
+        description: '文章id',
       },
       type: {
         type: GraphQLString,
-        description: '评论类型'
+        description: '评论类型',
       },
       content: {
         type: GraphQLString,
-        description: '评论内容'
-      }
+        description: '评论内容',
+      },
     },
-    resolve: async(root, { article_id, type, content }) => {
+    resolve: async (root, { article_id, type, content }) => {
       if (!root.user) throw Error('请先登录')
       if (!content) throw Error('评论内容不能为空')
       if (content.length > 200) throw Error('评论内容太长了')
@@ -39,7 +39,7 @@ let CommentMutation = {
         article_id,
         type,
         content,
-        user: root.user._id
+        user: root.user._id,
       })
 
       if (!comment) throw Error('评论失败')
@@ -49,13 +49,18 @@ let CommentMutation = {
         let art = await Article.getArticleById(article_id)
         let floor = comment.floor
 
-        if (art.author.email && art.author.subscribe) sendEmailNotification(art.author.email, article_id, art.author.account, floor)
+        if (art.author.email && art.author.subscribe)
+          sendEmailNotification(
+            art.author.email,
+            article_id,
+            art.author.account,
+            floor,
+          )
       }
 
       return comment
-    }
-  }
+    },
+  },
 }
-
 
 export default CommentMutation
