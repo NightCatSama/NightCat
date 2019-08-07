@@ -3,13 +3,20 @@
   "version": "0.0.0",
   "private": true,
   "description": "A personal website",
+  "author": "NightCatSama (nightcat@hzfe.org)",
   "scripts": {
+    "precommit": "lint-staged",
     "start": "mongod -f ./mongodb.conf && npm run dev",
     "dev": "nodemon",
     "build": "tsc -p tsconfig.build.json",
     "deploy": "pm2 start dist/app.js"
   },
-  "author": "NightCatSama (nightcat@hzfe.org)",
+  "lint-staged": {
+    "*.{js,ts}": [
+      "prettier --single-quote --no-semi --trailing-comma all --write",
+      "git add"
+    ]
+  },
   "dependencies": {
     "axios": "^0.16.1",
     "body-parser": "~1.13.2",
@@ -57,6 +64,7 @@
     "babel-preset-es2015": "^6.18.0",
     "babel-preset-stage-2": "^6.18.0",
     "errorhandler": "^1.5.0",
+    "lint-staged": "^9.2.1",
     "nodemon": "^1.11.0",
     "opn": "^4.0.2",
     "prettier": "^1.18.2",
