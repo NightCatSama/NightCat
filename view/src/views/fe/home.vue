@@ -6,7 +6,7 @@
         <a href="https://github.com/NightCatSama/NightCat/blob/master/view/src/assets/bg_canvas.js" target="_blank">source code</a>
       </aside>
     </section>
-    <aside class="records">NightCat 2017 @ 粤ICP备17068584号</aside>
+    <aside class="records">NightCat 2017 @ <a target="_blank" href="https://beian.miit.gov.cn/">粤ICP备17068584号</a></aside>
   </div>
 </template>
 
