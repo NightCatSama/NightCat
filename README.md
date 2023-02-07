@@ -1,4 +1,4 @@
-# [NightCat](https://nightcat.win/)
+# NightCat 个人博客
 
 ------
 
